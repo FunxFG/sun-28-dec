@@ -6,7 +6,6 @@ import { Label } from './ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { toast } from 'sonner';
 import { Shield, MapPin, Users, CheckCircle } from 'lucide-react';
-import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://saferoadworks.preview.emergentagent.com';
 const API = `${BACKEND_URL}/api`;
@@ -27,12 +26,24 @@ export default function AuthPage({ onLogin }) {
         { email: formData.email, password: formData.password } :
         formData;
 
-      const response = await axios.post(`${API}${endpoint}`, payload);
-      
-      onLogin(response.data.token, response.data.user);
+      const response = await fetch(`${API}${endpoint}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Authentication failed');
+      }
+
+      const data = await response.json();
+      onLogin(data.token, data.user);
       toast.success(isLogin ? 'Welcome back!' : 'Account created successfully!');
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Authentication failed');
+      toast.error(error.message || 'Authentication failed');
     } finally {
       setLoading(false);
     }
