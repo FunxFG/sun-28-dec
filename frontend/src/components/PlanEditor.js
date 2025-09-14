@@ -159,12 +159,15 @@ export default function PlanEditor({ user, onLogout }) {
   };
 
   const initializeMap = () => {
-    if (!mapRef.current || !window.google) return;
+    if (!mapRef.current || !window.google?.maps) {
+      setTimeout(initializeMap, 100);
+      return;
+    }
 
     const map = new window.google.maps.Map(mapRef.current, {
       center: { lat: formData.map_center_lat, lng: formData.map_center_lng },
       zoom: formData.map_zoom,
-      mapTypeId: 'hybrid'
+      mapTypeId: 'roadmap'
     });
 
     googleMapRef.current = map;
