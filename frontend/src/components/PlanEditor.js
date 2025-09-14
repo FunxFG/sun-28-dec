@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://saferoadworks.preview.emergentagent.com';
 const API = `${BACKEND_URL}/api`;
 
 // Traffic device library based on Austroads standards
