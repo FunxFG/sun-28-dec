@@ -121,7 +121,25 @@ export default function PlanEditor({ user, onLogout }) {
     if (planId) {
       fetchPlan();
     }
-    initializeMap();
+    
+    // Load Google Maps script
+    const loadGoogleMaps = () => {
+      if (window.google) {
+        initializeMap();
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs&libraries=places`;
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        setTimeout(initializeMap, 100);
+      };
+      document.head.appendChild(script);
+    };
+
+    loadGoogleMaps();
   }, [planId]);
 
   const fetchPlan = async () => {
