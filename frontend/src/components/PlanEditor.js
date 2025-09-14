@@ -730,13 +730,6 @@ export default function PlanEditor({ user, onLogout }) {
           </div>
         </div>
       </div>
-
-      {/* Google Maps Script */}
-      <script
-        src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs&callback=initializeMap`}
-        async
-        defer
-      ></script>
     </div>
   );
 }
