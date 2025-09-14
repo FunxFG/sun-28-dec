@@ -19,12 +19,17 @@ export default function AuthPage({ onLogin }) {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (isLogin) => {
+    console.log('Form submission started:', { isLogin, formData });
     setLoading(true);
+    
     try {
       const endpoint = isLogin ? '/auth/login' : '/auth/register';
       const payload = isLogin ? 
         { email: formData.email, password: formData.password } :
         formData;
+
+      console.log('Making API request to:', `${API}${endpoint}`);
+      console.log('Payload:', payload);
 
       const response = await fetch(`${API}${endpoint}`, {
         method: 'POST',
@@ -34,15 +39,21 @@ export default function AuthPage({ onLogin }) {
         body: JSON.stringify(payload),
       });
 
+      console.log('Response status:', response.status);
+      
       if (!response.ok) {
         const errorData = await response.json();
+        console.error('API Error:', errorData);
         throw new Error(errorData.detail || 'Authentication failed');
       }
 
       const data = await response.json();
+      console.log('API Success:', data);
+      
       onLogin(data.token, data.user);
       toast.success(isLogin ? 'Welcome back!' : 'Account created successfully!');
     } catch (error) {
+      console.error('Authentication error:', error);
       toast.error(error.message || 'Authentication failed');
     } finally {
       setLoading(false);
