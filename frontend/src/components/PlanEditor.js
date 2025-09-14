@@ -1,0 +1,721 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { Textarea } from './ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Checkbox } from './ui/checkbox';
+import { Badge } from './ui/badge';
+import { toast } from 'sonner';
+import { 
+  ArrowLeft, 
+  Save, 
+  Download, 
+  MapPin, 
+  Plus,
+  Trash2,
+  Shield
+} from 'lucide-react';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
+
+// Traffic device library based on Austroads standards
+const TRAFFIC_DEVICES = {
+  'Signs': [
+    { type: 'warning', name: 'Road Work Ahead', icon: '🚧' },
+    { type: 'warning', name: 'Detour', icon: '↪️' },
+    { type: 'warning', name: 'Speed Reduction', icon: '🔢' },
+    { type: 'regulatory', name: 'Stop', icon: '🛑' },
+    { type: 'regulatory', name: 'Give Way', icon: '⚠️' },
+    { type: 'regulatory', name: 'No Entry', icon: '🚫' },
+    { type: 'regulatory', name: 'Speed Limit 40', icon: '4️⃣0️⃣' },
+    { type: 'guide', name: 'Lane Closure', icon: '🚫' },
+  ],
+  'Cones': [
+    { type: 'cone', name: 'Traffic Cone 700mm', icon: '🔶' },
+    { type: 'cone', name: 'Traffic Cone 900mm', icon: '🔶' },
+    { type: 'cone', name: 'Witches Hat', icon: '🔸' },
+  ],
+  'Barriers': [
+    { type: 'barrier', name: 'Concrete Barrier', icon: '🛡️' },
+    { type: 'barrier', name: 'Water Filled Barrier', icon: '💧' },
+    { type: 'barrier', name: 'Plastic Barrier', icon: '🚧' },
+  ],
+  'Signals': [
+    { type: 'signal', name: 'Portable Traffic Light', icon: '🚥' },
+    { type: 'signal', name: 'Stop/Go Board', icon: '🔴' },
+    { type: 'signal', name: 'Variable Message Sign', icon: '📟' },
+  ]
+};
+
+export default function PlanEditor({ user, onLogout }) {
+  const { planId } = useParams();
+  const navigate = useNavigate();
+  const mapRef = useRef(null);
+  const googleMapRef = useRef(null);
+  
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [formData, setFormData] = useState({
+    plan_name: '',
+    company_details: {
+      name: '',
+      address: '',
+      abn: '',
+      phone: '',
+      liaison_name: '',
+      liaison_phone: '',
+      liaison_email: ''
+    },
+    traffic_company: {
+      name: '',
+      address: '',
+      phone: '',
+      liaison_name: '',
+      liaison_phone: '',
+      liaison_email: ''
+    },
+    work_details: {
+      work_type: '',
+      work_style: '',
+      description: '',
+      start_date: '',
+      end_date: '',
+      start_address: '',
+      end_address: ''
+    },
+    road_occupancy: {
+      footpath: false,
+      left_shoulder: false,
+      left_lane: false,
+      center_lane: false,
+      right_lane: false,
+      right_shoulder: false,
+      median_strip: false,
+      complete_road_closure: false
+    },
+    control_measures: {
+      twenty_min_rule: false,
+      signage: false,
+      speed_reduction: false,
+      detour: false
+    },
+    road_data: {
+      traffic_volume: null,
+      road_classification: '',
+      road_type: '',
+      governing_body: '',
+      workzone_size: null
+    },
+    devices: [],
+    map_center_lat: -27.4698,
+    map_center_lng: 153.0251,
+    map_zoom: 15
+  });
+
+  useEffect(() => {
+    if (planId) {
+      fetchPlan();
+    }
+    initializeMap();
+  }, [planId]);
+
+  const fetchPlan = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/plans/${planId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setFormData(response.data);
+    } catch (error) {
+      toast.error('Failed to load plan');
+      navigate('/dashboard');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const initializeMap = () => {
+    if (!mapRef.current || !window.google) return;
+
+    const map = new window.google.maps.Map(mapRef.current, {
+      center: { lat: formData.map_center_lat, lng: formData.map_center_lng },
+      zoom: formData.map_zoom,
+      mapTypeId: 'hybrid'
+    });
+
+    googleMapRef.current = map;
+
+    // Add click listener for placing devices
+    map.addListener('click', (event) => {
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+      
+      // For now, just add a default traffic cone
+      const newDevice = {
+        id: Date.now().toString(),
+        device_type: 'cone',
+        device_name: 'Traffic Cone 700mm',
+        position_lat: lat,
+        position_lng: lng,
+        properties: {}
+      };
+      
+      setFormData(prev => ({
+        ...prev,
+        devices: [...prev.devices, newDevice]
+      }));
+      
+      addDeviceMarker(map, newDevice);
+    });
+
+    // Add existing device markers
+    formData.devices.forEach(device => {
+      addDeviceMarker(map, device);
+    });
+  };
+
+  const addDeviceMarker = (map, device) => {
+    const marker = new window.google.maps.Marker({
+      position: { lat: device.position_lat, lng: device.position_lng },
+      map: map,
+      title: device.device_name,
+      icon: {
+        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+          <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="15" cy="15" r="12" fill="orange" stroke="white" stroke-width="2"/>
+            <text x="15" y="20" text-anchor="middle" fill="white" font-size="16">${device.device_type === 'cone' ? '🔶' : '🚧'}</text>
+          </svg>
+        `),
+        scaledSize: new window.google.maps.Size(30, 30)
+      }
+    });
+
+    marker.addListener('click', () => {
+      if (window.confirm('Remove this device?')) {
+        removeDevice(device.id);
+        marker.setMap(null);
+      }
+    });
+  };
+
+  const removeDevice = (deviceId) => {
+    setFormData(prev => ({
+      ...prev,
+      devices: prev.devices.filter(d => d.id !== deviceId)
+    }));
+  };
+
+  const handleInputChange = (section, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [section]: {
+        ...prev[section],
+        [field]: value
+      }
+    }));
+  };
+
+  const handleAddressGeocode = async (address, isStart = true) => {
+    try {
+      const response = await axios.get(`${API}/geocode?address=${encodeURIComponent(address)}`);
+      const { lat, lng } = response.data;
+      
+      if (isStart) {
+        setFormData(prev => ({
+          ...prev,
+          map_center_lat: lat,
+          map_center_lng: lng
+        }));
+        
+        if (googleMapRef.current) {
+          googleMapRef.current.setCenter({ lat, lng });
+        }
+      }
+      
+      // Update road data
+      if (formData.work_details.start_address && formData.work_details.end_address) {
+        fetchRoadData();
+      }
+      
+      toast.success('Address geocoded successfully');
+    } catch (error) {
+      toast.error('Failed to geocode address');
+    }
+  };
+
+  const fetchRoadData = async () => {
+    try {
+      const response = await axios.get(`${API}/road-data`, {
+        params: {
+          start_address: formData.work_details.start_address,
+          end_address: formData.work_details.end_address
+        }
+      });
+      
+      setFormData(prev => ({
+        ...prev,
+        road_data: {
+          ...prev.road_data,
+          ...response.data
+        }
+      }));
+      
+      toast.success('Road data updated');
+    } catch (error) {
+      toast.error('Failed to fetch road data');
+    }
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const token = localStorage.getItem('token');
+      
+      if (planId) {
+        await axios.put(`${API}/plans/${planId}`, formData, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        toast.success('Plan updated successfully');
+      } else {
+        const response = await axios.post(`${API}/plans`, formData, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        navigate(`/plan/${response.data.id}`);
+        toast.success('Plan created successfully');
+      }
+    } catch (error) {
+      toast.error('Failed to save plan');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDownloadPdf = async () => {
+    if (!planId) {
+      toast.error('Please save the plan first');
+      return;
+    }
+    
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/plans/${planId}/pdf`, {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: 'blob'
+      });
+      
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${formData.plan_name.replace(/\s+/g, '_')}_traffic_plan.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      
+      toast.success('PDF downloaded successfully');
+    } catch (error) {
+      toast.error('Failed to download PDF');
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-orange-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-orange-50">
+      {/* Header */}
+      <div className="bg-white border-b border-slate-200 shadow-sm">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="outline"
+                onClick={() => navigate('/dashboard')}
+                className="border-slate-300"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-orange-500 rounded-lg">
+                  <Shield className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold text-slate-800">
+                    {planId ? 'Edit Plan' : 'New Plan'}
+                  </h1>
+                  <p className="text-sm text-slate-600">{formData.plan_name || 'Untitled Plan'}</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={handleSave}
+                disabled={saving}
+                className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white"
+              >
+                <Save className="w-4 h-4 mr-2" />
+                {saving ? 'Saving...' : 'Save'}
+              </Button>
+              {planId && (
+                <Button
+                  variant="outline"
+                  onClick={handleDownloadPdf}
+                  className="border-slate-300 text-slate-700 hover:bg-slate-50"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  PDF
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid lg:grid-cols-2 gap-8">
+          {/* Left Panel - Forms */}
+          <div className="space-y-6">
+            {/* Plan Details */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Plan Details</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label htmlFor="plan_name">Plan Name</Label>
+                  <Input
+                    id="plan_name"
+                    value={formData.plan_name}
+                    onChange={(e) => setFormData(prev => ({ ...prev, plan_name: e.target.value }))}
+                    placeholder="Enter plan name"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Company Details */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Primary Company Details</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Company Name</Label>
+                    <Input
+                      value={formData.company_details.name}
+                      onChange={(e) => handleInputChange('company_details', 'name', e.target.value)}
+                      placeholder="Company name"
+                    />
+                  </div>
+                  <div>
+                    <Label>ABN</Label>
+                    <Input
+                      value={formData.company_details.abn}
+                      onChange={(e) => handleInputChange('company_details', 'abn', e.target.value)}
+                      placeholder="ABN number"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label>Address</Label>
+                  <Input
+                    value={formData.company_details.address}
+                    onChange={(e) => handleInputChange('company_details', 'address', e.target.value)}
+                    placeholder="Company address"
+                  />
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Phone</Label>
+                    <Input
+                      value={formData.company_details.phone}
+                      onChange={(e) => handleInputChange('company_details', 'phone', e.target.value)}
+                      placeholder="Phone number"
+                    />
+                  </div>
+                  <div>
+                    <Label>Liaison Name</Label>
+                    <Input
+                      value={formData.company_details.liaison_name}
+                      onChange={(e) => handleInputChange('company_details', 'liaison_name', e.target.value)}
+                      placeholder="Liaison person name"
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Work Details */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Work Details</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Work Type</Label>
+                    <Select
+                      value={formData.work_details.work_type}
+                      onValueChange={(value) => handleInputChange('work_details', 'work_type', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select work type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="emergency">Emergency</SelectItem>
+                        <SelectItem value="maintenance">Maintenance</SelectItem>
+                        <SelectItem value="construction">Construction</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label>Work Style</Label>
+                    <Select
+                      value={formData.work_details.work_style}
+                      onValueChange={(value) => handleInputChange('work_details', 'work_style', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select work style" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="static">Static</SelectItem>
+                        <SelectItem value="mobile">Mobile</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                
+                <div>
+                  <Label>Description</Label>
+                  <Textarea
+                    value={formData.work_details.description}
+                    onChange={(e) => handleInputChange('work_details', 'description', e.target.value)}
+                    placeholder="Describe the work to be completed"
+                    rows={3}
+                  />
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Start Date</Label>
+                    <Input
+                      type="date"
+                      value={formData.work_details.start_date}
+                      onChange={(e) => handleInputChange('work_details', 'start_date', e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <Label>End Date</Label>
+                    <Input
+                      type="date"
+                      value={formData.work_details.end_date}
+                      onChange={(e) => handleInputChange('work_details', 'end_date', e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label>Start Address</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      value={formData.work_details.start_address}
+                      onChange={(e) => handleInputChange('work_details', 'start_address', e.target.value)}
+                      placeholder="Work zone start address"
+                    />
+                    <Button
+                      variant="outline"
+                      onClick={() => handleAddressGeocode(formData.work_details.start_address, true)}
+                      disabled={!formData.work_details.start_address}
+                    >
+                      <MapPin className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+
+                <div>
+                  <Label>End Address</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      value={formData.work_details.end_address}
+                      onChange={(e) => handleInputChange('work_details', 'end_address', e.target.value)}
+                      placeholder="Work zone end address"
+                    />
+                    <Button
+                      variant="outline"
+                      onClick={() => handleAddressGeocode(formData.work_details.end_address, false)}
+                      disabled={!formData.work_details.end_address}
+                    >
+                      <MapPin className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Road Occupancy */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Road Occupancy</CardTitle>
+                <CardDescription>Select which areas of the road will be occupied</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 gap-4">
+                  {Object.entries(formData.road_occupancy).map(([key, value]) => (
+                    <div key={key} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={key}
+                        checked={value}
+                        onCheckedChange={(checked) => handleInputChange('road_occupancy', key, checked)}
+                      />
+                      <Label htmlFor={key} className="text-sm">
+                        {key.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Control Measures */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Control Measures</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 gap-4">
+                  {Object.entries(formData.control_measures).map(([key, value]) => (
+                    <div key={key} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={key}
+                        checked={value}
+                        onCheckedChange={(checked) => handleInputChange('control_measures', key, checked)}
+                      />
+                      <Label htmlFor={key} className="text-sm">
+                        {key.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Right Panel - Map and Devices */}
+          <div className="space-y-6">
+            {/* Map */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Traffic Management Map</CardTitle>
+                <CardDescription>Click on the map to place traffic control devices</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div 
+                  ref={mapRef}
+                  className="w-full h-96 bg-slate-100 rounded-lg border border-slate-200"
+                >
+                  <div className="flex items-center justify-center h-full text-slate-500">
+                    Loading Google Maps...
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Device Library */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Traffic Control Devices</CardTitle>
+                <CardDescription>Available Austroads-approved devices</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {Object.entries(TRAFFIC_DEVICES).map(([category, devices]) => (
+                    <div key={category}>
+                      <h4 className="font-medium text-slate-800 mb-2">{category}</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {devices.map((device, index) => (
+                          <div
+                            key={index}
+                            className="p-3 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer flex items-center gap-2"
+                          >
+                            <span className="text-lg">{device.icon}</span>
+                            <div>
+                              <div className="text-sm font-medium">{device.name}</div>
+                              <Badge variant="outline" className="text-xs">
+                                {device.type}
+                              </Badge>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Placed Devices */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Placed Devices ({formData.devices.length})</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {formData.devices.length === 0 ? (
+                  <p className="text-slate-500 text-center py-4">
+                    Click on the map to place devices
+                  </p>
+                ) : (
+                  <div className="space-y-2">
+                    {formData.devices.map((device, index) => (
+                      <div
+                        key={device.id}
+                        className="flex items-center justify-between p-2 border border-slate-200 rounded-lg"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg">🔶</span>
+                          <div>
+                            <div className="text-sm font-medium">{device.device_name}</div>
+                            <div className="text-xs text-slate-500">
+                              {device.position_lat.toFixed(4)}, {device.position_lng.toFixed(4)}
+                            </div>
+                          </div>
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => removeDevice(device.id)}
+                          className="text-red-600 hover:bg-red-50"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+
+      {/* Google Maps Script */}
+      <script
+        src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs&callback=initializeMap`}
+        async
+        defer
+      ></script>
+    </div>
+  );
+}
