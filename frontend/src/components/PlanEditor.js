@@ -245,32 +245,78 @@ export default function PlanEditor({ user, onLogout }) {
     }));
   };
 
-  const handleAddressGeocode = async (address, isStart = true) => {
-    try {
-      const response = await axios.get(`${API}/geocode?address=${encodeURIComponent(address)}`);
-      const { lat, lng } = response.data;
-      
-      if (isStart) {
-        setFormData(prev => ({
-          ...prev,
-          map_center_lat: lat,
-          map_center_lng: lng
-        }));
-        
-        if (googleMapRef.current) {
-          googleMapRef.current.setCenter({ lat, lng });
-        }
-      }
-      
-      // Update road data
-      if (formData.work_details.start_address && formData.work_details.end_address) {
-        fetchRoadData();
-      }
-      
-      toast.success('Address geocoded successfully');
-    } catch (error) {
-      toast.error('Failed to geocode address');
+  const handleAutoPlaceDevices = async () => {
+    if (!formData.work_details.start_address || !formData.work_details.end_address) {
+      toast.error('Please enter start and end addresses first');
+      return;
     }
+
+    try {
+      // Get coordinates for start and end addresses
+      const startCoords = await geocodeAddress(formData.work_details.start_address);
+      const endCoords = await geocodeAddress(formData.work_details.end_address);
+      
+      // Get road data
+      const roadDataResponse = await fetch(`${API}/road-data?start_address=${encodeURIComponent(formData.work_details.start_address)}&end_address=${encodeURIComponent(formData.work_details.end_address)}`);
+      const roadData = await roadDataResponse.json();
+
+      // Calculate automatic device placement using Austroads rules
+      const coordinates = {
+        start: { lat: startCoords.lat, lng: startCoords.lng },
+        end: { lat: endCoords.lat, lng: endCoords.lng }
+      };
+
+      const autoDevices = austroadsRules.calculateDevicePlacement(
+        {
+          work_details: formData.work_details,
+          road_occupancy: formData.road_occupancy,
+          control_measures: formData.control_measures
+        },
+        {
+          ...roadData,
+          speed_limit: 60 // Default speed, can be enhanced with real data
+        },
+        coordinates
+      );
+
+      // Update form data with automatically placed devices
+      setFormData(prev => ({
+        ...prev,
+        devices: autoDevices,
+        map_center_lat: startCoords.lat,
+        map_center_lng: startCoords.lng,
+        road_data: roadData
+      }));
+
+      // Re-initialize map with new devices
+      if (googleMapRef.current) {
+        // Clear existing markers
+        if (window.deviceMarkers) {
+          window.deviceMarkers.forEach(marker => marker.setMap(null));
+        }
+        window.deviceMarkers = [];
+        
+        // Add new device markers
+        autoDevices.forEach(device => {
+          addDeviceMarker(googleMapRef.current, device);
+        });
+        
+        // Center map on work zone
+        googleMapRef.current.setCenter({ lat: startCoords.lat, lng: startCoords.lng });
+      }
+
+      toast.success(`Automatically placed ${autoDevices.length} devices according to Austroads standards`);
+      
+    } catch (error) {
+      console.error('Auto-placement error:', error);
+      toast.error('Failed to auto-place devices');
+    }
+  };
+
+  const geocodeAddress = async (address) => {
+    const response = await fetch(`${API}/geocode?address=${encodeURIComponent(address)}`);
+    if (!response.ok) throw new Error('Geocoding failed');
+    return response.json();
   };
 
   const fetchRoadData = async () => {
