@@ -832,39 +832,76 @@ export default function PlanEditor({ user, onLogout }) {
             {/* Placed Devices */}
             <Card>
               <CardHeader>
-                <CardTitle>Placed Devices ({formData.devices.length})</CardTitle>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Placed Devices ({formData.devices.length})</CardTitle>
+                  <div className="flex items-center gap-4 text-xs">
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                      <span>Auto-placed</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+                      <span>Manual</span>
+                    </div>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
                 {formData.devices.length === 0 ? (
-                  <p className="text-slate-500 text-center py-4">
-                    Click on the map to place devices
-                  </p>
+                  <div className="text-center py-8">
+                    <div className="p-4 bg-slate-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                      <MapPin className="w-8 h-8 text-slate-400" />
+                    </div>
+                    <p className="text-slate-500 mb-2">No devices placed yet</p>
+                    <p className="text-xs text-slate-400 mb-4">
+                      Use "Auto-Place Devices" or click on the map to add devices
+                    </p>
+                  </div>
                 ) : (
-                  <div className="space-y-2">
-                    {formData.devices.map((device, index) => (
-                      <div
-                        key={device.id}
-                        className="flex items-center justify-between p-2 border border-slate-200 rounded-lg"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg">🔶</span>
-                          <div>
-                            <div className="text-sm font-medium">{device.device_name}</div>
-                            <div className="text-xs text-slate-500">
-                              {device.position_lat.toFixed(4)}, {device.position_lng.toFixed(4)}
+                  <div className="space-y-2 max-h-64 overflow-y-auto custom-scrollbar">
+                    {formData.devices.map((device, index) => {
+                      const isAutoPlaced = device.properties?.auto_placed;
+                      return (
+                        <div
+                          key={device.id}
+                          className="flex items-center justify-between p-3 border border-slate-200 rounded-lg hover:bg-slate-50"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`w-3 h-3 rounded-full ${isAutoPlaced ? 'bg-blue-500' : 'bg-orange-500'}`}></div>
+                            <span className="text-lg">{getDeviceIcon(device.device_type)}</span>
+                            <div className="flex-1">
+                              <div className="text-sm font-medium">{device.device_name}</div>
+                              <div className="text-xs text-slate-500 flex items-center gap-2">
+                                <span>{device.position_lat.toFixed(4)}, {device.position_lng.toFixed(4)}</span>
+                                {isAutoPlaced && (
+                                  <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
+                                    Auto
+                                  </Badge>
+                                )}
+                                {device.properties?.distance && (
+                                  <Badge variant="outline" className="text-xs">
+                                    {device.properties.distance}
+                                  </Badge>
+                                )}
+                              </div>
+                              {isAutoPlaced && device.properties?.austroads_rule && (
+                                <div className="text-xs text-blue-600 mt-1">
+                                  {device.properties.austroads_rule}
+                                </div>
+                              )}
                             </div>
                           </div>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeDevice(device.id)}
+                            className="text-red-600 hover:bg-red-50 border-red-200"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
                         </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => removeDevice(device.id)}
-                          className="text-red-600 hover:bg-red-50"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </CardContent>
