@@ -245,6 +245,36 @@ export default function PlanEditor({ user, onLogout }) {
     }));
   };
 
+  const handleAddressGeocode = async (address, isStart = true) => {
+    try {
+      const response = await fetch(`${API}/geocode?address=${encodeURIComponent(address)}`);
+      if (!response.ok) throw new Error('Geocoding failed');
+      const data = response.json();
+      const { lat, lng } = data;
+      
+      if (isStart) {
+        setFormData(prev => ({
+          ...prev,
+          map_center_lat: lat,
+          map_center_lng: lng
+        }));
+        
+        if (googleMapRef.current) {
+          googleMapRef.current.setCenter({ lat, lng });
+        }
+      }
+      
+      // Update road data
+      if (formData.work_details.start_address && formData.work_details.end_address) {
+        fetchRoadData();
+      }
+      
+      toast.success('Address geocoded successfully');
+    } catch (error) {
+      toast.error('Failed to geocode address');
+    }
+  };
+
   const handleAutoPlaceDevices = async () => {
     if (!formData.work_details.start_address || !formData.work_details.end_address) {
       toast.error('Please enter start and end addresses first');
