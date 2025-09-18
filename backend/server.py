@@ -298,13 +298,12 @@ async def geocode_address(address: str):
 
 @api_router.get("/road-data")
 async def get_road_data(start_address: str, end_address: str):
-    """Derive road data from start and end addresses"""
-    # This is a simplified implementation
-    # In a real app, you'd integrate with actual road data APIs
+    """Derive comprehensive road data from start and end addresses for Austroads compliance"""
+    # Get coordinates for both addresses
     start_coords = await geocode_address(start_address)
     end_coords = await geocode_address(end_address)
     
-    # Calculate workzone size (rough distance calculation)
+    # Calculate workzone size (distance between points)
     import math
     lat1, lng1 = math.radians(start_coords["lat"]), math.radians(start_coords["lng"])
     lat2, lng2 = math.radians(end_coords["lat"]), math.radians(end_coords["lng"])
@@ -314,15 +313,117 @@ async def get_road_data(start_address: str, end_address: str):
     a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlng/2)**2
     distance = 2 * math.asin(math.sqrt(a)) * 6371000  # Earth radius in meters
     
+    # Enhanced road classification based on location analysis
+    # This is a simplified implementation - in production, you'd use actual road data APIs
+    road_classification = determine_road_classification(start_address, end_address)
+    speed_limit = determine_speed_limit(road_classification, start_address)
+    traffic_volume = estimate_traffic_volume(road_classification, start_address)
+    governing_body = determine_governing_body(start_address)
+    
     return {
         "start_coords": start_coords,
         "end_coords": end_coords,
         "workzone_size": round(distance, 2),
-        "traffic_volume": 15000,  # Mock data
-        "road_classification": "Major Urban Road",
-        "road_type": "Arterial",
-        "governing_body": "Local Council"
+        "traffic_volume": traffic_volume,
+        "road_classification": road_classification,
+        "road_type": determine_road_type(road_classification),
+        "governing_body": governing_body,
+        "speed_limit": speed_limit,
+        "environment": determine_environment(start_address),
+        "austroads_category": determine_austroads_category(road_classification, traffic_volume)
     }
+
+def determine_road_classification(start_address: str, end_address: str) -> str:
+    """Determine road classification based on address analysis"""
+    address_lower = f"{start_address} {end_address}".lower()
+    
+    if any(highway in address_lower for highway in ['highway', 'freeway', 'motorway', 'pacific highway', 'bruce highway']):
+        return "National Highway"
+    elif any(arterial in address_lower for arterial in ['arterial', 'main road', 'ring road']):
+        return "Major Urban Arterial"
+    elif any(collector in address_lower for collector in ['collector', 'connecting road']):
+        return "Urban Collector"
+    elif any(local in address_lower for local in ['street', 'avenue', 'close', 'court', 'place']):
+        return "Local Street"
+    else:
+        return "Major Urban Road"  # Default
+
+def determine_speed_limit(road_classification: str, address: str) -> int:
+    """Determine likely speed limit based on road classification and location"""
+    if road_classification == "National Highway":
+        return 100 if 'rural' in address.lower() else 80
+    elif road_classification == "Major Urban Arterial":
+        return 70
+    elif road_classification == "Urban Collector":
+        return 60
+    elif road_classification == "Local Street":
+        return 50
+    else:
+        return 60  # Default urban speed
+
+def estimate_traffic_volume(road_classification: str, address: str) -> int:
+    """Estimate Average Daily Traffic (ADT) based on road classification"""
+    base_volumes = {
+        "National Highway": 40000,
+        "Major Urban Arterial": 25000,
+        "Urban Collector": 15000,
+        "Local Street": 3000,
+        "Major Urban Road": 18000
+    }
+    
+    base = base_volumes.get(road_classification, 15000)
+    
+    # Adjust for location (CBD vs suburban)
+    if any(cbd in address.lower() for cbd in ['cbd', 'city', 'central', 'downtown']):
+        return int(base * 1.5)
+    elif any(suburban in address.lower() for suburban in ['suburban', 'residential']):
+        return int(base * 0.7)
+    
+    return base
+
+def determine_governing_body(address: str) -> str:
+    """Determine which authority governs the road"""
+    address_lower = address.lower()
+    
+    if any(state in address_lower for state in ['highway', 'state route', 'arterial']):
+        return "State Government (DTMR)"
+    elif any(council in address_lower for council in ['street', 'avenue', 'close', 'court']):
+        return "Local Council"
+    else:
+        return "Local Council"  # Default for most urban roads
+
+def determine_road_type(road_classification: str) -> str:
+    """Determine road type for Austroads categorization"""
+    type_mapping = {
+        "National Highway": "Divided Highway",
+        "Major Urban Arterial": "Arterial",
+        "Urban Collector": "Collector",
+        "Local Street": "Local",
+        "Major Urban Road": "Arterial"
+    }
+    return type_mapping.get(road_classification, "Arterial")
+
+def determine_environment(address: str) -> str:
+    """Determine environmental context"""
+    address_lower = address.lower()
+    
+    if any(urban in address_lower for urban in ['cbd', 'city', 'urban', 'street', 'avenue']):
+        return "Urban"
+    elif any(rural in address_lower for rural in ['rural', 'country', 'highway']):
+        return "Rural"
+    else:
+        return "Urban"  # Default
+
+def determine_austroads_category(road_classification: str, traffic_volume: int) -> str:
+    """Determine Austroads traffic management category"""
+    if traffic_volume > 30000:
+        return "Category 1 - High Volume"
+    elif traffic_volume > 15000:
+        return "Category 2 - Medium Volume"
+    elif traffic_volume > 5000:
+        return "Category 3 - Low Volume"
+    else:
+        return "Category 4 - Very Low Volume"
 
 # PDF generation
 @api_router.get("/plans/{plan_id}/pdf")
