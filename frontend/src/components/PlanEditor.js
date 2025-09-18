@@ -205,27 +205,68 @@ export default function PlanEditor({ user, onLogout }) {
   };
 
   const addDeviceMarker = (map, device) => {
+    const isAutoPlaced = device.properties?.auto_placed;
+    const deviceTypeIcon = getDeviceIcon(device.device_type);
+    const markerColor = isAutoPlaced ? '#3B82F6' : '#F97316'; // Blue for auto, orange for manual
+    
     const marker = new window.google.maps.Marker({
       position: { lat: device.position_lat, lng: device.position_lng },
       map: map,
-      title: device.device_name,
+      title: `${device.device_name}${isAutoPlaced ? ' (Auto-placed)' : ' (Manual)'}`,
       icon: {
         url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-          <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="15" cy="15" r="12" fill="orange" stroke="white" stroke-width="2"/>
-            <text x="15" y="20" text-anchor="middle" fill="white" font-size="16">${device.device_type === 'cone' ? '🔶' : '🚧'}</text>
+          <svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="14" fill="${markerColor}" stroke="white" stroke-width="2"/>
+            <text x="16" y="22" text-anchor="middle" fill="white" font-size="16">${deviceTypeIcon}</text>
+            ${isAutoPlaced ? '<circle cx="24" cy="8" r="4" fill="#10B981"/>' : ''}
           </svg>
         `),
-        scaledSize: new window.google.maps.Size(30, 30)
+        scaledSize: new window.google.maps.Size(32, 32)
       }
     });
 
+    // Add info window with device details
+    const infoWindow = new window.google.maps.InfoWindow({
+      content: `
+        <div class="p-2">
+          <h3 class="font-semibold text-sm">${device.device_name}</h3>
+          <p class="text-xs text-gray-600">${device.device_type}</p>
+          ${isAutoPlaced ? `
+            <p class="text-xs text-blue-600 mt-1">Auto-placed</p>
+            <p class="text-xs text-gray-500">${device.properties.austroads_rule || ''}</p>
+          ` : '<p class="text-xs text-orange-600 mt-1">Manually placed</p>'}
+          ${device.properties?.distance ? `<p class="text-xs">Distance: ${device.properties.distance}</p>` : ''}
+        </div>
+      `
+    });
+
     marker.addListener('click', () => {
-      if (window.confirm('Remove this device?')) {
+      infoWindow.open(map, marker);
+    });
+
+    marker.addListener('rightclick', () => {
+      if (window.confirm(`Remove ${device.device_name}?`)) {
         removeDevice(device.id);
         marker.setMap(null);
       }
     });
+
+    // Store marker reference for cleanup
+    if (!window.deviceMarkers) window.deviceMarkers = [];
+    window.deviceMarkers.push(marker);
+  };
+
+  const getDeviceIcon = (deviceType) => {
+    const icons = {
+      'warning': '⚠️',
+      'regulatory': '🛑',
+      'guide': '➡️',
+      'cone': '🔶',
+      'barrier': '🛡️',
+      'signal': '🚥',
+      'guidance': '📟'
+    };
+    return icons[deviceType] || '🚧';
   };
 
   const removeDevice = (deviceId) => {
