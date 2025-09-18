@@ -718,8 +718,30 @@ export default function PlanEditor({ user, onLogout }) {
             {/* Map */}
             <Card>
               <CardHeader>
-                <CardTitle>Traffic Management Map</CardTitle>
-                <CardDescription>Click on the map to place traffic control devices</CardDescription>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle>Traffic Management Plan</CardTitle>
+                    <CardDescription>Click on the map to manually place devices, or use auto-placement</CardDescription>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={handleAutoPlaceDevices}
+                      className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white"
+                      disabled={!formData.work_details.start_address || !formData.work_details.end_address}
+                    >
+                      <Zap className="w-4 h-4 mr-2" />
+                      Auto-Place Devices
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => setFormData(prev => ({ ...prev, devices: [] }))}
+                      disabled={formData.devices.length === 0}
+                    >
+                      <RefreshCw className="w-4 h-4 mr-2" />
+                      Clear All
+                    </Button>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
                 <div 
