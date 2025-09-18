@@ -21,9 +21,6 @@ import {
   RefreshCw
 } from 'lucide-react';
 import austroadsRules from '../utils/austroadsRules';
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://saferoadworks.preview.emergentagent.com';
-const API = `${BACKEND_URL}/api`;
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://saferoadworks.preview.emergentagent.com';
