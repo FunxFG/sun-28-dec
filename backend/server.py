@@ -432,85 +432,242 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
     if not plan:
         raise HTTPException(status_code=404, detail="Plan not found")
     
-    # Create PDF in memory
+    # Import the TMP generator
+    from tmp_generator import tmp_generator
+    
+    # Generate professional TMP structure
+    professional_tmp = tmp_generator.generate_professional_tmp(plan, 'works')
+    
+    # Create PDF with professional TMP content
     buffer = io.BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=A4)
+    doc = SimpleDocTemplate(buffer, pagesize=A4, 
+                          topMargin=1*inch, bottomMargin=1*inch,
+                          leftMargin=1*inch, rightMargin=1*inch)
     story = []
     styles = getSampleStyleSheet()
     
-    # Title
+    # Custom styles for professional TMP
     title_style = ParagraphStyle(
-        'CustomTitle',
-        parent=styles['Heading1'],
-        fontSize=18,
+        'TMPTitle',
+        parent=styles['Title'],
+        fontSize=16,
+        fontName='Helvetica-Bold',
         spaceAfter=30,
         alignment=1  # Center alignment
     )
-    story.append(Paragraph("Traffic Management Plan", title_style))
+    
+    heading_style = ParagraphStyle(
+        'TMPHeading',
+        parent=styles['Heading1'],
+        fontSize=14,
+        fontName='Helvetica-Bold',
+        spaceAfter=12,
+        spaceBefore=20
+    )
+    
+    subheading_style = ParagraphStyle(
+        'TMPSubHeading',
+        parent=styles['Heading2'],
+        fontSize=12,
+        fontName='Helvetica-Bold',
+        spaceAfter=6,
+        spaceBefore=12
+    )
+    
+    # TMP Header
+    story.append(Paragraph("WORKS ON ROADS TRAFFIC MANAGEMENT PLAN", title_style))
+    story.append(Paragraph(f"Work Type: {professional_tmp['tmp_header']['work_type']}", styles['Normal']))
+    story.append(Paragraph(f"TMP Number: {professional_tmp['metadata']['tmp_number']}", styles['Normal']))
+    story.append(Paragraph(f"Date: {professional_tmp['tmp_header']['tmp_identification']['date']}", styles['Normal']))
     story.append(Spacer(1, 20))
     
-    # Plan details
-    story.append(Paragraph(f"<b>Plan Name:</b> {plan['plan_name']}", styles['Normal']))
+    # Declaration Section
+    story.append(Paragraph("DECLARATION", heading_style))
+    declaration = professional_tmp['declaration']['designer_declaration']
+    story.append(Paragraph(f"I, {declaration['certifier_name']} (AWTM Cert No. {declaration['awtm_cert_number']}) "
+                          f"declare that I have designed this Traffic Management Plan following a site inspection on "
+                          f"{declaration['site_inspection_date']}.", styles['Normal']))
+    story.append(Paragraph(declaration['compliance_statement'], styles['Normal']))
+    story.append(Spacer(1, 12))
+    story.append(Paragraph(f"Signature: ........................... Date: {declaration['signature_date']}", styles['Normal']))
+    story.append(Spacer(1, 20))
+    
+    # Table of Contents
+    story.append(Paragraph("TABLE OF CONTENTS", heading_style))
+    toc_data = [['Section', 'Title', 'Page']]
+    for item in professional_tmp['table_of_contents']:
+        toc_data.append([item['section'], item['title'], str(item['page'])])
+    
+    toc_table = Table(toc_data, colWidths=[1*inch, 4*inch, 1*inch])
+    toc_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ]))
+    story.append(toc_table)
+    story.append(Spacer(1, 30))
+    
+    # Section 1: Introduction
+    intro = professional_tmp['sections']['1_introduction']
+    story.append(Paragraph("1. INTRODUCTION", heading_style))
+    
+    story.append(Paragraph("1.1 Purpose and Scope", subheading_style))
+    story.append(Paragraph(intro['1.1_purpose_and_scope']['purpose'], styles['Normal']))
+    story.append(Paragraph(intro['1.1_purpose_and_scope']['scope'], styles['Normal']))
     story.append(Spacer(1, 12))
     
-    # Company details
-    story.append(Paragraph("<b>Primary Company Details:</b>", styles['Heading2']))
-    company = plan['company_details']
-    story.append(Paragraph(f"Company: {company['name']}", styles['Normal']))
-    story.append(Paragraph(f"Address: {company['address']}", styles['Normal']))
-    story.append(Paragraph(f"ABN: {company['abn']}", styles['Normal']))
-    story.append(Paragraph(f"Phone: {company['phone']}", styles['Normal']))
-    story.append(Paragraph(f"Liaison: {company['liaison_name']} ({company['liaison_email']})", styles['Normal']))
-    story.append(Spacer(1, 15))
+    story.append(Paragraph("1.2 Objectives and Strategies", subheading_style))
+    story.append(Paragraph("<b>Objectives:</b>", styles['Normal']))
+    for obj in intro['1.2_objectives_and_strategies']['objectives']:
+        story.append(Paragraph(f"• {obj}", styles['Normal']))
     
-    # Work details
-    story.append(Paragraph("<b>Work Details:</b>", styles['Heading2']))
-    work = plan['work_details']
-    story.append(Paragraph(f"Type: {work['work_type'].title()}", styles['Normal']))
-    story.append(Paragraph(f"Style: {work['work_style'].title()}", styles['Normal']))
-    story.append(Paragraph(f"Description: {work['description']}", styles['Normal']))
-    story.append(Paragraph(f"Duration: {work['start_date']} to {work['end_date']}", styles['Normal']))
-    story.append(Spacer(1, 15))
+    story.append(Paragraph("<b>Strategies:</b>", styles['Normal']))
+    for strategy in intro['1.2_objectives_and_strategies']['strategies']:
+        story.append(Paragraph(f"• {strategy}", styles['Normal']))
+    story.append(Spacer(1, 20))
     
-    # Road occupancy
-    story.append(Paragraph("<b>Road Occupancy:</b>", styles['Heading2']))
-    occupancy = plan['road_occupancy']
-    occupied_areas = [key.replace('_', ' ').title() for key, value in occupancy.items() if value]
-    story.append(Paragraph(f"Occupied Areas: {', '.join(occupied_areas)}", styles['Normal']))
-    story.append(Spacer(1, 15))
+    # Section 2: Project Overview
+    overview = professional_tmp['sections']['2_project_overview']
+    story.append(Paragraph("2. PROJECT OVERVIEW", heading_style))
     
-    # Control measures
-    story.append(Paragraph("<b>Control Measures:</b>", styles['Heading2']))
-    measures = plan['control_measures']
-    active_measures = [key.replace('_', ' ').title() for key, value in measures.items() if value]
-    story.append(Paragraph(f"Active Measures: {', '.join(active_measures)}", styles['Normal']))
-    story.append(Spacer(1, 15))
+    story.append(Paragraph("2.1 Location", subheading_style))
+    story.append(Paragraph(overview['2.1_location']['detailed_location'], styles['Normal']))
+    story.append(Spacer(1, 12))
     
-    # Traffic devices
+    story.append(Paragraph("2.2 Project Details", subheading_style))
+    details_data = [
+        ['Item', 'Details'],
+        ['Project Location', overview['2.2_project_details']['project_location']],
+        ['Road Classification', overview['2.2_project_details']['road_classification']],
+        ['Existing Speed Limit', overview['2.2_project_details']['existing_speed_limit']],
+        ['Road Authority', overview['2.2_project_details']['road_authority']],
+        ['Principal Contractor', overview['2.2_project_details']['principal_contractor']],
+        ['Scope of Works', overview['2.2_project_details']['scope_of_works']],
+        ['Project Dates', overview['2.2_project_details']['project_dates']],
+        ['Work Hours', overview['2.2_project_details']['work_hours']]
+    ]
+    
+    details_table = Table(details_data, colWidths=[2*inch, 4*inch])
+    details_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 10),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP')
+    ]))
+    story.append(details_table)
+    story.append(Spacer(1, 20))
+    
+    # Section 3: Risk Management
+    risk = professional_tmp['sections']['3_risk_management']
+    story.append(Paragraph("3. RISK MANAGEMENT", heading_style))
+    
+    story.append(Paragraph("3.1 Risk Classification", subheading_style))
+    story.append(Paragraph("Risk assessment follows the qualitative risk matrix approach with consequence and likelihood ratings.", styles['Normal']))
+    
+    # Risk Register
+    story.append(Paragraph("3.2 Risk Register", subheading_style))
+    risk_data = [['Risk Event', 'Consequence', 'Pre-Treatment Risk', 'Treatment', 'Residual Risk']]
+    
+    for risk_item in risk['3.2_risk_register']['generic_risks']:
+        risk_data.append([
+            risk_item['risk_event'],
+            risk_item['consequence'],
+            risk_item['pre_treatment_risk']['rating'],
+            risk_item['treatment'],
+            risk_item['residual_risk']['rating']
+        ])
+    
+    risk_table = Table(risk_data, colWidths=[1.5*inch, 1.2*inch, 0.8*inch, 1.8*inch, 0.7*inch])
+    risk_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 8),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP')
+    ]))
+    story.append(risk_table)
+    story.append(Spacer(1, 20))
+    
+    # Traffic Guidance Schemes
     if plan.get('devices'):
-        story.append(Paragraph("<b>Traffic Control Devices:</b>", styles['Heading2']))
-        device_data = []
-        device_data.append(['Device Type', 'Device Name', 'Latitude', 'Longitude'])
+        story.append(Paragraph("TRAFFIC GUIDANCE SCHEMES", heading_style))
+        story.append(Paragraph("The following traffic control devices have been positioned according to Austroads standards:", styles['Normal']))
+        
+        device_data = [['Device Type', 'Device Name', 'Position', 'Compliance']]
         for device in plan['devices']:
+            compliance = "Auto-placed (AGTTM compliant)" if device.get('properties', {}).get('auto_placed') else "Manual placement"
             device_data.append([
-                device['device_type'],
+                device['device_type'].title(),
                 device['device_name'],
-                f"{device['position_lat']:.6f}",
-                f"{device['position_lng']:.6f}"
+                f"Lat: {device['position_lat']:.6f}, Lng: {device['position_lng']:.6f}",
+                compliance
             ])
         
-        device_table = Table(device_data)
+        device_table = Table(device_data, colWidths=[1.2*inch, 2*inch, 1.8*inch, 1*inch])
         device_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 14),
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+            ('FONTSIZE', (0, 0), (-1, -1), 9),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP')
         ]))
         story.append(device_table)
+        story.append(Spacer(1, 20))
+    
+    # Implementation section
+    impl = professional_tmp['sections']['7_implementation']
+    story.append(Paragraph("7. IMPLEMENTATION", heading_style))
+    
+    story.append(Paragraph("7.1 Traffic Guidance Schemes", subheading_style))
+    for stage_key, stage_info in impl['7.1_traffic_guidance_schemes'].items():
+        story.append(Paragraph(f"<b>{stage_key.replace('_', ' ').title()}:</b> {stage_info['description']}", styles['Normal']))
+    
+    story.append(Paragraph("7.2 Sequence and Staging", subheading_style))
+    for i, stage in enumerate(impl['7.2_sequence_staging'], 1):
+        story.append(Paragraph(f"<b>Stage {i} - {stage['stage']}:</b>", styles['Normal']))
+        story.append(Paragraph(stage['description'], styles['Normal']))
+        story.append(Paragraph(f"Safety Measures: {stage['safety_measures']}", styles['Normal']))
+        story.append(Spacer(1, 6))
+    
+    # Emergency contacts
+    emergency = professional_tmp['sections']['8_emergency_arrangements']
+    story.append(Paragraph("8. EMERGENCY ARRANGEMENTS", heading_style))
+    
+    story.append(Paragraph("8.5 Emergency Contacts", subheading_style))
+    emergency_data = [['Service', 'Contact']]
+    for service, contact in emergency['8.5_emergency_contacts'].items():
+        emergency_data.append([service.replace('_', ' ').title(), contact])
+    
+    emergency_table = Table(emergency_data, colWidths=[2*inch, 2*inch])
+    emergency_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.red),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 10),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ]))
+    story.append(emergency_table)
+    story.append(Spacer(1, 20))
+    
+    # Footer
+    story.append(Paragraph("This Traffic Management Plan has been prepared in accordance with:", styles['Normal']))
+    for standard in professional_tmp['metadata']['compliance_standards']:
+        story.append(Paragraph(f"• {standard}", styles['Normal']))
+    
+    story.append(Spacer(1, 20))
+    story.append(Paragraph(f"Generated: {datetime.now().strftime('%d %B %Y at %I:%M %p')}", styles['Normal']))
+    story.append(Paragraph(f"Template Version: {professional_tmp['metadata']['template_version']}", styles['Normal']))
     
     doc.build(story)
     buffer.seek(0)
@@ -518,7 +675,7 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
     return StreamingResponse(
         io.BytesIO(buffer.getvalue()),
         media_type="application/pdf",
-        headers={"Content-Disposition": f"attachment; filename=traffic_plan_{plan_id}.pdf"}
+        headers={"Content-Disposition": f"attachment; filename=TMP_{professional_tmp['metadata']['tmp_number']}.pdf"}
     )
 
 # Include the router in the main app
