@@ -162,7 +162,7 @@ export class BilateralSignagePlacement {
     return devices;
   }
 
-  placeRegulatorySign
+  placeRegulatorySigns(startLat, startLng, bearing, roadAnalysis, workZoneData) {
     const devices = [];
     
     // Speed limit signs (bilateral if speed reduction required)
