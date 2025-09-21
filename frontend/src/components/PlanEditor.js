@@ -18,9 +18,13 @@ import {
   Trash2,
   Shield,
   Zap,
-  RefreshCw
+  RefreshCw,
+  FileImage,
+  Map,
+  Ruler
 } from 'lucide-react';
 import austroadsRules from '../utils/austroadsRules';
+import tgsDrawingGenerator from '../utils/tgsDrawingGenerator';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://saferoadworks.preview.emergentagent.com';
