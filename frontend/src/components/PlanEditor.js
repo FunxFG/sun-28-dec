@@ -27,7 +27,7 @@ import austroadsRules from '../utils/austroadsRules';
 import tgsDrawingGenerator from '../utils/tgsDrawingGenerator';
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://saferoadworks.preview.emergentagent.com';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://austroads-tmp-gen.preview.emergentagent.com';
 const API = `${BACKEND_URL}/api`;
 
 // Traffic device library based on Austroads standards
