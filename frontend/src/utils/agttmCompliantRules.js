@@ -1093,3 +1093,5 @@ export class AGTTMCompliantPlacement {
 }
 
 export default new AGTTMCompliantPlacement();
+
+export default new AGTTMCompliantPlacement();
