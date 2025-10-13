@@ -583,9 +583,6 @@ export class AGTTMCompliantPlacement {
       lng: startLng + (endLng - startLng) * ratio
     };
   }
-}
-
-export default new AGTTMCompliantPlacement();
 
   /**
    * Calculate AGTTM-compliant bilateral device placement
