@@ -294,7 +294,7 @@ export default function PlanEditor({ user, onLogout }) {
     try {
       const response = await fetch(`${API}/geocode?address=${encodeURIComponent(address)}`);
       if (!response.ok) throw new Error('Geocoding failed');
-      const data = response.json();
+      const data = await response.json();
       const { lat, lng } = data;
       
       if (isStart) {
