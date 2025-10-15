@@ -787,7 +787,7 @@ export class AGTTMCompliantPlacement {
             distance_advance: `${distance}m`,
             
             // Sign specifications
-            sign_height: this.agttmRules.sign_positioning.height_requirements.ground_clearance,
+            sign_height: this.agttmRules.sign_heights.minimum_mounting_height,
             sign_size: this.as1742Specs.sign_specifications.warning_signs.size,
             mounting_height: this.as1742Specs.sign_specifications.warning_signs.mounting_height,
             
@@ -825,7 +825,7 @@ export class AGTTMCompliantPlacement {
             advance_level: level,
             distance_advance: `${distance}m`,
             
-            sign_height: this.agttmRules.sign_positioning.height_requirements.ground_clearance,
+            sign_height: this.agttmRules.sign_heights.minimum_mounting_height,
             sign_size: this.as1742Specs.sign_specifications.warning_signs.size,
             mounting_height: this.as1742Specs.sign_specifications.warning_signs.mounting_height,
             
@@ -881,7 +881,7 @@ export class AGTTMCompliantPlacement {
               side: side,
               speed_limit: 40,
               
-              sign_height: this.agttmRules.sign_positioning.height_requirements.ground_clearance,
+              sign_height: this.agttmRules.sign_heights.minimum_mounting_height,
               sign_size: this.as1742Specs.sign_specifications.regulatory_signs.size,
               mounting_height: this.as1742Specs.sign_specifications.regulatory_signs.mounting_height,
               
@@ -994,7 +994,7 @@ export class AGTTMCompliantPlacement {
               placement_type: sideAnalysis.placement_type,
               side: side,
               
-              sign_height: this.agttmRules.sign_positioning.height_requirements.ground_clearance,
+              sign_height: this.agttmRules.sign_heights.minimum_mounting_height,
               sign_size: this.as1742Specs.sign_specifications.guide_signs.size,
               mounting_height: this.as1742Specs.sign_specifications.guide_signs.mounting_height,
               
