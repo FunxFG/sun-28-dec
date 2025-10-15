@@ -732,7 +732,7 @@ export class AGTTMCompliantPlacement {
   }
 
   getAdvanceDistancesForSpeed(speedLimit) {
-    const distances = this.agttmRules.sign_positioning.advance_warning_distances;
+    const distances = this.agttmRules.advance_warning_distances;
     
     if (speedLimit <= 50) return distances['≤50kmh'];
     if (speedLimit <= 60) return distances['60kmh'];
