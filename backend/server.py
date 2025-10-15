@@ -685,6 +685,91 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
         headers={"Content-Disposition": f"attachment; filename=TMP_{professional_tmp['metadata']['tmp_number']}.pdf"}
     )
 
+# ==========================================
+# Risk Management Endpoints
+# ==========================================
+
+@api_router.get("/risks")
+async def get_risks():
+    """
+    Get comprehensive risk registry for roadwork traffic management
+    Returns all identified risks with default likelihood, consequence, and controls
+    """
+    try:
+        return {
+            "risks": get_risk_registry(),
+            "categories": RISK_CATEGORIES,
+            "likelihood_levels": LIKELIHOOD_LEVELS,
+            "consequence_levels": CONSEQUENCE_LEVELS
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/risks/calculate")
+async def calculate_risk(request: dict):
+    """
+    Calculate risk score based on likelihood and consequence
+    Request body: {"likelihood": "possible", "consequence": "moderate"}
+    """
+    try:
+        likelihood = request.get("likelihood")
+        consequence = request.get("consequence")
+        
+        if not likelihood or not consequence:
+            raise HTTPException(status_code=400, detail="likelihood and consequence are required")
+        
+        risk_score = calculate_risk_score(likelihood, consequence)
+        return risk_score
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/plans/{plan_id}/risk-assessment")
+async def save_risk_assessment(plan_id: str, assessment: dict, credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """
+    Save risk assessment for a specific traffic management plan
+    """
+    try:
+        user_data = verify_token(credentials.credentials)
+        
+        # Update plan with risk assessment
+        result = await db.plans.update_one(
+            {"id": plan_id, "user_id": user_data["user_id"]},
+            {"$set": {
+                "risk_assessment": assessment,
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            }}
+        )
+        
+        if result.modified_count == 0:
+            raise HTTPException(status_code=404, detail="Plan not found")
+        
+        return {"message": "Risk assessment saved successfully"}
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/plans/{plan_id}/risk-assessment")
+async def get_plan_risk_assessment(plan_id: str, credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """
+    Get risk assessment for a specific traffic management plan
+    """
+    try:
+        user_data = verify_token(credentials.credentials)
+        
+        plan = await db.plans.find_one({"id": plan_id, "user_id": user_data["user_id"]})
+        if not plan:
+            raise HTTPException(status_code=404, detail="Plan not found")
+        
+        return {
+            "risk_assessment": plan.get("risk_assessment", {}),
+            "plan_id": plan_id
+        }
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 # Include the router in the main app
 app.include_router(api_router)
 
