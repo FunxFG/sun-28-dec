@@ -286,12 +286,8 @@ metadata:
 test_plan:
   current_focus:
     - "Authentication UI (Sign In/Create Account)"
-    - "Plan Editor with Google Maps"
-    - "Austroads rules implementation"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
-    - "Plan Editor with Google Maps"
-    - "Austroads rules implementation"
   test_all: false
   test_priority: "high_first"
 
