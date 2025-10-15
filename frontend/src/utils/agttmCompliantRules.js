@@ -81,6 +81,54 @@ export class AGTTMCompliantPlacement {
         },
         barrier_spacing: 50,          // 50m spacing for barriers
         sign_spacing_minimum: 60      // Minimum 60m between sequential signs
+      },
+
+      // Work zone categories - AGTTM classification
+      work_zone_categories: {
+        category_1: {
+          description: 'High speed or high volume roads',
+          bilateral_required: true,
+          minimum_advance_distance: 500,
+          traffic_control_required: true,
+          speed_threshold: 80,
+          volume_threshold: 25000
+        },
+        category_2: {
+          description: 'Medium speed arterial roads',
+          bilateral_required: true,
+          minimum_advance_distance: 200,
+          traffic_control_required: true,
+          speed_threshold: 60,
+          volume_threshold: 10000
+        },
+        category_3: {
+          description: 'Local roads and low speed zones',
+          bilateral_required: false,
+          minimum_advance_distance: 100,
+          traffic_control_required: false,
+          speed_threshold: 50,
+          volume_threshold: 5000
+        }
+      },
+
+      // Sign positioning requirements
+      sign_positioning: {
+        lateral_clearances: {
+          verge: {
+            minimum: 2.0,
+            preferred: 3.0,
+            maximum: 5.0
+          },
+          shoulder: {
+            minimum: 0.5,
+            preferred: 1.0,
+            minimum_width_required: 2.5
+          }
+        },
+        longitudinal_spacing: {
+          minimum_between_signs: 60,
+          maximum_between_signs: 500
+        }
       }
     };
 
