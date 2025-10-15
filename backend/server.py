@@ -22,6 +22,13 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 import base64
+from risk_registry import (
+    get_risk_registry,
+    calculate_risk_score,
+    RISK_CATEGORIES,
+    LIKELIHOOD_LEVELS,
+    CONSEQUENCE_LEVELS
+)
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
