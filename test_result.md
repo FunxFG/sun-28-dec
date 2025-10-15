@@ -259,11 +259,14 @@ frontend:
     file: "frontend/src/utils/tgsDrawingGenerator.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Traffic Guidance Schemes visual drawing generator for DTMR compliance"
+      - working: "NA"
+        agent: "testing"
+        comment: "⚠️ NOT TESTED - Cannot test TGS drawing generator as it depends on auto-placement feature which is currently broken. Need to fix auto-placement first before testing drawing generation functionality."
 
 metadata:
   created_by: "main_agent"
