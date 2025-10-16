@@ -224,8 +224,96 @@ export class AGTTMCompliantPlacement {
     // Generate bilateral end-of-work signs
     devices.push(...this.placeBilateralEndSignsExact(roadAlignedWorkZone, geometryAnalysis));
     
+    // SPECIAL PLACEMENT RULES: Handle exceptions
+    // Road closures, traffic signals, etc. use different placement logic
+    if (this.requiresSpecialPlacement(roadAlignedWorkZone)) {
+      const specialDevices = this.applySpecialPlacementRules(roadAlignedWorkZone, geometryAnalysis);
+      devices.push(...specialDevices);
+    }
+    
     // Final validation against exact AGTTM standards
     return this.validateExactAGTTMCompliance(devices, geometryAnalysis);
+  }
+
+  /**
+   * Check if work requires special placement rules
+   */
+  requiresSpecialPlacement(workZoneData) {
+    const controlMeasures = workZoneData.control_measures || {};
+    
+    // Road closure requires special placement
+    if (controlMeasures.road_closure || workZoneData.work_details?.work_type === 'road_closure') {
+      return true;
+    }
+    
+    // Temporary traffic lights require Stop Here on Red signs
+    if (controlMeasures.temporary_signals || workZoneData.work_details?.traffic_control === 'signals') {
+      return true;
+    }
+    
+    // Detour scenarios
+    if (controlMeasures.detour_required || workZoneData.work_details?.detour) {
+      return true;
+    }
+    
+    return false;
+  }
+
+  /**
+   * Apply special placement rules for exceptions
+   */
+  applySpecialPlacementRules(workZoneData, geometryAnalysis) {
+    const devices = [];
+    const controlMeasures = workZoneData.control_measures || {};
+    
+    // ROAD CLOSURE - center of road, singular placement
+    if (controlMeasures.road_closure) {
+      const closurePoint = {
+        lat: workZoneData.end_lat, // Closure at end of work zone
+        lng: workZoneData.end_lng
+      };
+      
+      if (controlMeasures.detour_required) {
+        // Road closure WITH detour signs
+        const detourDirection = controlMeasures.detour_direction || 'both';
+        devices.push(...specialPlacementRules.placeRoadClosureWithDetour(
+          closurePoint,
+          detourDirection,
+          { bearing: workZoneData.road_bearing }
+        ));
+      } else {
+        // Road closure WITHOUT detour (local traffic only, etc.)
+        devices.push(...specialPlacementRules.placeRoadClosureAssembly(
+          closurePoint,
+          { bearing: workZoneData.road_bearing }
+        ));
+      }
+    }
+    
+    // TEMPORARY TRAFFIC SIGNALS - Stop Here on Red placement
+    if (controlMeasures.temporary_signals) {
+      const signalPosition = {
+        lat: workZoneData.start_lat,
+        lng: workZoneData.start_lng
+      };
+      
+      // Place Stop Here on Red sign for each approach
+      // For shuttle flow: one sign on each approach
+      devices.push(...specialPlacementRules.placeStopHereOnRedSign(
+        signalPosition,
+        workZoneData.road_bearing,
+        geometryAnalysis
+      ));
+      
+      // Opposite direction (if shuttle flow)
+      devices.push(...specialPlacementRules.placeStopHereOnRedSign(
+        signalPosition,
+        workZoneData.road_bearing + 180,
+        geometryAnalysis
+      ));
+    }
+    
+    return devices;
   }
 
   isBilateralRequired(category, roadGeometry) {
