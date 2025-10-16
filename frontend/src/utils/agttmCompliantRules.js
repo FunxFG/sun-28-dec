@@ -306,6 +306,72 @@ export class AGTTMCompliantPlacement {
 
   checkServiceVehicleClearance(lateralOffset, totalWidth) {
     const serviceVehicleWidth = this.as1742Specs.vehicle_accommodation.service_vehicle_length;
+    return totalWidth >= serviceVehicleWidth;
+  }
+
+  /**
+   * Add protective cones on either side of a sign
+   * Standard practice: Cone → Sign → Cone for visibility and protection
+   */
+  addProtectiveCones(signPosition, bearing, signId, side) {
+    const cones = [];
+    const coneSpacing = 3.0; // 3m spacing - one cone 3m before, one 3m after sign
+    
+    // Cone BEFORE the sign (in direction of approaching traffic)
+    const coneBefore = this.calculatePosition(
+      signPosition.lat,
+      signPosition.lng,
+      bearing + 180, // Behind/before in traffic direction
+      coneSpacing
+    );
+    
+    cones.push({
+      id: `cone_before_${signId}`,
+      device_type: 'delineation',
+      device_name: 'Traffic Cone 700mm',
+      position_lat: coneBefore.lat,
+      position_lng: coneBefore.lng,
+      properties: {
+        device_code: 'D5-1',
+        cone_size: '700mm',
+        protecting_device: signId,
+        position: 'before',
+        side: side,
+        auto_placed: true,
+        purpose: 'Sign protection and visibility'
+      }
+    });
+    
+    // Cone AFTER the sign (in direction of approaching traffic)
+    const coneAfter = this.calculatePosition(
+      signPosition.lat,
+      signPosition.lng,
+      bearing, // Forward/after in traffic direction
+      coneSpacing
+    );
+    
+    cones.push({
+      id: `cone_after_${signId}`,
+      device_type: 'delineation',
+      device_name: 'Traffic Cone 700mm',
+      position_lat: coneAfter.lat,
+      position_lng: coneAfter.lng,
+      properties: {
+        device_code: 'D5-1',
+        cone_size: '700mm',
+        protecting_device: signId,
+        position: 'after',
+        side: side,
+        auto_placed: true,
+        purpose: 'Sign protection and visibility'
+      }
+    });
+    
+    return cones;
+  }
+
+  checkServiceVehicleClearance(lateralOffset, totalWidth) {
+    const serviceVehicleWidth = this.as1742Specs.vehicle_accommodation.service_vehicle_length;
     return totalWidth >= (serviceVehicleWidth / 4); // Simplified check
   }
 
