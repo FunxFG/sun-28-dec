@@ -5,6 +5,7 @@
  */
 import bilateralPlacementEngine from './bilateralSignagePlacement.js';
 import roadSnapper from './roadSnapper.js';
+import specialPlacementRules from './specialPlacementRules.js';
 
 export class AGTTMCompliantPlacement {
   constructor() {
