@@ -228,15 +228,20 @@ export class AGTTMCompliantPlacement {
   }
 
   isBilateralRequired(category, roadGeometry) {
-    const speedLimit = roadGeometry.speed_limit || 60;
-    const trafficVolume = roadGeometry.traffic_volume || 15000;
-    const roadClass = roadGeometry.road_classification || '';
+    // UPDATED: Bilateral placement is now DEFAULT behavior
+    // Signs are MORE OFTEN placed on both sides of the road
+    // Only exception: very narrow local streets with severe constraints
     
-    // Bilateral required for high-speed, high-volume, or multi-lane roads
-    return speedLimit >= 70 || 
-           trafficVolume > 15000 || 
-           roadClass.includes('Highway') || 
-           roadClass.includes('Arterial');
+    const speedLimit = roadGeometry.speed_limit || 60;
+    const roadWidth = roadGeometry.carriageway_width || 7.0;
+    
+    // Only skip bilateral if extremely narrow local street
+    if (speedLimit <= 40 && roadWidth < 5.0) {
+      return false; // Very narrow local street - single side only
+    }
+    
+    // DEFAULT: Place bilaterally for visibility and compliance
+    return true;
   }
 
   analyzeRoadGeometryExact(roadGeometry, category, bilateralRequired) {
