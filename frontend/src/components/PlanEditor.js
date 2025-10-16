@@ -327,6 +327,8 @@ export default function PlanEditor({ user, onLogout }) {
     }
 
     try {
+      toast.info('Calculating device placement...');
+      
       // Get coordinates for start and end addresses
       const startCoords = await geocodeAddress(formData.work_details.start_address);
       const endCoords = await geocodeAddress(formData.work_details.end_address);
@@ -335,23 +337,32 @@ export default function PlanEditor({ user, onLogout }) {
       const roadDataResponse = await fetch(`${API}/road-data?start_address=${encodeURIComponent(formData.work_details.start_address)}&end_address=${encodeURIComponent(formData.work_details.end_address)}`);
       const roadData = await roadDataResponse.json();
 
-      // Calculate automatic device placement using Austroads rules
-      const coordinates = {
-        start: { lat: startCoords.lat, lng: startCoords.lng },
-        end: { lat: endCoords.lat, lng: endCoords.lng }
+      // Google Maps API key for road snapping
+      const GOOGLE_MAPS_API_KEY = 'AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs';
+
+      // Calculate automatic device placement using AGTTM-compliant rules
+      // NOW with road snapping to place devices on road/curb, NOT on property
+      const workZoneData = {
+        start_lat: startCoords.lat,
+        start_lng: startCoords.lng,
+        end_lat: endCoords.lat,
+        end_lng: endCoords.lng,
+        work_details: formData.work_details,
+        road_occupancy: formData.road_occupancy,
+        control_measures: formData.control_measures
       };
 
-      const autoDevices = austroadsRules.calculateDevicePlacement(
-        {
-          work_details: formData.work_details,
-          road_occupancy: formData.road_occupancy,
-          control_measures: formData.control_measures
-        },
-        {
-          ...roadData,
-          speed_limit: 60 // Default speed, can be enhanced with real data
-        },
-        coordinates
+      const roadGeometry = {
+        ...roadData,
+        speed_limit: roadData.speed_limit || 60 // Use actual or default
+      };
+
+      // Import and use AGTTM placement with road snapping
+      const agttmRules = await import('../utils/agttmCompliantRules.js');
+      const autoDevices = await agttmRules.default.calculateAGTTMCompliantPlacement(
+        workZoneData,
+        roadGeometry,
+        GOOGLE_MAPS_API_KEY
       );
 
       // Update form data with automatically placed devices
@@ -380,11 +391,11 @@ export default function PlanEditor({ user, onLogout }) {
         googleMapRef.current.setCenter({ lat: startCoords.lat, lng: startCoords.lng });
       }
 
-      toast.success(`Automatically placed ${autoDevices.length} devices according to Austroads standards`);
+      toast.success(`Placed ${autoDevices.length} devices on road (not property) according to AGTTM standards`);
       
     } catch (error) {
       console.error('Auto-placement error:', error);
-      toast.error('Failed to auto-place devices');
+      toast.error(`Failed to auto-place devices: ${error.message}`);
     }
   };
 
