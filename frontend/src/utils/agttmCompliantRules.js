@@ -298,37 +298,6 @@ export class AGTTMCompliantPlacement {
       service_vehicle_clearance: this.checkServiceVehicleClearance(lateralOffset, shoulderWidth + vergeWidth)
     };
   }
-      placementType = 'shoulder';
-      lateralOffset = clearanceSpecs.shoulder_placement.preferred; // Exact 1.0m
-      feasible = true;
-      complianceLevel = 'shoulder_compliance';
-    }
-    // Constrained placement
-    else {
-      placementType = 'constrained';
-      lateralOffset = Math.max(shoulderWidth - 0.2, 0.5); // Minimum safe distance
-      feasible = false;
-      complianceLevel = 'non_compliant';
-    }
-    
-    return {
-      shoulder_width: shoulderWidth,
-      verge_width: vergeWidth,
-      total_available: shoulderWidth + vergeWidth,
-      placement_type: placementType,
-      lateral_offset: lateralOffset,
-      feasible: feasible,
-      compliance_level: complianceLevel,
-      
-      // Exact AGTTM measurements
-      minimum_clearance_met: lateralOffset >= clearanceSpecs.verge_placement.minimum || 
-                           lateralOffset >= clearanceSpecs.shoulder_placement.minimum,
-      preferred_clearance_met: lateralOffset >= clearanceSpecs.verge_placement.preferred,
-      
-      // AS 1742.3 vehicle accommodation
-      service_vehicle_clearance: this.checkServiceVehicleClearance(lateralOffset, shoulderWidth + vergeWidth)
-    };
-  }
 
   checkServiceVehicleClearance(lateralOffset, totalWidth) {
     const serviceVehicleWidth = this.as1742Specs.vehicle_accommodation.service_vehicle_length;
