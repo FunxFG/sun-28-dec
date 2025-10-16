@@ -168,31 +168,60 @@ export class AGTTMCompliantPlacement {
 
   /**
    * Calculate AGTTM-compliant bilateral device placement with exact measurements
+   * NOW with road snapping to ensure devices are on road, not property
    */
-  calculateAGTTMCompliantPlacement(workZoneData, roadGeometry) {
+  async calculateAGTTMCompliantPlacement(workZoneData, roadGeometry, googleMapsApiKey) {
     const devices = [];
     
+    // CRITICAL FIX: Snap start and end addresses to nearest road
+    // This ensures devices are placed on the road/curb, NOT on private property
+    console.log('Snapping start address to road...');
+    const startSnapped = await roadSnapper.snapToRoad(
+      workZoneData.start_lat,
+      workZoneData.start_lng,
+      googleMapsApiKey
+    );
+    
+    console.log('Snapping end address to road...');
+    const endSnapped = await roadSnapper.snapToRoad(
+      workZoneData.end_lat,
+      workZoneData.end_lng,
+      googleMapsApiKey
+    );
+    
+    // Update work zone data with snapped road positions
+    const roadAlignedWorkZone = {
+      ...workZoneData,
+      start_lat: startSnapped.lat,
+      start_lng: startSnapped.lng,
+      end_lat: endSnapped.lat,
+      end_lng: endSnapped.lng,
+      road_bearing: startSnapped.roadBearing,
+      road_width: startSnapped.roadWidth,
+      snapped_to_road: true
+    };
+    
     // Determine work zone category and bilateral requirements
-    const category = this.determineWorkZoneCategory(workZoneData, roadGeometry);
+    const category = this.determineWorkZoneCategory(roadAlignedWorkZone, roadGeometry);
     const bilateralRequired = this.isBilateralRequired(category, roadGeometry);
     
     // Analyze road geometry for exact placement feasibility
     const geometryAnalysis = this.analyzeRoadGeometryExact(roadGeometry, category, bilateralRequired);
     
     // Generate bilateral advance warning signs with exact measurements
-    devices.push(...this.placeBilateralAdvanceWarningsExact(workZoneData, geometryAnalysis));
+    devices.push(...this.placeBilateralAdvanceWarningsExact(roadAlignedWorkZone, geometryAnalysis));
     
     // Generate bilateral regulatory signs with exact specifications
-    devices.push(...this.placeBilateralRegulatoryDevicesExact(workZoneData, geometryAnalysis));
+    devices.push(...this.placeBilateralRegulatoryDevicesExact(roadAlignedWorkZone, geometryAnalysis));
     
     // Generate delineation devices with exact AGTTM spacing
-    devices.push(...this.placeDelineationDevicesExact(workZoneData, geometryAnalysis));
+    devices.push(...this.placeDelineationDevicesExact(roadAlignedWorkZone, geometryAnalysis));
     
     // Generate arrow boards if required
-    devices.push(...this.placeArrowBoardsExact(workZoneData, geometryAnalysis));
+    devices.push(...this.placeArrowBoardsExact(roadAlignedWorkZone, geometryAnalysis));
     
     // Generate bilateral end-of-work signs
-    devices.push(...this.placeBilateralEndSignsExact(workZoneData, geometryAnalysis));
+    devices.push(...this.placeBilateralEndSignsExact(roadAlignedWorkZone, geometryAnalysis));
     
     // Final validation against exact AGTTM standards
     return this.validateExactAGTTMCompliance(devices, geometryAnalysis);
