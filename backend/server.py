@@ -778,6 +778,88 @@ async def get_plan_risk_assessment(plan_id: str, credentials: HTTPAuthorizationC
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# ==========================================
+# Device Library Endpoints
+# ==========================================
+
+@api_router.get("/devices")
+async def get_devices(category: str = None):
+    """
+    Get traffic control device library
+    Optional category filter: warning, regulatory, guidance, delineation, barriers, signals, vehicles
+    """
+    try:
+        if category:
+            devices = get_devices_by_category(category)
+            return {
+                "category": category,
+                "devices": devices
+            }
+        
+        return {
+            "categories": DEVICE_CATEGORIES,
+            "library": DEVICE_LIBRARY,
+            "total_devices": sum(len(devices) for devices in DEVICE_LIBRARY.values())
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/devices/{code}")
+async def get_device_details(code: str):
+    """
+    Get detailed specifications for a specific device by AS 1742.3 code
+    """
+    try:
+        device = get_device_by_code(code)
+        if not device:
+            raise HTTPException(status_code=404, detail=f"Device {code} not found")
+        
+        return device
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/devices/search/{term}")
+async def search_device_library(term: str):
+    """
+    Search device library by name, description, or code
+    """
+    try:
+        results = search_devices(term)
+        return {
+            "query": term,
+            "results": results,
+            "count": len(results)
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/devices/recommend")
+async def recommend_devices(scenario: dict):
+    """
+    Get recommended devices based on work scenario
+    Request body example:
+    {
+        "work_type": "static",
+        "speed_limit": 80,
+        "lanes": 2,
+        "duration": "medium",
+        "time_of_day": "day"
+    }
+    """
+    try:
+        required_codes = get_required_devices_for_scenario(scenario)
+        devices = [get_device_by_code(code) for code in required_codes]
+        
+        return {
+            "scenario": scenario,
+            "recommended_devices": [dev for dev in devices if dev],
+            "device_codes": required_codes
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 # Include the router in the main app
 app.include_router(api_router)
 
