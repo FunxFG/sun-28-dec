@@ -400,57 +400,59 @@ export class AGTTMCompliantPlacement {
 
   /**
    * Add protective cones on either side of a sign
-   * Standard practice: Cone → Sign → Cone for visibility and protection
+   * Standard practice: Cone → Sign → Cone (immediately adjacent, 0m spacing)
    */
   addProtectiveCones(signPosition, bearing, signId, side) {
     const cones = [];
-    const coneSpacing = 3.0; // 3m spacing - one cone 3m before, one 3m after sign
+    const coneSpacing = 1.5; // 1.5m - cone positioned on either side along road direction
     
-    // Cone BEFORE the sign (in direction of approaching traffic)
-    const coneBefore = this.calculatePosition(
+    // Cone on LEFT side of sign (perpendicular to road)
+    const coneLeft = this.calculatePosition(
       signPosition.lat,
       signPosition.lng,
-      bearing + 180, // Behind/before in traffic direction
+      bearing - 90, // Perpendicular left
       coneSpacing
     );
     
     cones.push({
-      id: `cone_before_${signId}`,
+      id: `cone_left_${signId}`,
       device_type: 'delineation',
       device_name: 'Traffic Cone 700mm',
-      position_lat: coneBefore.lat,
-      position_lng: coneBefore.lng,
+      position_lat: coneLeft.lat,
+      position_lng: coneLeft.lng,
       properties: {
         device_code: 'D5-1',
         cone_size: '700mm',
         protecting_device: signId,
-        position: 'before',
+        position: 'left_side',
         side: side,
+        spacing_from_sign: '0m',
         auto_placed: true,
         purpose: 'Sign protection and visibility'
       }
     });
     
-    // Cone AFTER the sign (in direction of approaching traffic)
-    const coneAfter = this.calculatePosition(
+    // Cone on RIGHT side of sign (perpendicular to road)
+    const coneRight = this.calculatePosition(
       signPosition.lat,
       signPosition.lng,
-      bearing, // Forward/after in traffic direction
+      bearing + 90, // Perpendicular right
       coneSpacing
     );
     
     cones.push({
-      id: `cone_after_${signId}`,
+      id: `cone_right_${signId}`,
       device_type: 'delineation',
       device_name: 'Traffic Cone 700mm',
-      position_lat: coneAfter.lat,
-      position_lng: coneAfter.lng,
+      position_lat: coneRight.lat,
+      position_lng: coneRight.lng,
       properties: {
         device_code: 'D5-1',
         cone_size: '700mm',
         protecting_device: signId,
-        position: 'after',
+        position: 'right_side',
         side: side,
+        spacing_from_sign: '0m',
         auto_placed: true,
         purpose: 'Sign protection and visibility'
       }
