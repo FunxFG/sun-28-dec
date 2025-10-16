@@ -3,6 +3,8 @@
  * Based on extracted AGTTM rules and AS 1742.3 standards
  * Implements EXACT compliance for DTMR approval with specific measurements
  */
+import bilateralPlacementEngine from './bilateralSignagePlacement.js';
+import roadSnapper from './roadSnapper.js';
 
 export class AGTTMCompliantPlacement {
   constructor() {
