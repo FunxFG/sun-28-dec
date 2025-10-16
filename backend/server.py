@@ -29,6 +29,14 @@ from risk_registry import (
     LIKELIHOOD_LEVELS,
     CONSEQUENCE_LEVELS
 )
+from device_library import (
+    DEVICE_LIBRARY,
+    DEVICE_CATEGORIES,
+    get_device_by_code,
+    get_devices_by_category,
+    search_devices,
+    get_required_devices_for_scenario
+)
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
