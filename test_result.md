@@ -228,9 +228,9 @@ frontend:
 
   - task: "Plan Editor with Google Maps"
     implemented: true
-    working: true
+    working: false
     file: "frontend/src/components/PlanEditor.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
@@ -246,6 +246,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "✅ COMPREHENSIVE TESTING PASSED: Extensively tested plan editor with 6 different TMP scenarios across South Australian addresses. Auto-placement working correctly for various road types: Urban arterial (King William St), High-speed highway (Port Wakefield Rd - 6 devices), Suburban street (Glen Osmond Rd - 6 devices), Road closures, Intersections, Multi-lane expressway (South Eastern Freeway - 6 devices). Google Maps integration excellent, geocoding APIs functional, device placement accurate. Form fields, dropdowns, and all UI components working properly. Plan editor fully operational for production use."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL REGRESSION: Road closure TMP auto-placement failing. Tested comprehensive road closure scenario for Chief Street, Brompton with complete road closure and detour options. Form fills correctly, geocoding APIs work (backend logs show successful geocoding for Chief Street addresses), Google Maps loads properly, but auto-placement returns 0 devices. Toast shows 'Placed 0 devices on road according to AGTTM standards' and 'Calculating device placement...' indicating the function is called but fails silently. No console errors during auto-placement process, suggesting issue in roadSnapper.js or async method calculateAGTTMCompliantPlacement. Backend APIs functional, frontend UI responsive, but core auto-placement algorithm broken for road closure scenarios."
 
   - task: "Austroads rules implementation"
     implemented: true
