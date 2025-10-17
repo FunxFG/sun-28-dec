@@ -180,15 +180,21 @@ export class AGTTMCompliantPlacement {
     const startSnapped = await roadSnapper.snapToRoad(
       workZoneData.start_lat,
       workZoneData.start_lng,
-      googleMapsApiKey
+      googleMapsApiKey,
+      { lat: workZoneData.end_lat, lng: workZoneData.end_lng } // Pass end point for bearing
     );
+    
+    console.log('Start snapped result:', startSnapped);
     
     console.log('Snapping end address to road...');
     const endSnapped = await roadSnapper.snapToRoad(
       workZoneData.end_lat,
       workZoneData.end_lng,
-      googleMapsApiKey
+      googleMapsApiKey,
+      { lat: workZoneData.start_lat, lng: workZoneData.start_lng } // Pass start point for bearing
     );
+    
+    console.log('End snapped result:', endSnapped);
     
     // Update work zone data with snapped road positions
     const roadAlignedWorkZone = {
