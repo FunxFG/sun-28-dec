@@ -294,11 +294,13 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Plan Editor with Google Maps"
     - "Authentication UI (Sign In/Create Account)"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
+    - "Plan Editor with Google Maps"
   test_all: true
-  test_priority: "comprehensive_tmp_testing_completed"
+  test_priority: "road_closure_auto_placement_broken"
 
 agent_communication:
   - agent: "main"
