@@ -120,6 +120,7 @@ export default function PlanEditor({ user, onLogout }) {
       workzone_size: null
     },
     devices: [],
+    risk_assessment: {},
     map_center_lat: -27.4698,
     map_center_lng: 153.0251,
     map_zoom: 15
