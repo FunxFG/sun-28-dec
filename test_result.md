@@ -321,7 +321,6 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Risk Registry API endpoint"
     - "RiskMatrixInteractive component"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
