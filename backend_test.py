@@ -542,7 +542,13 @@ def main():
         ("Get Single Plan", tester.test_get_single_plan),
         ("Update Plan", tester.test_update_plan),
         ("PDF Generation", tester.test_pdf_generation),
-        ("Delete Plan", tester.test_delete_plan)
+        ("Delete Plan", tester.test_delete_plan),
+        ("Get All Risks", tester.test_get_all_risks),
+        ("Get Risks by Category", tester.test_get_risks_by_category),
+        ("Get Risk by ID", tester.test_get_risk_by_id),
+        ("Get Non-existent Risk", tester.test_get_nonexistent_risk),
+        ("Calculate Risk Score", tester.test_calculate_risk_score),
+        ("Calculate Risk Invalid Data", tester.test_calculate_risk_invalid_data)
     ]
     
     # Run all tests
