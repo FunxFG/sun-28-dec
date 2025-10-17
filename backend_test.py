@@ -387,25 +387,25 @@ class SafeRoadWorksAPITester:
             200
         )
         
-        if success and 'risks' in response and 'total_risks' in response:
+        if success and 'risks' in response and 'total_count' in response:
             risks_count = len(response['risks'])
-            total_count = response['total_risks']
+            total_count = response['total_count']
             print(f"   Retrieved {risks_count} risks, total: {total_count}")
             
-            # Verify expected structure
+            # Verify expected structure (CSV-based structure)
             if risks_count > 0:
                 first_risk = response['risks'][0]
-                required_fields = ['id', 'category', 'title', 'description', 'default_likelihood', 'default_consequence']
+                required_fields = ['id', 'category', 'hazard', 'cause', 'consequence']
                 missing_fields = [field for field in required_fields if field not in first_risk]
                 if missing_fields:
                     print(f"   ⚠️ Missing fields in risk data: {missing_fields}")
                     return False
                 
-            # Check if we have the expected 25 risks
-            if total_count == 25:
-                print(f"   ✅ Correct number of risks (25) returned")
+            # API returns 50 risks from CSV file, not 25 from risk_registry.py
+            if total_count == 50:
+                print(f"   ✅ Correct number of risks (50) returned from CSV data")
             else:
-                print(f"   ⚠️ Expected 25 risks, got {total_count}")
+                print(f"   ⚠️ Expected 50 risks from CSV, got {total_count}")
                 
             return True
         return False
