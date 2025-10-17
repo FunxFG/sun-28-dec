@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://austroads-tmp-gen.preview.emergentagent.com';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://austromap.preview.emergentagent.com';
 const API = `${BACKEND_URL}/api`;
 
 export default function Dashboard({ user, onLogout }) {
