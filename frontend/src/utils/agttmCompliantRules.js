@@ -439,9 +439,9 @@ export class AGTTMCompliantPlacement {
       verge_width: vergeWidth,
       feasible: feasible,
       compliance_level: complianceLevel,
-      minimum_clearance_met: lateralOffset >= clearanceSpecs.verge.minimum || 
-                           lateralOffset >= clearanceSpecs.shoulder.minimum,
-      preferred_clearance_met: lateralOffset >= clearanceSpecs.verge.preferred,
+      minimum_clearance_met: lateralOffset >= clearanceSpecs.verge_placement.minimum || 
+                           lateralOffset >= clearanceSpecs.shoulder_placement.minimum,
+      preferred_clearance_met: lateralOffset >= clearanceSpecs.verge_placement.preferred,
       service_vehicle_clearance: this.checkServiceVehicleClearance(lateralOffset, shoulderWidth + vergeWidth),
       as1742_reference: 'AS 1742.3 Section 3.4'
     };
