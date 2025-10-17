@@ -358,17 +358,25 @@ export default function PlanEditor({ user, onLogout }) {
       };
 
       // Import and use AGTTM placement with road snapping
+      console.log('Starting auto-placement with road snapping...');
       const agttmRules = await import('../utils/agttmCompliantRules.js');
+      
+      console.log('Work zone data:', workZoneData);
+      console.log('Road geometry:', roadGeometry);
+      
       const autoDevices = await agttmRules.default.calculateAGTTMCompliantPlacement(
         workZoneData,
         roadGeometry,
         GOOGLE_MAPS_API_KEY
       );
 
+      console.log('Auto-placement complete. Devices returned:', autoDevices);
+      console.log('Device count:', autoDevices?.length || 0);
+
       // Update form data with automatically placed devices
       setFormData(prev => ({
         ...prev,
-        devices: autoDevices,
+        devices: autoDevices || [],
         map_center_lat: startCoords.lat,
         map_center_lng: startCoords.lng,
         road_data: roadData
