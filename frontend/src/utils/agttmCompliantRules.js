@@ -409,17 +409,17 @@ export class AGTTMCompliantPlacement {
       }
     }
     // Check shoulder placement (when verge insufficient)
-    else if (shoulderWidth >= clearanceSpecs.shoulder.minimum_width_required) {
+    else if (shoulderWidth >= clearanceSpecs.shoulder_placement.minimum_shoulder_width) {
       if (shoulderWidth >= 2.0) {
         // Preferred shoulder placement
         placementType = 'shoulder';
-        lateralOffset = clearanceSpecs.shoulder.preferred; // 1.0m from travel lane edge
+        lateralOffset = clearanceSpecs.shoulder_placement.preferred; // 1.0m from travel lane edge
         feasible = true;
         complianceLevel = 'shoulder_preferred';
       } else {
         // Minimum shoulder placement
         placementType = 'shoulder';
-        lateralOffset = clearanceSpecs.shoulder.minimum; // 0.5m from travel lane edge
+        lateralOffset = clearanceSpecs.shoulder_placement.minimum; // 0.5m from travel lane edge
         feasible = true;
         complianceLevel = 'shoulder_minimum';
       }
