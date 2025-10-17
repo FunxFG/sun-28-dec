@@ -194,6 +194,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ PASSED - Risk Registry API endpoints working correctly. GET /api/risks returns 50 comprehensive risks from CSV data with proper structure. GET /api/risks/{risk_id} works with risk_registry.py data (25 risks, IDs like 'risk_001'). POST /api/risks/calculate successfully calculates risk scores. Minor issues: 1) Category filtering not working (returns all risks), 2) Input validation missing (accepts invalid likelihood/consequence values). Core functionality operational for production use."
+      - working: true
+        agent: "testing"
+        comment: "✅ VERIFIED POST-FIX - Quick verification after duplicate function fix confirms GET /api/risks still returns 50 risks correctly (200 OK). No regression detected in risk registry functionality after frontend JavaScript fixes."
 
 frontend:
   - task: "JavaScript syntax errors fixed"
