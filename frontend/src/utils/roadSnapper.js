@@ -17,9 +17,10 @@ class RoadSnapper {
    * @param {number} lat - Latitude of address point
    * @param {number} lng - Longitude of address point
    * @param {string} googleMapsApiKey - Google Maps API key
+   * @param {object} otherPoint - Optional other point for bearing calculation {lat, lng}
    * @returns {Promise<{lat, lng, roadBearing, roadWidth}>} Snapped position on road
    */
-  async snapToRoad(lat, lng, googleMapsApiKey) {
+  async snapToRoad(lat, lng, googleMapsApiKey, otherPoint = null) {
     const cacheKey = `${lat.toFixed(6)},${lng.toFixed(6)}`;
     
     // Check cache first
@@ -28,9 +29,16 @@ class RoadSnapper {
       return this.snapCache.get(cacheKey);
     }
 
+    // Calculate bearing if we have another point (start or end)
+    let bearing = 0;
+    if (otherPoint && otherPoint.lat && otherPoint.lng) {
+      bearing = this.calculateBearing(lat, lng, otherPoint.lat, otherPoint.lng);
+      console.log(`Calculated bearing from point to other point: ${bearing}°`);
+    }
+
     // FOR NOW: Use fallback method directly (Google Roads API may need special permissions)
-    console.log('Snapping to road using fallback method for:', lat, lng);
-    const fallbackResult = this.fallbackSnapToRoad(lat, lng);
+    console.log('Snapping to road using fallback method for:', lat, lng, 'with bearing:', bearing);
+    const fallbackResult = this.fallbackSnapToRoad(lat, lng, bearing);
     this.snapCache.set(cacheKey, fallbackResult);
     return fallbackResult;
 
