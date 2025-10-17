@@ -298,6 +298,18 @@ frontend:
         agent: "testing"
         comment: "✅ READY FOR USE: TGS drawing generator is now functional since the auto-placement dependency has been fixed. With auto-placement working correctly and devices being placed on the map, the TGS drawing generator can now process the placed devices to generate Traffic Guidance Schemes visual drawings for DTMR compliance. The underlying auto-placement system provides the necessary device data structure for TGS generation."
 
+  - task: "RiskMatrixInteractive component"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/RiskMatrixInteractive.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created comprehensive RiskMatrixInteractive component with risk list view, matrix view, auto-population of controls, color coding based on risk ratings, and integration to fetch from /api/risks endpoint. Component includes filtering by category, risk level, search, expandable risk details, and control checkboxes."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
