@@ -180,6 +180,18 @@ backend:
         agent: "testing"
         comment: "✅ PASSED - PDF generation working perfectly. Successfully generated professional Traffic Management Plan PDF with complete DTMR/Austroads compliance structure including declaration, risk management, implementation sections, and emergency contacts. tmp_generator.py integration working correctly."
 
+  - task: "Risk Registry API endpoint"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py, backend/risk_registry.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added /api/risks endpoint with GET (all risks, filter by category), GET by ID, and POST calculate endpoints. Integrated with risk_registry.py which currently has 25 risks. Backend compiled successfully after adding endpoints."
+
 frontend:
   - task: "JavaScript syntax errors fixed"
     implemented: true
