@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import austroadsRules from '../utils/austroadsRules';
 import tgsDrawingGenerator from '../utils/tgsDrawingGenerator';
+import RiskMatrixInteractive from './RiskMatrixInteractive';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://austromap.preview.emergentagent.com';
