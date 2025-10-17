@@ -324,12 +324,12 @@ metadata:
 
 test_plan:
   current_focus:
-    - "RiskMatrixInteractive component"
+    - "Integration of RiskMatrixInteractive into PlanEditor"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
     - "Plan Editor with Google Maps"
   test_all: false
-  test_priority: "risk_system_verification"
+  test_priority: "integration_verification"
 
 agent_communication:
   - agent: "main"
