@@ -701,17 +701,64 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
 async def get_risks():
     """
     Get comprehensive risk registry for roadwork traffic management
-    Returns all identified risks with default likelihood, consequence, and controls
+    Returns all 50 identified risks with controls from CSV data
     """
     try:
+        import csv
+        import os
+        
+        risks = []
+        csv_path = os.path.join(os.path.dirname(__file__), 'risk_data.csv')
+        
+        if os.path.exists(csv_path):
+            with open(csv_path, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    risks.append({
+                        'id': row['id'],
+                        'category': row['category'],
+                        'site_type': row['site_type'],
+                        'site_type_normalized': row['site_type_normalized'],
+                        'hazard': row['hazard'],
+                        'cause': row['cause'],
+                        'consequence': row['consequence'],
+                        'likelihood': row['likelihood'],
+                        'consequence_level': row['consequence_level'],
+                        'risk_score': int(row['risk_score']) if row['risk_score'] else 0,
+                        'risk_level': row['risk_level'],
+                        'control_elimination': row['control_elimination'],
+                        'control_substitution': row['control_substitution'],
+                        'control_engineering': row['control_engineering'],
+                        'control_administrative': row['control_administrative'],
+                        'control_ppe': row['control_ppe'],
+                        'residual_likelihood': row['residual_likelihood'],
+                        'residual_consequence_level': row['residual_consequence_level'],
+                        'residual_risk_score': int(row['residual_risk_score']) if row['residual_risk_score'] else 0,
+                        'residual_risk_level': row['residual_risk_level'],
+                        'standards_refs': row['standards_refs'],
+                        'std_SA_WZTM': row.get('std_SA_WZTM', ''),
+                        'std_AGTTM': row.get('std_AGTTM', ''),
+                        'std_AS1742_3': row.get('std_AS1742_3', ''),
+                        'std_DIT_Field_Guide': row.get('std_DIT_Field_Guide', '')
+                    })
+        
         return {
-            "risks": get_risk_registry(),
-            "categories": RISK_CATEGORIES,
+            "risks": risks,
+            "total_count": len(risks),
+            "categories": list(set(r['category'] for r in risks)),
             "likelihood_levels": LIKELIHOOD_LEVELS,
             "consequence_levels": CONSEQUENCE_LEVELS
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"Error loading risks: {e}")
+        # Fallback to in-memory risk registry
+        return {
+            "risks": get_risk_registry(),
+            "total_count": len(get_risk_registry()),
+            "categories": RISK_CATEGORIES,
+            "likelihood_levels": LIKELIHOOD_LEVELS,
+            "consequence_levels": CONSEQUENCE_LEVELS
+        }
 
 @api_router.post("/risks/calculate")
 async def calculate_risk(request: dict):
