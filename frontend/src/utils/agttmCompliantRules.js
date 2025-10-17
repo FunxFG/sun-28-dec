@@ -924,13 +924,13 @@ export class AGTTMCompliantPlacement {
     // Determine optimal placement type
     let placementType, offset, feasible;
     
-    if (vergeWidth >= clearanceSpecs.verge.minimum) {
+    if (vergeWidth >= clearanceSpecs.verge_placement.minimum) {
       placementType = 'verge';
-      offset = clearanceSpecs.verge.preferred;
+      offset = clearanceSpecs.verge_placement.preferred;
       feasible = true;
-    } else if (shoulderWidth >= clearanceSpecs.shoulder.minimum_width_required) {
+    } else if (shoulderWidth >= clearanceSpecs.shoulder_placement.minimum_shoulder_width) {
       placementType = 'shoulder';
-      offset = clearanceSpecs.shoulder.preferred;
+      offset = clearanceSpecs.shoulder_placement.preferred;
       feasible = true;
     } else {
       placementType = 'constrained';
