@@ -28,7 +28,8 @@ export default function AuthPage({ onLogin }) {
         { email: formData.email, password: formData.password } :
         formData;
 
-      console.log('Making API request to:', `${API}${endpoint}`);
+      console.log('Submitting to:', `${API}${endpoint}`);
+      console.log('Form data:', formData);
       console.log('Payload:', payload);
 
       const response = await fetch(`${API}${endpoint}`, {
@@ -40,6 +41,7 @@ export default function AuthPage({ onLogin }) {
       });
 
       console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
       
       if (!response.ok) {
         const errorData = await response.json();
@@ -48,10 +50,19 @@ export default function AuthPage({ onLogin }) {
       }
 
       const data = await response.json();
-      console.log('API Success:', data);
+      console.log('API Success - Full response:', data);
+      console.log('Token:', data.token);
+      console.log('User:', data.user);
       
-      onLogin(data.token, data.user);
-      toast.success(isLogin ? 'Welcome back!' : 'Account created successfully!');
+      // Call onLogin with token and user data
+      if (data.token && data.user) {
+        console.log('Calling onLogin with:', { token: data.token, user: data.user });
+        onLogin(data.token, data.user);
+        toast.success(isLogin ? 'Welcome back!' : 'Account created successfully!');
+      } else {
+        console.error('Missing token or user in response:', data);
+        throw new Error('Invalid response format from server');
+      }
     } catch (error) {
       console.error('Authentication error:', error);
       toast.error(error.message || 'Authentication failed');
