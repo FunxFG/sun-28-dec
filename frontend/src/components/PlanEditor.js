@@ -854,6 +854,25 @@ export default function PlanEditor({ user, onLogout }) {
               </CardContent>
             </Card>
 
+            {/* Risk Assessment */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-orange-600" />
+                  Risk Assessment
+                </CardTitle>
+                <CardDescription>
+                  Identify and mitigate roadwork risks according to AS 1742.3 and AGTTM standards
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RiskMatrixInteractive 
+                  formData={formData} 
+                  setFormData={setFormData}
+                />
+              </CardContent>
+            </Card>
+
             {/* Placed Devices */}
             <Card>
               <CardHeader>
