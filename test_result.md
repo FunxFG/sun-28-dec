@@ -294,8 +294,8 @@ test_plan:
     - "Authentication UI (Sign In/Create Account)"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
-  test_all: false
-  test_priority: "high_first"
+  test_all: true
+  test_priority: "comprehensive_tmp_testing_completed"
 
 agent_communication:
   - agent: "main"
