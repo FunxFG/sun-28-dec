@@ -216,29 +216,46 @@ export class AGTTMCompliantPlacement {
     const geometryAnalysis = this.analyzeRoadGeometryExact(roadGeometry, category, bilateralRequired);
     
     // Generate bilateral advance warning signs with exact measurements
-    devices.push(...this.placeBilateralAdvanceWarningsExact(roadAlignedWorkZone, geometryAnalysis));
+    const advanceDevices = this.placeBilateralAdvanceWarningsExact(roadAlignedWorkZone, geometryAnalysis);
+    console.log(`Placed ${advanceDevices.length} advance warning devices`);
+    devices.push(...advanceDevices);
     
     // Generate bilateral regulatory signs with exact specifications
-    devices.push(...this.placeBilateralRegulatoryDevicesExact(roadAlignedWorkZone, geometryAnalysis));
+    const regulatoryDevices = this.placeBilateralRegulatoryDevicesExact(roadAlignedWorkZone, geometryAnalysis);
+    console.log(`Placed ${regulatoryDevices.length} regulatory devices`);
+    devices.push(...regulatoryDevices);
     
     // Generate delineation devices with exact AGTTM spacing
-    devices.push(...this.placeDelineationDevicesExact(roadAlignedWorkZone, geometryAnalysis));
+    const delineationDevices = this.placeDelineationDevicesExact(roadAlignedWorkZone, geometryAnalysis);
+    console.log(`Placed ${delineationDevices.length} delineation devices`);
+    devices.push(...delineationDevices);
     
     // Generate arrow boards if required
-    devices.push(...this.placeArrowBoardsExact(roadAlignedWorkZone, geometryAnalysis));
+    const arrowDevices = this.placeArrowBoardsExact(roadAlignedWorkZone, geometryAnalysis);
+    console.log(`Placed ${arrowDevices.length} arrow board devices`);
+    devices.push(...arrowDevices);
     
     // Generate bilateral end-of-work signs
-    devices.push(...this.placeBilateralEndSignsExact(roadAlignedWorkZone, geometryAnalysis));
+    const endDevices = this.placeBilateralEndSignsExact(roadAlignedWorkZone, geometryAnalysis);
+    console.log(`Placed ${endDevices.length} end-of-work devices`);
+    devices.push(...endDevices);
     
     // SPECIAL PLACEMENT RULES: Handle exceptions
     // Road closures, traffic signals, etc. use different placement logic
     if (this.requiresSpecialPlacement(roadAlignedWorkZone)) {
+      console.log('Applying special placement rules for road closure/signals...');
       const specialDevices = this.applySpecialPlacementRules(roadAlignedWorkZone, geometryAnalysis);
+      console.log(`Placed ${specialDevices.length} special placement devices`);
       devices.push(...specialDevices);
     }
     
+    console.log(`Total devices before validation: ${devices.length}`);
+    
     // Final validation against exact AGTTM standards
-    return this.validateExactAGTTMCompliance(devices, geometryAnalysis);
+    const validatedDevices = this.validateExactAGTTMCompliance(devices, geometryAnalysis);
+    console.log(`Total devices after validation: ${validatedDevices.length}`);
+    
+    return validatedDevices;
   }
 
   /**
