@@ -4,6 +4,7 @@ import './App.css';
 import AuthPage from './components/AuthPage';
 import Dashboard from './components/Dashboard';
 import PlanEditor from './components/PlanEditor';
+import RiskMatrixInteractive from './components/RiskMatrixInteractive';
 import { Toaster } from './components/ui/sonner';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://austromap.preview.emergentagent.com';
