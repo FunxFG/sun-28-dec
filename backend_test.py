@@ -444,19 +444,19 @@ class SafeRoadWorksAPITester:
     def test_get_risk_by_id(self):
         """Test getting a specific risk by ID"""
         success, response = self.run_test(
-            "Get Risk by ID (RISK-0001)",
+            "Get Risk by ID (risk_001)",
             "GET",
-            "risks/RISK-0001",
+            "risks/risk_001",
             200
         )
         
         if success and 'id' in response:
             risk_id = response['id']
-            risk_hazard = response.get('hazard', 'Unknown')
-            print(f"   Retrieved risk: {risk_id} - {risk_hazard}")
+            risk_title = response.get('title', 'Unknown')
+            print(f"   Retrieved risk: {risk_id} - {risk_title}")
             
-            # Verify required fields for CSV-based structure
-            required_fields = ['id', 'category', 'hazard', 'cause', 'consequence']
+            # Verify required fields for risk_registry.py structure
+            required_fields = ['id', 'category', 'title', 'description', 'controls', 'references']
             missing_fields = [field for field in required_fields if field not in response]
             if missing_fields:
                 print(f"   ❌ Missing required fields: {missing_fields}")
