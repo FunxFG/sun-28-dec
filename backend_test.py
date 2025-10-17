@@ -471,7 +471,7 @@ class SafeRoadWorksAPITester:
         success, response = self.run_test(
             "Get Non-existent Risk (should return 404)",
             "GET",
-            "risks/risk_999",
+            "risks/RISK-9999",
             404
         )
         
