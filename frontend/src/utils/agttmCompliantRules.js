@@ -393,17 +393,17 @@ export class AGTTMCompliantPlacement {
     let placementType, lateralOffset, feasible, complianceLevel;
     
     // Check verge placement first (AS 1742.3 preferred method)
-    if (vergeWidth >= clearanceSpecs.verge.minimum) {
-      if (vergeWidth >= clearanceSpecs.verge.preferred) {
+    if (vergeWidth >= clearanceSpecs.verge_placement.minimum) {
+      if (vergeWidth >= clearanceSpecs.verge_placement.preferred) {
         // Optimal verge placement
         placementType = 'verge';
-        lateralOffset = clearanceSpecs.verge.preferred; // 3.0m from carriageway edge
+        lateralOffset = clearanceSpecs.verge_placement.preferred; // 3.0m from carriageway edge
         feasible = true;
         complianceLevel = 'full_compliance';
       } else {
         // Minimum verge placement
         placementType = 'verge';
-        lateralOffset = clearanceSpecs.verge.minimum; // 2.0m from carriageway edge
+        lateralOffset = clearanceSpecs.verge_placement.minimum; // 2.0m from carriageway edge
         feasible = true;
         complianceLevel = 'minimum_compliance';
       }
