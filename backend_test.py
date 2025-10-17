@@ -378,6 +378,153 @@ class SafeRoadWorksAPITester:
             return True
         return False
 
+    def test_get_all_risks(self):
+        """Test getting all risks from risk registry"""
+        success, response = self.run_test(
+            "Get All Risks",
+            "GET",
+            "risks",
+            200
+        )
+        
+        if success and 'risks' in response and 'total_risks' in response:
+            risks_count = len(response['risks'])
+            total_count = response['total_risks']
+            print(f"   Retrieved {risks_count} risks, total: {total_count}")
+            
+            # Verify expected structure
+            if risks_count > 0:
+                first_risk = response['risks'][0]
+                required_fields = ['id', 'category', 'title', 'description', 'default_likelihood', 'default_consequence']
+                missing_fields = [field for field in required_fields if field not in first_risk]
+                if missing_fields:
+                    print(f"   ⚠️ Missing fields in risk data: {missing_fields}")
+                    return False
+                
+            # Check if we have the expected 25 risks
+            if total_count == 25:
+                print(f"   ✅ Correct number of risks (25) returned")
+            else:
+                print(f"   ⚠️ Expected 25 risks, got {total_count}")
+                
+            return True
+        return False
+
+    def test_get_risks_by_category(self):
+        """Test getting risks filtered by category"""
+        success, response = self.run_test(
+            "Get Risks by Category (people)",
+            "GET",
+            "risks",
+            200,
+            data={"category": "people"}
+        )
+        
+        if success and 'risks' in response:
+            risks_count = len(response['risks'])
+            print(f"   Retrieved {risks_count} risks in 'people' category")
+            
+            # Verify all returned risks are in the people category
+            if risks_count > 0:
+                people_risks = [r for r in response['risks'] if r.get('category') == 'people']
+                if len(people_risks) == risks_count:
+                    print(f"   ✅ All risks correctly filtered to 'people' category")
+                    return True
+                else:
+                    print(f"   ❌ Category filtering failed - found mixed categories")
+                    return False
+            return True
+        return False
+
+    def test_get_risk_by_id(self):
+        """Test getting a specific risk by ID"""
+        success, response = self.run_test(
+            "Get Risk by ID (risk_001)",
+            "GET",
+            "risks/risk_001",
+            200
+        )
+        
+        if success and 'id' in response:
+            risk_id = response['id']
+            risk_title = response.get('title', 'Unknown')
+            print(f"   Retrieved risk: {risk_id} - {risk_title}")
+            
+            # Verify required fields
+            required_fields = ['id', 'category', 'title', 'description', 'controls', 'references']
+            missing_fields = [field for field in required_fields if field not in response]
+            if missing_fields:
+                print(f"   ❌ Missing required fields: {missing_fields}")
+                return False
+                
+            print(f"   ✅ Risk details complete with all required fields")
+            return True
+        return False
+
+    def test_get_nonexistent_risk(self):
+        """Test getting a non-existent risk (should return 404)"""
+        success, response = self.run_test(
+            "Get Non-existent Risk (should return 404)",
+            "GET",
+            "risks/risk_999",
+            404
+        )
+        
+        if success:
+            print(f"   ✅ Correctly returned 404 for non-existent risk")
+            return True
+        return False
+
+    def test_calculate_risk_score(self):
+        """Test risk score calculation endpoint"""
+        test_data = {
+            "likelihood": "possible",
+            "consequence": "significant"
+        }
+        
+        success, response = self.run_test(
+            "Calculate Risk Score",
+            "POST",
+            "risks/calculate",
+            200,
+            data=test_data
+        )
+        
+        if success and 'risk_score' in response:
+            risk_score = response['risk_score']
+            print(f"   Calculated risk score: {risk_score}")
+            
+            # Verify response structure
+            expected_fields = ['score', 'rating', 'color', 'action']
+            missing_fields = [field for field in expected_fields if field not in risk_score]
+            if missing_fields:
+                print(f"   ❌ Missing fields in risk score: {missing_fields}")
+                return False
+                
+            print(f"   ✅ Risk calculation: {risk_score['rating']} (Score: {risk_score['score']})")
+            return True
+        return False
+
+    def test_calculate_risk_invalid_data(self):
+        """Test risk calculation with invalid data (should return 400)"""
+        test_data = {
+            "likelihood": "invalid_level",
+            "consequence": "also_invalid"
+        }
+        
+        success, response = self.run_test(
+            "Calculate Risk with Invalid Data (should return 400)",
+            "POST",
+            "risks/calculate",
+            400,
+            data=test_data
+        )
+        
+        if success:
+            print(f"   ✅ Correctly returned 400 for invalid risk data")
+            return True
+        return False
+
 def main():
     print("🚦 SafeRoadWorks API Testing Suite")
     print("=" * 50)
