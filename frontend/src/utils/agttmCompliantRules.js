@@ -878,34 +878,6 @@ export class AGTTMCompliantPlacement {
     };
   }
 
-  /**
-   * Calculate AGTTM-compliant bilateral device placement
-   */
-  calculateAGTTMCompliantPlacement(workZoneData, roadGeometry) {
-    const devices = [];
-    
-    // Determine work zone category
-    const category = this.determineWorkZoneCategory(workZoneData, roadGeometry);
-    
-    // Analyze road geometry for bilateral feasibility
-    const geometryAnalysis = this.analyzeRoadGeometryAGTTM(roadGeometry, category);
-    
-    // Generate bilateral advance warning signs
-    devices.push(...this.placeBilateralAdvanceWarnings(workZoneData, geometryAnalysis, category));
-    
-    // Generate bilateral regulatory signs
-    devices.push(...this.placeBilateralRegulatoryDevices(workZoneData, geometryAnalysis, category));
-    
-    // Generate delineation devices with AGTTM spacing
-    devices.push(...this.placeDelineationDevicesAGTTM(workZoneData, geometryAnalysis));
-    
-    // Generate bilateral end-of-work signs
-    devices.push(...this.placeBilateralEndSigns(workZoneData, geometryAnalysis));
-    
-    // Validate all placements against AGTTM standards
-    return this.validateAGTTMPlacements(devices, geometryAnalysis, category);
-  }
-
   determineWorkZoneCategory(workZoneData, roadGeometry) {
     const trafficVolume = roadGeometry.traffic_volume || 15000;
     const speedLimit = roadGeometry.speed_limit || 60;
