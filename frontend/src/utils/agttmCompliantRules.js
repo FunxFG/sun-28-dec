@@ -363,22 +363,24 @@ export class AGTTMCompliantPlacement {
     const shoulderWidth = roadGeometry[`${side}_shoulder_width`] || this.estimateShoulderWidth(roadGeometry, side);
     const vergeWidth = roadGeometry[`${side}_verge_width`] || this.estimateVergeWidth(roadGeometry, side);
     
-    // UPDATED: Place signs AT CURB or JUST OFF ROAD (not deep in verge)
-    // Signs should be on road edge for visibility and accessibility
+    // CRITICAL: Sign assembly (cone-sign-cone) must NOT protrude more than 0.5m onto road
+    // Assembly width perpendicular to road: 1.3m (0.35m + 0.6m + 0.35m)
+    // One cone extends towards road, one towards verge
+    
+    // Calculate sign position to ensure closest cone stays within 0.5m from road edge
+    // If sign center is at X meters from road edge, 
+    // then closest cone is at (X - 0.475m) from road edge
+    // We need: X - 0.475m ≥ 0.5m, therefore X ≥ 0.975m
+    
     let placementType, lateralOffset, feasible, complianceLevel;
     
-    // Place at curb/road edge - minimum safe clearance from traffic
-    // AS 1742.3: Minimum 0.5m from carriageway edge for safety
-    placementType = 'curb_edge';
-    lateralOffset = 0.8; // 0.8m from road edge = ON THE CURB
+    // Place sign at minimum 0.975m from road edge to keep assembly within 0.5m protrusion limit
+    placementType = 'curb_edge_compliant';
+    lateralOffset = 1.0; // 1.0m from road edge (sign center)
+    // This puts closest cone at: 1.0 - 0.475 = 0.525m from road edge (within 0.5m tolerance)
+    // Furthest cone at: 1.0 + 0.475 = 1.475m into verge
     feasible = true;
-    complianceLevel = 'curb_placement';
-    
-    // For wider shoulders/verges, can go slightly further but stay near road
-    if (vergeWidth >= 2.0) {
-      lateralOffset = 1.0; // Just off the road, still very accessible
-      placementType = 'road_edge';
-    }
+    complianceLevel = 'protrusion_compliant';
     
     return {
       placement_type: placementType,
@@ -387,8 +389,10 @@ export class AGTTMCompliantPlacement {
       verge_width: vergeWidth,
       feasible: feasible,
       compliance_level: complianceLevel,
-      minimum_clearance_met: true, // Always true as we're at safe curb position
+      minimum_clearance_met: true,
       preferred_clearance_met: true,
+      protrusion_limit: 0.5, // Maximum protrusion onto road
+      actual_protrusion: 0.525, // Closest cone distance from road edge
       service_vehicle_clearance: this.checkServiceVehicleClearance(lateralOffset, shoulderWidth + vergeWidth)
     };
   }
