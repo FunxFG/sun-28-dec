@@ -400,72 +400,73 @@ export class AGTTMCompliantPlacement {
 
   /**
    * Add protective cones on either side of a sign
-   * CORRECTED: Cone → Sign → Cone in LINEAR arrangement along road
-   * Cones immediately adjacent to sign edges (NO SPACE between)
+   * CORRECT: Sign perpendicular to road edge, cones on LEFT and RIGHT sides
+   * Layout when facing sign: Cone - Sign - Cone (NOT front/back)
    */
   addProtectiveCones(signPosition, bearing, signId, side) {
     const cones = [];
     
     // Sign dimensions
     const signWidth = 0.6; // 600mm standard sign width
-    const coneWidth = 0.35; // 350mm cone base width
+    const coneWidth = 0.35; // 350mm cone base
     
-    // Calculate spacing: cone edge to sign edge (immediately adjacent)
-    const distanceToSignEdge = (signWidth / 2) + (coneWidth / 2);
+    // Distance from sign center to cone center (immediately adjacent)
+    const distanceToSignEdge = (signWidth / 2) + (coneWidth / 2); // 0.475m
     
-    // Cone BEFORE the sign (upstream in traffic direction)
-    // Positioned along road direction, touching sign's front edge
-    const coneBefore = this.calculatePosition(
+    // Sign is perpendicular to road (facing traffic)
+    // Cones are on LEFT and RIGHT sides when looking at sign from road
+    
+    // Cone on LEFT side of sign (when facing sign from road)
+    const coneLeft = this.calculatePosition(
       signPosition.lat,
       signPosition.lng,
-      bearing + 180, // Backward/upstream direction
+      bearing - 90, // Left side perpendicular to traffic flow
       distanceToSignEdge // Immediately adjacent to sign edge
     );
     
     cones.push({
-      id: `cone_before_${signId}`,
+      id: `cone_left_${signId}`,
       device_type: 'delineation',
       device_name: 'Traffic Cone 700mm',
-      position_lat: coneBefore.lat,
-      position_lng: coneBefore.lng,
+      position_lat: coneLeft.lat,
+      position_lng: coneLeft.lng,
       properties: {
         device_code: 'D5-1',
         cone_size: '700mm',
         protecting_device: signId,
-        position: 'before_sign',
+        position: 'left_of_sign',
         side: side,
         spacing_from_sign: '0m',
-        arrangement: 'linear_along_road',
+        arrangement: 'perpendicular_either_side',
         auto_placed: true,
-        purpose: 'Sign protection - upstream position'
+        purpose: 'Sign protection - left side'
       }
     });
     
-    // Cone AFTER the sign (downstream in traffic direction)
-    // Positioned along road direction, touching sign's rear edge
-    const coneAfter = this.calculatePosition(
+    // Cone on RIGHT side of sign (when facing sign from road)
+    const coneRight = this.calculatePosition(
       signPosition.lat,
       signPosition.lng,
-      bearing, // Forward/downstream direction
+      bearing + 90, // Right side perpendicular to traffic flow
       distanceToSignEdge // Immediately adjacent to sign edge
     );
     
     cones.push({
-      id: `cone_after_${signId}`,
+      id: `cone_right_${signId}`,
       device_type: 'delineation',
       device_name: 'Traffic Cone 700mm',
-      position_lat: coneAfter.lat,
-      position_lng: coneAfter.lng,
+      position_lat: coneRight.lat,
+      position_lng: coneRight.lng,
       properties: {
         device_code: 'D5-1',
         cone_size: '700mm',
         protecting_device: signId,
-        position: 'after_sign',
+        position: 'right_of_sign',
         side: side,
         spacing_from_sign: '0m',
-        arrangement: 'linear_along_road',
+        arrangement: 'perpendicular_either_side',
         auto_placed: true,
-        purpose: 'Sign protection - downstream position'
+        purpose: 'Sign protection - right side'
       }
     });
     
