@@ -363,24 +363,51 @@ export class AGTTMCompliantPlacement {
     const shoulderWidth = roadGeometry[`${side}_shoulder_width`] || this.estimateShoulderWidth(roadGeometry, side);
     const vergeWidth = roadGeometry[`${side}_verge_width`] || this.estimateVergeWidth(roadGeometry, side);
     
-    // CRITICAL: Sign assembly (cone-sign-cone) must NOT protrude more than 0.5m onto road
-    // Assembly width perpendicular to road: 1.3m (0.35m + 0.6m + 0.35m)
-    // One cone extends towards road, one towards verge
-    
-    // Calculate sign position to ensure closest cone stays within 0.5m from road edge
-    // If sign center is at X meters from road edge, 
-    // then closest cone is at (X - 0.475m) from road edge
-    // We need: X - 0.475m ≥ 0.5m, therefore X ≥ 0.975m
+    // AS 1742.3 STANDARD CLEARANCES
+    // Verge placement (preferred): 2.0-5.0m from carriageway edge
+    // Shoulder placement: 0.5-1.0m from travel lane edge
     
     let placementType, lateralOffset, feasible, complianceLevel;
     
-    // Place sign at minimum 0.975m from road edge to keep assembly within 0.5m protrusion limit
-    placementType = 'curb_edge_compliant';
-    lateralOffset = 1.0; // 1.0m from road edge (sign center)
-    // This puts closest cone at: 1.0 - 0.475 = 0.525m from road edge (within 0.5m tolerance)
-    // Furthest cone at: 1.0 + 0.475 = 1.475m into verge
-    feasible = true;
-    complianceLevel = 'protrusion_compliant';
+    // Check verge placement first (AS 1742.3 preferred method)
+    if (vergeWidth >= clearanceSpecs.verge.minimum) {
+      if (vergeWidth >= clearanceSpecs.verge.preferred) {
+        // Optimal verge placement
+        placementType = 'verge';
+        lateralOffset = clearanceSpecs.verge.preferred; // 3.0m from carriageway edge
+        feasible = true;
+        complianceLevel = 'full_compliance';
+      } else {
+        // Minimum verge placement
+        placementType = 'verge';
+        lateralOffset = clearanceSpecs.verge.minimum; // 2.0m from carriageway edge
+        feasible = true;
+        complianceLevel = 'minimum_compliance';
+      }
+    }
+    // Check shoulder placement (when verge insufficient)
+    else if (shoulderWidth >= clearanceSpecs.shoulder.minimum_width_required) {
+      if (shoulderWidth >= 2.0) {
+        // Preferred shoulder placement
+        placementType = 'shoulder';
+        lateralOffset = clearanceSpecs.shoulder.preferred; // 1.0m from travel lane edge
+        feasible = true;
+        complianceLevel = 'shoulder_preferred';
+      } else {
+        // Minimum shoulder placement
+        placementType = 'shoulder';
+        lateralOffset = clearanceSpecs.shoulder.minimum; // 0.5m from travel lane edge
+        feasible = true;
+        complianceLevel = 'shoulder_minimum';
+      }
+    }
+    // Constrained placement (non-compliant)
+    else {
+      placementType = 'constrained';
+      lateralOffset = Math.max(0.5, shoulderWidth - 0.2); // Minimum safe distance
+      feasible = false;
+      complianceLevel = 'non_compliant';
+    }
     
     return {
       placement_type: placementType,
@@ -389,11 +416,11 @@ export class AGTTMCompliantPlacement {
       verge_width: vergeWidth,
       feasible: feasible,
       compliance_level: complianceLevel,
-      minimum_clearance_met: true,
-      preferred_clearance_met: true,
-      protrusion_limit: 0.5, // Maximum protrusion onto road
-      actual_protrusion: 0.525, // Closest cone distance from road edge
-      service_vehicle_clearance: this.checkServiceVehicleClearance(lateralOffset, shoulderWidth + vergeWidth)
+      minimum_clearance_met: lateralOffset >= clearanceSpecs.verge.minimum || 
+                           lateralOffset >= clearanceSpecs.shoulder.minimum,
+      preferred_clearance_met: lateralOffset >= clearanceSpecs.verge.preferred,
+      service_vehicle_clearance: this.checkServiceVehicleClearance(lateralOffset, shoulderWidth + vergeWidth),
+      as1742_reference: 'AS 1742.3 Section 3.4'
     };
   }
 
