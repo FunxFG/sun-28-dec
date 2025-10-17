@@ -345,12 +345,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Integration of RiskMatrixInteractive into PlanEditor"
+    - "Auto-placement functionality verification complete"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
-    - "Plan Editor with Google Maps"
   test_all: false
-  test_priority: "integration_verification"
+  test_priority: "post_fix_verification"
 
 agent_communication:
   - agent: "main"
