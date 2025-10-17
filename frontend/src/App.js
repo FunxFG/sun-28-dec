@@ -68,6 +68,12 @@ function App() {
             } 
           />
           <Route 
+            path="/risk-test" 
+            element={
+              user ? <RiskMatrixInteractive formData={{}} setFormData={() => {}} onNext={() => {}} /> : <Navigate to="/auth" />
+            } 
+          />
+          <Route 
             path="/" 
             element={<Navigate to={user ? "/dashboard" : "/auth"} />} 
           />
