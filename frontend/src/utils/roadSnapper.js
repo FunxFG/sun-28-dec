@@ -24,11 +24,18 @@ class RoadSnapper {
     
     // Check cache first
     if (this.snapCache.has(cacheKey)) {
+      console.log('Using cached snap result for:', cacheKey);
       return this.snapCache.get(cacheKey);
     }
 
+    // FOR NOW: Use fallback method directly (Google Roads API may need special permissions)
+    console.log('Snapping to road using fallback method for:', lat, lng);
+    const fallbackResult = this.fallbackSnapToRoad(lat, lng);
+    this.snapCache.set(cacheKey, fallbackResult);
+    return fallbackResult;
+
+    /* DISABLED: Google Roads API (requires API key with Roads API enabled)
     try {
-      // Use Google Roads API to snap to nearest road
       const response = await fetch(
         `https://roads.googleapis.com/v1/snapToRoads?path=${lat},${lng}&interpolate=true&key=${googleMapsApiKey}`
       );
@@ -44,7 +51,6 @@ class RoadSnapper {
         const snappedPoint = data.snappedPoints[0];
         const roadLocation = snappedPoint.location;
         
-        // Calculate road bearing (direction)
         const bearing = await this.calculateRoadBearing(
           roadLocation.latitude,
           roadLocation.longitude,
@@ -55,23 +61,22 @@ class RoadSnapper {
           lat: roadLocation.latitude,
           lng: roadLocation.longitude,
           roadBearing: bearing,
-          roadWidth: 7.0, // Default 7m road width
+          roadWidth: 7.0,
           snappedFromProperty: true,
           offsetDistance: this.calculateDistance(lat, lng, roadLocation.latitude, roadLocation.longitude)
         };
 
-        // Cache the result
         this.snapCache.set(cacheKey, result);
         return result;
       }
 
-      // If Roads API returns no results, use fallback
       return this.fallbackSnapToRoad(lat, lng);
 
     } catch (error) {
       console.error('Road snapping error:', error);
       return this.fallbackSnapToRoad(lat, lng);
     }
+    */
   }
 
   /**
