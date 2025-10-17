@@ -826,6 +826,77 @@ async def get_plan_risk_assessment(plan_id: str, credentials: HTTPAuthorizationC
         raise HTTPException(status_code=500, detail=str(e))
 
 # ==========================================
+# Risk Registry Endpoints
+# ==========================================
+
+@api_router.get("/risks")
+async def get_risks(category: str = None):
+    """
+    Get comprehensive risk registry for roadwork traffic management
+    Optional category filter: people, information, property, reputation, financial, capability
+    """
+    try:
+        risks = get_risk_registry()
+        
+        if category:
+            filtered_risks = [r for r in risks if r.get('category') == category]
+            return {
+                "category": category,
+                "risks": filtered_risks,
+                "count": len(filtered_risks)
+            }
+        
+        return {
+            "categories": RISK_CATEGORIES,
+            "risks": risks,
+            "total_risks": len(risks),
+            "likelihood_levels": LIKELIHOOD_LEVELS,
+            "consequence_levels": CONSEQUENCE_LEVELS
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/risks/{risk_id}")
+async def get_risk_details(risk_id: str):
+    """
+    Get detailed information for a specific risk by ID
+    """
+    try:
+        risks = get_risk_registry()
+        risk = next((r for r in risks if r.get('id') == risk_id), None)
+        
+        if not risk:
+            raise HTTPException(status_code=404, detail=f"Risk {risk_id} not found")
+        
+        return risk
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/risks/calculate")
+async def calculate_risk(risk_data: dict):
+    """
+    Calculate risk score based on likelihood and consequence
+    Request body example:
+    {
+        "likelihood": "possible",
+        "consequence": "significant"
+    }
+    """
+    try:
+        score = calculate_risk_score(
+            risk_data.get('likelihood'),
+            risk_data.get('consequence')
+        )
+        return {
+            "likelihood": risk_data.get('likelihood'),
+            "consequence": risk_data.get('consequence'),
+            "risk_score": score
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 # Device Library Endpoints
 # ==========================================
 
