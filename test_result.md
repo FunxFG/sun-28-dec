@@ -304,7 +304,7 @@ frontend:
   - task: "RiskMatrixInteractive component"
     implemented: true
     working: true
-    file: "frontend/src/components/RiskMatrixInteractive.js"
+    file: "frontend/src/components/RiskMatrixInteractive.js, frontend/src/components/PlanEditor.js"
     stuck_count: 0
     priority: "high"
     needs_retesting: false
@@ -315,6 +315,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "✅ COMPREHENSIVE TESTING PASSED - ALL FEATURES WORKING! Successfully tested RiskMatrixInteractive component via temporary /risk-test route. API Integration: Successfully fetches all 50 risks from /api/risks endpoint with proper data structure. Filtering: Category filtering works (Traffic Control-Static/Mobile/Intersections, Environment & Lighting, Vulnerable Road Users, etc.), Risk level filtering operational (High, Medium, Moderate, Low). Search: Functional search by hazard/site type. UI Features: Risk selection with checkboxes, expandable risk details showing 5-level control hierarchy (Elimination, Substitution, Engineering, Administrative, PPE), color-coded risk ratings (High=orange, Medium=yellow, Low=green). Views: Both List view and Matrix view (5x5 grid) working perfectly - matrix shows proper likelihood vs consequence distribution with risk counts (22 Medium, 5 High, etc.). Actions: Export CSV and Save & Continue buttons present and functional. Professional Austroads-compliant styling with proper state management. Component ready for integration into main PlanEditor workflow."
+      - working: true
+        agent: "main"
+        comment: "✅ INTEGRATION COMPLETE - Risk assessment fully integrated into PlanEditor! Added RiskMatrixInteractive component as new section in Plan Editor between Device Library and Placed Devices. Component properly imports, renders all 50 risks with color-coded ratings (High=orange, Moderate=yellow), shows categories (Traffic Control, Environment & Lighting, Signs & Devices, Health & Hygiene), includes filters (All Categories, All Levels), List/Matrix view toggle, Export CSV button, and Save & Continue (0 Risks) button. Visual verification confirmed professional styling matches Austroads TMP application. State management integrated with formData.risk_assessment. Ready for end-to-end testing."
 
 metadata:
   created_by: "main_agent"
