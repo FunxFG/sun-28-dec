@@ -412,6 +412,18 @@ frontend:
         agent: "testing"
         comment: "🎉 COMPREHENSIVE TMP AGTTM RULES + NEW SECTIONS TESTING COMPLETE - ALL SUCCESS CRITERIA MET! Conducted extensive testing of all AGTTM rules updates and new TMP form sections as requested in review. ✅ TEST 1 - NEW FORM SECTIONS RENDER: Successfully verified ALL 22+ sections render without errors including all 7 NEW TMP sections (Project Overview, Traffic Assessment, Site Assessment, Safety Plan & WHS Management, Implementation Plan, Monitoring & Inspection, Management Review). Form scrolls smoothly through all sections with professional Austroads styling. ✅ TEST 2 - AGTTM CANONICAL CALCULATIONS: Verified new canonical formulas implemented correctly for Adelaide CBD route (King William St to Pulteney St) with expected calculations: Advance warning 60-70m (NEW canonical, not old 100-150m), Cone spacing 5m for ≤60km/h (NEW canonical, not old 10-15m), Taper length ~40m (L=WS formula), Buffer zone 30m (NEW canonical), Controller clearance 1.5m minimum. Auto-Place Devices button functional with AGTTM compliance. ✅ TEST 3 - ALL NEW SECTION FIELDS ACCEPT INPUT: Comprehensive testing of all 7 new sections confirmed input acceptance: Project Overview (location description, project purpose), Traffic Assessment (AADT 25000, 85th percentile speed), Site Assessment (road geometry, sight distances), Safety Plan (WHS manager, safety responsibilities), Implementation (installation sequence, TGS references), Monitoring (daily inspection checkbox, frequency), Management Review (review frequency, variation procedures). ✅ TEST 4 - SAVE FUNCTIONALITY: Save button present, accessible, and operational with form data persistence. ✅ OVERALL ASSESSMENT: All success criteria achieved - 22+ sections render without errors, 7 NEW sections visible and functional, all input fields accept data, AGTTM calculations use new canonical formulas, form scrolls smoothly, save functionality works, no critical JavaScript errors detected. The comprehensive AGTTM rules updates and new TMP sections implementation is fully operational for production use."
 
+  - task: "TMP Auto-Populator - Frontend CORS Fix"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/utils/tmpAutoPopulator.js"
+    stuck_count: 0
+    priority: "critical"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Updated tmpAutoPopulator.js to use backend proxy endpoints instead of direct Google Places API and OpenWeatherMap API calls. Changed fetchRealEmergencyServices() and generateEnvironmentalConditions() methods to call /api/proxy/geocode, /api/proxy/places/nearby, /api/proxy/places/details, and /api/proxy/weather/forecast. This fixes CORS errors that were blocking emergency services and weather data auto-population."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
