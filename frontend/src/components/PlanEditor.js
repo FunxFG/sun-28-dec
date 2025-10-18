@@ -948,6 +948,16 @@ export default function PlanEditor({ user, onLogout }) {
                   PDF
                 </Button>
               )}
+              {formData.devices.length > 0 && (
+                <Button
+                  variant="outline"
+                  onClick={handleDownloadProfessionalTGS}
+                  className="border-blue-300 text-blue-700 hover:bg-blue-50"
+                >
+                  <FileImage className="w-4 h-4 mr-2" />
+                  TGS Drawing
+                </Button>
+              )}
             </div>
           </div>
         </div>
