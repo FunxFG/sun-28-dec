@@ -689,24 +689,14 @@ def main():
     
     tester = SafeRoadWorksAPITester()
     
-    # Test sequence
+    # Test sequence - Focus on OSM road-data endpoint testing as requested
     tests = [
         ("User Registration", tester.test_user_registration),
-        ("User Login", tester.test_user_login),
         ("Geocoding API", tester.test_geocoding),
-        ("Road Data API", tester.test_road_data),
-        ("Create Traffic Plan", tester.test_create_plan),
-        ("Get User Plans", tester.test_get_plans),
-        ("Get Single Plan", tester.test_get_single_plan),
-        ("Update Plan", tester.test_update_plan),
-        ("PDF Generation", tester.test_pdf_generation),
-        ("Delete Plan", tester.test_delete_plan),
-        ("Get All Risks", tester.test_get_all_risks),
-        ("Get Risks by Category", tester.test_get_risks_by_category),
-        ("Get Risk by ID", tester.test_get_risk_by_id),
-        ("Get Non-existent Risk", tester.test_get_nonexistent_risk),
-        ("Calculate Risk Score", tester.test_calculate_risk_score),
-        ("Calculate Risk Invalid Data", tester.test_calculate_risk_invalid_data)
+        ("Road Data API - Adelaide CBD (OSM)", tester.test_road_data_osm_adelaide_cbd),
+        ("Road Data API - Brisbane (OSM)", tester.test_road_data_osm_brisbane),
+        ("Road Data API - Highway Route (OSM)", tester.test_road_data_osm_highway),
+        ("Road Data API - Original", tester.test_road_data),
     ]
     
     # Run all tests
