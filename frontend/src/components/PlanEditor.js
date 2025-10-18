@@ -1200,6 +1200,18 @@ export default function PlanEditor({ user, onLogout }) {
               </CardContent>
             </Card>
 
+            {/* Section 4: Traffic Assessment */}
+            <TrafficAssessmentSection 
+              formData={formData} 
+              handleInputChange={handleInputChange} 
+            />
+
+            {/* Section 5: Site Assessment */}
+            <SiteAssessmentSection 
+              formData={formData} 
+              handleInputChange={handleInputChange} 
+            />
+
             {/* Road Occupancy */}
             <Card>
               <CardHeader>
