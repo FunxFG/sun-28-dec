@@ -339,8 +339,41 @@ export default function PlanEditor({ user, onLogout }) {
       const roadDataResponse = await fetch(`${API}/road-data?start_address=${encodeURIComponent(formData.work_details.start_address)}&end_address=${encodeURIComponent(formData.work_details.end_address)}`);
       const roadData = await roadDataResponse.json();
 
-      // Google Maps API key for road snapping
+      // Google Maps API key for road snapping and detours
       const GOOGLE_MAPS_API_KEY = 'AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs';
+
+      // Check if road closure requires detour routing
+      const isRoadClosure = formData.road_occupancy?.complete_road_closure || 
+                           formData.control_measures?.detour;
+      
+      let detourData = null;
+      if (isRoadClosure) {
+        toast.info('Road closure detected - calculating detour routes...');
+        
+        // Calculate detour routes
+        const DetourRouter = (await import('../utils/detourRouter.js')).default;
+        const detourRouter = new DetourRouter(GOOGLE_MAPS_API_KEY);
+        
+        const closureData = {
+          start_lat: startCoords.lat,
+          start_lng: startCoords.lng,
+          end_lat: endCoords.lat,
+          end_lng: endCoords.lng,
+          closure_point: {
+            lat: (startCoords.lat + endCoords.lat) / 2,
+            lng: (startCoords.lng + endCoords.lng) / 2
+          }
+        };
+        
+        try {
+          detourData = await detourRouter.calculateDetourRoutes(closureData);
+          console.log('Detour routes calculated:', detourData);
+          toast.success(`Detour routes: Vehicle ${detourData.vehicle_detour.distance}, Pedestrian ${detourData.pedestrian_detour.distance}`);
+        } catch (error) {
+          console.error('Detour calculation failed:', error);
+          toast.warning('Could not calculate detours - continuing with standard placement');
+        }
+      }
 
       // Calculate automatic device placement using AGTTM-compliant rules
       // NOW with road snapping to place devices on road/curb, NOT on property
@@ -375,6 +408,13 @@ export default function PlanEditor({ user, onLogout }) {
       console.log('Auto-placement complete. Devices returned:', autoDevices);
       console.log('Device count:', autoDevices?.length || 0);
 
+      // Add detour signs if road closure
+      let allDevices = autoDevices || [];
+      if (detourData && detourData.detour_signs) {
+        console.log(`Adding ${detourData.detour_signs.length} detour signs`);
+        allDevices = [...allDevices, ...detourData.detour_signs];
+      }
+
       // Generate TGS with precise measurements
       const tgsGenerator = await import('../utils/tgsDrawingGenerator.js');
       const tgsPackage = tgsGenerator.default ? 
@@ -394,12 +434,12 @@ export default function PlanEditor({ user, onLogout }) {
         project_name: formData.plan_name || 'Traffic Management Plan'
       };
       
-      const tgsData = tgsPackage.generateTGSPackage(formData, autoDevices, mapDataForTGS);
+      const tgsData = tgsPackage.generateTGSPackage(formData, allDevices, mapDataForTGS);
       console.log('TGS Package generated:', tgsData);
       
       // Use devices with precise measurements
       const devicesWithMeasurements = tgsData.detailed_schedule?.devices?.map((scheduleItem, idx) => ({
-        ...autoDevices[idx],
+        ...allDevices[idx],
         measurements: {
           gps_coordinates: {
             latitude: scheduleItem.gps_lat,
@@ -414,7 +454,7 @@ export default function PlanEditor({ user, onLogout }) {
           mounting_height: scheduleItem.mounting_height,
           clearance_from_carriageway: scheduleItem.clearance_from_edge
         }
-      })) || autoDevices;
+      })) || allDevices;
 
       // Update form data with automatically placed devices
       setFormData(prev => ({
@@ -423,7 +463,8 @@ export default function PlanEditor({ user, onLogout }) {
         map_center_lat: startCoords.lat,
         map_center_lng: startCoords.lng,
         road_data: roadData,
-        tgs_data: tgsData // Store TGS package for PDF generation
+        tgs_data: tgsData, // Store TGS package for PDF generation
+        detour_data: detourData // Store detour information
       }));
 
       // Re-initialize map with new devices
@@ -439,11 +480,79 @@ export default function PlanEditor({ user, onLogout }) {
           addDeviceMarker(googleMapRef.current, device);
         });
         
+        // Draw detour routes if available
+        if (detourData) {
+          const DetourRouter = (await import('../utils/detourRouter.js')).default;
+          const detourRouter = new DetourRouter(GOOGLE_MAPS_API_KEY);
+          const polylines = detourRouter.createDetourPolylines(
+            detourData.vehicle_detour,
+            detourData.pedestrian_detour
+          );
+          
+          // Draw polylines on map
+          polylines.forEach(polylineData => {
+            const polyline = new window.google.maps.Polyline({
+              path: polylineData.path,
+              geodesic: true,
+              strokeColor: polylineData.strokeColor,
+              strokeOpacity: polylineData.strokeOpacity,
+              strokeWeight: polylineData.strokeWeight,
+              map: googleMapRef.current
+            });
+            
+            // Add legend info window
+            const infoContent = `
+              <div style="padding: 8px;">
+                <strong>${polylineData.type === 'vehicle' ? '🚗 Vehicle' : '🚶 Pedestrian'} Detour</strong><br>
+                Distance: ${polylineData.distance}<br>
+                Duration: ${polylineData.duration}
+              </div>
+            `;
+            
+            polyline.addListener('click', () => {
+              if (!window.detourInfoWindow) {
+                window.detourInfoWindow = new window.google.maps.InfoWindow();
+              }
+              window.detourInfoWindow.setContent(infoContent);
+              window.detourInfoWindow.setPosition(polylineData.path[Math.floor(polylineData.path.length / 2)]);
+              window.detourInfoWindow.open(googleMapRef.current);
+            });
+            
+            if (!window.detourPolylines) window.detourPolylines = [];
+            window.detourPolylines.push(polyline);
+          });
+          
+          // Draw directional arrows
+          if (detourData.directional_arrows) {
+            detourData.directional_arrows.forEach(arrow => {
+              const arrowMarker = new window.google.maps.Marker({
+                position: arrow.location,
+                map: googleMapRef.current,
+                icon: {
+                  path: window.google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                  scale: arrow.size === 'large' ? 6 : 4,
+                  fillColor: arrow.color,
+                  fillOpacity: 0.8,
+                  strokeWeight: 2,
+                  strokeColor: '#ffffff',
+                  rotation: arrow.angle
+                },
+                title: arrow.instruction
+              });
+              
+              if (!window.detourArrows) window.detourArrows = [];
+              window.detourArrows.push(arrowMarker);
+            });
+          }
+        }
+        
         // Center map on work zone
         googleMapRef.current.setCenter({ lat: startCoords.lat, lng: startCoords.lng });
       }
 
-      toast.success(`Placed ${devicesWithMeasurements.length} devices with precise measurements (AGTTM compliant)`);
+      const totalDevices = devicesWithMeasurements.length;
+      const detourInfo = detourData ? ` | Detours: Vehicle (${detourData.vehicle_detour.distance}), Pedestrian (${detourData.pedestrian_detour.distance})` : '';
+      toast.success(`Placed ${totalDevices} devices with precise measurements${detourInfo}`);
       
       // Log TGS data for debugging
       if (tgsData.detailed_schedule) {
@@ -451,6 +560,11 @@ export default function PlanEditor({ user, onLogout }) {
       }
       if (tgsData.taper_calculations) {
         console.log('📐 Taper Calculations:', tgsData.taper_calculations);
+      }
+      if (detourData) {
+        const detourReport = new (await import('../utils/detourRouter.js')).default(GOOGLE_MAPS_API_KEY);
+        const report = detourReport.generateDetourReport(detourData.vehicle_detour, detourData.pedestrian_detour);
+        console.log('🚧 Detour Report:', report);
       }
       
     } catch (error) {
