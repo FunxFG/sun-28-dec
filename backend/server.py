@@ -313,7 +313,7 @@ async def geocode_address(address: str):
 
 @api_router.get("/road-data")
 async def get_road_data(start_address: str, end_address: str):
-    """Derive comprehensive road data from start and end addresses for Austroads compliance"""
+    """Derive comprehensive road data from start and end addresses using OpenStreetMap"""
     # Get coordinates for both addresses
     start_coords = await geocode_address(start_address)
     end_coords = await geocode_address(end_address)
@@ -328,12 +328,31 @@ async def get_road_data(start_address: str, end_address: str):
     a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlng/2)**2
     distance = 2 * math.asin(math.sqrt(a)) * 6371000  # Earth radius in meters
     
-    # Enhanced road classification based on location analysis
-    # This is a simplified implementation - in production, you'd use actual road data APIs
-    road_classification = determine_road_classification(start_address, end_address)
-    speed_limit = determine_speed_limit(road_classification, start_address)
+    # Fetch actual road data from OpenStreetMap
+    osm_road_data = await fetch_osm_road_data(start_coords["lat"], start_coords["lng"])
+    
+    # Use OSM data if available, otherwise fall back to estimation
+    if osm_road_data:
+        road_classification = osm_road_data.get('road_classification', 'Major Urban Road')
+        speed_limit = osm_road_data.get('speed_limit', 60)
+        road_type = osm_road_data.get('road_type', 'Arterial')
+        road_name = osm_road_data.get('road_name', 'Unknown Road')
+        surface = osm_road_data.get('surface', 'asphalt')
+        lanes = osm_road_data.get('lanes', 2)
+        
+        logger.info(f"OSM data found: {road_name}, {road_classification}, {speed_limit}km/h")
+    else:
+        # Fallback to estimation
+        logger.warning("OSM data not found, using estimation")
+        road_classification = determine_road_classification(start_address, end_address)
+        speed_limit = determine_speed_limit(road_classification, start_address)
+        road_type = determine_road_type(road_classification)
+        road_name = extract_road_name(start_address)
+        surface = 'asphalt'
+        lanes = 2
+    
     traffic_volume = estimate_traffic_volume(road_classification, start_address)
-    governing_body = determine_governing_body(start_address)
+    governing_body = determine_governing_body_from_classification(road_classification, start_address)
     
     return {
         "start_coords": start_coords,
@@ -341,12 +360,182 @@ async def get_road_data(start_address: str, end_address: str):
         "workzone_size": round(distance, 2),
         "traffic_volume": traffic_volume,
         "road_classification": road_classification,
-        "road_type": determine_road_type(road_classification),
+        "road_type": road_type,
+        "road_name": road_name,
         "governing_body": governing_body,
         "speed_limit": speed_limit,
+        "surface": surface,
+        "lanes": lanes,
         "environment": determine_environment(start_address),
-        "austroads_category": determine_austroads_category(road_classification, traffic_volume)
+        "austroads_category": determine_austroads_category(road_classification, traffic_volume),
+        "data_source": "OpenStreetMap" if osm_road_data else "Estimated"
     }
+
+async def fetch_osm_road_data(lat: float, lng: float):
+    """Fetch road data from OpenStreetMap Overpass API"""
+    try:
+        # Overpass API query to get road/highway data near the coordinates
+        overpass_url = "https://overpass-api.de/api/interpreter"
+        
+        # Query for highway/road within 50m radius
+        query = f"""
+        [out:json][timeout:10];
+        (
+          way(around:50,{lat},{lng})["highway"];
+        );
+        out tags;
+        """
+        
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.post(overpass_url, data={"data": query})
+            
+            if response.status_code != 200:
+                logger.error(f"OSM Overpass API error: {response.status_code}")
+                return None
+            
+            data = response.json()
+            
+            if not data.get('elements'):
+                logger.warning("No road data found in OSM")
+                return None
+            
+            # Get the first road element (closest match)
+            road = data['elements'][0]
+            tags = road.get('tags', {})
+            
+            # Extract road information from OSM tags
+            highway_type = tags.get('highway', 'unclassified')
+            osm_name = tags.get('name', 'Unknown Road')
+            osm_maxspeed = tags.get('maxspeed', None)
+            osm_lanes = tags.get('lanes', None)
+            osm_surface = tags.get('surface', 'asphalt')
+            osm_ref = tags.get('ref', '')  # Road reference number (e.g., M1, A1)
+            
+            # Convert OSM highway type to Austroads classification
+            road_classification = convert_osm_to_austroads_classification(highway_type, osm_ref)
+            
+            # Parse speed limit
+            speed_limit = parse_osm_speed_limit(osm_maxspeed, highway_type)
+            
+            # Parse lanes
+            lanes = int(osm_lanes) if osm_lanes and osm_lanes.isdigit() else estimate_lanes(highway_type)
+            
+            # Determine road type for AGTTM
+            road_type = get_road_type_from_highway(highway_type)
+            
+            logger.info(f"OSM road found: {osm_name} ({highway_type}), {speed_limit}km/h, {lanes} lanes")
+            
+            return {
+                'road_classification': road_classification,
+                'road_type': road_type,
+                'road_name': osm_name,
+                'speed_limit': speed_limit,
+                'lanes': lanes,
+                'surface': osm_surface,
+                'highway_type': highway_type,
+                'reference': osm_ref
+            }
+            
+    except Exception as e:
+        logger.error(f"Error fetching OSM data: {str(e)}")
+        return None
+
+def convert_osm_to_austroads_classification(highway_type: str, ref: str) -> str:
+    """Convert OpenStreetMap highway type to Austroads road classification"""
+    
+    # National Highways (M prefix or specific names)
+    if ref and (ref.startswith('M') or ref.startswith('A')):
+        return "National Highway"
+    
+    # Map OSM highway types to Austroads classifications
+    osm_to_austroads = {
+        'motorway': 'National Highway',
+        'trunk': 'National Highway',
+        'primary': 'Major Urban Arterial',
+        'secondary': 'Major Urban Arterial',
+        'tertiary': 'Urban Collector',
+        'residential': 'Local Street',
+        'unclassified': 'Local Street',
+        'service': 'Local Street',
+        'living_street': 'Local Street'
+    }
+    
+    return osm_to_austroads.get(highway_type, 'Major Urban Road')
+
+def parse_osm_speed_limit(maxspeed: str, highway_type: str) -> int:
+    """Parse OpenStreetMap speed limit tag"""
+    if not maxspeed:
+        # Default speeds based on highway type
+        defaults = {
+            'motorway': 100,
+            'trunk': 100,
+            'primary': 80,
+            'secondary': 70,
+            'tertiary': 60,
+            'residential': 50,
+            'living_street': 40,
+            'service': 40
+        }
+        return defaults.get(highway_type, 60)
+    
+    # Parse speed limit (handle "60", "60 km/h", "60 mph" formats)
+    maxspeed = maxspeed.lower().replace('km/h', '').replace('mph', '').strip()
+    
+    try:
+        speed = int(maxspeed)
+        # If it was in mph, convert to km/h
+        if 'mph' in maxspeed.lower():
+            speed = int(speed * 1.60934)
+        return speed
+    except ValueError:
+        return 60  # Default to 60 km/h
+
+def estimate_lanes(highway_type: str) -> int:
+    """Estimate number of lanes based on highway type"""
+    lane_estimates = {
+        'motorway': 3,
+        'trunk': 2,
+        'primary': 2,
+        'secondary': 2,
+        'tertiary': 2,
+        'residential': 1,
+        'living_street': 1,
+        'service': 1
+    }
+    return lane_estimates.get(highway_type, 2)
+
+def get_road_type_from_highway(highway_type: str) -> str:
+    """Get road type for AGTTM categorization from OSM highway type"""
+    type_mapping = {
+        'motorway': 'Divided Highway',
+        'trunk': 'Divided Highway',
+        'primary': 'Arterial',
+        'secondary': 'Arterial',
+        'tertiary': 'Collector',
+        'residential': 'Local',
+        'unclassified': 'Local',
+        'service': 'Local',
+        'living_street': 'Local'
+    }
+    return type_mapping.get(highway_type, 'Arterial')
+
+def extract_road_name(address: str) -> str:
+    """Extract road name from address string"""
+    # Simple extraction - take first part before comma
+    parts = address.split(',')
+    return parts[0].strip() if parts else 'Unknown Road'
+
+def determine_governing_body_from_classification(classification: str, address: str) -> str:
+    """Determine governing body based on road classification"""
+    if classification == "National Highway":
+        return "National Transport Commission / State Government"
+    elif classification in ["Major Urban Arterial", "Major Urban Road"]:
+        # Check if it's a state-managed arterial
+        if any(state in address.lower() for state in ['highway', 'arterial']):
+            return "State Government (Department of Transport)"
+        return "Local Council"
+    else:
+        return "Local Council"
 
 def determine_road_classification(start_address: str, end_address: str) -> str:
     """Determine road classification based on address analysis"""
