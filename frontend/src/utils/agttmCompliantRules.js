@@ -86,6 +86,46 @@ export class AGTTMCompliantPlacement {
         sign_spacing_minimum: 60      // Minimum 60m between sequential signs
       },
 
+      // Lane taper calculations - AS 1742.3 Section 3.5
+      // Taper length = (Speed limit / 2) * lane width offset
+      taper_calculations: {
+        '≤50kmh': {
+          taper_length: 30,           // 30m minimum taper length
+          taper_rate: 12,             // 1:12 taper ratio
+          cone_spacing: 3             // 3m spacing on taper
+        },
+        '60kmh': {
+          taper_length: 40,           // 40m taper length
+          taper_rate: 15,             // 1:15 taper ratio
+          cone_spacing: 4             // 4m spacing on taper
+        },
+        '70kmh': {
+          taper_length: 50,           // 50m taper length
+          taper_rate: 18,             // 1:18 taper ratio
+          cone_spacing: 5             // 5m spacing on taper
+        },
+        '80kmh': {
+          taper_length: 60,           // 60m taper length
+          taper_rate: 20,             // 1:20 taper ratio
+          cone_spacing: 6             // 6m spacing on taper
+        },
+        '≥90kmh': {
+          taper_length: 90,           // 90m taper length for highway speeds
+          taper_rate: 25,             // 1:25 taper ratio
+          cone_spacing: 6             // 6m spacing on taper
+        }
+      },
+
+      // Buffer zone lengths - AS 1742.3 Section 3.3
+      // Buffer between taper end and work area start
+      buffer_zones: {
+        '≤50kmh': 20,    // 20m buffer
+        '60kmh': 30,     // 30m buffer
+        '70kmh': 40,     // 40m buffer
+        '80kmh': 50,     // 50m buffer
+        '≥90kmh': 60     // 60m buffer for high speed
+      },
+
       // Work zone categories - AGTTM classification
       work_zone_categories: {
         category_1: {
