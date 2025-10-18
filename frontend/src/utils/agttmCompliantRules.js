@@ -759,8 +759,135 @@ export class AGTTMCompliantPlacement {
   }
 
   placeDelineationDevicesExact(workZoneData, analysis) {
-    // Implementation with exact cone spacing
-    return [];
+    const devices = [];
+    const speedKey = this.getSpeedKey(analysis.speed_limit);
+    const taperSpecs = this.agttmRules.taper_calculations[speedKey];
+    const bufferLength = this.agttmRules.buffer_zones[speedKey];
+    
+    // Check if lane closure is required
+    const laneClosureRequired = workZoneData.road_occupancy?.left_lane || 
+                                workZoneData.road_occupancy?.right_lane ||
+                                workZoneData.road_occupancy?.center_lane;
+    
+    if (!laneClosureRequired) {
+      console.log('No lane closure required, skipping taper cones');
+      return devices;
+    }
+    
+    console.log(`Creating lane taper: ${taperSpecs.taper_length}m length, ${taperSpecs.cone_spacing}m spacing`);
+    
+    // Calculate taper start position (before work zone)
+    const taperStartDistance = taperSpecs.taper_length + bufferLength;
+    
+    // Place cones along the taper line
+    const numConesInTaper = Math.ceil(taperSpecs.taper_length / taperSpecs.cone_spacing);
+    
+    for (let i = 0; i <= numConesInTaper; i++) {
+      const distanceAlongTaper = (i / numConesInTaper) * taperSpecs.taper_length;
+      const lateralOffset = (distanceAlongTaper / taperSpecs.taper_length) * 3.5; // 3.5m lane width
+      
+      // Calculate position along road from start
+      const distanceFromStart = taperStartDistance - distanceAlongTaper;
+      const position = this.calculatePositionAlongPath(
+        workZoneData.start_lat,
+        workZoneData.start_lng,
+        workZoneData.end_lat,
+        workZoneData.end_lng,
+        -distanceFromStart / 1000 // Negative to place before start
+      );
+      
+      devices.push({
+        id: `taper_cone_${i}_${Date.now()}`,
+        device_type: 'cone',
+        device_name: 'Traffic Cone 700mm',
+        position_lat: position.lat,
+        position_lng: position.lng,
+        properties: {
+          auto_placed: true,
+          placement_type: 'taper',
+          taper_position: `${i + 1}/${numConesInTaper + 1}`,
+          lateral_offset_exact: lateralOffset.toFixed(2),
+          distance_from_workzone: distanceFromStart.toFixed(2),
+          taper_length: taperSpecs.taper_length,
+          taper_ratio: `1:${taperSpecs.taper_rate}`,
+          cone_spacing: taperSpecs.cone_spacing,
+          agttm_rule: 'as1742_3_taper_delineation',
+          as1742_reference: 'AS 1742.3 Section 3.5 - Lane Taper Requirements'
+        }
+      });
+    }
+    
+    // Place longitudinal cones along work zone edge
+    const workzoneLength = analysis.workzone_size || 100;
+    const longitudinalSpacing = this.agttmRules.device_spacing.cone_spacing[speedKey];
+    const numLongitudinalCones = Math.ceil(workzoneLength / longitudinalSpacing);
+    
+    console.log(`Placing ${numLongitudinalCones} longitudinal cones at ${longitudinalSpacing}m spacing`);
+    
+    for (let i = 0; i < numLongitudinalCones; i++) {
+      const distanceAlongWorkzone = i * longitudinalSpacing;
+      const position = this.calculatePositionAlongPath(
+        workZoneData.start_lat,
+        workZoneData.start_lng,
+        workZoneData.end_lat,
+        workZoneData.end_lng,
+        distanceAlongWorkzone / 1000
+      );
+      
+      devices.push({
+        id: `workzone_cone_${i}_${Date.now()}`,
+        device_type: 'cone',
+        device_name: 'Traffic Cone 700mm',
+        position_lat: position.lat,
+        position_lng: position.lng,
+        properties: {
+          auto_placed: true,
+          placement_type: 'longitudinal',
+          position_in_series: `${i + 1}/${numLongitudinalCones}`,
+          lateral_offset_exact: 3.5, // Edge of closed lane
+          cone_spacing: longitudinalSpacing,
+          distance_along_workzone: distanceAlongWorkzone.toFixed(2),
+          agttm_rule: 'as1742_3_longitudinal_delineation',
+          as1742_reference: 'AS 1742.3 Section 3.4 - Workzone Delineation'
+        }
+      });
+    }
+    
+    // Place end taper cones (transition back to normal traffic)
+    for (let i = 0; i <= numConesInTaper; i++) {
+      const distanceAlongTaper = (i / numConesInTaper) * taperSpecs.taper_length;
+      const lateralOffset = 3.5 - (distanceAlongTaper / taperSpecs.taper_length) * 3.5;
+      
+      const distanceFromEnd = workzoneLength + bufferLength + distanceAlongTaper;
+      const position = this.calculatePositionAlongPath(
+        workZoneData.start_lat,
+        workZoneData.start_lng,
+        workZoneData.end_lat,
+        workZoneData.end_lng,
+        distanceFromEnd / 1000
+      );
+      
+      devices.push({
+        id: `end_taper_cone_${i}_${Date.now()}`,
+        device_type: 'cone',
+        device_name: 'Traffic Cone 700mm',
+        position_lat: position.lat,
+        position_lng: position.lng,
+        properties: {
+          auto_placed: true,
+          placement_type: 'end_taper',
+          taper_position: `${i + 1}/${numConesInTaper + 1}`,
+          lateral_offset_exact: lateralOffset.toFixed(2),
+          distance_from_workzone_end: (distanceFromEnd - workzoneLength).toFixed(2),
+          taper_length: taperSpecs.taper_length,
+          agttm_rule: 'as1742_3_end_taper_delineation',
+          as1742_reference: 'AS 1742.3 Section 3.5 - End Taper Requirements'
+        }
+      });
+    }
+    
+    console.log(`Total delineation devices placed: ${devices.length}`);
+    return devices;
   }
 
   placeBilateralEndSignsExact(workZoneData, analysis) {
