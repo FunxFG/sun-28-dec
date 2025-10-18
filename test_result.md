@@ -227,7 +227,7 @@ frontend:
     implemented: true
     working: false
     file: "frontend/src/components/AuthPage.js"
-    stuck_count: 2
+    stuck_count: 3
     priority: "high"
     needs_retesting: false
     status_history:
@@ -240,6 +240,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "❌ CONFIRMED CRITICAL: Authentication issue persists. Registration form submits but no API response received by frontend. Backend returns 401 errors for subsequent API calls. Frontend response handling in AuthPage.js onLogin callback not triggering properly. Can bypass with localStorage token manipulation to access dashboard and plan editor successfully. This is a frontend-only issue - backend authentication works correctly."
+      - working: false
+        agent: "testing"
+        comment: "❌ PERSISTENT CRITICAL ISSUE: Authentication session persistence broken during comprehensive 12-scenario testing. Manual token bypass allows initial access to dashboard and plan editor, but sessions frequently expire/reset causing page redirects back to auth page. This prevents sustained testing of complete TMP workflows. Backend authentication functional, but frontend session management and response handling requires fix. Authentication bypass method: localStorage.setItem('token', 'jwt_token'); localStorage.setItem('user', JSON.stringify(user_data)); works temporarily but not persistent for extended testing sessions."
 
   - task: "Dashboard and navigation"
     implemented: true
