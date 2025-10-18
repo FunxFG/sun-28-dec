@@ -306,6 +306,54 @@ class SafeRoadWorksAPITester:
             return True
         return False
 
+    def test_road_data_fallback_behavior(self):
+        """Test road data endpoint fallback behavior with remote/rural address"""
+        import time
+        start_time = time.time()
+        
+        success, response = self.run_test(
+            "Road Data API - Fallback Behavior Test",
+            "GET",
+            "road-data",
+            200,
+            data={
+                "start_address": "Remote Rural Road, Outback QLD",
+                "end_address": "Another Remote Location, Outback QLD"
+            }
+        )
+        
+        end_time = time.time()
+        response_time = end_time - start_time
+        
+        if success:
+            print(f"   Response time: {response_time:.2f} seconds")
+            
+            data_source = response.get('data_source')
+            print(f"   Data source: {data_source}")
+            
+            # Should fall back to estimation for remote areas
+            if data_source == "Estimated":
+                print(f"   ✅ Correctly fell back to estimation for remote area")
+            elif data_source == "OpenStreetMap":
+                print(f"   ✅ OSM data available even for remote area")
+            else:
+                print(f"   ⚠️ Unexpected data source: {data_source}")
+            
+            # Verify all required fields are still present
+            required_fields = [
+                'workzone_size', 'road_classification', 'speed_limit', 'road_name', 
+                'lanes', 'surface', 'data_source', 'governing_body', 'austroads_category'
+            ]
+            
+            missing_fields = [field for field in required_fields if field not in response]
+            if missing_fields:
+                print(f"   ❌ Missing required fields in fallback: {missing_fields}")
+                return False
+            
+            print(f"   ✅ All required fields present in fallback response")
+            return True
+        return False
+
     def test_create_plan(self):
         """Test creating a traffic management plan"""
         plan_data = {
