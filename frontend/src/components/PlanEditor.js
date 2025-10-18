@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import austroadsRules from '../utils/austroadsRules';
 import tgsDrawingGenerator from '../utils/tgsDrawingGenerator';
+import { ProfessionalTGSGenerator } from '../utils/professionalTGSGenerator';
 import RiskMatrixInteractive from './RiskMatrixInteractive';
 import { 
   ProjectOverviewSection,
