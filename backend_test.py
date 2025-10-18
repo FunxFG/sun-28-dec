@@ -1452,21 +1452,27 @@ class SafeRoadWorksAPITester:
         return False
 
 def main():
-    print("🚦 Digital Atlas of Australia Integration Testing Suite")
+    print("🚦 Automated Assessment Endpoints Testing Suite")
     print("=" * 60)
     
     tester = SafeRoadWorksAPITester()
     
-    # Test sequence - Focus on Digital Atlas integration as requested in review
+    # Test sequence - Focus on new automated assessment endpoints as requested in review
     tests = [
         ("User Registration", tester.test_user_registration),
         ("Geocoding API", tester.test_geocoding),
-        ("Digital Atlas - Adelaide National Highway", tester.test_digital_atlas_adelaide_national_highway),
-        ("Digital Atlas - Brisbane Arterial Road", tester.test_digital_atlas_brisbane_arterial),
-        ("Digital Atlas - Sydney Local Street", tester.test_digital_atlas_sydney_local_street),
-        ("Digital Atlas - Melbourne Motorway", tester.test_digital_atlas_melbourne_motorway),
-        ("Digital Atlas - Comprehensive Fields", tester.test_digital_atlas_comprehensive_fields),
-        ("Road Data API - OSM Fallback Test", tester.test_road_data_osm_adelaide_cbd),
+        
+        # NEW AUTOMATED ASSESSMENT ENDPOINTS TESTING
+        ("Traffic Assessment - Adelaide CBD", tester.test_traffic_assessment_adelaide_cbd),
+        ("Site Assessment - Adelaide CBD", tester.test_site_assessment_adelaide_cbd),
+        ("Traffic Assessment - Highway Location", tester.test_traffic_assessment_highway_location),
+        ("Assessment Integration Test", tester.test_assessment_integration_consistency),
+        ("Assessment Error Handling", tester.test_assessment_endpoints_error_handling),
+        
+        # Existing road data tests for comparison
+        ("Road Data API - OSM Adelaide CBD", tester.test_road_data_osm_adelaide_cbd),
+        ("Road Data API - OSM Brisbane", tester.test_road_data_osm_brisbane),
+        ("Road Data API - OSM Highway", tester.test_road_data_osm_highway),
     ]
     
     # Run all tests
@@ -1481,7 +1487,7 @@ def main():
     print(f"📊 Final Results: {tester.tests_passed}/{tester.tests_run} tests passed")
     
     if tester.tests_passed == tester.tests_run:
-        print("🎉 All Digital Atlas integration tests passed!")
+        print("🎉 All automated assessment endpoint tests passed!")
         return 0
     else:
         print(f"⚠️  {tester.tests_run - tester.tests_passed} tests failed")
