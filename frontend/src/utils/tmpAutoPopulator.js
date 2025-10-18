@@ -321,17 +321,140 @@ export class TMPAutoPopulator {
   }
 
   /**
-   * Generate environmental conditions
+   * Generate environmental conditions using REAL weather API
    */
   async generateEnvironmentalConditions(address, date) {
-    // TODO: Integrate with weather API
-    return {
-      weather_considerations: 'Works to be suspended in heavy rain (>10mm/hr), high winds (>50km/h), or poor visibility (<100m)',
-      visibility_requirements: 'Minimum 100m visibility required. Additional lighting provided for night works.',
-      rain_contingency: 'Works suspended if heavy rain. All devices secured. Site made safe. Resume when conditions improve.',
-      wind_speed_limit: '50 km/h maximum',
-      temperature_considerations: 'Heat management: Regular breaks, hydration. Cold: Warm clothing, visibility maintained.'
-    };
+    try {
+      // Get coordinates for the address
+      const geocodeResponse = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs`
+      );
+      const geocodeData = await geocodeResponse.json();
+      
+      if (!geocodeData.results || geocodeData.results.length === 0) {
+        throw new Error('Could not geocode address');
+      }
+      
+      const location = geocodeData.results[0].geometry.location;
+      
+      // Fetch REAL weather forecast from OpenWeatherMap
+      const weatherResponse = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${location.lat}&lon=${location.lng}&appid=4d8fb5b93d4af21d66a2948710284366&units=metric`
+      );
+      const weatherData = await weatherResponse.json();
+      
+      // Analyze weather data for the work date
+      const workDate = new Date(date);
+      const relevantForecasts = weatherData.list?.filter(forecast => {
+        const forecastDate = new Date(forecast.dt * 1000);
+        return forecastDate.toDateString() === workDate.toDateString();
+      }) || [];
+      
+      // Calculate average conditions
+      let avgTemp = 0;
+      let maxWindSpeed = 0;
+      let totalRain = 0;
+      let conditions = [];
+      
+      relevantForecasts.forEach(forecast => {
+        avgTemp += forecast.main.temp;
+        maxWindSpeed = Math.max(maxWindSpeed, forecast.wind.speed * 3.6); // Convert m/s to km/h
+        totalRain += forecast.rain?.['3h'] || 0;
+        if (forecast.weather && forecast.weather[0]) {
+          conditions.push(forecast.weather[0].main);
+        }
+      });
+      
+      if (relevantForecasts.length > 0) {
+        avgTemp = Math.round(avgTemp / relevantForecasts.length);
+      }
+      
+      // Generate weather considerations based on REAL data
+      const weatherConsiderations = this.generateWeatherConsiderations(avgTemp, maxWindSpeed, totalRain, conditions);
+      
+      return {
+        weather_considerations: weatherConsiderations,
+        visibility_requirements: conditions.includes('Fog') || conditions.includes('Mist') ? 
+          'Minimum 100m visibility required. Additional lighting and warning signage mandatory due to forecast fog.' :
+          'Minimum 100m visibility required. Additional lighting provided for night works.',
+        rain_contingency: totalRain > 5 ? 
+          `Heavy rain forecast (${totalRain.toFixed(1)}mm expected). Works to be suspended if rainfall exceeds 10mm/hr. Site drainage ensured. All devices secured.` :
+          'Works suspended if heavy rain occurs (>10mm/hr). All devices secured. Site made safe. Resume when conditions improve.',
+        wind_speed_limit: maxWindSpeed > 40 ? 
+          `50 km/h maximum. ALERT: Forecast winds up to ${Math.round(maxWindSpeed)}km/h - monitor closely and suspend if unsafe.` :
+          '50 km/h maximum',
+        temperature_considerations: this.generateTempConsiderations(avgTemp)
+      };
+      
+    } catch (error) {
+      console.error('Error fetching weather data:', error);
+      // Fallback to generic conditions
+      return {
+        weather_considerations: 'Works to be suspended in heavy rain (>10mm/hr), high winds (>50km/h), or poor visibility (<100m)',
+        visibility_requirements: 'Minimum 100m visibility required. Additional lighting provided for night works.',
+        rain_contingency: 'Works suspended if heavy rain. All devices secured. Site made safe. Resume when conditions improve.',
+        wind_speed_limit: '50 km/h maximum',
+        temperature_considerations: 'Heat management: Regular breaks, hydration. Cold: Warm clothing, visibility maintained.'
+      };
+    }
+  }
+
+  /**
+   * Generate weather considerations from real data
+   */
+  generateWeatherConsiderations(temp, windSpeed, rain, conditions) {
+    let considerations = [];
+    
+    // Temperature considerations
+    if (temp > 35) {
+      considerations.push(`High temperature forecast (${temp}°C) - implement heat stress management`);
+    } else if (temp < 5) {
+      considerations.push(`Cold conditions forecast (${temp}°C) - ensure worker warming facilities`);
+    } else {
+      considerations.push(`Moderate temperature expected (${temp}°C)`);
+    }
+    
+    // Wind considerations
+    if (windSpeed > 40) {
+      considerations.push(`Strong winds forecast (up to ${Math.round(windSpeed)}km/h) - secure all devices, monitor continuously`);
+    } else if (windSpeed > 25) {
+      considerations.push(`Moderate winds expected (${Math.round(windSpeed)}km/h) - ensure signs properly secured`);
+    }
+    
+    // Rain considerations
+    if (rain > 5) {
+      considerations.push(`Rain forecast (${rain.toFixed(1)}mm expected) - prepare drainage, have wet weather gear ready`);
+    }
+    
+    // Visibility considerations
+    if (conditions.includes('Fog') || conditions.includes('Mist')) {
+      considerations.push('Fog/mist forecast - additional warning devices and lighting required');
+    }
+    
+    if (conditions.includes('Thunderstorm')) {
+      considerations.push('Thunderstorms possible - have evacuation plan ready, suspend works during lightning');
+    }
+    
+    return considerations.length > 0 ? 
+      considerations.join('. ') + '. Works to be suspended if conditions unsafe.' :
+      'Favorable weather conditions forecast. Standard safety protocols apply.';
+  }
+
+  /**
+   * Generate temperature considerations
+   */
+  generateTempConsiderations(temp) {
+    if (temp > 35) {
+      return `Heat stress protocol: 15min breaks every hour, cool water available, shaded rest area mandatory. Monitor workers for heat exhaustion. Consider rescheduling to cooler hours.`;
+    } else if (temp > 30) {
+      return `Heat management: Regular breaks, hydration stations, sun protection. Adjust work pace as needed.`;
+    } else if (temp < 5) {
+      return `Cold weather protocol: Warm clothing layers, hot beverages available, warm-up breaks. Watch for hypothermia signs. High-vis over warm clothing.`;
+    } else if (temp < 10) {
+      return `Cool conditions: Appropriate warm clothing, regular movement breaks. Ensure high-vis remains visible over layers.`;
+    } else {
+      return `Moderate temperatures: Standard clothing and break schedule. Hydration and sun protection as needed.`;
+    }
   }
 
   /**
