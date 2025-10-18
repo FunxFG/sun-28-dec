@@ -132,16 +132,137 @@ export class TGSDrawingGenerator {
   }
 
   /**
-   * Generate complete TGS drawing package
+   * Generate complete TGS drawing package with precise measurements
    */
   generateTGSPackage(planData, devices, mapData) {
+    // Calculate precise measurements for each device
+    const devicesWithMeasurements = this.calculatePreciseMeasurements(devices, mapData);
+    
     return {
-      interactive_map: this.generateInteractiveMap(devices, mapData),
-      official_drawings: this.generateOfficialTGS(planData, devices, mapData),
-      device_legend: this.generateDeviceLegend(devices),
-      compliance_notes: this.generateComplianceNotes(devices),
-      measurement_annotations: this.generateMeasurementAnnotations(devices)
+      interactive_map: this.generateInteractiveMap(devicesWithMeasurements, mapData),
+      official_drawings: this.generateOfficialTGS(planData, devicesWithMeasurements, mapData),
+      device_legend: this.generateDeviceLegend(devicesWithMeasurements),
+      compliance_notes: this.generateComplianceNotes(devicesWithMeasurements),
+      measurement_annotations: this.generateMeasurementAnnotations(devicesWithMeasurements),
+      detailed_schedule: this.generateDetailedSchedule(devicesWithMeasurements, mapData),
+      taper_calculations: this.generateTaperCalculations(devicesWithMeasurements, mapData)
     };
+  }
+
+  /**
+   * Calculate precise measurements for each device
+   * Returns GPS coordinates, distances, lateral offsets with mm precision
+   */
+  calculatePreciseMeasurements(devices, mapData) {
+    const workzoneStart = { lat: mapData.start_lat, lng: mapData.start_lng };
+    const workzoneEnd = { lat: mapData.end_lat, lng: mapData.end_lng };
+    
+    return devices.map(device => {
+      // Calculate distance from workzone start
+      const distanceFromStart = this.calculateDistance(
+        workzoneStart.lat, workzoneStart.lng,
+        device.position_lat, device.position_lng
+      );
+      
+      // Calculate distance from workzone end
+      const distanceFromEnd = this.calculateDistance(
+        workzoneEnd.lat, workzoneEnd.lng,
+        device.position_lat, device.position_lng
+      );
+      
+      // Calculate perpendicular distance from road centerline
+      const lateralDistance = this.calculatePerpendicularDistance(
+        device.position_lat, device.position_lng,
+        workzoneStart, workzoneEnd
+      );
+      
+      // Determine position description
+      const positionDesc = this.getPositionDescription(
+        distanceFromStart, 
+        distanceFromEnd, 
+        lateralDistance,
+        mapData.workzone_size || 100
+      );
+      
+      return {
+        ...device,
+        measurements: {
+          gps_coordinates: {
+            latitude: device.position_lat.toFixed(8),
+            longitude: device.position_lng.toFixed(8),
+            format: 'WGS84'
+          },
+          distance_from_workzone_start: `${distanceFromStart.toFixed(2)}m`,
+          distance_from_workzone_end: `${distanceFromEnd.toFixed(2)}m`,
+          lateral_offset_from_centerline: `${Math.abs(lateralDistance).toFixed(2)}m`,
+          side_of_road: lateralDistance > 0 ? 'Right (Looking forward)' : 'Left (Looking forward)',
+          position_description: positionDesc,
+          elevation: 'Ground Level', // Could be enhanced with actual elevation data
+          mounting_height: device.properties?.mounting_height_exact || 'N/A',
+          clearance_from_carriageway: device.properties?.lateral_offset_exact || 'N/A',
+          
+          // AS 1742.3 compliance measurements
+          compliance_measurements: {
+            minimum_clearance_met: device.properties?.minimum_clearance_met || false,
+            clearance_type: device.properties?.placement_type || 'Unknown',
+            agttm_category: device.properties?.agttm_rule || 'Standard',
+            as1742_reference: device.properties?.as1742_reference || 'AS 1742.3'
+          }
+        }
+      };
+    });
+  }
+
+  /**
+   * Get human-readable position description
+   */
+  getPositionDescription(distFromStart, distFromEnd, lateral, workzoneSize) {
+    if (distFromStart < 0) {
+      return `${Math.abs(distFromStart).toFixed(1)}m BEFORE workzone start (Advance warning)`;
+    } else if (distFromStart > workzoneSize) {
+      return `${(distFromStart - workzoneSize).toFixed(1)}m AFTER workzone end (Termination)`;
+    } else {
+      return `${distFromStart.toFixed(1)}m from workzone start (Within workzone)`;
+    }
+  }
+
+  /**
+   * Calculate distance between two GPS coordinates (Haversine formula)
+   */
+  calculateDistance(lat1, lng1, lat2, lng2) {
+    const R = 6371000; // Earth radius in meters
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLng/2) * Math.sin(dLng/2);
+    
+    return 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)) * R;
+  }
+
+  /**
+   * Calculate perpendicular distance from point to line
+   */
+  calculatePerpendicularDistance(pointLat, pointLng, lineStart, lineEnd) {
+    // Convert to approximate meters for local calculation
+    const pointX = pointLng * 111320 * Math.cos(pointLat * Math.PI / 180);
+    const pointY = pointLat * 110540;
+    
+    const startX = lineStart.lng * 111320 * Math.cos(lineStart.lat * Math.PI / 180);
+    const startY = lineStart.lat * 110540;
+    
+    const endX = lineEnd.lng * 111320 * Math.cos(lineEnd.lat * Math.PI / 180);
+    const endY = lineEnd.lat * 110540;
+    
+    // Calculate perpendicular distance using cross product
+    const dx = endX - startX;
+    const dy = endY - startY;
+    const length = Math.sqrt(dx*dx + dy*dy);
+    
+    if (length === 0) return 0;
+    
+    return ((pointX - startX) * dy - (pointY - startY) * dx) / length;
   }
 
   /**
