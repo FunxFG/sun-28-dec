@@ -372,8 +372,17 @@ async def get_road_data(start_address: str, end_address: str):
     }
 
 async def fetch_osm_road_data(lat: float, lng: float):
-    """Fetch road data from OpenStreetMap Overpass API"""
+    """Fetch road data from Digital Atlas of Australia (primary) and OpenStreetMap (fallback)"""
     try:
+        # First try Digital Atlas of Australia for official Australian road data
+        daa_data = await fetch_digital_atlas_road_data(lat, lng)
+        if daa_data:
+            logger.info(f"Using Digital Atlas data: {daa_data.get('road_name')}")
+            return daa_data
+        
+        # Fallback to OpenStreetMap if Digital Atlas fails
+        logger.info("Digital Atlas unavailable, using OpenStreetMap")
+        
         # Overpass API query to get road/highway data near the coordinates
         overpass_url = "https://overpass-api.de/api/interpreter"
         
@@ -433,12 +442,162 @@ async def fetch_osm_road_data(lat: float, lng: float):
                 'lanes': lanes,
                 'surface': osm_surface,
                 'highway_type': highway_type,
-                'reference': osm_ref
+                'reference': osm_ref,
+                'data_source': 'OpenStreetMap'
             }
             
     except Exception as e:
-        logger.error(f"Error fetching OSM data: {str(e)}")
+        logger.error(f"Error fetching road data: {str(e)}")
         return None
+
+async def fetch_digital_atlas_road_data(lat: float, lng: float):
+    """Fetch road data from Digital Atlas of Australia National Roads dataset"""
+    try:
+        # Digital Atlas ArcGIS Feature Service endpoint for National Roads
+        base_url = "https://services.ga.gov.au/gis/rest/services/NationalMap/National_Roads/MapServer/0/query"
+        
+        # Query parameters for spatial search
+        params = {
+            'f': 'json',
+            'geometry': f'{lng},{lat}',
+            'geometryType': 'esriGeometryPoint',
+            'inSR': '4326',
+            'spatialRel': 'esriSpatialRelIntersects',
+            'distance': '100',  # Search within 100m
+            'units': 'esriSRUnit_Meter',
+            'outFields': '*',
+            'returnGeometry': 'false'
+        }
+        
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            response = await client.get(base_url, params=params)
+            
+            if response.status_code != 200:
+                logger.error(f"Digital Atlas API error: {response.status_code}")
+                return None
+            
+            data = response.json()
+            
+            if not data.get('features') or len(data['features']) == 0:
+                logger.warning("No road data found in Digital Atlas")
+                return None
+            
+            # Get the first road feature (closest match)
+            road_attrs = data['features'][0]['attributes']
+            
+            # Extract Australian road data
+            road_name = road_attrs.get('ROADNAME') or road_attrs.get('NAME') or 'Unknown Road'
+            road_class = road_attrs.get('CLASS') or road_attrs.get('ROAD_CLASS') or 'Local'
+            road_type_code = road_attrs.get('TYPE') or road_attrs.get('ROAD_TYPE')
+            surface = road_attrs.get('SURFACE', 'sealed')
+            lanes = road_attrs.get('LANES', 2)
+            state = road_attrs.get('STATE') or road_attrs.get('STATE_CODE')
+            route_number = road_attrs.get('ROUTE_NUMBER') or road_attrs.get('ROUTE')
+            
+            # Convert Digital Atlas classification to Austroads standard
+            road_classification = convert_digital_atlas_to_austroads(road_class, route_number)
+            
+            # Determine speed limit based on road classification and location
+            speed_limit = determine_speed_limit_from_classification(road_classification, road_class)
+            
+            # Determine road type for AGTTM
+            road_type = get_road_type_from_classification(road_classification)
+            
+            # Determine governing body
+            governing_body = determine_governing_body_from_digital_atlas(road_class, state, route_number)
+            
+            logger.info(f"Digital Atlas road found: {road_name} ({road_classification}), {speed_limit}km/h")
+            
+            return {
+                'road_classification': road_classification,
+                'road_type': road_type,
+                'road_name': road_name,
+                'speed_limit': speed_limit,
+                'lanes': int(lanes) if lanes else 2,
+                'surface': surface,
+                'route_number': route_number,
+                'state': state,
+                'governing_body': governing_body,
+                'data_source': 'Digital Atlas of Australia',
+                'official_data': True
+            }
+            
+    except Exception as e:
+        logger.error(f"Error fetching Digital Atlas data: {str(e)}")
+        return None
+
+def convert_digital_atlas_to_austroads(road_class: str, route_number: str) -> str:
+    """Convert Digital Atlas road classification to Austroads standard"""
+    if not road_class:
+        return "Local Street"
+    
+    road_class_lower = road_class.lower()
+    
+    # National Highways (with route numbers like M1, A1, National Highway 1)
+    if route_number and (route_number.startswith('M') or route_number.startswith('A') or 'National' in route_number):
+        return "National Highway"
+    
+    # Map Digital Atlas classifications
+    class_mapping = {
+        'national': 'National Highway',
+        'highway': 'National Highway',
+        'freeway': 'National Highway',
+        'motorway': 'National Highway',
+        'arterial': 'Major Urban Arterial',
+        'sub-arterial': 'Major Urban Arterial',
+        'collector': 'Urban Collector',
+        'distributor': 'Urban Collector',
+        'local': 'Local Street',
+        'access': 'Local Street'
+    }
+    
+    for key, value in class_mapping.items():
+        if key in road_class_lower:
+            return value
+    
+    return "Major Urban Road"
+
+def determine_speed_limit_from_classification(austroads_class: str, digital_atlas_class: str) -> int:
+    """Determine speed limit from road classification"""
+    speed_mapping = {
+        'National Highway': 100,
+        'Major Urban Arterial': 70,
+        'Major Urban Road': 60,
+        'Urban Collector': 60,
+        'Local Street': 50
+    }
+    
+    # Check for specific types
+    if digital_atlas_class and 'freeway' in digital_atlas_class.lower():
+        return 110
+    if digital_atlas_class and 'motorway' in digital_atlas_class.lower():
+        return 100
+    
+    return speed_mapping.get(austroads_class, 60)
+
+def get_road_type_from_classification(austroads_class: str) -> str:
+    """Get road type for AGTTM from Austroads classification"""
+    type_mapping = {
+        'National Highway': 'Divided Highway',
+        'Major Urban Arterial': 'Arterial',
+        'Major Urban Road': 'Arterial',
+        'Urban Collector': 'Collector',
+        'Local Street': 'Local'
+    }
+    return type_mapping.get(austroads_class, 'Arterial')
+
+def determine_governing_body_from_digital_atlas(road_class: str, state: str, route_number: str) -> str:
+    """Determine governing body from Digital Atlas road data"""
+    if route_number and (route_number.startswith('M') or route_number.startswith('A') or 'National' in str(route_number)):
+        return f"National Transport Commission / {state or 'State'} Government"
+    
+    if road_class and ('national' in road_class.lower() or 'highway' in road_class.lower()):
+        return f"{state or 'State'} Government (Department of Transport)"
+    
+    if road_class and 'arterial' in road_class.lower():
+        return f"{state or 'State'} Government (Main Roads)"
+    
+    return "Local Council"
 
 def convert_osm_to_austroads_classification(highway_type: str, ref: str) -> str:
     """Convert OpenStreetMap highway type to Austroads road classification"""
