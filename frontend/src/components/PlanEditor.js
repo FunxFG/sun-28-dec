@@ -848,6 +848,52 @@ export default function PlanEditor({ user, onLogout }) {
     }
   };
 
+  const handleDownloadProfessionalTGS = async () => {
+    if (placedDevices.length === 0) {
+      toast.error('Please place devices on the map first');
+      return;
+    }
+
+    try {
+      const tgsGenerator = new ProfessionalTGSGenerator();
+      
+      // Prepare road data
+      const roadData = {
+        workzone_size: formData.road_occupancy?.workzone_length || 0,
+        speed_limit: formData.work_details?.speed_limit || 60,
+        road_classification: formData.work_details?.road_classification || 'Urban Road',
+        lanes: formData.work_details?.lanes || 2,
+        governing_body: formData.work_details?.governing_body || 'Local Council'
+      };
+
+      // Prepare company info
+      const companyInfo = {
+        name: formData.company_details?.name || 'Company Name',
+        address: formData.company_details?.address || '',
+        phone: formData.company_details?.phone || '',
+        abn: formData.company_details?.abn || ''
+      };
+
+      // Generate professional TGS PDF
+      const pdfBlob = tgsGenerator.generateProfessionalPDF(formData, placedDevices, roadData, companyInfo);
+      
+      // Download the PDF
+      const url = window.URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${formData.plan_name.replace(/\s+/g, '_')}_TGS_Drawing.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      
+      toast.success('Professional TGS Drawing downloaded successfully');
+    } catch (error) {
+      console.error('Error generating TGS PDF:', error);
+      toast.error('Failed to generate TGS Drawing');
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-orange-50 flex items-center justify-center">
