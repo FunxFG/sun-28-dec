@@ -21,7 +21,12 @@ import {
   RefreshCw,
   FileImage,
   Map,
-  Ruler
+  Ruler,
+  AlertCircle,
+  Users,
+  Cloud,
+  AlertTriangle,
+  CheckCircle
 } from 'lucide-react';
 import austroadsRules from '../utils/austroadsRules';
 import tgsDrawingGenerator from '../utils/tgsDrawingGenerator';
