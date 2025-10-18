@@ -432,12 +432,13 @@ metadata:
 
 test_plan:
   current_focus:
-    - "New automated assessment endpoints testing completed successfully"
-    - "Traffic Assessment and Site Assessment APIs fully operational"
+    - "Google Places API Proxy Endpoints (CORS Fix)"
+    - "OpenWeatherMap API Proxy Endpoint (CORS Fix)"
+    - "TMP Auto-Populator - Frontend CORS Fix"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
   test_all: false
-  test_priority: "assessment_endpoints_complete"
+  test_priority: "cors_fixes_first"
 
 agent_communication:
   - agent: "main"
