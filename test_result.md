@@ -119,6 +119,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ PASSED - User registration and login working perfectly. JWT tokens generated correctly. Tested with real email addresses and proper error handling for invalid credentials (401 status). Authentication flow is fully functional."
+      - working: true
+        agent: "testing"
+        comment: "✅ VERIFIED RESPONSE FORMAT - Comprehensive authentication endpoint testing completed successfully. POST /api/auth/register returns correct format: {'token': 'jwt_token', 'user': {'id': 'uuid', 'email': 'email', 'company_name': 'name'}} with 200 OK status. POST /api/auth/login returns identical format with valid JWT tokens containing user_id, email, and exp fields. Invalid credentials correctly return 401 status. Response structure matches frontend expectations perfectly. All success criteria met: ✅ Both endpoints return 200 OK ✅ Response has 'token' field ✅ Response has 'user' object with id, email, company_name ✅ Token is valid JWT format. Authentication system fully operational for production use."
 
   - task: "Geocoding API endpoint"
     implemented: true
