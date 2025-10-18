@@ -1724,27 +1724,27 @@ class SafeRoadWorksAPITester:
         return False
 
 def main():
-    print("🚦 Automated Assessment Endpoints Testing Suite")
-    print("=" * 60)
+    print("🚦 Google Places & Weather API Proxy Endpoints Testing Suite (CORS Fix)")
+    print("=" * 80)
     
     tester = SafeRoadWorksAPITester()
     
-    # Test sequence - Focus on new automated assessment endpoints as requested in review
+    # Test sequence - Focus on NEW PROXY ENDPOINTS for CORS fixes as requested in review
     tests = [
         ("User Registration", tester.test_user_registration),
-        ("Geocoding API", tester.test_geocoding),
         
-        # NEW AUTOMATED ASSESSMENT ENDPOINTS TESTING
-        ("Traffic Assessment - Adelaide CBD", tester.test_traffic_assessment_adelaide_cbd),
-        ("Site Assessment - Adelaide CBD", tester.test_site_assessment_adelaide_cbd),
-        ("Traffic Assessment - Highway Location", tester.test_traffic_assessment_highway_location),
-        ("Assessment Integration Test", tester.test_assessment_integration_consistency),
-        ("Assessment Error Handling", tester.test_assessment_endpoints_error_handling),
+        # NEW GOOGLE PLACES API PROXY ENDPOINTS (CORS FIX) - HIGH PRIORITY
+        ("Proxy Geocode - Adelaide", tester.test_proxy_geocode_adelaide),
+        ("Proxy Places Nearby - Police Adelaide", tester.test_proxy_places_nearby_police_adelaide),
+        ("Proxy Places Nearby - Hospitals Adelaide", tester.test_proxy_places_nearby_hospitals_adelaide),
+        ("Proxy Places Details", tester.test_proxy_places_details),
         
-        # Existing road data tests for comparison
-        ("Road Data API - OSM Adelaide CBD", tester.test_road_data_osm_adelaide_cbd),
-        ("Road Data API - OSM Brisbane", tester.test_road_data_osm_brisbane),
-        ("Road Data API - OSM Highway", tester.test_road_data_osm_highway),
+        # NEW OPENWEATHERMAP API PROXY ENDPOINT (CORS FIX) - HIGH PRIORITY
+        ("Proxy Weather Forecast - Adelaide", tester.test_proxy_weather_forecast_adelaide),
+        
+        # Existing endpoints for comparison
+        ("Geocoding API (Original)", tester.test_geocoding),
+        ("Road Data API - Adelaide CBD", tester.test_road_data_osm_adelaide_cbd),
     ]
     
     # Run all tests
