@@ -476,11 +476,12 @@ test_plan:
   current_focus:
     - "Professional TGS Drawing Generator Integration"
     - "Complete end-to-end TMP workflow testing"
-    - "CORS fixes validation with real TMP creation"
+    - "Frontend authentication UI fixes"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
-  test_all: true
-  test_priority: "comprehensive_e2e_testing"
+  test_all: false
+  test_priority: "frontend_focus"
+  backend_testing_complete: true
 
 agent_communication:
   - agent: "main"
