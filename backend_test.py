@@ -1724,26 +1724,54 @@ class SafeRoadWorksAPITester:
         return False
 
 def main():
-    print("🚦 Google Places & Weather API Proxy Endpoints Testing Suite (CORS Fix)")
+    print("🚦 Comprehensive Austroads TMP Backend API Testing Suite")
     print("=" * 80)
     
     tester = SafeRoadWorksAPITester()
     
-    # Test sequence - Focus on NEW PROXY ENDPOINTS for CORS fixes as requested in review
+    # Comprehensive backend tests covering all review request areas
     tests = [
+        # 1. Core Authentication & User Management
         ("User Registration", tester.test_user_registration),
+        ("User Login", tester.test_user_login),
         
-        # NEW GOOGLE PLACES API PROXY ENDPOINTS (CORS FIX) - HIGH PRIORITY
-        ("Proxy Geocode - Adelaide", tester.test_proxy_geocode_adelaide),
-        ("Proxy Places Nearby - Police Adelaide", tester.test_proxy_places_nearby_police_adelaide),
-        ("Proxy Places Nearby - Hospitals Adelaide", tester.test_proxy_places_nearby_hospitals_adelaide),
+        # 2. Plan CRUD Operations
+        ("Create Traffic Plan", tester.test_create_plan),
+        ("Get User Plans", tester.test_get_plans),
+        ("Get Single Plan", tester.test_get_single_plan),
+        ("Update Plan", tester.test_update_plan),
+        
+        # 3. PDF Generation
+        ("Generate PDF", tester.test_pdf_generation),
+        
+        # 4. Geocoding & Road Data
+        ("Geocoding API", tester.test_geocoding),
+        ("Road Data API", tester.test_road_data),
+        ("Road Data OSM Adelaide CBD", tester.test_road_data_osm_adelaide_cbd),
+        ("Road Data OSM Brisbane", tester.test_road_data_osm_brisbane),
+        ("Road Data OSM Highway", tester.test_road_data_osm_highway),
+        
+        # 5. Assessment APIs
+        ("Traffic Assessment Adelaide CBD", tester.test_traffic_assessment_adelaide_cbd),
+        ("Site Assessment Adelaide CBD", tester.test_site_assessment_adelaide_cbd),
+        ("Traffic Assessment Highway", tester.test_traffic_assessment_highway_location),
+        ("Assessment Integration Consistency", tester.test_assessment_integration_consistency),
+        
+        # 6. Risk Management
+        ("Get All Risks", tester.test_get_all_risks),
+        ("Get Risks by Category", tester.test_get_risks_by_category),
+        ("Get Risk by ID", tester.test_get_risk_by_id),
+        ("Calculate Risk Score", tester.test_calculate_risk_score),
+        
+        # 8. NEW CORS Fix Proxy Endpoints
+        ("Proxy Geocode Adelaide", tester.test_proxy_geocode_adelaide),
+        ("Proxy Places Nearby Police", tester.test_proxy_places_nearby_police_adelaide),
+        ("Proxy Places Nearby Hospitals", tester.test_proxy_places_nearby_hospitals_adelaide),
         ("Proxy Places Details", tester.test_proxy_places_details),
+        ("Proxy Weather Forecast", tester.test_proxy_weather_forecast_adelaide),
         
-        # NEW OPENWEATHERMAP API PROXY ENDPOINT (CORS FIX) - HIGH PRIORITY
-        ("Proxy Weather Forecast - Adelaide", tester.test_proxy_weather_forecast_adelaide),
-        
-        # Existing endpoints for comparison
-        ("Geocoding API (Original)", tester.test_geocoding),
+        # Clean up
+        ("Delete Plan", tester.test_delete_plan),
     ]
     
     # Run all tests
@@ -1758,12 +1786,12 @@ def main():
     print(f"📊 Final Results: {tester.tests_passed}/{tester.tests_run} tests passed")
     
     if tester.tests_passed == tester.tests_run:
-        print("🎉 All Google Places & Weather API proxy endpoint tests passed!")
-        print("✅ CORS issues should be resolved for TMP auto-population features")
+        print("🎉 All Austroads TMP backend API tests passed!")
+        print("✅ Backend is fully operational and ready for production use")
         return 0
     else:
         print(f"⚠️  {tester.tests_run - tester.tests_passed} tests failed")
-        print("❌ Some CORS fix proxy endpoints may not be working correctly")
+        print("❌ Backend issues detected - see failed tests above")
         return 1
 
 if __name__ == "__main__":
