@@ -744,6 +744,7 @@ def main():
         ("Road Data API - Adelaide CBD (OSM)", tester.test_road_data_osm_adelaide_cbd),
         ("Road Data API - Brisbane (OSM)", tester.test_road_data_osm_brisbane),
         ("Road Data API - Highway Route (OSM)", tester.test_road_data_osm_highway),
+        ("Road Data API - Fallback Behavior", tester.test_road_data_fallback_behavior),
         ("Road Data API - Original", tester.test_road_data),
     ]
     
