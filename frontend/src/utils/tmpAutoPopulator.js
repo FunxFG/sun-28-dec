@@ -353,13 +353,15 @@ export class TMPAutoPopulator {
   }
 
   /**
-   * Fetch REAL emergency services near location using Google Places API
+   * Fetch REAL emergency services near location using Google Places API (via backend proxy)
    */
   async fetchRealEmergencyServices(address) {
     try {
-      // First geocode the address
+      const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+      
+      // First geocode the address via backend proxy
       const geocodeResponse = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs`
+        `${BACKEND_URL}/api/proxy/geocode?address=${encodeURIComponent(address)}`
       );
       const geocodeData = await geocodeResponse.json();
       
@@ -369,15 +371,15 @@ export class TMPAutoPopulator {
       
       const location = geocodeData.results[0].geometry.location;
       
-      // Search for police station
+      // Search for police station via backend proxy
       const policeResponse = await fetch(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.lat},${location.lng}&radius=10000&type=police&key=AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs`
+        `${BACKEND_URL}/api/proxy/places/nearby?lat=${location.lat}&lng=${location.lng}&radius=10000&place_type=police`
       );
       const policeData = await policeResponse.json();
       
-      // Search for hospital/ambulance
+      // Search for hospital/ambulance via backend proxy
       const ambulanceResponse = await fetch(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.lat},${location.lng}&radius=10000&type=hospital&key=AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs`
+        `${BACKEND_URL}/api/proxy/places/nearby?lat=${location.lat}&lng=${location.lng}&radius=10000&place_type=hospital`
       );
       const ambulanceData = await ambulanceResponse.json();
       
@@ -388,7 +390,7 @@ export class TMPAutoPopulator {
       if (policeData.results && policeData.results.length > 0) {
         const nearestPolice = policeData.results[0];
         const detailsResponse = await fetch(
-          `https://maps.googleapis.com/maps/api/place/details/json?place_id=${nearestPolice.place_id}&fields=name,formatted_phone_number,vicinity&key=AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs`
+          `${BACKEND_URL}/api/proxy/places/details?place_id=${nearestPolice.place_id}&fields=name,formatted_phone_number,vicinity`
         );
         const details = await detailsResponse.json();
         
@@ -400,7 +402,7 @@ export class TMPAutoPopulator {
       if (ambulanceData.results && ambulanceData.results.length > 0) {
         const nearestHospital = ambulanceData.results[0];
         const detailsResponse = await fetch(
-          `https://maps.googleapis.com/maps/api/place/details/json?place_id=${nearestHospital.place_id}&fields=name,formatted_phone_number,vicinity&key=AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs`
+          `${BACKEND_URL}/api/proxy/places/details?place_id=${nearestHospital.place_id}&fields=name,formatted_phone_number,vicinity`
         );
         const details = await detailsResponse.json();
         
