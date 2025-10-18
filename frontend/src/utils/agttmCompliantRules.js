@@ -18,112 +18,121 @@ export class AGTTMCompliantPlacement {
         arrow_board_height: 1.5,      // 1.5m above pavement (as1742_3_016)
       },
 
-      // Clearance requirements - extracted from multiple rules
+      // AS 1742.3 & AGTTM Canonical Rules
       clearances: {
-        // as1742_13_chicane_design_principles
-        minimum_clear_width: 3.0,     // 3.0m clear width through deflection
-        passage_clearance: 3.1,       // 3.1m clear passage (as1742_13_blister_island)
-        
-        // Lateral positioning
         verge_placement: {
-          minimum: 2.0,    // Minimum offset from carriageway edge
-          preferred: 3.0,  // Preferred clearance based on chicane principles
-          maximum: 5.0     // Maximum practical offset
+          minimum: 0.5,  // 0.5m urban (SAWZM-04)
+          preferred: 1.0, // 1.0m rural (SAWZM-04)
+          maximum_intrusion: 2.0,
+          description: 'Verge placement - measured from edge of traffic lane'
         },
         shoulder_placement: {
-          minimum: 0.5,    // Minimum from travel lane edge
-          preferred: 1.0,  // Preferred shoulder placement
-          minimum_shoulder_width: 2.5  // Minimum shoulder width required
+          minimum_shoulder_width: 1.0,
+          lateral_offset: 0.5,  // Minimum 0.5m from lane edge
+          maximum_protrusion: 1.0,
+          description: 'Shoulder placement with minimum clearance'
+        },
+        controller_clearance: {
+          minimum: 1.5,  // AGTTM Part 10 - FS007, minimum 1.5m from live lane edge
+          sight_distance: 150,  // Minimum 150m line of sight (agttm10_003)
+          clear_zone_entry: 10,  // No placement within 10m of corners/merging (agttm10_009)
+          description: 'Traffic controller positioning requirements'
         }
       },
 
-      // Device placement tolerances - agttm9_block3_general_layout_notes
-      tolerances: {
-        distance_tolerance: 0.10,     // ±10% tolerance on all distances
-        offset_tolerance: 0.10,       // ±10% tolerance on positioning (as1742_13_device_placement_consistency)
-        minimum_deflection: 1.2       // 1.2m minimum deflection offset (as1742_13_slow_point_angle_design)
-      },
-
-      // Advance warning distances - extracted from AGTTM rules
+      // Sign spacing - CANONICAL FORMULA: 1m per km/h of speed (AS1742.3, AGTTM)
       advance_warning_distances: {
-        '≤50kmh': { primary: 100, secondary: 50 },
-        '60kmh': { primary: 150, secondary: 75 },
-        '70kmh': { primary: 200, secondary: 100 },
-        '80kmh': { primary: 250, secondary: 125 },
-        '≥90kmh': { primary: 500, secondary: 200, tertiary: 100 }
+        '≤50kmh': {
+          primary: 60,      // 60m for ≤50km/h (SA WZTM 7.2, Table 5-3)
+          secondary: 30,    
+          tertiary: 15
+        },
+        '60kmh': {
+          primary: 70,      // 70m for 60km/h (SA WZTM 7.2, Table 5-3)
+          secondary: 40,
+          tertiary: 20
+        },
+        '70kmh': {
+          primary: 80,      // 80m for 70km/h
+          secondary: 50,
+          tertiary: 25
+        },
+        '80kmh': {
+          primary: 100,     // 100m for 80km/h (SA WZTM 7.2, Table 5-3; AGTTM Table 2.1)
+          secondary: 60,
+          tertiary: 30
+        },
+        '≥90kmh': {
+          primary: 150,     // 150m for 100km/h (SA WZTM 7.2, Table 5-3; AGTTM Table 2.1)
+          secondary: 100,
+          tertiary: 50
+        }
       },
 
-      // Arrow board requirements - as1742_3_016_portable_arrow_board_requirements  
-      arrow_board_specs: {
-        minimum_visibility: 100,      // 100m visibility under all lighting
-        compliance_standard: 'AS 4192',
-        types_required: ['Type B', 'Type C'],
-        mounting_height: 1.5          // 1.5m above pavement
-      },
-
-      // Bilateral placement requirements (derived from worksite safety needs)
-      bilateral_requirements: {
-        mandatory_scenarios: [
-          'multi_lane_roads',
-          'high_speed_zones',
-          'major_arterial_work',
-          'speed_limit_changes'
-        ],
-        spacing_between_pairs: 5.0,   // 5m longitudinal spacing between bilateral pairs
-        symmetry_tolerance: 0.5       // 0.5m tolerance for bilateral symmetry
-      },
-
-      // Cone and device spacing
+      // Cone and device spacing - AGTTM Part 3, Table 3.3
       device_spacing: {
         cone_spacing: {
-          '≤50kmh': 10,  // 10m spacing
-          '60kmh': 15,   // 15m spacing  
-          '70kmh': 20,   // 20m spacing
-          '80kmh': 25,   // 25m spacing
-          '≥90kmh': 30   // 30m spacing
+          '≤60kmh': 5,      // 5m spacing for ≤60km/h zones (AGTTM 3.012, SA WZTM Table 6-1)
+          '>60kmh': 10      // 10m spacing for >60km/h zones (AGTTM 3.012, SA WZTM Table 6-1)
         },
         barrier_spacing: 50,          // 50m spacing for barriers
-        sign_spacing_minimum: 60      // Minimum 60m between sequential signs
+        sign_spacing_minimum: 60,     // Minimum 60m between sequential signs
+        sign_spacing_formula: 1       // 1m per km/h of speed (AS1742.3 canonical rule)
       },
 
-      // Lane taper calculations - AS 1742.3 Section 3.5
-      // Taper length = (Speed limit / 2) * lane width offset
+      // Lane taper calculations - CANONICAL FORMULA: L = WS
+      // AS 1742.3 Section 3.5, AGTTM Part 3, SA WZTM Section 4.7
       taper_calculations: {
+        formula: 'L = W × S',  // L=length(m), W=width offset(m), S=speed(km/h)
         '≤50kmh': {
           taper_length: 30,           // 30m minimum taper length
           taper_rate: 12,             // 1:12 taper ratio
-          cone_spacing: 3             // 3m spacing on taper
+          cone_spacing: 3,            // 3m spacing on taper (AGTTM)
+          buffer_zone: 20             // 20m buffer (AGTTM 3.007, Table 2.4)
         },
         '60kmh': {
-          taper_length: 40,           // 40m taper length
+          taper_length: 40,           // 40m taper length (from L=WS, W≈0.67m)
           taper_rate: 15,             // 1:15 taper ratio
-          cone_spacing: 4             // 4m spacing on taper
+          cone_spacing: 4,            // 4m spacing on taper
+          buffer_zone: 30             // 30m buffer (AGTTM 3.007, Table 2.4)
         },
         '70kmh': {
           taper_length: 50,           // 50m taper length
           taper_rate: 18,             // 1:18 taper ratio
-          cone_spacing: 5             // 5m spacing on taper
+          cone_spacing: 5,            // 5m spacing on taper
+          buffer_zone: 40             // 40m buffer
         },
         '80kmh': {
-          taper_length: 60,           // 60m taper length
+          taper_length: 60,           // 60m taper length (from L=WS)
           taper_rate: 20,             // 1:20 taper ratio
-          cone_spacing: 6             // 6m spacing on taper
+          cone_spacing: 6,            // 6m spacing on taper
+          buffer_zone: 50             // 50m buffer (AGTTM 3.007, Table 2.4)
         },
         '≥90kmh': {
-          taper_length: 90,           // 90m taper length for highway speeds
+          taper_length: 90,           // 90m taper length for highway speeds (from L=WS)
           taper_rate: 25,             // 1:25 taper ratio
-          cone_spacing: 6             // 6m spacing on taper
+          cone_spacing: 6,            // 6m spacing on taper
+          buffer_zone: 60             // 60m buffer for high speed (AGTTM 3.007, Table 2.4)
         }
       },
 
-      // Buffer zone lengths - AS 1742.3 Section 3.3
-      // Buffer between taper end and work area start
+      // Buffer zone lengths - AGTTM Part 3, Section 3.007, Table 2.4
+      // Longitudinal buffer between taper end and work area start
       buffer_zones: {
         '≤50kmh': 20,    // 20m buffer
-        '60kmh': 30,     // 30m buffer
+        '60kmh': 30,     // 30m buffer (AGTTM 3.007, Table 2.4)
         '70kmh': 40,     // 40m buffer
-        '80kmh': 50,     // 50m buffer
+        '80kmh': 50,     // 50m buffer (AGTTM 3.007, Table 2.4)
         '≥90kmh': 60     // 60m buffer for high speed
+      },
+
+      // VRU (Vulnerable Road User) Requirements - AGTTM Part 2, AS/NZS 1428.4
+      vru_requirements: {
+        pedestrian_path_width: 1.2,      // Minimum 1.2m clear width (AGTTM 3.027, 3.029)
+        cyclist_path_width: 1.5,          // Minimum 1.5m for cyclists
+        accessible_path_width: 1.8,       // Minimum 1.8m for wheelchair access
+        exclusion_zone: 2.0,              // 2m proximity to moving plant (AGTTM 3.029)
+        barrier_required: true            // Barrier required for pedestrian protection
       },
 
       // Work zone categories - AGTTM classification
