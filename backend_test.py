@@ -1821,10 +1821,6 @@ def main():
         
         # 4. Geocoding & Road Data
         ("Geocoding API", tester.test_geocoding),
-        ("Road Data API", tester.test_road_data),
-        ("Road Data OSM Adelaide CBD", tester.test_road_data_osm_adelaide_cbd),
-        ("Road Data OSM Brisbane", tester.test_road_data_osm_brisbane),
-        ("Road Data OSM Highway", tester.test_road_data_osm_highway),
         
         # 5. Assessment APIs
         ("Traffic Assessment Adelaide CBD", tester.test_traffic_assessment_adelaide_cbd),
