@@ -76,6 +76,8 @@ export default function PlanEditor({ user, onLogout }) {
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({
     plan_name: '',
+    
+    // Section 1: Company Information
     company_details: {
       name: '',
       address: '',
@@ -93,6 +95,17 @@ export default function PlanEditor({ user, onLogout }) {
       liaison_phone: '',
       liaison_email: ''
     },
+    
+    // Section 2: Project Overview (NEW - from template 2.1-2.5)
+    project_overview: {
+      location_description: '',
+      project_purpose: '',
+      site_constraints: '',
+      special_requirements: '',
+      coordinated_by: ''
+    },
+    
+    // Section 3: Work Details
     work_details: {
       work_type: '',
       work_style: '',
@@ -106,6 +119,29 @@ export default function PlanEditor({ user, onLogout }) {
       night_work: false,
       weekend_work: false
     },
+    
+    // Section 4: Traffic Assessment (NEW - from template 4.1)
+    traffic_assessment: {
+      aadt: '',  // Annual Average Daily Traffic
+      peak_hour_volume: '',
+      85th_percentile_speed: '',
+      crash_history: '',
+      heavy_vehicle_percentage: '',
+      assessment_method: ''
+    },
+    
+    // Section 5: Site Assessment (NEW - from template 5.0)
+    site_assessment: {
+      road_geometry: '',
+      sight_distances: '',
+      parking_restrictions: '',
+      pedestrian_facilities: '',
+      cyclist_facilities: '',
+      public_transport: '',
+      utility_services: '',
+      environmental_factors: ''
+    },
+    
     road_occupancy: {
       footpath: false,
       left_shoulder: false,
@@ -129,6 +165,19 @@ export default function PlanEditor({ user, onLogout }) {
       governing_body: '',
       workzone_size: null
     },
+    
+    // Section 6: Safety Plan (NEW - from template 6.0)
+    safety_plan: {
+      whs_manager: '',
+      site_safety_officer: '',
+      safety_responsibilities: '',
+      hazard_identification: '',
+      risk_controls: '',
+      emergency_procedures: '',
+      incident_reporting: '',
+      safety_induction_required: false
+    },
+    
     emergency_contacts: {
       primary_contact_name: '',
       primary_contact_phone: '',
@@ -160,6 +209,17 @@ export default function PlanEditor({ user, onLogout }) {
       insurance_expiry: '',
       workers_compensation_policy: ''
     },
+    
+    // Section 7: Implementation (NEW - from template 7.0)
+    implementation: {
+      installation_sequence: '',
+      staging_requirements: '',
+      tgs_drawing_numbers: '',
+      device_setup_time: '',
+      removal_sequence: '',
+      handover_procedures: ''
+    },
+    
     approvals: {
       prepared_by_name: '',
       prepared_by_position: '',
@@ -193,6 +253,26 @@ export default function PlanEditor({ user, onLogout }) {
       traffic_buildup_response: '',
       alternative_routes: ''
     },
+    
+    // Section 9: Monitoring (NEW - from template 9.0)
+    monitoring: {
+      daily_inspection_required: false,
+      inspection_frequency: '',
+      inspection_checklist: '',
+      defect_rectification: '',
+      audit_schedule: '',
+      responsible_person: ''
+    },
+    
+    // Section 10: Management Review (NEW - from template 10.0)
+    management_review: {
+      review_frequency: '',
+      review_process: '',
+      variation_procedures: '',
+      approval_authority: '',
+      record_keeping: ''
+    },
+    
     devices: [],
     risk_assessment: {},
     detour_data: null,
