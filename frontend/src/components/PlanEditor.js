@@ -404,7 +404,7 @@ export default function PlanEditor({ user, onLogout }) {
     }
 
     try {
-      toast.info('Calculating device placement...');
+      toast.info('Auto-populating TMP and calculating device placement...');
       
       // Get coordinates for start and end addresses
       const startCoords = await geocodeAddress(formData.work_details.start_address);
@@ -413,6 +413,38 @@ export default function PlanEditor({ user, onLogout }) {
       // Get road data
       const roadDataResponse = await fetch(`${API}/road-data?start_address=${encodeURIComponent(formData.work_details.start_address)}&end_address=${encodeURIComponent(formData.work_details.end_address)}`);
       const roadData = await roadDataResponse.json();
+
+      // AUTO-POPULATE TMP FORM
+      const TMPAutoPopulator = (await import('../utils/tmpAutoPopulator.js')).default;
+      const autoPopulator = new TMPAutoPopulator();
+      
+      const userProfile = JSON.parse(localStorage.getItem('user') || '{}');
+      
+      const minimalInputs = {
+        work_type: formData.work_details.work_type,
+        work_style: formData.work_details.work_style,
+        start_address: formData.work_details.start_address,
+        end_address: formData.work_details.end_address,
+        start_date: formData.work_details.start_date,
+        end_date: formData.work_details.end_date,
+        road_occupancy: formData.road_occupancy
+      };
+      
+      const autoPopulatedData = await autoPopulator.autoPopulateTMP(minimalInputs, userProfile, roadData);
+      console.log('Auto-populated TMP data:', autoPopulatedData);
+      
+      // Merge auto-populated data with existing form data
+      setFormData(prev => ({
+        ...prev,
+        ...autoPopulatedData,
+        work_details: {
+          ...prev.work_details,
+          ...autoPopulatedData.work_details
+        },
+        road_data: roadData
+      }));
+      
+      toast.success('TMP form auto-populated from minimal inputs!');
 
       // Google Maps API key for road snapping and detours
       const GOOGLE_MAPS_API_KEY = 'AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs';
