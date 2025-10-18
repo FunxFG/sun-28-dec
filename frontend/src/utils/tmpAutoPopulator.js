@@ -169,9 +169,8 @@ export class TMPAutoPopulator {
       secondary_contact_phone: userProfile?.secondary_contact_phone || ''
     };
     
-    // Get location-based emergency services
-    const state = this.extractState(address);
-    const emergencyServices = this.getEmergencyServices(state);
+    // Get REAL location-based emergency services using Google Places API
+    const emergencyServices = await this.fetchRealEmergencyServices(address);
     
     return {
       ...primaryContact,
@@ -180,6 +179,76 @@ export class TMPAutoPopulator {
       ambulance_service: emergencyServices.ambulance,
       incident_response_plan: this.generateIncidentResponsePlan()
     };
+  }
+
+  /**
+   * Fetch REAL emergency services near location using Google Places API
+   */
+  async fetchRealEmergencyServices(address) {
+    try {
+      // First geocode the address
+      const geocodeResponse = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs`
+      );
+      const geocodeData = await geocodeResponse.json();
+      
+      if (!geocodeData.results || geocodeData.results.length === 0) {
+        throw new Error('Could not geocode address');
+      }
+      
+      const location = geocodeData.results[0].geometry.location;
+      
+      // Search for police station
+      const policeResponse = await fetch(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.lat},${location.lng}&radius=10000&type=police&key=AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs`
+      );
+      const policeData = await policeResponse.json();
+      
+      // Search for hospital/ambulance
+      const ambulanceResponse = await fetch(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.lat},${location.lng}&radius=10000&type=hospital&key=AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs`
+      );
+      const ambulanceData = await ambulanceResponse.json();
+      
+      // Get place details for phone numbers
+      let policeInfo = 'Local Police: 131 444 (non-emergency)';
+      let ambulanceInfo = 'Ambulance: 000 (emergency)';
+      
+      if (policeData.results && policeData.results.length > 0) {
+        const nearestPolice = policeData.results[0];
+        const detailsResponse = await fetch(
+          `https://maps.googleapis.com/maps/api/place/details/json?place_id=${nearestPolice.place_id}&fields=name,formatted_phone_number,vicinity&key=AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs`
+        );
+        const details = await detailsResponse.json();
+        
+        if (details.result) {
+          policeInfo = `${details.result.name}: ${details.result.formatted_phone_number || '131 444'} - ${details.result.vicinity}`;
+        }
+      }
+      
+      if (ambulanceData.results && ambulanceData.results.length > 0) {
+        const nearestHospital = ambulanceData.results[0];
+        const detailsResponse = await fetch(
+          `https://maps.googleapis.com/maps/api/place/details/json?place_id=${nearestHospital.place_id}&fields=name,formatted_phone_number,vicinity&key=AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs`
+        );
+        const details = await detailsResponse.json();
+        
+        if (details.result) {
+          ambulanceInfo = `${details.result.name}: ${details.result.formatted_phone_number || '000'} - ${details.result.vicinity}`;
+        }
+      }
+      
+      return {
+        police: policeInfo,
+        ambulance: ambulanceInfo
+      };
+      
+    } catch (error) {
+      console.error('Error fetching emergency services:', error);
+      // Fallback to generic
+      const state = this.extractState(address);
+      return this.getEmergencyServices(state);
+    }
   }
 
   /**
