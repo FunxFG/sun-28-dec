@@ -200,6 +200,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ PASSED - PDF generation working perfectly. Successfully generated professional Traffic Management Plan PDF with complete DTMR/Austroads compliance structure including declaration, risk management, implementation sections, and emergency contacts. tmp_generator.py integration working correctly."
+      - working: true
+        agent: "testing"
+        comment: "✅ PDF GENERATION VERIFIED - Latest comprehensive testing confirms PDF generation endpoint working correctly. GET /api/plans/{plan_id}/pdf returns 200 OK status and generates professional TMP PDF successfully. tmp_generator.py integration operational for production use."
 
   - task: "Risk Registry API endpoint"
     implemented: true
