@@ -153,6 +153,159 @@ class SafeRoadWorksAPITester:
             return True
         return False
 
+    def test_road_data_osm_adelaide_cbd(self):
+        """Test road data endpoint with Adelaide CBD route for OSM integration"""
+        import time
+        start_time = time.time()
+        
+        success, response = self.run_test(
+            "Road Data API - Adelaide CBD (OSM Integration)",
+            "GET",
+            "road-data",
+            200,
+            data={
+                "start_address": "King William Street, Adelaide SA",
+                "end_address": "Pulteney Street, Adelaide SA"
+            }
+        )
+        
+        end_time = time.time()
+        response_time = end_time - start_time
+        
+        if success:
+            print(f"   Response time: {response_time:.2f} seconds")
+            
+            # Check required fields
+            required_fields = [
+                'workzone_size', 'road_classification', 'speed_limit', 'road_name', 
+                'lanes', 'surface', 'data_source', 'governing_body', 'austroads_category'
+            ]
+            
+            missing_fields = [field for field in required_fields if field not in response]
+            if missing_fields:
+                print(f"   ❌ Missing required fields: {missing_fields}")
+                return False
+            
+            # Verify data source
+            data_source = response.get('data_source')
+            print(f"   Data source: {data_source}")
+            print(f"   Road name: {response.get('road_name')}")
+            print(f"   Road classification: {response.get('road_classification')}")
+            print(f"   Speed limit: {response.get('speed_limit')} km/h")
+            print(f"   Lanes: {response.get('lanes')}")
+            print(f"   Surface: {response.get('surface')}")
+            print(f"   Governing body: {response.get('governing_body')}")
+            
+            # Check response time
+            if response_time > 5.0:
+                print(f"   ⚠️ Response time ({response_time:.2f}s) exceeds 5 second threshold")
+                return False
+            
+            return True
+        return False
+
+    def test_road_data_osm_brisbane(self):
+        """Test road data endpoint with Brisbane route for OSM integration"""
+        import time
+        start_time = time.time()
+        
+        success, response = self.run_test(
+            "Road Data API - Brisbane (OSM Integration)",
+            "GET",
+            "road-data",
+            200,
+            data={
+                "start_address": "Queen Street, Brisbane QLD",
+                "end_address": "George Street, Brisbane QLD"
+            }
+        )
+        
+        end_time = time.time()
+        response_time = end_time - start_time
+        
+        if success:
+            print(f"   Response time: {response_time:.2f} seconds")
+            
+            # Check required fields
+            required_fields = [
+                'workzone_size', 'road_classification', 'speed_limit', 'road_name', 
+                'lanes', 'surface', 'data_source'
+            ]
+            
+            missing_fields = [field for field in required_fields if field not in response]
+            if missing_fields:
+                print(f"   ❌ Missing required fields: {missing_fields}")
+                return False
+            
+            print(f"   Workzone size: {response.get('workzone_size')} meters")
+            print(f"   Data source: {response.get('data_source')}")
+            print(f"   Road name: {response.get('road_name')}")
+            print(f"   Speed limit: {response.get('speed_limit')} km/h")
+            print(f"   Lanes: {response.get('lanes')}")
+            
+            # Check response time
+            if response_time > 5.0:
+                print(f"   ⚠️ Response time ({response_time:.2f}s) exceeds 5 second threshold")
+                return False
+            
+            return True
+        return False
+
+    def test_road_data_osm_highway(self):
+        """Test road data endpoint with highway route for OSM integration"""
+        import time
+        start_time = time.time()
+        
+        success, response = self.run_test(
+            "Road Data API - Highway Route (OSM Integration)",
+            "GET",
+            "road-data",
+            200,
+            data={
+                "start_address": "Pacific Motorway, Brisbane QLD",
+                "end_address": "Gateway Motorway, Brisbane QLD"
+            }
+        )
+        
+        end_time = time.time()
+        response_time = end_time - start_time
+        
+        if success:
+            print(f"   Response time: {response_time:.2f} seconds")
+            
+            # Check required fields
+            required_fields = [
+                'workzone_size', 'road_classification', 'speed_limit', 'road_name', 
+                'lanes', 'surface', 'data_source'
+            ]
+            
+            missing_fields = [field for field in required_fields if field not in response]
+            if missing_fields:
+                print(f"   ❌ Missing required fields: {missing_fields}")
+                return False
+            
+            print(f"   Data source: {response.get('data_source')}")
+            print(f"   Road name: {response.get('road_name')}")
+            print(f"   Road classification: {response.get('road_classification')}")
+            print(f"   Speed limit: {response.get('speed_limit')} km/h")
+            
+            # Verify highway classification and speed
+            road_classification = response.get('road_classification')
+            speed_limit = response.get('speed_limit')
+            
+            if road_classification == "National Highway" and speed_limit >= 100:
+                print(f"   ✅ Correctly classified as National Highway with {speed_limit}km/h speed limit")
+            else:
+                print(f"   ⚠️ Expected National Highway with 100km/h+, got {road_classification} with {speed_limit}km/h")
+            
+            # Check response time
+            if response_time > 5.0:
+                print(f"   ⚠️ Response time ({response_time:.2f}s) exceeds 5 second threshold")
+                return False
+            
+            return True
+        return False
+
     def test_create_plan(self):
         """Test creating a traffic management plan"""
         plan_data = {
