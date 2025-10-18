@@ -94,7 +94,11 @@ export default function PlanEditor({ user, onLogout }) {
       start_date: '',
       end_date: '',
       start_address: '',
-      end_address: ''
+      end_address: '',
+      work_hours_start: '',
+      work_hours_end: '',
+      night_work: false,
+      weekend_work: false
     },
     road_occupancy: {
       footpath: false,
@@ -119,8 +123,74 @@ export default function PlanEditor({ user, onLogout }) {
       governing_body: '',
       workzone_size: null
     },
+    emergency_contacts: {
+      primary_contact_name: '',
+      primary_contact_phone: '',
+      secondary_contact_name: '',
+      secondary_contact_phone: '',
+      emergency_services_notified: false,
+      police_station: '',
+      ambulance_service: '',
+      incident_response_plan: ''
+    },
+    personnel: {
+      site_supervisor_name: '',
+      site_supervisor_phone: '',
+      site_supervisor_qualifications: '',
+      traffic_controller_1_name: '',
+      traffic_controller_1_cert: '',
+      traffic_controller_2_name: '',
+      traffic_controller_2_cert: '',
+      number_of_workers: '',
+      all_personnel_inducted: false
+    },
+    permits_insurance: {
+      road_occupation_permit_number: '',
+      permit_issuing_authority: '',
+      permit_issue_date: '',
+      permit_expiry_date: '',
+      public_liability_insurance: '',
+      insurance_amount: '',
+      insurance_expiry: '',
+      workers_compensation_policy: ''
+    },
+    approvals: {
+      prepared_by_name: '',
+      prepared_by_position: '',
+      prepared_by_date: '',
+      approved_by_name: '',
+      approved_by_position: '',
+      approved_by_signature: '',
+      approved_by_date: '',
+      declaration_accepted: false
+    },
+    environmental_conditions: {
+      weather_considerations: '',
+      visibility_requirements: '',
+      rain_contingency: '',
+      wind_speed_limit: '',
+      temperature_considerations: ''
+    },
+    safety_communications: {
+      worker_protection_measures: '',
+      ppe_requirements: '',
+      public_notification_method: '',
+      advance_warning_days: '',
+      media_release_required: false,
+      resident_consultation: '',
+      emergency_vehicle_access: ''
+    },
+    contingency_plans: {
+      breakdown_procedure: '',
+      accident_procedure: '',
+      weather_delay_plan: '',
+      traffic_buildup_response: '',
+      alternative_routes: ''
+    },
     devices: [],
     risk_assessment: {},
+    detour_data: null,
+    tgs_data: null,
     map_center_lat: -27.4698,
     map_center_lng: 153.0251,
     map_zoom: 15
