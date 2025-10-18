@@ -966,6 +966,14 @@ export class AGTTMCompliantPlacement {
     return 'Reduce Speed';
   }
 
+  getSpeedKey(speedLimit) {
+    if (speedLimit <= 50) return '≤50kmh';
+    if (speedLimit === 60) return '60kmh';
+    if (speedLimit === 70) return '70kmh';
+    if (speedLimit === 80) return '80kmh';
+    return '≥90kmh';
+  }
+
   estimateCarriagewayWidth(roadData) {
     const classification = roadData.road_classification || '';
     
