@@ -441,13 +441,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Google Places API Proxy Endpoints (CORS Fix)"
-    - "OpenWeatherMap API Proxy Endpoint (CORS Fix)"
-    - "TMP Auto-Populator - Frontend CORS Fix"
+    - "Authentication UI (Sign In/Create Account)"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
   test_all: false
-  test_priority: "cors_fixes_first"
+  test_priority: "authentication_fix_needed"
 
 agent_communication:
   - agent: "main"
