@@ -761,9 +761,9 @@ class SafeRoadWorksAPITester:
     def test_get_device_by_code(self):
         """Test getting a specific device by code"""
         success, response = self.run_test(
-            "Get Device by Code (RWA-001)",
+            "Get Device by Code (T1-1)",
             "GET",
-            "devices/RWA-001",
+            "devices/T1-1",
             200
         )
         
