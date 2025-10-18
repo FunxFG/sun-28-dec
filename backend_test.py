@@ -1755,14 +1755,16 @@ def main():
             print(f"❌ {test_name} failed with exception: {str(e)}")
     
     # Print final results
-    print("\n" + "=" * 60)
+    print("\n" + "=" * 80)
     print(f"📊 Final Results: {tester.tests_passed}/{tester.tests_run} tests passed")
     
     if tester.tests_passed == tester.tests_run:
-        print("🎉 All automated assessment endpoint tests passed!")
+        print("🎉 All Google Places & Weather API proxy endpoint tests passed!")
+        print("✅ CORS issues should be resolved for TMP auto-population features")
         return 0
     else:
         print(f"⚠️  {tester.tests_run - tester.tests_passed} tests failed")
+        print("❌ Some CORS fix proxy endpoints may not be working correctly")
         return 1
 
 if __name__ == "__main__":
