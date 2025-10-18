@@ -494,13 +494,15 @@ export class TMPAutoPopulator {
   }
 
   /**
-   * Generate environmental conditions using REAL weather API
+   * Generate environmental conditions using REAL weather API (via backend proxy)
    */
   async generateEnvironmentalConditions(address, date) {
     try {
-      // Get coordinates for the address
+      const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
+      
+      // Get coordinates for the address via backend proxy
       const geocodeResponse = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs`
+        `${BACKEND_URL}/api/proxy/geocode?address=${encodeURIComponent(address)}`
       );
       const geocodeData = await geocodeResponse.json();
       
@@ -510,9 +512,9 @@ export class TMPAutoPopulator {
       
       const location = geocodeData.results[0].geometry.location;
       
-      // Fetch REAL weather forecast from OpenWeatherMap
+      // Fetch REAL weather forecast from OpenWeatherMap via backend proxy
       const weatherResponse = await fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?lat=${location.lat}&lon=${location.lng}&appid=4d8fb5b93d4af21d66a2948710284366&units=metric`
+        `${BACKEND_URL}/api/proxy/weather/forecast?lat=${location.lat}&lon=${location.lng}`
       );
       const weatherData = await weatherResponse.json();
       
