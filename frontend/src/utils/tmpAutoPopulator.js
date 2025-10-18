@@ -458,55 +458,175 @@ export class TMPAutoPopulator {
   }
 
   /**
-   * Generate safety communications
+   * Generate safety communications with REAL traffic data
    */
   generateSafetyCommunications(work_type, work_style, roadData) {
     const isHighSpeed = roadData?.speed_limit >= 80;
     const isHighVolume = roadData?.traffic_volume >= 20000;
+    const isNationalHighway = roadData?.road_classification === 'National Highway';
+    const roadName = roadData?.road_name || 'road';
+    
+    // Calculate advance warning based on REAL road data
+    const advanceWarningDays = this.calculateAdvanceWarningDays(work_type, roadData);
+    
+    // Determine notification based on ACTUAL road importance
+    const notificationMethod = this.getDetailedNotificationMethod(roadData, advanceWarningDays);
     
     return {
-      worker_protection_measures: this.getWorkerProtection(work_type, isHighSpeed),
-      ppe_requirements: 'High-visibility clothing (Day/Night), hard hat, safety boots, hearing protection, safety glasses',
-      public_notification_method: this.getNotificationMethod(roadData),
-      advance_warning_days: this.getAdvanceWarningDays(work_type, roadData),
-      media_release_required: isHighVolume || isHighSpeed,
-      resident_consultation: work_type === 'construction' ? 'Letterbox drop to affected residents 7 days prior' : 'Not required for short-duration works',
-      emergency_vehicle_access: 'Emergency vehicles given priority access at all times. Traffic controllers briefed on emergency protocols.'
+      worker_protection_measures: this.getWorkerProtection(work_type, isHighSpeed, roadData),
+      ppe_requirements: this.getPPERequirements(work_type, roadData),
+      public_notification_method: notificationMethod,
+      advance_warning_days: advanceWarningDays,
+      media_release_required: isHighVolume || isHighSpeed || isNationalHighway,
+      resident_consultation: this.getConsultationRequirements(work_type, roadData),
+      emergency_vehicle_access: this.getEmergencyAccessPlan(roadData)
     };
   }
 
   /**
-   * Get worker protection measures
+   * Get detailed worker protection based on ACTUAL road conditions
    */
-  getWorkerProtection(work_type, isHighSpeed) {
-    const base = 'Traffic control devices per AS 1742.3, advance warning signage, delineation with cones/barriers';
+  getWorkerProtection(work_type, isHighSpeed, roadData) {
+    let measures = [
+      'Traffic control devices per AS 1742.3',
+      'Advance warning signage',
+      'Delineation with cones/barriers',
+      'High-visibility clothing (Day/Night class)'
+    ];
+    
     if (isHighSpeed) {
-      return `${base}, additional safety buffer zones, truck-mounted attenuators for high-speed roads`;
+      measures.push('Additional safety buffer zones (minimum 20m)');
+      measures.push('Truck-mounted attenuators (TMA) for approach protection');
+      measures.push('Speed reduction signage cascade');
     }
-    return base;
+    
+    if (roadData?.traffic_volume >= 30000) {
+      measures.push('Additional traffic controllers for high volume');
+      measures.push('Real-time traffic monitoring');
+    }
+    
+    if (roadData?.lanes >= 3) {
+      measures.push('Progressive lane closure with adequate merge length');
+    }
+    
+    return measures.join(', ');
   }
 
   /**
-   * Get public notification method
+   * Get PPE requirements based on actual work conditions
    */
-  getNotificationMethod(roadData) {
-    if (roadData?.road_classification === 'National Highway') {
-      return 'VMS signs, website, media release, social media';
+  getPPERequirements(work_type, roadData) {
+    const base = [
+      'High-visibility clothing (AS/NZS 4602.1 Class D/N)',
+      'Hard hat (AS/NZS 1801)',
+      'Safety boots (AS/NZS 2210.3)',
+      'Safety glasses (AS/NZS 1337.1)'
+    ];
+    
+    if (roadData?.speed_limit >= 80) {
+      base.push('Supplementary high-vis garments recommended');
     }
-    if (roadData?.traffic_volume >= 20000) {
-      return 'VMS signs, website, social media';
+    
+    if (work_type === 'construction') {
+      base.push('Hearing protection (AS/NZS 1270)');
+      base.push('Gloves (AS/NZS 2161.2)');
     }
-    return 'Local signage, website notification';
+    
+    return base.join(', ');
   }
 
   /**
-   * Get advance warning days
+   * Calculate advance warning days from REAL road data
    */
-  getAdvanceWarningDays(work_type, roadData) {
+  calculateAdvanceWarningDays(work_type, roadData) {
     if (work_type === 'emergency') return '0';
+    
+    // National highways require more notice
     if (roadData?.road_classification === 'National Highway') return '14';
+    
+    // High volume roads
+    if (roadData?.traffic_volume >= 30000) return '10';
     if (roadData?.traffic_volume >= 20000) return '7';
+    
+    // Arterial roads
+    if (roadData?.road_classification?.includes('Arterial')) return '7';
+    
+    // Standard roads
+    if (roadData?.traffic_volume >= 10000) return '5';
+    
     return '3';
+  }
+
+  /**
+   * Get detailed notification method based on REAL road importance
+   */
+  getDetailedNotificationMethod(roadData, advanceWarningDays) {
+    const methods = [];
+    
+    // Always include
+    methods.push('On-site signage per AS 1742.3');
+    
+    // Based on road classification
+    if (roadData?.road_classification === 'National Highway') {
+      methods.push('VMS signs at major intersections');
+      methods.push('Transport authority website');
+      methods.push('Media release to major news outlets');
+      methods.push('Social media announcements');
+      methods.push('Traffic apps (Google Maps, Waze notifications)');
+    } else if (roadData?.traffic_volume >= 20000) {
+      methods.push('VMS signs');
+      methods.push('Local authority website');
+      methods.push('Social media');
+    } else if (roadData?.traffic_volume >= 10000) {
+      methods.push('Local authority website');
+      methods.push('Social media');
+    }
+    
+    // For extended notice periods
+    if (parseInt(advanceWarningDays) >= 7) {
+      methods.push(`Letterbox drop to affected residents (${advanceWarningDays} days prior)`);
+    }
+    
+    return methods.join(', ');
+  }
+
+  /**
+   * Get consultation requirements based on work type and road data
+   */
+  getConsultationRequirements(work_type, roadData) {
+    if (work_type === 'emergency') {
+      return 'Emergency works - consultation not required. Public notification via signage and media.';
+    }
+    
+    if (work_type === 'construction') {
+      if (roadData?.traffic_volume >= 20000) {
+        return 'Stakeholder consultation required: Residents within 500m, businesses with access affected, public transport operators. Community information session recommended.';
+      }
+      return 'Letterbox drop to affected residents 7 days prior. Contact details for queries provided.';
+    }
+    
+    if (roadData?.road_classification?.includes('Collector') || roadData?.road_classification?.includes('Local')) {
+      return 'Direct notification to immediately affected properties. Contact details provided on signage.';
+    }
+    
+    return 'Public notification via standard channels. Consultation if requested by stakeholders.';
+  }
+
+  /**
+   * Get emergency access plan based on road type
+   */
+  getEmergencyAccessPlan(roadData) {
+    const isRoadClosure = roadData?.complete_road_closure;
+    
+    if (isRoadClosure) {
+      return 'Emergency vehicle priority access maintained via traffic controllers. Detour route suitable for emergency vehicles verified. Traffic controllers trained in emergency vehicle protocols. Radio communication with emergency services dispatch.';
+    }
+    
+    if (roadData?.speed_limit >= 80) {
+      return 'Emergency vehicles given absolute priority. Works temporarily suspended on approach of emergency vehicles. Clear run-through lane maintained at all times. Traffic controllers have direct sight lines.';
+    }
+    
+    return 'Emergency vehicles given priority access. Traffic controllers briefed on emergency protocols. Clear passage maintained with maximum 2-minute delay.';
   }
 
   /**
