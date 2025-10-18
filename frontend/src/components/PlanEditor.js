@@ -1045,7 +1045,13 @@ export default function PlanEditor({ user, onLogout }) {
               </CardContent>
             </Card>
 
-            {/* Work Details */}
+            {/* Section 2: Project Overview */}
+            <ProjectOverviewSection 
+              formData={formData} 
+              handleInputChange={handleInputChange} 
+            />
+
+            {/* Section 3: Work Details */}
             <Card>
               <CardHeader>
                 <CardTitle>Work Details</CardTitle>
