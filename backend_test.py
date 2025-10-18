@@ -1744,7 +1744,6 @@ def main():
         
         # Existing endpoints for comparison
         ("Geocoding API (Original)", tester.test_geocoding),
-        ("Road Data API - Adelaide CBD", tester.test_road_data_osm_adelaide_cbd),
     ]
     
     # Run all tests
