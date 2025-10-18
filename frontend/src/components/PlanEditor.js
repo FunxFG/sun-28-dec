@@ -788,6 +788,70 @@ export default function PlanEditor({ user, onLogout }) {
               </CardContent>
             </Card>
 
+            {/* Traffic Company Details */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Traffic Control Company Details</CardTitle>
+                <CardDescription>
+                  Details of the company providing traffic management services (if different from primary company)
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Traffic Company Name</Label>
+                    <Input
+                      value={formData.traffic_company.name}
+                      onChange={(e) => handleInputChange('traffic_company', 'name', e.target.value)}
+                      placeholder="Traffic control company name"
+                    />
+                  </div>
+                  <div>
+                    <Label>Phone</Label>
+                    <Input
+                      value={formData.traffic_company.phone}
+                      onChange={(e) => handleInputChange('traffic_company', 'phone', e.target.value)}
+                      placeholder="Phone number"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label>Address</Label>
+                  <Input
+                    value={formData.traffic_company.address}
+                    onChange={(e) => handleInputChange('traffic_company', 'address', e.target.value)}
+                    placeholder="Traffic company address"
+                  />
+                </div>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div>
+                    <Label>Liaison Name</Label>
+                    <Input
+                      value={formData.traffic_company.liaison_name}
+                      onChange={(e) => handleInputChange('traffic_company', 'liaison_name', e.target.value)}
+                      placeholder="Contact person name"
+                    />
+                  </div>
+                  <div>
+                    <Label>Liaison Phone</Label>
+                    <Input
+                      value={formData.traffic_company.liaison_phone}
+                      onChange={(e) => handleInputChange('traffic_company', 'liaison_phone', e.target.value)}
+                      placeholder="Contact phone"
+                    />
+                  </div>
+                  <div>
+                    <Label>Liaison Email</Label>
+                    <Input
+                      value={formData.traffic_company.liaison_email}
+                      onChange={(e) => handleInputChange('traffic_company', 'liaison_email', e.target.value)}
+                      placeholder="Contact email"
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Work Details */}
             <Card>
               <CardHeader>
