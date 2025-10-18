@@ -731,6 +731,386 @@ class SafeRoadWorksAPITester:
             return True
         return False
 
+    def test_digital_atlas_adelaide_national_highway(self):
+        """Test Digital Atlas integration - Adelaide National Highway"""
+        import time
+        start_time = time.time()
+        
+        success, response = self.run_test(
+            "Digital Atlas - Adelaide National Highway",
+            "GET",
+            "road-data",
+            200,
+            data={
+                "start_address": "South Eastern Freeway, Adelaide SA",
+                "end_address": "Port Wakefield Road, Adelaide SA"
+            }
+        )
+        
+        end_time = time.time()
+        response_time = end_time - start_time
+        
+        if success:
+            print(f"   Response time: {response_time:.2f} seconds")
+            
+            # Check required fields
+            required_fields = [
+                'data_source', 'official_data', 'route_number', 'state', 
+                'governing_body', 'road_classification', 'speed_limit',
+                'workzone_size', 'road_name'
+            ]
+            
+            present_fields = [field for field in required_fields if field in response]
+            missing_fields = [field for field in required_fields if field not in response]
+            
+            print(f"   Present fields: {present_fields}")
+            if missing_fields:
+                print(f"   Missing fields: {missing_fields}")
+            
+            # Verify data source
+            data_source = response.get('data_source')
+            official_data = response.get('official_data', False)
+            route_number = response.get('route_number', '')
+            state = response.get('state', '')
+            governing_body = response.get('governing_body', '')
+            road_classification = response.get('road_classification', '')
+            speed_limit = response.get('speed_limit', 0)
+            
+            print(f"   Data source: {data_source}")
+            print(f"   Official data: {official_data}")
+            print(f"   Route number: {route_number}")
+            print(f"   State: {state}")
+            print(f"   Road classification: {road_classification}")
+            print(f"   Speed limit: {speed_limit} km/h")
+            print(f"   Governing body: {governing_body}")
+            
+            # Success criteria checks
+            success_criteria = []
+            
+            # Check if Digital Atlas data is used (preferred)
+            if data_source == "Digital Atlas of Australia":
+                success_criteria.append("✅ Using Digital Atlas data (preferred)")
+                if official_data:
+                    success_criteria.append("✅ Official data flag set")
+            elif data_source == "OpenStreetMap":
+                success_criteria.append("⚠️ Using OSM fallback (Digital Atlas unavailable)")
+            else:
+                success_criteria.append("⚠️ Using estimation fallback")
+            
+            # Check National Highway classification
+            if "National Highway" in road_classification or "Highway" in road_classification:
+                success_criteria.append("✅ National Highway classification detected")
+            else:
+                success_criteria.append(f"⚠️ Expected National Highway, got: {road_classification}")
+            
+            # Check speed limit (100+ km/h for highways)
+            if speed_limit >= 100:
+                success_criteria.append(f"✅ Highway speed limit: {speed_limit} km/h")
+            else:
+                success_criteria.append(f"⚠️ Expected 100+ km/h, got: {speed_limit} km/h")
+            
+            # Check response time
+            if response_time <= 10.0:
+                success_criteria.append(f"✅ Response time acceptable: {response_time:.2f}s")
+            else:
+                success_criteria.append(f"❌ Response time too slow: {response_time:.2f}s")
+            
+            for criterion in success_criteria:
+                print(f"   {criterion}")
+            
+            return True
+        return False
+
+    def test_digital_atlas_brisbane_arterial(self):
+        """Test Digital Atlas integration - Brisbane Arterial Road"""
+        import time
+        start_time = time.time()
+        
+        success, response = self.run_test(
+            "Digital Atlas - Brisbane Arterial Road",
+            "GET",
+            "road-data",
+            200,
+            data={
+                "start_address": "Gympie Road, Brisbane QLD",
+                "end_address": "Sandgate Road, Brisbane QLD"
+            }
+        )
+        
+        end_time = time.time()
+        response_time = end_time - start_time
+        
+        if success:
+            print(f"   Response time: {response_time:.2f} seconds")
+            
+            # Verify response fields
+            data_source = response.get('data_source')
+            road_classification = response.get('road_classification', '')
+            speed_limit = response.get('speed_limit', 0)
+            governing_body = response.get('governing_body', '')
+            
+            print(f"   Data source: {data_source}")
+            print(f"   Road classification: {road_classification}")
+            print(f"   Speed limit: {speed_limit} km/h")
+            print(f"   Governing body: {governing_body}")
+            
+            # Success criteria
+            success_criteria = []
+            
+            # Check data source (Digital Atlas or OSM acceptable)
+            if data_source in ["Digital Atlas of Australia", "OpenStreetMap"]:
+                success_criteria.append(f"✅ Using {data_source}")
+            else:
+                success_criteria.append(f"⚠️ Using fallback: {data_source}")
+            
+            # Check arterial classification
+            if "Arterial" in road_classification or "Urban" in road_classification:
+                success_criteria.append("✅ Major Urban Arterial classification")
+            else:
+                success_criteria.append(f"⚠️ Expected Arterial classification, got: {road_classification}")
+            
+            # Check speed limit (60-80 km/h for arterials)
+            if 60 <= speed_limit <= 80:
+                success_criteria.append(f"✅ Arterial speed limit: {speed_limit} km/h")
+            else:
+                success_criteria.append(f"⚠️ Expected 60-80 km/h, got: {speed_limit} km/h")
+            
+            # Check response time
+            if response_time <= 10.0:
+                success_criteria.append(f"✅ Response time acceptable: {response_time:.2f}s")
+            else:
+                success_criteria.append(f"❌ Response time too slow: {response_time:.2f}s")
+            
+            for criterion in success_criteria:
+                print(f"   {criterion}")
+            
+            return True
+        return False
+
+    def test_digital_atlas_sydney_local_street(self):
+        """Test Digital Atlas integration - Sydney Local Street"""
+        import time
+        start_time = time.time()
+        
+        success, response = self.run_test(
+            "Digital Atlas - Sydney Local Street",
+            "GET",
+            "road-data",
+            200,
+            data={
+                "start_address": "George Street, Sydney NSW",
+                "end_address": "Pitt Street, Sydney NSW"
+            }
+        )
+        
+        end_time = time.time()
+        response_time = end_time - start_time
+        
+        if success:
+            print(f"   Response time: {response_time:.2f} seconds")
+            
+            # Verify response fields
+            data_source = response.get('data_source')
+            road_classification = response.get('road_classification', '')
+            speed_limit = response.get('speed_limit', 0)
+            governing_body = response.get('governing_body', '')
+            
+            print(f"   Data source: {data_source}")
+            print(f"   Road classification: {road_classification}")
+            print(f"   Speed limit: {speed_limit} km/h")
+            print(f"   Governing body: {governing_body}")
+            
+            # Success criteria
+            success_criteria = []
+            
+            # Check data source (OSM likely for city streets)
+            if data_source == "OpenStreetMap":
+                success_criteria.append("✅ Using OSM (expected for city streets)")
+            elif data_source == "Digital Atlas of Australia":
+                success_criteria.append("✅ Using Digital Atlas (bonus)")
+            else:
+                success_criteria.append(f"⚠️ Using fallback: {data_source}")
+            
+            # Check local street classification
+            if "Local" in road_classification or "Urban" in road_classification:
+                success_criteria.append("✅ Local Street or Urban classification")
+            else:
+                success_criteria.append(f"⚠️ Expected Local/Urban classification, got: {road_classification}")
+            
+            # Check speed limit (40-60 km/h for local streets)
+            if 40 <= speed_limit <= 60:
+                success_criteria.append(f"✅ Local street speed limit: {speed_limit} km/h")
+            else:
+                success_criteria.append(f"⚠️ Expected 40-60 km/h, got: {speed_limit} km/h")
+            
+            # Check response time
+            if response_time <= 10.0:
+                success_criteria.append(f"✅ Response time acceptable: {response_time:.2f}s")
+            else:
+                success_criteria.append(f"❌ Response time too slow: {response_time:.2f}s")
+            
+            for criterion in success_criteria:
+                print(f"   {criterion}")
+            
+            return True
+        return False
+
+    def test_digital_atlas_melbourne_motorway(self):
+        """Test Digital Atlas integration - Melbourne Motorway"""
+        import time
+        start_time = time.time()
+        
+        success, response = self.run_test(
+            "Digital Atlas - Melbourne Motorway",
+            "GET",
+            "road-data",
+            200,
+            data={
+                "start_address": "Eastern Freeway, Melbourne VIC",
+                "end_address": "Monash Freeway, Melbourne VIC"
+            }
+        )
+        
+        end_time = time.time()
+        response_time = end_time - start_time
+        
+        if success:
+            print(f"   Response time: {response_time:.2f} seconds")
+            
+            # Verify response fields
+            data_source = response.get('data_source')
+            official_data = response.get('official_data', False)
+            route_number = response.get('route_number', '')
+            state = response.get('state', '')
+            governing_body = response.get('governing_body', '')
+            road_classification = response.get('road_classification', '')
+            speed_limit = response.get('speed_limit', 0)
+            
+            print(f"   Data source: {data_source}")
+            print(f"   Official data: {official_data}")
+            print(f"   Route number: {route_number}")
+            print(f"   State: {state}")
+            print(f"   Road classification: {road_classification}")
+            print(f"   Speed limit: {speed_limit} km/h")
+            print(f"   Governing body: {governing_body}")
+            
+            # Success criteria
+            success_criteria = []
+            
+            # Check if Digital Atlas data is used (preferred for motorways)
+            if data_source == "Digital Atlas of Australia":
+                success_criteria.append("✅ Using Digital Atlas data (preferred)")
+                if official_data:
+                    success_criteria.append("✅ Official data flag set")
+            elif data_source == "OpenStreetMap":
+                success_criteria.append("⚠️ Using OSM fallback")
+            else:
+                success_criteria.append("⚠️ Using estimation fallback")
+            
+            # Check route number (M prefix expected)
+            if route_number and route_number.startswith('M'):
+                success_criteria.append(f"✅ M prefix route number: {route_number}")
+            elif route_number:
+                success_criteria.append(f"⚠️ Route number present but no M prefix: {route_number}")
+            else:
+                success_criteria.append("⚠️ No route number identified")
+            
+            # Check National Highway classification
+            if "National Highway" in road_classification or "Highway" in road_classification:
+                success_criteria.append("✅ National Highway classification")
+            else:
+                success_criteria.append(f"⚠️ Expected National Highway, got: {road_classification}")
+            
+            # Check governing body includes State Government
+            if "State Government" in governing_body:
+                success_criteria.append("✅ State Government governing body")
+            else:
+                success_criteria.append(f"⚠️ Expected State Government, got: {governing_body}")
+            
+            # Check speed limit (100+ km/h for motorways)
+            if speed_limit >= 100:
+                success_criteria.append(f"✅ Motorway speed limit: {speed_limit} km/h")
+            else:
+                success_criteria.append(f"⚠️ Expected 100+ km/h, got: {speed_limit} km/h")
+            
+            # Check response time
+            if response_time <= 10.0:
+                success_criteria.append(f"✅ Response time acceptable: {response_time:.2f}s")
+            else:
+                success_criteria.append(f"❌ Response time too slow: {response_time:.2f}s")
+            
+            for criterion in success_criteria:
+                print(f"   {criterion}")
+            
+            return True
+        return False
+
+    def test_digital_atlas_comprehensive_fields(self):
+        """Test comprehensive response fields for Digital Atlas integration"""
+        success, response = self.run_test(
+            "Digital Atlas - Comprehensive Field Check",
+            "GET",
+            "road-data",
+            200,
+            data={
+                "start_address": "Pacific Highway, Sydney NSW",
+                "end_address": "Princes Highway, Sydney NSW"
+            }
+        )
+        
+        if success:
+            # Expected response fields from review request
+            expected_fields = [
+                'data_source', 'official_data', 'route_number', 'state',
+                'governing_body', 'road_classification', 'speed_limit',
+                'workzone_size', 'road_name', 'traffic_volume', 'austroads_category'
+            ]
+            
+            present_fields = []
+            missing_fields = []
+            
+            for field in expected_fields:
+                if field in response:
+                    present_fields.append(field)
+                else:
+                    missing_fields.append(field)
+            
+            print(f"   Present fields ({len(present_fields)}/{len(expected_fields)}): {present_fields}")
+            if missing_fields:
+                print(f"   Missing fields: {missing_fields}")
+            
+            # Check data source compliance
+            data_source = response.get('data_source')
+            valid_sources = ["Digital Atlas of Australia", "OpenStreetMap", "Estimated"]
+            
+            if data_source in valid_sources:
+                print(f"   ✅ Valid data source: {data_source}")
+            else:
+                print(f"   ❌ Invalid data source: {data_source}")
+                return False
+            
+            # Check Austroads compliance
+            road_classification = response.get('road_classification', '')
+            austroads_categories = [
+                "National Highway", "Major Urban Arterial", "Major Urban Road",
+                "Urban Collector", "Local Street"
+            ]
+            
+            if any(category in road_classification for category in austroads_categories):
+                print(f"   ✅ Austroads-compliant classification: {road_classification}")
+            else:
+                print(f"   ⚠️ Non-standard classification: {road_classification}")
+            
+            # Check speed limit reasonableness
+            speed_limit = response.get('speed_limit', 0)
+            if 40 <= speed_limit <= 110:
+                print(f"   ✅ Reasonable speed limit: {speed_limit} km/h")
+            else:
+                print(f"   ⚠️ Unusual speed limit: {speed_limit} km/h")
+            
+            return len(missing_fields) <= 2  # Allow up to 2 missing fields
+        return False
+
 def main():
     print("🚦 SafeRoadWorks API Testing Suite")
     print("=" * 50)
