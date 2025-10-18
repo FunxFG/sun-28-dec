@@ -133,7 +133,7 @@ export default function PlanEditor({ user, onLogout }) {
     traffic_assessment: {
       aadt: '',  // Annual Average Daily Traffic
       peak_hour_volume: '',
-      85th_percentile_speed: '',
+      '85th_percentile_speed': '',
       crash_history: '',
       heavy_vehicle_percentage: '',
       assessment_method: ''
