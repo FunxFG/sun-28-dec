@@ -375,13 +375,55 @@ export default function PlanEditor({ user, onLogout }) {
       console.log('Auto-placement complete. Devices returned:', autoDevices);
       console.log('Device count:', autoDevices?.length || 0);
 
+      // Generate TGS with precise measurements
+      const tgsGenerator = await import('../utils/tgsDrawingGenerator.js');
+      const tgsPackage = tgsGenerator.default ? 
+        new tgsGenerator.default.TGSDrawingGenerator() : 
+        new tgsGenerator.TGSDrawingGenerator();
+      
+      const mapDataForTGS = {
+        start_lat: startCoords.lat,
+        start_lng: startCoords.lng,
+        end_lat: endCoords.lat,
+        end_lng: endCoords.lng,
+        center_lat: startCoords.lat,
+        center_lng: startCoords.lng,
+        workzone_size: roadData.workzone_size,
+        speed_limit: roadData.speed_limit,
+        road_classification: roadData.road_classification,
+        project_name: formData.plan_name || 'Traffic Management Plan'
+      };
+      
+      const tgsData = tgsPackage.generateTGSPackage(formData, autoDevices, mapDataForTGS);
+      console.log('TGS Package generated:', tgsData);
+      
+      // Use devices with precise measurements
+      const devicesWithMeasurements = tgsData.detailed_schedule?.devices?.map((scheduleItem, idx) => ({
+        ...autoDevices[idx],
+        measurements: {
+          gps_coordinates: {
+            latitude: scheduleItem.gps_lat,
+            longitude: scheduleItem.gps_lng,
+            format: 'WGS84'
+          },
+          distance_from_workzone_start: scheduleItem.distance_from_start,
+          distance_from_workzone_end: 'Calculated',
+          lateral_offset_from_centerline: scheduleItem.lateral_offset,
+          side_of_road: scheduleItem.side,
+          position_description: scheduleItem.position_description,
+          mounting_height: scheduleItem.mounting_height,
+          clearance_from_carriageway: scheduleItem.clearance_from_edge
+        }
+      })) || autoDevices;
+
       // Update form data with automatically placed devices
       setFormData(prev => ({
         ...prev,
-        devices: autoDevices || [],
+        devices: devicesWithMeasurements,
         map_center_lat: startCoords.lat,
         map_center_lng: startCoords.lng,
-        road_data: roadData
+        road_data: roadData,
+        tgs_data: tgsData // Store TGS package for PDF generation
       }));
 
       // Re-initialize map with new devices
