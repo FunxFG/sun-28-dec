@@ -1697,6 +1697,90 @@ async def recommend_devices(scenario: dict):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# ===================================================
+# GOOGLE PLACES API PROXY ENDPOINTS (CORS FIX)
+# ===================================================
+
+@api_router.get("/proxy/geocode")
+async def proxy_geocode(address: str):
+    """
+    Proxy endpoint for Google Geocoding API to fix CORS issues
+    """
+    try:
+        google_api_key = os.environ.get('GOOGLE_PLACES_API_KEY')
+        if not google_api_key:
+            raise HTTPException(status_code=500, detail="Google API key not configured")
+        
+        url = f"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={google_api_key}"
+        
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+            return response.json()
+    except Exception as e:
+        logger.error(f"Error in geocode proxy: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/proxy/places/nearby")
+async def proxy_places_nearby(lat: float, lng: float, radius: int = 10000, place_type: str = "police"):
+    """
+    Proxy endpoint for Google Places Nearby Search API to fix CORS issues
+    """
+    try:
+        google_api_key = os.environ.get('GOOGLE_PLACES_API_KEY')
+        if not google_api_key:
+            raise HTTPException(status_code=500, detail="Google API key not configured")
+        
+        url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius={radius}&type={place_type}&key={google_api_key}"
+        
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+            return response.json()
+    except Exception as e:
+        logger.error(f"Error in places nearby proxy: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/proxy/places/details")
+async def proxy_places_details(place_id: str, fields: str = "name,formatted_phone_number,vicinity"):
+    """
+    Proxy endpoint for Google Places Details API to fix CORS issues
+    """
+    try:
+        google_api_key = os.environ.get('GOOGLE_PLACES_API_KEY')
+        if not google_api_key:
+            raise HTTPException(status_code=500, detail="Google API key not configured")
+        
+        url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields={fields}&key={google_api_key}"
+        
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+            return response.json()
+    except Exception as e:
+        logger.error(f"Error in places details proxy: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ===================================================
+# OPENWEATHERMAP API PROXY ENDPOINT (CORS FIX)
+# ===================================================
+
+@api_router.get("/proxy/weather/forecast")
+async def proxy_weather_forecast(lat: float, lon: float):
+    """
+    Proxy endpoint for OpenWeatherMap Forecast API to fix CORS issues
+    Note: Using the free API key from the frontend code
+    """
+    try:
+        # Using the OpenWeatherMap API key found in frontend code
+        weather_api_key = "4d8fb5b93d4af21d66a2948710284366"
+        
+        url = f"https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={weather_api_key}&units=metric"
+        
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+            return response.json()
+    except Exception as e:
+        logger.error(f"Error in weather forecast proxy: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # Include the router in the main app
 app.include_router(api_router)
 
