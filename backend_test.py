@@ -731,6 +731,81 @@ class SafeRoadWorksAPITester:
             return True
         return False
 
+    def test_get_devices(self):
+        """Test getting all traffic control devices"""
+        success, response = self.run_test(
+            "Get All Devices",
+            "GET",
+            "devices",
+            200
+        )
+        
+        if success and 'devices' in response and 'categories' in response:
+            devices_count = len(response['devices'])
+            categories_count = len(response['categories'])
+            print(f"   Retrieved {devices_count} devices in {categories_count} categories")
+            
+            # Verify expected structure
+            if devices_count > 0:
+                first_device = response['devices'][0]
+                required_fields = ['code', 'name', 'category', 'type']
+                missing_fields = [field for field in required_fields if field not in first_device]
+                if missing_fields:
+                    print(f"   ⚠️ Missing fields in device data: {missing_fields}")
+                    return False
+                
+            print(f"   ✅ Device library loaded with {devices_count} Austroads-approved devices")
+            return True
+        return False
+
+    def test_get_device_by_code(self):
+        """Test getting a specific device by code"""
+        success, response = self.run_test(
+            "Get Device by Code (RWA-001)",
+            "GET",
+            "devices/RWA-001",
+            200
+        )
+        
+        if success and 'code' in response:
+            device_code = response['code']
+            device_name = response.get('name', 'Unknown')
+            print(f"   Retrieved device: {device_code} - {device_name}")
+            
+            # Verify required fields
+            required_fields = ['code', 'name', 'category', 'type', 'description']
+            missing_fields = [field for field in required_fields if field not in response]
+            if missing_fields:
+                print(f"   ❌ Missing required fields: {missing_fields}")
+                return False
+                
+            print(f"   ✅ Device details complete with all required fields")
+            return True
+        return False
+
+    def test_search_devices(self):
+        """Test searching devices by term"""
+        success, response = self.run_test(
+            "Search Devices (Road Work)",
+            "GET",
+            "devices/search/Road Work",
+            200
+        )
+        
+        if success and 'devices' in response:
+            devices_count = len(response['devices'])
+            search_term = response.get('search_term', 'Unknown')
+            print(f"   Found {devices_count} devices matching '{search_term}'")
+            
+            if devices_count > 0:
+                first_device = response['devices'][0]
+                print(f"   First result: {first_device.get('name', 'Unknown')}")
+                return True
+            else:
+                print(f"   ⚠️ No devices found for search term")
+                return True  # No results can be valid
+        return False
+
     def test_digital_atlas_adelaide_national_highway(self):
         """Test Digital Atlas integration - Adelaide National Highway"""
         import time
