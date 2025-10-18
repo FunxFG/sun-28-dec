@@ -407,6 +407,9 @@ export class AGTTMCompliantPlacement {
       carriageway_width: roadGeometry.carriageway_width || this.estimateCarriagewayWidth(roadGeometry),
       speed_limit: roadGeometry.speed_limit || 60,
       traffic_volume: roadGeometry.traffic_volume || 15000,
+      workzone_size: roadGeometry.workzone_size || 100,
+      road_classification: roadGeometry.road_classification || 'Major Urban Road',
+      governing_body: roadGeometry.governing_body || 'Local Council',
       
       // Exact side analysis with AS 1742.3 compliance
       left_side: this.analyzeSideGeometryExact('left', roadGeometry, clearanceSpecs),
