@@ -524,8 +524,21 @@ export default function PlanEditor({ user, onLogout }) {
       }
 
       // Generate TGS with precise measurements
+      const mapDataForTGS = {
+        start_lat: startCoords.lat,
+        start_lng: startCoords.lng,
+        end_lat: endCoords.lat,
+        end_lng: endCoords.lng,
+        center_lat: startCoords.lat,
+        center_lng: startCoords.lng,
+        workzone_size: roadData.workzone_size,
+        speed_limit: roadData.speed_limit,
+        road_classification: roadData.road_classification,
+        project_name: formData.plan_name || 'Traffic Management Plan'
+      };
+      
       const tgsGenerator = await import('../utils/tgsDrawingGenerator.js');
-      const tgsPackage = tgsGenerator.default.generateTGSPackage(formData, allDevices, mapDataForTGS);
+      const tgsData = tgsGenerator.default.generateTGSPackage(formData, allDevices, mapDataForTGS);
       console.log('TGS Package generated:', tgsData);
       
       // Use devices with precise measurements
