@@ -875,7 +875,7 @@ export default function PlanEditor({ user, onLogout }) {
       };
 
       // Generate professional TGS PDF
-      const pdfBlob = tgsGenerator.generateProfessionalPDF(formData, placedDevices, roadData, companyInfo);
+      const pdfBlob = tgsGenerator.generateProfessionalPDF(formData, formData.devices, roadData, companyInfo);
       
       // Download the PDF
       const url = window.URL.createObjectURL(pdfBlob);
