@@ -1838,6 +1838,11 @@ def main():
         ("Get Risk by ID", tester.test_get_risk_by_id),
         ("Calculate Risk Score", tester.test_calculate_risk_score),
         
+        # 7. Device Library
+        ("Get All Devices", tester.test_get_devices),
+        ("Get Device by Code", tester.test_get_device_by_code),
+        ("Search Devices", tester.test_search_devices),
+        
         # 8. NEW CORS Fix Proxy Endpoints
         ("Proxy Geocode Adelaide", tester.test_proxy_geocode_adelaide),
         ("Proxy Places Nearby Police", tester.test_proxy_places_nearby_police_adelaide),
