@@ -704,9 +704,10 @@ export class TGSDrawingGenerator {
 
   createDeviceInfoWindow(device) {
     const symbol = this.getDeviceSymbol(device);
+    const measurements = device.measurements || {};
     
     return `
-      <div class="device-info-window" style="min-width: 250px;">
+      <div class="device-info-window" style="min-width: 300px;">
         <h3 style="margin: 0 0 10px 0; color: #1f2937; font-size: 14px; font-weight: bold;">
           ${device.device_name}
         </h3>
@@ -725,21 +726,199 @@ export class TGSDrawingGenerator {
           '<div style="color: #3b82f6; font-size: 11px; margin-bottom: 5px;">↔ Bilateral Placement</div>' : ''
         }
         
-        ${device.properties?.clearance_exact ? 
-          `<div style="font-size: 11px;"><strong>Clearance:</strong> ${device.properties.clearance_exact}</div>` : ''
-        }
+        <!-- PRECISE MEASUREMENTS -->
+        ${measurements.gps_coordinates ? `
+          <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e5e7eb;">
+            <div style="font-size: 11px; font-weight: bold; margin-bottom: 5px; color: #374151;">📍 GPS Coordinates:</div>
+            <div style="font-size: 10px; font-family: monospace; color: #6b7280;">
+              ${measurements.gps_coordinates.latitude}, ${measurements.gps_coordinates.longitude}
+            </div>
+          </div>
+        ` : ''}
         
-        ${device.properties?.distance_advance_exact ? 
-          `<div style="font-size: 11px;"><strong>Advance Distance:</strong> ${device.properties.distance_advance_exact}</div>` : ''
-        }
+        ${measurements.distance_from_workzone_start ? `
+          <div style="margin-top: 8px;">
+            <div style="font-size: 11px;"><strong>Position:</strong> ${measurements.position_description}</div>
+            <div style="font-size: 10px; color: #6b7280; margin-top: 2px;">
+              • From Start: ${measurements.distance_from_workzone_start}<br>
+              • From End: ${measurements.distance_from_workzone_end}
+            </div>
+          </div>
+        ` : ''}
+        
+        ${measurements.lateral_offset_from_centerline ? `
+          <div style="margin-top: 8px;">
+            <div style="font-size: 11px;">
+              <strong>Lateral Offset:</strong> ${measurements.lateral_offset_from_centerline} 
+              (${measurements.side_of_road})
+            </div>
+          </div>
+        ` : ''}
+        
+        ${measurements.clearance_from_carriageway && measurements.clearance_from_carriageway !== 'N/A' ? `
+          <div style="font-size: 10px; color: #059669; margin-top: 5px;">
+            ✓ Clearance: ${measurements.clearance_from_carriageway} from carriageway edge
+          </div>
+        ` : ''}
+        
+        ${device.properties?.taper_position ? `
+          <div style="margin-top: 8px; background: #fef3c7; padding: 5px; border-radius: 3px;">
+            <div style="font-size: 10px; color: #92400e;">
+              <strong>Taper Cone:</strong> Position ${device.properties.taper_position}<br>
+              Spacing: ${device.properties.cone_spacing}m
+            </div>
+          </div>
+        ` : ''}
         
         ${device.properties?.agttm_rule ? 
-          `<div style="font-size: 10px; color: #6b7280; margin-top: 8px; border-top: 1px solid #e5e7eb; padding-top: 5px;">
-            <strong>Rule:</strong><br>${device.properties.agttm_rule}
+          `<div style="font-size: 9px; color: #6b7280; margin-top: 8px; border-top: 1px solid #e5e7eb; padding-top: 5px;">
+            <strong>Compliance Rule:</strong><br>${device.properties.agttm_rule}<br>
+            ${device.properties.as1742_reference || ''}
           </div>` : ''
         }
       </div>
     `;
+  }
+
+  /**
+   * Generate detailed schedule of devices with precise measurements
+   */
+  generateDetailedSchedule(devices, mapData) {
+    const schedule = {
+      title: "Traffic Control Device Schedule",
+      project: mapData.project_name || "Traffic Management Plan",
+      workzone_size: `${(mapData.workzone_size || 0).toFixed(2)}m`,
+      speed_limit: `${mapData.speed_limit || 60}km/h`,
+      road_classification: mapData.road_classification || "Urban Arterial",
+      
+      devices: devices.map((device, index) => ({
+        item_no: index + 1,
+        device_code: this.getDeviceSymbol(device).symbol,
+        device_name: device.device_name,
+        device_type: device.device_type,
+        quantity: 1,
+        
+        // GPS Position
+        gps_lat: device.measurements?.gps_coordinates?.latitude || device.position_lat.toFixed(8),
+        gps_lng: device.measurements?.gps_coordinates?.longitude || device.position_lng.toFixed(8),
+        
+        // Precise Positioning
+        distance_from_start: device.measurements?.distance_from_workzone_start || 'N/A',
+        lateral_offset: device.measurements?.lateral_offset_from_centerline || 'N/A',
+        side: device.measurements?.side_of_road || 'N/A',
+        position_description: device.measurements?.position_description || 'N/A',
+        
+        // Mounting/Installation
+        mounting_height: device.measurements?.mounting_height || '2.1-2.5m (AS 1742.3)',
+        clearance_from_edge: device.measurements?.clearance_from_carriageway || 'N/A',
+        
+        // Compliance
+        placement_type: device.properties?.placement_type || 'Standard',
+        agttm_compliant: device.properties?.agttm_compliant ? 'Yes' : 'Check',
+        as1742_ref: device.properties?.as1742_reference || 'AS 1742.3',
+        
+        // Additional Properties
+        auto_placed: device.properties?.auto_placed ? 'Auto' : 'Manual',
+        bilateral: device.properties?.bilateral_pair ? 'Yes' : 'No',
+        taper_position: device.properties?.taper_position || 'N/A'
+      }))
+    };
+    
+    return schedule;
+  }
+
+  /**
+   * Generate taper calculations with precise measurements
+   */
+  generateTaperCalculations(devices, mapData) {
+    const taperDevices = devices.filter(d => 
+      d.properties?.placement_type === 'taper' || 
+      d.properties?.placement_type === 'end_taper'
+    );
+    
+    if (taperDevices.length === 0) {
+      return null;
+    }
+    
+    const speedLimit = mapData.speed_limit || 60;
+    const taperLength = mapData.taper_length || this.calculateTaperLength(speedLimit);
+    const taperRatio = this.getTaperRatio(speedLimit);
+    const coneSpacing = this.getTaperConeSpacing(speedLimit);
+    
+    return {
+      title: "Lane Taper Calculations",
+      standard: "AS 1742.3 Section 3.5",
+      
+      parameters: {
+        speed_limit: `${speedLimit}km/h`,
+        taper_length: `${taperLength}m`,
+        taper_ratio: `1:${taperRatio}`,
+        cone_spacing: `${coneSpacing}m`,
+        lane_width: "3.5m (Standard)",
+        buffer_zone: this.getBufferZone(speedLimit)
+      },
+      
+      start_taper: {
+        location: "Before workzone",
+        function: "Guide traffic from normal lane position into work area",
+        cone_count: taperDevices.filter(d => d.properties?.placement_type === 'taper').length,
+        cones: taperDevices
+          .filter(d => d.properties?.placement_type === 'taper')
+          .map((device, idx) => ({
+            cone_number: idx + 1,
+            distance_along_taper: device.properties?.distance_from_workzone || `${idx * coneSpacing}m`,
+            lateral_offset: device.properties?.lateral_offset_exact || 'Calculated',
+            gps_lat: device.measurements?.gps_coordinates?.latitude || device.position_lat.toFixed(8),
+            gps_lng: device.measurements?.gps_coordinates?.longitude || device.position_lng.toFixed(8)
+          }))
+      },
+      
+      end_taper: {
+        location: "After workzone",
+        function: "Return traffic to normal lane position",
+        cone_count: taperDevices.filter(d => d.properties?.placement_type === 'end_taper').length,
+        cones: taperDevices
+          .filter(d => d.properties?.placement_type === 'end_taper')
+          .map((device, idx) => ({
+            cone_number: idx + 1,
+            distance_along_taper: device.properties?.distance_from_workzone_end || `${idx * coneSpacing}m`,
+            lateral_offset: device.properties?.lateral_offset_exact || 'Calculated',
+            gps_lat: device.measurements?.gps_coordinates?.latitude || device.position_lat.toFixed(8),
+            gps_lng: device.measurements?.gps_coordinates?.longitude || device.position_lng.toFixed(8)
+          }))
+      }
+    };
+  }
+
+  calculateTaperLength(speedLimit) {
+    if (speedLimit <= 50) return 30;
+    if (speedLimit === 60) return 40;
+    if (speedLimit === 70) return 50;
+    if (speedLimit === 80) return 60;
+    return 90;
+  }
+
+  getTaperRatio(speedLimit) {
+    if (speedLimit <= 50) return 12;
+    if (speedLimit === 60) return 15;
+    if (speedLimit === 70) return 18;
+    if (speedLimit === 80) return 20;
+    return 25;
+  }
+
+  getTaperConeSpacing(speedLimit) {
+    if (speedLimit <= 50) return 3;
+    if (speedLimit === 60) return 4;
+    if (speedLimit === 70) return 5;
+    return 6;
+  }
+
+  getBufferZone(speedLimit) {
+    if (speedLimit <= 50) return "20m";
+    if (speedLimit === 60) return "30m";
+    if (speedLimit === 70) return "40m";
+    if (speedLimit === 80) return "50m";
+    return "60m";
   }
 }
 
