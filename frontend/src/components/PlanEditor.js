@@ -1213,6 +1213,554 @@ export default function PlanEditor({ user, onLogout }) {
               </CardContent>
             </Card>
 
+            {/* Emergency Contacts */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <AlertCircle className="w-5 h-5 text-red-600" />
+                  Emergency Contacts & Response
+                </CardTitle>
+                <CardDescription>24/7 emergency contact information and incident response procedures</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Primary Emergency Contact Name</Label>
+                    <Input
+                      value={formData.emergency_contacts.primary_contact_name}
+                      onChange={(e) => handleInputChange('emergency_contacts', 'primary_contact_name', e.target.value)}
+                      placeholder="24/7 contact person"
+                    />
+                  </div>
+                  <div>
+                    <Label>Primary Emergency Contact Phone</Label>
+                    <Input
+                      value={formData.emergency_contacts.primary_contact_phone}
+                      onChange={(e) => handleInputChange('emergency_contacts', 'primary_contact_phone', e.target.value)}
+                      placeholder="Mobile number"
+                    />
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Secondary Emergency Contact Name</Label>
+                    <Input
+                      value={formData.emergency_contacts.secondary_contact_name}
+                      onChange={(e) => handleInputChange('emergency_contacts', 'secondary_contact_name', e.target.value)}
+                      placeholder="Backup contact"
+                    />
+                  </div>
+                  <div>
+                    <Label>Secondary Emergency Contact Phone</Label>
+                    <Input
+                      value={formData.emergency_contacts.secondary_contact_phone}
+                      onChange={(e) => handleInputChange('emergency_contacts', 'secondary_contact_phone', e.target.value)}
+                      placeholder="Mobile number"
+                    />
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Local Police Station</Label>
+                    <Input
+                      value={formData.emergency_contacts.police_station}
+                      onChange={(e) => handleInputChange('emergency_contacts', 'police_station', e.target.value)}
+                      placeholder="Station name and phone"
+                    />
+                  </div>
+                  <div>
+                    <Label>Ambulance Service</Label>
+                    <Input
+                      value={formData.emergency_contacts.ambulance_service}
+                      onChange={(e) => handleInputChange('emergency_contacts', 'ambulance_service', e.target.value)}
+                      placeholder="Nearest ambulance station"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label>Incident Response Procedure</Label>
+                  <Textarea
+                    value={formData.emergency_contacts.incident_response_plan}
+                    onChange={(e) => handleInputChange('emergency_contacts', 'incident_response_plan', e.target.value)}
+                    placeholder="Step-by-step incident response procedure"
+                    rows={3}
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="emergency_services_notified"
+                    checked={formData.emergency_contacts.emergency_services_notified}
+                    onChange={(e) => handleInputChange('emergency_contacts', 'emergency_services_notified', e.target.checked)}
+                    className="w-4 h-4"
+                  />
+                  <Label htmlFor="emergency_services_notified">Emergency Services Pre-Notified of Works</Label>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Personnel & Qualifications */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="w-5 h-5 text-blue-600" />
+                  Personnel & Qualifications
+                </CardTitle>
+                <CardDescription>Site personnel details and certification verification</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div>
+                    <Label>Site Supervisor Name</Label>
+                    <Input
+                      value={formData.personnel.site_supervisor_name}
+                      onChange={(e) => handleInputChange('personnel', 'site_supervisor_name', e.target.value)}
+                      placeholder="Supervisor name"
+                    />
+                  </div>
+                  <div>
+                    <Label>Supervisor Phone</Label>
+                    <Input
+                      value={formData.personnel.site_supervisor_phone}
+                      onChange={(e) => handleInputChange('personnel', 'site_supervisor_phone', e.target.value)}
+                      placeholder="Contact number"
+                    />
+                  </div>
+                  <div>
+                    <Label>Qualifications / Cert Numbers</Label>
+                    <Input
+                      value={formData.personnel.site_supervisor_qualifications}
+                      onChange={(e) => handleInputChange('personnel', 'site_supervisor_qualifications', e.target.value)}
+                      placeholder="e.g., RIIWHS205D"
+                    />
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Traffic Controller 1 Name</Label>
+                    <Input
+                      value={formData.personnel.traffic_controller_1_name}
+                      onChange={(e) => handleInputChange('personnel', 'traffic_controller_1_name', e.target.value)}
+                      placeholder="Controller name"
+                    />
+                  </div>
+                  <div>
+                    <Label>Certification Number</Label>
+                    <Input
+                      value={formData.personnel.traffic_controller_1_cert}
+                      onChange={(e) => handleInputChange('personnel', 'traffic_controller_1_cert', e.target.value)}
+                      placeholder="Cert number"
+                    />
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Traffic Controller 2 Name</Label>
+                    <Input
+                      value={formData.personnel.traffic_controller_2_name}
+                      onChange={(e) => handleInputChange('personnel', 'traffic_controller_2_name', e.target.value)}
+                      placeholder="Controller name"
+                    />
+                  </div>
+                  <div>
+                    <Label>Certification Number</Label>
+                    <Input
+                      value={formData.personnel.traffic_controller_2_cert}
+                      onChange={(e) => handleInputChange('personnel', 'traffic_controller_2_cert', e.target.value)}
+                      placeholder="Cert number"
+                    />
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Total Number of Workers on Site</Label>
+                    <Input
+                      type="number"
+                      value={formData.personnel.number_of_workers}
+                      onChange={(e) => handleInputChange('personnel', 'number_of_workers', e.target.value)}
+                      placeholder="Number"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2 pt-6">
+                    <input
+                      type="checkbox"
+                      id="all_inducted"
+                      checked={formData.personnel.all_personnel_inducted}
+                      onChange={(e) => handleInputChange('personnel', 'all_personnel_inducted', e.target.checked)}
+                      className="w-4 h-4"
+                    />
+                    <Label htmlFor="all_inducted">All Personnel Site Inducted</Label>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Permits & Insurance */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-green-600" />
+                  Permits, Insurance & Compliance
+                </CardTitle>
+                <CardDescription>Legal documentation and insurance coverage</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Road Occupation Permit Number</Label>
+                    <Input
+                      value={formData.permits_insurance.road_occupation_permit_number}
+                      onChange={(e) => handleInputChange('permits_insurance', 'road_occupation_permit_number', e.target.value)}
+                      placeholder="Permit number"
+                    />
+                  </div>
+                  <div>
+                    <Label>Permit Issuing Authority</Label>
+                    <Input
+                      value={formData.permits_insurance.permit_issuing_authority}
+                      onChange={(e) => handleInputChange('permits_insurance', 'permit_issuing_authority', e.target.value)}
+                      placeholder="e.g., Main Roads, Local Council"
+                    />
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Permit Issue Date</Label>
+                    <Input
+                      type="date"
+                      value={formData.permits_insurance.permit_issue_date}
+                      onChange={(e) => handleInputChange('permits_insurance', 'permit_issue_date', e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <Label>Permit Expiry Date</Label>
+                    <Input
+                      type="date"
+                      value={formData.permits_insurance.permit_expiry_date}
+                      onChange={(e) => handleInputChange('permits_insurance', 'permit_expiry_date', e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div>
+                    <Label>Public Liability Insurance Policy Number</Label>
+                    <Input
+                      value={formData.permits_insurance.public_liability_insurance}
+                      onChange={(e) => handleInputChange('permits_insurance', 'public_liability_insurance', e.target.value)}
+                      placeholder="Policy number"
+                    />
+                  </div>
+                  <div>
+                    <Label>Coverage Amount</Label>
+                    <Input
+                      value={formData.permits_insurance.insurance_amount}
+                      onChange={(e) => handleInputChange('permits_insurance', 'insurance_amount', e.target.value)}
+                      placeholder="e.g., $20,000,000"
+                    />
+                  </div>
+                  <div>
+                    <Label>Insurance Expiry</Label>
+                    <Input
+                      type="date"
+                      value={formData.permits_insurance.insurance_expiry}
+                      onChange={(e) => handleInputChange('permits_insurance', 'insurance_expiry', e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label>Workers Compensation Policy Number</Label>
+                  <Input
+                    value={formData.permits_insurance.workers_compensation_policy}
+                    onChange={(e) => handleInputChange('permits_insurance', 'workers_compensation_policy', e.target.value)}
+                    placeholder="Policy number"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Environmental Conditions */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Cloud className="w-5 h-5 text-gray-600" />
+                  Environmental Conditions & Contingencies
+                </CardTitle>
+                <CardDescription>Weather considerations and environmental management</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Weather Considerations</Label>
+                  <Textarea
+                    value={formData.environmental_conditions.weather_considerations}
+                    onChange={(e) => handleInputChange('environmental_conditions', 'weather_considerations', e.target.value)}
+                    placeholder="Expected weather conditions and limitations"
+                    rows={2}
+                  />
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Minimum Visibility Requirements</Label>
+                    <Input
+                      value={formData.environmental_conditions.visibility_requirements}
+                      onChange={(e) => handleInputChange('environmental_conditions', 'visibility_requirements', e.target.value)}
+                      placeholder="e.g., 100m minimum, additional lighting required"
+                    />
+                  </div>
+                  <div>
+                    <Label>Maximum Wind Speed</Label>
+                    <Input
+                      value={formData.environmental_conditions.wind_speed_limit}
+                      onChange={(e) => handleInputChange('environmental_conditions', 'wind_speed_limit', e.target.value)}
+                      placeholder="e.g., 50 km/h"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label>Rain Contingency Plan</Label>
+                  <Textarea
+                    value={formData.environmental_conditions.rain_contingency}
+                    onChange={(e) => handleInputChange('environmental_conditions', 'rain_contingency', e.target.value)}
+                    placeholder="Actions if heavy rain occurs"
+                    rows={2}
+                  />
+                </div>
+                <div>
+                  <Label>Temperature Considerations</Label>
+                  <Input
+                    value={formData.environmental_conditions.temperature_considerations}
+                    onChange={(e) => handleInputChange('environmental_conditions', 'temperature_considerations', e.target.value)}
+                    placeholder="Heat/cold management for workers"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Safety & Communications */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-purple-600" />
+                  Safety Measures & Public Communications
+                </CardTitle>
+                <CardDescription>Worker protection and stakeholder communication</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Worker Protection Measures</Label>
+                  <Textarea
+                    value={formData.safety_communications.worker_protection_measures}
+                    onChange={(e) => handleInputChange('safety_communications', 'worker_protection_measures', e.target.value)}
+                    placeholder="Barriers, signage, safety zones, etc."
+                    rows={2}
+                  />
+                </div>
+                <div>
+                  <Label>Required PPE (Personal Protective Equipment)</Label>
+                  <Input
+                    value={formData.safety_communications.ppe_requirements}
+                    onChange={(e) => handleInputChange('safety_communications', 'ppe_requirements', e.target.value)}
+                    placeholder="e.g., High-vis, hard hat, safety boots, hearing protection"
+                  />
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Public Notification Method</Label>
+                    <Input
+                      value={formData.safety_communications.public_notification_method}
+                      onChange={(e) => handleInputChange('safety_communications', 'public_notification_method', e.target.value)}
+                      placeholder="e.g., Letterbox drop, website, VMS signs"
+                    />
+                  </div>
+                  <div>
+                    <Label>Advance Warning (Days)</Label>
+                    <Input
+                      type="number"
+                      value={formData.safety_communications.advance_warning_days}
+                      onChange={(e) => handleInputChange('safety_communications', 'advance_warning_days', e.target.value)}
+                      placeholder="Days before work starts"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label>Resident Consultation Records</Label>
+                  <Textarea
+                    value={formData.safety_communications.resident_consultation}
+                    onChange={(e) => handleInputChange('safety_communications', 'resident_consultation', e.target.value)}
+                    placeholder="Summary of consultation with affected residents/businesses"
+                    rows={2}
+                  />
+                </div>
+                <div>
+                  <Label>Emergency Vehicle Access Plan</Label>
+                  <Input
+                    value={formData.safety_communications.emergency_vehicle_access}
+                    onChange={(e) => handleInputChange('safety_communications', 'emergency_vehicle_access', e.target.value)}
+                    placeholder="How emergency vehicles will access the area"
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="media_release"
+                    checked={formData.safety_communications.media_release_required}
+                    onChange={(e) => handleInputChange('safety_communications', 'media_release_required', e.target.checked)}
+                    className="w-4 h-4"
+                  />
+                  <Label htmlFor="media_release">Media Release Required</Label>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Contingency Plans */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5 text-yellow-600" />
+                  Contingency Plans
+                </CardTitle>
+                <CardDescription>Emergency procedures and backup plans</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Equipment Breakdown Procedure</Label>
+                  <Textarea
+                    value={formData.contingency_plans.breakdown_procedure}
+                    onChange={(e) => handleInputChange('contingency_plans', 'breakdown_procedure', e.target.value)}
+                    placeholder="Steps if equipment breaks down during works"
+                    rows={2}
+                  />
+                </div>
+                <div>
+                  <Label>Accident/Incident Procedure</Label>
+                  <Textarea
+                    value={formData.contingency_plans.accident_procedure}
+                    onChange={(e) => handleInputChange('contingency_plans', 'accident_procedure', e.target.value)}
+                    placeholder="Immediate response to accidents"
+                    rows={2}
+                  />
+                </div>
+                <div>
+                  <Label>Weather Delay Management</Label>
+                  <Textarea
+                    value={formData.contingency_plans.weather_delay_plan}
+                    onChange={(e) => handleInputChange('contingency_plans', 'weather_delay_plan', e.target.value)}
+                    placeholder="Actions if weather delays works"
+                    rows={2}
+                  />
+                </div>
+                <div>
+                  <Label>Traffic Buildup Response</Label>
+                  <Textarea
+                    value={formData.contingency_plans.traffic_buildup_response}
+                    onChange={(e) => handleInputChange('contingency_plans', 'traffic_buildup_response', e.target.value)}
+                    placeholder="Actions if excessive traffic queuing occurs"
+                    rows={2}
+                  />
+                </div>
+                <div>
+                  <Label>Alternative Routes</Label>
+                  <Textarea
+                    value={formData.contingency_plans.alternative_routes}
+                    onChange={(e) => handleInputChange('contingency_plans', 'alternative_routes', e.target.value)}
+                    placeholder="Backup routes if primary detour fails"
+                    rows={2}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Approvals & Declaration */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  Approvals & Declaration
+                </CardTitle>
+                <CardDescription>Plan preparation and approval signatures</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div>
+                    <Label>Prepared By (Name)</Label>
+                    <Input
+                      value={formData.approvals.prepared_by_name}
+                      onChange={(e) => handleInputChange('approvals', 'prepared_by_name', e.target.value)}
+                      placeholder="Your name"
+                    />
+                  </div>
+                  <div>
+                    <Label>Position</Label>
+                    <Input
+                      value={formData.approvals.prepared_by_position}
+                      onChange={(e) => handleInputChange('approvals', 'prepared_by_position', e.target.value)}
+                      placeholder="e.g., Traffic Manager"
+                    />
+                  </div>
+                  <div>
+                    <Label>Date</Label>
+                    <Input
+                      type="date"
+                      value={formData.approvals.prepared_by_date}
+                      onChange={(e) => handleInputChange('approvals', 'prepared_by_date', e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div>
+                    <Label>Approved By (Name)</Label>
+                    <Input
+                      value={formData.approvals.approved_by_name}
+                      onChange={(e) => handleInputChange('approvals', 'approved_by_name', e.target.value)}
+                      placeholder="Approver name"
+                    />
+                  </div>
+                  <div>
+                    <Label>Position</Label>
+                    <Input
+                      value={formData.approvals.approved_by_position}
+                      onChange={(e) => handleInputChange('approvals', 'approved_by_position', e.target.value)}
+                      placeholder="e.g., Project Manager"
+                    />
+                  </div>
+                  <div>
+                    <Label>Approval Date</Label>
+                    <Input
+                      type="date"
+                      value={formData.approvals.approved_by_date}
+                      onChange={(e) => handleInputChange('approvals', 'approved_by_date', e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label>Signature (Type Full Name)</Label>
+                  <Input
+                    value={formData.approvals.approved_by_signature}
+                    onChange={(e) => handleInputChange('approvals', 'approved_by_signature', e.target.value)}
+                    placeholder="Full name as signature"
+                  />
+                </div>
+                <div className="bg-blue-50 p-4 rounded-lg space-y-2">
+                  <p className="text-sm font-medium">Declaration</p>
+                  <p className="text-xs text-gray-700">
+                    I declare that this Traffic Management Plan has been prepared in accordance with AS 1742.3 
+                    and the Austroads Guide to Temporary Traffic Management (AGTTM). All information provided 
+                    is accurate and complete to the best of my knowledge. All personnel are appropriately 
+                    qualified and all necessary permits and insurance are in place.
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id="declaration"
+                      checked={formData.approvals.declaration_accepted}
+                      onChange={(e) => handleInputChange('approvals', 'declaration_accepted', e.target.checked)}
+                      className="w-4 h-4"
+                    />
+                    <Label htmlFor="declaration" className="font-medium">I accept this declaration</Label>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Placed Devices */}
             <Card>
               <CardHeader>
