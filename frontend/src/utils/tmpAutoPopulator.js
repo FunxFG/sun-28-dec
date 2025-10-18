@@ -22,14 +22,29 @@ export class TMPAutoPopulator {
       road_occupancy
     } = minimalInputs;
 
+    // Fetch traffic assessment from API
+    const trafficAssessment = await this.fetchTrafficAssessment(start_address, roadData);
+    
+    // Fetch site assessment from API
+    const siteAssessment = await this.fetchSiteAssessment(start_address, roadData);
+
     // Generate all sections
     const populated = {
       // Company details from user profile
       company_details: this.getCompanyDetails(userProfile),
       traffic_company: this.getTrafficCompanyDetails(userProfile),
       
+      // Project overview
+      project_overview: this.generateProjectOverview(minimalInputs, roadData),
+      
       // Work details with smart defaults
       work_details: await this.generateWorkDetails(minimalInputs, roadData),
+      
+      // Traffic assessment (FROM API)
+      traffic_assessment: trafficAssessment,
+      
+      // Site assessment (FROM API)
+      site_assessment: siteAssessment,
       
       // Emergency contacts from profile + location
       emergency_contacts: await this.generateEmergencyContacts(userProfile, start_address),
@@ -40,14 +55,26 @@ export class TMPAutoPopulator {
       // Insurance from profile
       permits_insurance: this.getInsuranceDetails(userProfile),
       
+      // Safety plan
+      safety_plan: this.generateSafetyPlan(work_type, roadData),
+      
       // Environmental based on date + location
       environmental_conditions: await this.generateEnvironmentalConditions(start_address, start_date),
       
       // Safety based on work type
       safety_communications: this.generateSafetyCommunications(work_type, work_style, roadData),
       
+      // Implementation plan
+      implementation: this.generateImplementationPlan(work_type, roadData),
+      
       // Contingency templates
       contingency_plans: this.generateContingencyPlans(work_type, road_occupancy),
+      
+      // Monitoring
+      monitoring: this.generateMonitoring(work_type),
+      
+      // Management review
+      management_review: this.generateManagementReview(),
       
       // Auto-fill approval preparer
       approvals: this.generateApprovals(userProfile),
@@ -58,6 +85,150 @@ export class TMPAutoPopulator {
     };
 
     return populated;
+  }
+
+  /**
+   * Fetch Traffic Assessment from Backend API
+   */
+  async fetchTrafficAssessment(address, roadData) {
+    try {
+      const lat = roadData.start_coords?.lat || -27.4698;
+      const lng = roadData.start_coords?.lng || 153.0251;
+      
+      const response = await fetch(
+        `https://austromap.preview.emergentagent.com/api/traffic-assessment?lat=${lat}&lng=${lng}&address=${encodeURIComponent(address)}`
+      );
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Traffic assessment fetched from API:', data);
+        return data;
+      }
+      
+      throw new Error('API call failed');
+      
+    } catch (error) {
+      console.error('Error fetching traffic assessment:', error);
+      // Fallback to estimation
+      return {
+        aadt: roadData.traffic_volume || 15000,
+        peak_hour_volume: Math.round((roadData.traffic_volume || 15000) * 0.10),
+        '85th_percentile_speed': `${(roadData.speed_limit || 60) + 8} km/h`,
+        crash_history: 'Manual assessment required - contact local road authority',
+        heavy_vehicle_percentage: '12%',
+        assessment_method: 'Estimated based on road classification'
+      };
+    }
+  }
+
+  /**
+   * Fetch Site Assessment from Backend API
+   */
+  async fetchSiteAssessment(address, roadData) {
+    try {
+      const lat = roadData.start_coords?.lat || -27.4698;
+      const lng = roadData.start_coords?.lng || 153.0251;
+      
+      const response = await fetch(
+        `https://austromap.preview.emergentagent.com/api/site-assessment?lat=${lat}&lng=${lng}&address=${encodeURIComponent(address)}`
+      );
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Site assessment fetched from API:', data);
+        return data;
+      }
+      
+      throw new Error('API call failed');
+      
+    } catch (error) {
+      console.error('Error fetching site assessment:', error);
+      // Fallback to estimation
+      return {
+        road_geometry: `${roadData.lanes || 2} lanes, 3.5m width each - verify on site`,
+        sight_distances: 'Minimum 100m required - verify on site',
+        parking_restrictions: 'Verify local parking controls',
+        pedestrian_facilities: 'Footpaths present - assess accessibility',
+        cyclist_facilities: 'Assess shared road usage',
+        public_transport: 'Verify with local transport authority',
+        utility_services: 'Dial Before You Dig (1100) required',
+        environmental_factors: 'Standard environment - assess noise, dust, heritage'
+      };
+    }
+  }
+
+  /**
+   * Generate Project Overview
+   */
+  generateProjectOverview(minimalInputs, roadData) {
+    const { start_address, work_type } = minimalInputs;
+    
+    return {
+      location_description: `${start_address} - ${roadData.road_classification || 'Urban road'}, ${roadData.speed_limit || 60}km/h speed limit`,
+      project_purpose: `${work_type} works requiring temporary traffic management per AS 1742.3 and AGTTM standards`,
+      site_constraints: 'Traffic volume, pedestrian access, business access - assess on site',
+      special_requirements: roadData.road_classification === 'National Highway' ? 'Extended notification period, VMS signs required' : 'Standard traffic management',
+      coordinated_by: roadData.governing_body || 'Local Road Authority'
+    };
+  }
+
+  /**
+   * Generate Safety Plan
+   */
+  generateSafetyPlan(work_type, roadData) {
+    return {
+      whs_manager: '',
+      site_safety_officer: '',
+      safety_responsibilities: 'Site supervisor: Overall safety. Traffic controllers: Vehicle/pedestrian management. Workers: Follow WHS procedures.',
+      hazard_identification: 'Moving traffic, working near live lanes, night work, adverse weather, underground services',
+      risk_controls: 'Hierarchy of controls applied: Eliminate (road closure if possible), Engineering controls (barriers, signage), Administrative (procedures, training), PPE (high-vis, hard hats)',
+      emergency_procedures: '1. Secure scene 2. Call 000 if injuries 3. Notify supervisor 4. Document incident 5. Preserve evidence',
+      incident_reporting: 'All incidents reported within 24 hours to WHS manager and road authority',
+      safety_induction_required: true
+    };
+  }
+
+  /**
+   * Generate Implementation Plan
+   */
+  generateImplementationPlan(work_type, roadData) {
+    const speedLimit = roadData.speed_limit || 60;
+    
+    return {
+      installation_sequence: '1. Install advance warning signs 2. Install taper cones 3. Place work area delineation 4. Position traffic controllers 5. Commence works',
+      staging_requirements: 'Progressive installation from upstream to downstream. Remove in reverse order.',
+      tgs_drawing_numbers: 'TGS-001 (Main Layout), TGS-002 (Pedestrian Management)',
+      device_setup_time: speedLimit >= 80 ? '45 minutes' : '30 minutes',
+      removal_sequence: 'Reverse of installation - downstream to upstream',
+      handover_procedures: 'Daily handover checklist: Device condition, incidents, variations, upcoming works'
+    };
+  }
+
+  /**
+   * Generate Monitoring Plan
+   */
+  generateMonitoring(work_type) {
+    return {
+      daily_inspection_required: true,
+      inspection_frequency: work_type === 'construction' ? 'Start and end of each shift' : 'Daily',
+      inspection_checklist: 'Device visibility and condition, correct positioning, damage/vandalism, cleanliness, reflectivity, stability',
+      defect_rectification: 'Immediate rectification of safety-critical defects. Non-critical within 24 hours. Log all defects.',
+      audit_schedule: work_type === 'construction' ? 'Weekly' : 'As required',
+      responsible_person: 'Site Supervisor'
+    };
+  }
+
+  /**
+   * Generate Management Review
+   */
+  generateManagementReview() {
+    return {
+      review_frequency: 'Monthly or when conditions change',
+      review_process: 'Assess effectiveness, incident review, device performance, stakeholder feedback',
+      variation_procedures: 'Minor variations: Site supervisor approval. Major variations: New TMP required and submitted to road authority',
+      approval_authority: 'Road authority for major variations, Site supervisor for minor',
+      record_keeping: 'All TMP records retained for minimum 7 years. Includes inspections, incidents, variations, approvals'
+    };
   }
 
   /**
