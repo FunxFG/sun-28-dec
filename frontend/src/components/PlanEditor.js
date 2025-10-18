@@ -1914,6 +1914,18 @@ export default function PlanEditor({ user, onLogout }) {
               </CardContent>
             </Card>
 
+            {/* Section 9: Monitoring & Inspection */}
+            <MonitoringSection 
+              formData={formData} 
+              handleInputChange={handleInputChange} 
+            />
+
+            {/* Section 10: Management Review */}
+            <ManagementReviewSection 
+              formData={formData} 
+              handleInputChange={handleInputChange} 
+            />
+
             {/* Placed Devices */}
             <Card>
               <CardHeader>
