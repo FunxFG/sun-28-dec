@@ -974,6 +974,48 @@ export default function PlanEditor({ user, onLogout }) {
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
+                    <Label>Work Hours Start</Label>
+                    <Input
+                      type="time"
+                      value={formData.work_details.work_hours_start}
+                      onChange={(e) => handleInputChange('work_details', 'work_hours_start', e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <Label>Work Hours End</Label>
+                    <Input
+                      type="time"
+                      value={formData.work_details.work_hours_end}
+                      onChange={(e) => handleInputChange('work_details', 'work_hours_end', e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex gap-6">
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id="night_work"
+                      checked={formData.work_details.night_work}
+                      onChange={(e) => handleInputChange('work_details', 'night_work', e.target.checked)}
+                      className="w-4 h-4"
+                    />
+                    <Label htmlFor="night_work">Night Work (6pm-7am)</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id="weekend_work"
+                      checked={formData.work_details.weekend_work}
+                      onChange={(e) => handleInputChange('work_details', 'weekend_work', e.target.checked)}
+                      className="w-4 h-4"
+                    />
+                    <Label htmlFor="weekend_work">Weekend Work</Label>
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
                     <Label>Start Date</Label>
                     <Input
                       type="date"
