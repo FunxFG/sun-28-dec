@@ -18,19 +18,43 @@ function App() {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
     
+    console.log('App.js useEffect - Checking auth state');
+    console.log('Token from localStorage:', token ? 'EXISTS' : 'MISSING');
+    console.log('User data from localStorage:', userData ? 'EXISTS' : 'MISSING');
+    
     if (token && userData) {
-      setUser(JSON.parse(userData));
+      try {
+        const parsedUser = JSON.parse(userData);
+        console.log('Setting user state:', parsedUser);
+        setUser(parsedUser);
+      } catch (e) {
+        console.error('Error parsing user data:', e);
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      }
     }
     setLoading(false);
   }, []);
 
   const login = (token, userData) => {
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(userData));
-    setUser(userData);
+    console.log('App.js login() called');
+    console.log('Token:', token);
+    console.log('User data:', userData);
+    
+    try {
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(userData));
+      setUser(userData);
+      
+      console.log('Auth data saved to localStorage');
+      console.log('User state updated:', userData);
+    } catch (e) {
+      console.error('Error saving auth data:', e);
+    }
   };
 
   const logout = () => {
+    console.log('App.js logout() called');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setUser(null);
@@ -44,6 +68,8 @@ function App() {
     );
   }
 
+  console.log('App.js rendering with user:', user ? 'LOGGED IN' : 'NOT LOGGED IN');
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -51,24 +77,24 @@ function App() {
           <Route 
             path="/auth" 
             element={
-              user ? <Navigate to="/dashboard" /> : <AuthPage onLogin={login} />
+              user ? <Navigate to="/dashboard" replace /> : <AuthPage onLogin={login} />
             } 
           />
           <Route 
             path="/dashboard" 
             element={
-              user ? <Dashboard user={user} onLogout={logout} /> : <Navigate to="/auth" />
+              user ? <Dashboard user={user} onLogout={logout} /> : <Navigate to="/auth" replace />
             } 
           />
           <Route 
             path="/plan/:planId?" 
             element={
-              user ? <PlanEditor user={user} onLogout={logout} /> : <Navigate to="/auth" />
+              user ? <PlanEditor user={user} onLogout={logout} /> : <Navigate to="/auth" replace />
             } 
           />
           <Route 
             path="/" 
-            element={<Navigate to={user ? "/dashboard" : "/auth"} />} 
+            element={<Navigate to={user ? "/dashboard" : "/auth"} replace />} 
           />
         </Routes>
       </BrowserRouter>
