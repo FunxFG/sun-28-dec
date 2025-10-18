@@ -435,7 +435,7 @@ export default function PlanEditor({ user, onLogout }) {
         window.deviceMarkers = [];
         
         // Add new device markers
-        autoDevices.forEach(device => {
+        devicesWithMeasurements.forEach(device => {
           addDeviceMarker(googleMapRef.current, device);
         });
         
@@ -443,7 +443,15 @@ export default function PlanEditor({ user, onLogout }) {
         googleMapRef.current.setCenter({ lat: startCoords.lat, lng: startCoords.lng });
       }
 
-      toast.success(`Placed ${autoDevices.length} devices on road (not property) according to AGTTM standards`);
+      toast.success(`Placed ${devicesWithMeasurements.length} devices with precise measurements (AGTTM compliant)`);
+      
+      // Log TGS data for debugging
+      if (tgsData.detailed_schedule) {
+        console.log('📋 Detailed Device Schedule:', tgsData.detailed_schedule);
+      }
+      if (tgsData.taper_calculations) {
+        console.log('📐 Taper Calculations:', tgsData.taper_calculations);
+      }
       
     } catch (error) {
       console.error('Auto-placement error:', error);
