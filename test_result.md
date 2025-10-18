@@ -239,27 +239,33 @@ backend:
 
   - task: "Google Places API Proxy Endpoints (CORS Fix)"
     implemented: true
-    working: "NA"
+    working: true
     file: "backend/server.py"
     stuck_count: 0
     priority: "critical"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created backend proxy endpoints to fix CORS errors when frontend makes Google Places API calls. Added 3 new endpoints: /api/proxy/geocode (address to coordinates), /api/proxy/places/nearby (search for nearby places like police/hospitals), /api/proxy/places/details (get place details with phone numbers). Added GOOGLE_PLACES_API_KEY to backend .env. Backend restarted successfully."
+      - working: true
+        agent: "testing"
+        comment: "🎉 ALL GOOGLE PLACES API PROXY ENDPOINTS WORKING PERFECTLY! Comprehensive testing completed successfully with all 4 success criteria met: ✅ GET /api/proxy/geocode - Successfully geocoded 'King William Street, Adelaide SA' to coordinates (-34.924334, 138.599725) with proper Google Geocoding API response structure including results array and geometry.location. ✅ GET /api/proxy/places/nearby - Successfully found 14 police stations and 20 hospitals in Adelaide with proper Google Places Nearby Search API response structure including results array with place_id, name, geometry.location data. ✅ GET /api/proxy/places/details - Successfully retrieved place details for SA Police including name, phone (08) 7322 4800, and vicinity (176 Grenfell St, Adelaide) with proper Google Places Details API response structure. ✅ NO CORS ERRORS - All endpoints return 200 OK status with proper Google API response data structures. Response data matches expected structure for frontend tmpAutoPopulator.js integration. All proxy endpoints successfully resolve CORS issues that were blocking TMP auto-population features."
 
   - task: "OpenWeatherMap API Proxy Endpoint (CORS Fix)"
     implemented: true
-    working: "NA"
+    working: true
     file: "backend/server.py"
     stuck_count: 0
     priority: "critical"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created backend proxy endpoint /api/proxy/weather/forecast to fix CORS errors when frontend fetches weather data. Endpoint proxies OpenWeatherMap 5-day forecast API for environmental conditions in TMP auto-populator."
+      - working: true
+        agent: "testing"
+        comment: "🎉 OPENWEATHERMAP API PROXY ENDPOINT WORKING PERFECTLY! Comprehensive testing completed successfully with all success criteria met: ✅ GET /api/proxy/weather/forecast - Successfully retrieved 5-day weather forecast for Adelaide (lat=-34.9285, lon=138.6007) with proper OpenWeatherMap API response structure including list array with 40 forecast entries and city information (Adelaide, AU). ✅ FORECAST DATA COMPLETE - Response includes all required fields: dt (timestamp), main (temperature: 23.8°C), weather (scattered clouds), wind (speed: 1.5 m/s), with optional rain data when applicable. ✅ NO CORS ERRORS - Endpoint returns 200 OK status with complete OpenWeatherMap forecast response. ✅ RESPONSE STRUCTURE MATCHES FRONTEND EXPECTATIONS - Data structure compatible with tmpAutoPopulator.js for environmental conditions auto-population. Weather proxy endpoint successfully resolves CORS issues blocking TMP environmental data features."
 
 frontend:
   - task: "JavaScript syntax errors fixed"
