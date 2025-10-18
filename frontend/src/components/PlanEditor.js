@@ -849,7 +849,7 @@ export default function PlanEditor({ user, onLogout }) {
   };
 
   const handleDownloadProfessionalTGS = async () => {
-    if (placedDevices.length === 0) {
+    if (formData.devices.length === 0) {
       toast.error('Please place devices on the map first');
       return;
     }
