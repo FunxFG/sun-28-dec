@@ -1112,20 +1112,21 @@ class SafeRoadWorksAPITester:
         return False
 
 def main():
-    print("🚦 SafeRoadWorks API Testing Suite")
-    print("=" * 50)
+    print("🚦 Digital Atlas of Australia Integration Testing Suite")
+    print("=" * 60)
     
     tester = SafeRoadWorksAPITester()
     
-    # Test sequence - Focus on OSM road-data endpoint testing as requested
+    # Test sequence - Focus on Digital Atlas integration as requested in review
     tests = [
         ("User Registration", tester.test_user_registration),
         ("Geocoding API", tester.test_geocoding),
-        ("Road Data API - Adelaide CBD (OSM)", tester.test_road_data_osm_adelaide_cbd),
-        ("Road Data API - Brisbane (OSM)", tester.test_road_data_osm_brisbane),
-        ("Road Data API - Highway Route (OSM)", tester.test_road_data_osm_highway),
-        ("Road Data API - Fallback Behavior", tester.test_road_data_fallback_behavior),
-        ("Road Data API - Original", tester.test_road_data),
+        ("Digital Atlas - Adelaide National Highway", tester.test_digital_atlas_adelaide_national_highway),
+        ("Digital Atlas - Brisbane Arterial Road", tester.test_digital_atlas_brisbane_arterial),
+        ("Digital Atlas - Sydney Local Street", tester.test_digital_atlas_sydney_local_street),
+        ("Digital Atlas - Melbourne Motorway", tester.test_digital_atlas_melbourne_motorway),
+        ("Digital Atlas - Comprehensive Fields", tester.test_digital_atlas_comprehensive_fields),
+        ("Road Data API - OSM Fallback Test", tester.test_road_data_osm_adelaide_cbd),
     ]
     
     # Run all tests
@@ -1136,11 +1137,11 @@ def main():
             print(f"❌ {test_name} failed with exception: {str(e)}")
     
     # Print final results
-    print("\n" + "=" * 50)
+    print("\n" + "=" * 60)
     print(f"📊 Final Results: {tester.tests_passed}/{tester.tests_run} tests passed")
     
     if tester.tests_passed == tester.tests_run:
-        print("🎉 All tests passed!")
+        print("🎉 All Digital Atlas integration tests passed!")
         return 0
     else:
         print(f"⚠️  {tester.tests_run - tester.tests_passed} tests failed")
