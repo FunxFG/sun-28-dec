@@ -1354,6 +1354,12 @@ export default function PlanEditor({ user, onLogout }) {
               </CardContent>
             </Card>
 
+            {/* Section 6: Safety Plan */}
+            <SafetyPlanSection 
+              formData={formData} 
+              handleInputChange={handleInputChange} 
+            />
+
             {/* Emergency Contacts */}
             <Card>
               <CardHeader>
