@@ -683,6 +683,8 @@ def extract_environmental_factors(osm_data: dict, address: str) -> str:
     factors.append("Vegetation protection may be required")
     
     return "; ".join(factors)
+
+@api_router.get("/road-data")
 async def get_road_data(start_address: str, end_address: str):
     """Derive comprehensive road data from start and end addresses using OpenStreetMap"""
     # Get coordinates for both addresses
