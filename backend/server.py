@@ -99,14 +99,49 @@ class WorkDetails(BaseModel):
     end_address: str
 
 class RoadOccupancy(BaseModel):
+    """Comprehensive road occupancy options - can vary by time/stage"""
+    
+    # Footpath/Shoulder Occupancy
     footpath: bool = False
     left_shoulder: bool = False
+    right_shoulder: bool = False
+    
+    # Lane Occupancy
     left_lane: bool = False
     center_lane: bool = False
     right_lane: bool = False
-    right_shoulder: bool = False
+    turning_lane: bool = False
+    
+    # Other Occupancy
     median_strip: bool = False
+    parking_lane: bool = False
+    bike_lane: bool = False
+    bus_lane: bool = False
+    
+    # Complete Closures
     complete_road_closure: bool = False
+    full_carriageway_closure: bool = False
+    
+    # Time-based Occupancy
+    occupancy_schedule: Optional[str] = None  # e.g., "Mon-Fri 9am-3pm", "Night works 7pm-6am"
+    
+    # Stage-based Occupancy
+    stage_1_occupancy: Optional[str] = None
+    stage_2_occupancy: Optional[str] = None
+    stage_3_occupancy: Optional[str] = None
+    
+    # Work Zone Details
+    workzone_length: Optional[float] = None  # meters
+    taper_length: Optional[float] = None  # meters
+    buffer_length: Optional[float] = None  # meters
+    
+    # Traffic Impact
+    lanes_closed_count: int = 0
+    lanes_remaining_count: Optional[int] = None
+    estimated_delay_minutes: Optional[int] = None
+    
+    # Additional Notes
+    occupancy_notes: Optional[str] = None
 
 class ControlMeasures(BaseModel):
     """Comprehensive Austroads/AS 1742.3 approved traffic control measures"""
