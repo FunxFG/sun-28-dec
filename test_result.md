@@ -477,13 +477,13 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Professional TGS Drawing Generator Integration"
+    - "Authentication UI (Sign In/Create Account)" 
     - "Complete end-to-end TMP workflow testing"
-    - "Frontend authentication UI fixes"
+    - "Professional TGS Drawing Generator Integration"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
   test_all: false
-  test_priority: "frontend_focus"
+  test_priority: "authentication_critical"
   backend_testing_complete: true
 
 agent_communication:
