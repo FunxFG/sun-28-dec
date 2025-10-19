@@ -109,10 +109,83 @@ class RoadOccupancy(BaseModel):
     complete_road_closure: bool = False
 
 class ControlMeasures(BaseModel):
+    """Comprehensive Austroads/AS 1742.3 approved traffic control measures"""
+    
+    # Temporal Controls
     twenty_min_rule: bool = False
-    signage: bool = False
+    night_works_only: bool = False
+    off_peak_hours: bool = False
+    weekend_works: bool = False
+    staged_works: bool = False
+    
+    # Speed Management
     speed_reduction: bool = False
+    temporary_speed_limit_40: bool = False
+    temporary_speed_limit_60: bool = False
+    temporary_speed_limit_80: bool = False
+    variable_speed_limits: bool = False
+    
+    # Traffic Control Devices
+    static_signs: bool = False
+    portable_vms: bool = False
+    arrow_boards: bool = False
+    temporary_traffic_signals: bool = False
+    stop_slow_bats: bool = False
+    
+    # Lane Management
+    lane_closure: bool = False
+    lane_shift: bool = False
+    contra_flow: bool = False
+    shoulder_use: bool = False
+    merge_taper: bool = False
+    
+    # Road Closure & Diversion
+    complete_road_closure: bool = False
     detour: bool = False
+    local_access_only: bool = False
+    
+    # Pedestrian & Cyclist Management
+    pedestrian_detour: bool = False
+    temporary_footpath: bool = False
+    cyclist_detour: bool = False
+    shared_path_closure: bool = False
+    
+    # Parking & Loading
+    parking_restrictions: bool = False
+    no_stopping_zone: bool = False
+    loading_zone_suspension: bool = False
+    
+    # Public Transport
+    bus_stop_relocation: bool = False
+    public_transport_coordination: bool = False
+    
+    # Safety Systems
+    safety_barriers: bool = False
+    water_filled_barriers: bool = False
+    concrete_barriers: bool = False
+    delineation_devices: bool = False
+    lighting_systems: bool = False
+    
+    # Monitoring & Management
+    traffic_management_plan: bool = False
+    traffic_controllers: bool = False
+    cctv_monitoring: bool = False
+    incident_response_plan: bool = False
+    
+    # Communication
+    public_notification: bool = False
+    stakeholder_consultation: bool = False
+    emergency_services_notification: bool = False
+    media_release: bool = False
+    
+    # Environmental
+    dust_suppression: bool = False
+    noise_management: bool = False
+    vibration_monitoring: bool = False
+    
+    # Additional Notes
+    control_measures_notes: Optional[str] = None
+
 
 class RoadData(BaseModel):
     traffic_volume: Optional[int] = None
