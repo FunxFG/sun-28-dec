@@ -727,6 +727,13 @@ async def get_road_data(start_address: str, end_address: str):
     traffic_volume = estimate_traffic_volume(road_classification, start_address)
     governing_body = determine_governing_body_from_classification(road_classification, start_address)
     
+    # Add data accuracy note
+    data_note = ""
+    if osm_road_data:
+        data_note = "Data from OpenStreetMap - lane counts and speeds may vary by section. Verify on-site."
+    else:
+        data_note = "Estimated data - verify all details on-site before plan submission."
+    
     return {
         "start_coords": start_coords,
         "end_coords": end_coords,
@@ -741,7 +748,8 @@ async def get_road_data(start_address: str, end_address: str):
         "lanes": lanes,
         "environment": determine_environment(start_address),
         "austroads_category": determine_austroads_category(road_classification, traffic_volume),
-        "data_source": "OpenStreetMap" if osm_road_data else "Estimated"
+        "data_source": "OpenStreetMap" if osm_road_data else "Estimated",
+        "data_note": data_note
     }
 
 async def fetch_osm_road_data(lat: float, lng: float):
