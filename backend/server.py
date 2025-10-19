@@ -1915,6 +1915,65 @@ async def proxy_weather_forecast(lat: float, lon: float):
         logger.error(f"Error in weather forecast proxy: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+# ===================================================
+# FILE DOWNLOAD ENDPOINTS FOR TMP OUTPUTS
+# ===================================================
+
+@api_router.get("/downloads/list")
+async def list_available_downloads():
+    """List all available TMP output files for download"""
+    try:
+        output_dir = Path("/app/tmp_outputs")
+        if not output_dir.exists():
+            return {"files": [], "message": "No files available"}
+        
+        files = []
+        for file_path in output_dir.glob("*"):
+            if file_path.is_file():
+                files.append({
+                    "filename": file_path.name,
+                    "size": file_path.stat().st_size,
+                    "type": "pdf" if file_path.suffix == ".pdf" else "text",
+                    "download_url": f"/api/downloads/file/{file_path.name}"
+                })
+        
+        return {
+            "files": files,
+            "total": len(files),
+            "message": "TMP output files ready for download"
+        }
+    except Exception as e:
+        logger.error(f"Error listing downloads: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/downloads/file/{filename}")
+async def download_file(filename: str):
+    """Download a specific TMP output file"""
+    try:
+        file_path = Path(f"/app/tmp_outputs/{filename}")
+        
+        if not file_path.exists():
+            raise HTTPException(status_code=404, detail="File not found")
+        
+        # Determine media type
+        if filename.endswith('.pdf'):
+            media_type = "application/pdf"
+        elif filename.endswith('.txt'):
+            media_type = "text/plain"
+        else:
+            media_type = "application/octet-stream"
+        
+        return FileResponse(
+            path=str(file_path),
+            media_type=media_type,
+            filename=filename
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error downloading file: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # Include the router in the main app
 app.include_router(api_router)
 
