@@ -759,11 +759,11 @@ async def fetch_osm_road_data(lat: float, lng: float):
         # Overpass API query to get road/highway data near the coordinates
         overpass_url = "https://overpass-api.de/api/interpreter"
         
-        # Query for highway/road within 50m radius
+        # Query for highway/road within 100m radius - get ALL roads to pick the most important
         query = f"""
         [out:json][timeout:10];
         (
-          way(around:50,{lat},{lng})["highway"];
+          way(around:100,{lat},{lng})["highway"];
         );
         out tags;
         """
@@ -781,8 +781,24 @@ async def fetch_osm_road_data(lat: float, lng: float):
                 logger.warning("No road data found in OSM")
                 return None
             
-            # Get the first road element (closest match)
-            road = data['elements'][0]
+            # Sort roads by importance (prioritize major roads over residential)
+            road_priority = {
+                'motorway': 1,
+                'trunk': 2,
+                'primary': 3,
+                'secondary': 4,
+                'tertiary': 5,
+                'unclassified': 6,
+                'residential': 7,
+                'service': 8,
+                'track': 9
+            }
+            
+            # Get the most important road (lowest priority number)
+            roads = data['elements']
+            roads.sort(key=lambda r: road_priority.get(r.get('tags', {}).get('highway', 'unclassified'), 10))
+            
+            road = roads[0]
             tags = road.get('tags', {})
             
             # Extract road information from OSM tags
