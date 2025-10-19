@@ -1,0 +1,114 @@
+
+========================================================================================================================
+TGS DRAWING SPECIFICATIONS - TORRENS ROAD RIDLEYTON - COMPLETE CLOSURE WITH DETOUR
+AS 1742.3 Compliant Traffic Guidance Scheme
+========================================================================================================================
+
+PROJECT DETAILS:
+  Project: Torrens Road Ridleyton - Complete Closure with Detour
+  Road: Torrens Road
+  Classification: Major Urban Arterial
+  Speed Limit: 60 km/h
+  Lanes: 4
+  Workzone Length: 69.83m
+  Traffic Volume: 25,000 vehicles/day
+
+LOCATION:
+  Start: 185 Torrens Road Ridleyton
+  End: 195 Torrens Road Ridleyton
+  Coordinates: -34.889949, 138.571945
+
+========================================================================================================================
+COMPREHENSIVE SIGNAGE DEPLOYMENT
+========================================================================================================================
+
+BILATERAL SIGNAGE (BOTH SIDES OF ROAD):
+  All warning signs (W-series) placed on BOTH sides of main road
+  All regulatory signs (R-series) placed on BOTH sides
+  Lateral clearance: 2.0m from edge of carriageway
+  Height: 2.1m above ground level
+  Reflective: Class 1 (AS 1906.1)
+
+SIDE STREET SIGNAGE:
+
+  Wright Street:
+    - Warning sign on approach to main road (20m before intersection)
+    - Direction arrow at intersection
+    - Type: crossroad
+  Park Terrace:
+    - Warning sign on approach to main road (20m before intersection)
+    - Direction arrow at intersection
+    - Type: crossroad
+  Thomas Street:
+    - Warning sign on approach to main road (20m before intersection)
+    - Direction arrow at intersection
+    - Type: T-intersection
+
+DEVICE COUNTS:
+  Main Road Bilateral Devices: 5 types (×2 for bilateral = 10 total)
+  Side Street Devices: 5
+  Intersection Devices: 6
+  Detour Route Devices: 6
+
+TGS DRAWING FORMAT:
+  Drawing Size: A3 Landscape (420mm × 297mm)
+  Scale: 1:500 (urban) or 1:1000 (major roads)
+  
+DRAWING COMPONENTS:
+  1. Title Block (Top)
+     - Project name and TMP number
+     - Road name and classification
+     - Date and revision number
+     - Approvals and certifications
+  
+  2. Main Schematic (Center)
+     - Plan view showing full workzone
+     - Device positions with exact distances
+     - Bilateral signage shown on both sides
+     - Side street intersections marked
+     - Traffic flow arrows
+     - Work area boundaries
+  
+  3. Side Street Details (Insets)
+     - Wright Street intersection detail
+     - Park Terrace intersection detail
+     - Thomas Street intersection detail
+
+  4. Device Schedule (Bottom Right)
+     - Complete list with codes and distances
+     - Quantities for bilateral placement
+     - Mounting specifications
+  
+  5. Legend (Bottom Left)
+     - Austroads standard symbols
+     - W-series (Warning signs)
+     - R-series (Regulatory signs)
+     - G-series (Guidance signs)
+     - D-series (Delineation devices)
+  
+  6. Compliance Block
+     - AS 1742.3 certification
+     - AWTM designer details
+     - Approval signatures
+
+{'='*120}
+COMPLIANCE CERTIFICATION
+{'='*120}
+
+Standard: AS 1742.3:2019 - Traffic Control for Works on Roads
+Designer: Complete TMP Solutions Pty Ltd
+AWTM Cert: AWTM-12345
+Date: {datetime.now().strftime('%d %B %Y')}
+
+Compliance Checklist:
+  ✓ Bilateral signage on main road (both sides)
+  ✓ Side street approach signage
+  ✓ Intersection advance warning
+  ✓ Advance warning distances (AS 1742.3 Table 4.1)
+  ✓ Device clearances (2.0m lateral, 2.1m height)
+  ✓ Sign sizing appropriate for speed limit
+  ✓ Class 1 retroreflective materials
+  ✓ Proper SA signage codes (W, R, G series)
+  ✓ Emergency vehicle access maintained
+
+{'='*120}

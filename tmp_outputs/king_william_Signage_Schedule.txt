@@ -1,0 +1,168 @@
+====================================================================================================
+COMPREHENSIVE SIGNAGE SCHEDULE - AUSTROADS & SA STANDARDS COMPLIANT
+====================================================================================================
+
+1. MAIN ROAD SIGNAGE (Bilateral Placement)
+----------------------------------------------------------------------------------------------------
+
+Device 1:
+  Position: -90m from work zone start
+  Sign Code: W1-1 - Road Work Ahead
+  Size: 1200x1200mm
+  Placement: BILATERAL
+  Quantity: 2 (LEFT side + RIGHT side)
+    LEFT: -3.5m offset, 2.0m clearance
+    RIGHT: 14.0m offset, 2.0m clearance
+  Height: 2.1m above ground
+  Reflective: Class 1
+
+Device 2:
+  Position: -45m from work zone start
+  Sign Code: W1-2 - Lane Closure Ahead
+  Size: 1200x1200mm
+  Placement: BILATERAL
+  Quantity: 2 (LEFT side + RIGHT side)
+    LEFT: -3.5m offset, 2.0m clearance
+    RIGHT: 14.0m offset, 2.0m clearance
+  Height: 2.1m above ground
+  Reflective: Class 1
+  Supplementary: S1-1 - 45m
+
+Device 3:
+  Position: -35m from work zone start
+  Sign Code: R4-1(40) - Speed Limit 40
+  Size: 900mm diameter
+  Placement: BILATERAL
+  Quantity: 2 (LEFT side + RIGHT side)
+    LEFT: -3.5m offset, 2.0m clearance
+    RIGHT: 14.0m offset, 2.0m clearance
+  Height: 2.1m above ground
+  Reflective: Class 1
+
+Device 4:
+  Position: 215.43m from work zone start
+  Sign Code: G2-4 - End Road Work
+  Size: 1200x600mm
+  Placement: BILATERAL
+  Quantity: 2 (LEFT side + RIGHT side)
+    LEFT: -3.5m offset, 2.0m clearance
+    RIGHT: 14.0m offset, 2.0m clearance
+  Height: 2.1m above ground
+  Reflective: Class 1
+
+Device 5:
+  Position: 220.43m from work zone start
+  Sign Code: R4-3(40) - End Speed Limit 40
+  Size: 900mm diameter
+  Placement: BILATERAL
+  Quantity: 2 (LEFT side + RIGHT side)
+    LEFT: -3.5m offset, 2.0m clearance
+    RIGHT: 14.0m offset, 2.0m clearance
+  Height: 2.1m above ground
+  Reflective: Class 1
+
+
+2. SIDE STREET SIGNAGE
+----------------------------------------------------------------------------------------------------
+
+Device S1:
+  Location: Currie Street intersection
+  Sign Code: G9-1 - Direction Arrow
+  Size: 600x600mm
+  Placement: at_intersection
+  Side Street: Currie Street
+  Quantity: 1
+  Notes: Guide traffic through/around work zone
+
+Device S2:
+  Location: Grenfell Street intersection
+  Sign Code: G9-1 - Direction Arrow
+  Size: 600x600mm
+  Placement: at_intersection
+  Side Street: Grenfell Street
+  Quantity: 1
+  Notes: Guide traffic through/around work zone
+
+Device S3:
+  Location: Pirie Street intersection
+  Sign Code: G9-1 - Direction Arrow
+  Size: 600x600mm
+  Placement: at_intersection
+  Side Street: Pirie Street
+  Quantity: 1
+  Notes: Guide traffic through/around work zone
+
+Device S4:
+  Location: Waymouth Street intersection
+  Sign Code: G9-1 - Direction Arrow
+  Size: 600x600mm
+  Placement: at_intersection
+  Side Street: Waymouth Street
+  Quantity: 1
+  Notes: Guide traffic through/around work zone
+
+
+3. INTERSECTION SIGNAGE
+----------------------------------------------------------------------------------------------------
+
+Device I1:
+  Location: Main road approach to Currie Street
+  Sign Code: W1-1 - Road Work Ahead
+  Placement: bilateral
+  Quantity: 2 (BOTH sides of road)
+  Notes: 50m before Currie Street intersection on BOTH sides
+
+Device I2:
+  Location: Currie Street approach to main road
+  Sign Code: W1-1 - Road Work Ahead
+  Placement: single
+  Notes: On Currie Street 20m before main road
+
+Device I3:
+  Location: Main road approach to Grenfell Street
+  Sign Code: W1-1 - Road Work Ahead
+  Placement: bilateral
+  Quantity: 2 (BOTH sides of road)
+  Notes: 50m before Grenfell Street intersection on BOTH sides
+
+Device I4:
+  Location: Grenfell Street approach to main road
+  Sign Code: W1-1 - Road Work Ahead
+  Placement: single
+  Notes: On Grenfell Street 20m before main road
+
+Device I5:
+  Location: Main road approach to Pirie Street
+  Sign Code: W1-1 - Road Work Ahead
+  Placement: bilateral
+  Quantity: 2 (BOTH sides of road)
+  Notes: 50m before Pirie Street intersection on BOTH sides
+
+Device I6:
+  Location: Pirie Street approach to main road
+  Sign Code: W1-1 - Road Work Ahead
+  Placement: single
+  Notes: On Pirie Street 20m before main road
+
+Device I7:
+  Location: Main road approach to Waymouth Street
+  Sign Code: W1-1 - Road Work Ahead
+  Placement: bilateral
+  Quantity: 2 (BOTH sides of road)
+  Notes: 50m before Waymouth Street intersection on BOTH sides
+
+Device I8:
+  Location: Waymouth Street approach to main road
+  Sign Code: W1-1 - Road Work Ahead
+  Placement: single
+  Notes: On Waymouth Street 20m before main road
+
+
+====================================================================================================
+TOTAL SIGNAGE COUNT:
+  Main Road: 5 device types
+  Side Streets: 4 devices
+  Intersections: 8 devices
+  Detour Route: 0 devices
+  TOTAL: 17 device installations
+====================================================================================================

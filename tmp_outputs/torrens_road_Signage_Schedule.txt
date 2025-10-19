@@ -1,0 +1,210 @@
+====================================================================================================
+COMPREHENSIVE SIGNAGE SCHEDULE - AUSTROADS & SA STANDARDS COMPLIANT
+====================================================================================================
+
+1. MAIN ROAD SIGNAGE (Bilateral Placement)
+----------------------------------------------------------------------------------------------------
+
+Device 1:
+  Position: -90m from work zone start
+  Sign Code: W1-1 - Road Work Ahead
+  Size: 1200x1200mm
+  Placement: BILATERAL
+  Quantity: 2 (LEFT side + RIGHT side)
+    LEFT: -3.5m offset, 2.0m clearance
+    RIGHT: 17.5m offset, 2.0m clearance
+  Height: 2.1m above ground
+  Reflective: Class 1
+
+Device 2:
+  Position: -45m from work zone start
+  Sign Code: W1-2 - Lane Closure Ahead
+  Size: 1200x1200mm
+  Placement: BILATERAL
+  Quantity: 2 (LEFT side + RIGHT side)
+    LEFT: -3.5m offset, 2.0m clearance
+    RIGHT: 17.5m offset, 2.0m clearance
+  Height: 2.1m above ground
+  Reflective: Class 1
+  Supplementary: S1-1 - 45m
+
+Device 3:
+  Position: -35m from work zone start
+  Sign Code: R4-1(40) - Speed Limit 40
+  Size: 900mm diameter
+  Placement: BILATERAL
+  Quantity: 2 (LEFT side + RIGHT side)
+    LEFT: -3.5m offset, 2.0m clearance
+    RIGHT: 17.5m offset, 2.0m clearance
+  Height: 2.1m above ground
+  Reflective: Class 1
+
+Device 4:
+  Position: 84.83m from work zone start
+  Sign Code: G2-4 - End Road Work
+  Size: 1200x600mm
+  Placement: BILATERAL
+  Quantity: 2 (LEFT side + RIGHT side)
+    LEFT: -3.5m offset, 2.0m clearance
+    RIGHT: 17.5m offset, 2.0m clearance
+  Height: 2.1m above ground
+  Reflective: Class 1
+
+Device 5:
+  Position: 89.83m from work zone start
+  Sign Code: R4-3(40) - End Speed Limit 40
+  Size: 900mm diameter
+  Placement: BILATERAL
+  Quantity: 2 (LEFT side + RIGHT side)
+    LEFT: -3.5m offset, 2.0m clearance
+    RIGHT: 17.5m offset, 2.0m clearance
+  Height: 2.1m above ground
+  Reflective: Class 1
+
+
+2. SIDE STREET SIGNAGE
+----------------------------------------------------------------------------------------------------
+
+Device S1:
+  Location: Wright Street intersection
+  Sign Code: W1-1 - Road Work Ahead
+  Size: 1200x1200mm
+  Placement: side_street_approach
+  Side Street: Wright Street
+  Quantity: 1
+  Notes: Place on Wright Street approach to main road
+
+Device S2:
+  Location: Wright Street intersection
+  Sign Code: R2-1 - Road Closed
+  Size: 900mm diameter
+  Placement: side_street_approach
+  Side Street: Wright Street
+  Quantity: 1
+  Notes: N/A
+
+Device S3:
+  Location: Wright Street intersection
+  Sign Code: G9-1 - Direction Arrow
+  Size: 600x600mm
+  Placement: at_intersection
+  Side Street: Wright Street
+  Quantity: 1
+  Notes: Guide traffic through/around work zone
+
+Device S4:
+  Location: Park Terrace intersection
+  Sign Code: G9-1 - Direction Arrow
+  Size: 600x600mm
+  Placement: at_intersection
+  Side Street: Park Terrace
+  Quantity: 1
+  Notes: Guide traffic through/around work zone
+
+Device S5:
+  Location: Thomas Street intersection
+  Sign Code: G9-1 - Direction Arrow
+  Size: 600x600mm
+  Placement: at_intersection
+  Side Street: Thomas Street
+  Quantity: 1
+  Notes: Guide traffic through/around work zone
+
+
+3. INTERSECTION SIGNAGE
+----------------------------------------------------------------------------------------------------
+
+Device I1:
+  Location: Main road approach to Wright Street
+  Sign Code: W1-1 - Road Work Ahead
+  Placement: bilateral
+  Quantity: 2 (BOTH sides of road)
+  Notes: 50m before Wright Street intersection on BOTH sides
+
+Device I2:
+  Location: Wright Street approach to main road
+  Sign Code: W1-1 - Road Work Ahead
+  Placement: single
+  Notes: On Wright Street 20m before main road
+
+Device I3:
+  Location: Main road approach to Park Terrace
+  Sign Code: W1-1 - Road Work Ahead
+  Placement: bilateral
+  Quantity: 2 (BOTH sides of road)
+  Notes: 50m before Park Terrace intersection on BOTH sides
+
+Device I4:
+  Location: Park Terrace approach to main road
+  Sign Code: W1-1 - Road Work Ahead
+  Placement: single
+  Notes: On Park Terrace 20m before main road
+
+Device I5:
+  Location: Main road approach to Thomas Street
+  Sign Code: W1-1 - Road Work Ahead
+  Placement: bilateral
+  Quantity: 2 (BOTH sides of road)
+  Notes: 50m before Thomas Street intersection on BOTH sides
+
+Device I6:
+  Location: Thomas Street approach to main road
+  Sign Code: W1-1 - Road Work Ahead
+  Placement: single
+  Notes: On Thomas Street 20m before main road
+
+
+4. DETOUR ROUTE SIGNAGE
+----------------------------------------------------------------------------------------------------
+
+Device D1:
+  Position/Location: -200
+  Sign Code: W1-4 - Detour Ahead
+  Size: 1200x1200mm
+  Quantity: 2
+  Notes: 200m before closure point, both sides
+
+Device D2:
+  Position/Location: -50
+  Sign Code: G9-6(R) - Detour Arrow Right
+  Size: 1800x900mm
+  Quantity: 1
+  Notes: Large arrow board directing to detour route
+
+Device D3:
+  Position/Location: -10
+  Sign Code: R2-1 - Road Closed
+  Size: 900mm diameter
+  Quantity: 2
+  Notes: N/A
+
+Device D4:
+  Position/Location: 0
+  Sign Code: G9-6 - Detour - Continue right
+  Size: 1800x900mm
+  Quantity: 1
+  Notes: Every 200m along detour route
+
+Device D5:
+  Position/Location: 200
+  Sign Code: G9-6 - Detour - Continue straight
+  Size: 1800x900mm
+  Quantity: 1
+  Notes: Every 200m along detour route
+
+Device D6:
+  Position/Location: 400
+  Sign Code: G9-6 - Detour - Continue left
+  Size: 1800x900mm
+  Quantity: 1
+  Notes: Every 200m along detour route
+
+
+====================================================================================================
+TOTAL SIGNAGE COUNT:
+  Main Road: 5 device types
+  Side Streets: 5 devices
+  Intersections: 6 devices
+  Detour Route: 6 devices
+  TOTAL: 22 device installations
+====================================================================================================
