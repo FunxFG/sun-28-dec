@@ -1590,24 +1590,9 @@ async def get_risks():
     except Exception as e:
         logger.error(f"Error loading risks: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
-                        'standards_refs': row['standards_refs'],
-                        'std_SA_WZTM': row.get('std_SA_WZTM', ''),
-                        'std_AGTTM': row.get('std_AGTTM', ''),
-                        'std_AS1742_3': row.get('std_AS1742_3', ''),
-                        'std_DIT_Field_Guide': row.get('std_DIT_Field_Guide', '')
-                    })
-        
-        return {
-            "risks": risks,
-            "total_count": len(risks),
-            "categories": list(set(r['category'] for r in risks)),
-            "likelihood_levels": LIKELIHOOD_LEVELS,
-            "consequence_levels": CONSEQUENCE_LEVELS
-        }
-    except Exception as e:
-        print(f"Error loading risks: {e}")
-        # Fallback to in-memory risk registry
-        return {
+
+# Duplicate endpoint - remove this one
+# @api_router.get("/risks")
             "risks": get_risk_registry(),
             "total_count": len(get_risk_registry()),
             "categories": RISK_CATEGORIES,
