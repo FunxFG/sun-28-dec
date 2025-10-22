@@ -1591,14 +1591,7 @@ async def get_risks():
         logger.error(f"Error loading risks: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
-# Duplicate endpoint - remove this one
-# @api_router.get("/risks")
-            "risks": get_risk_registry(),
-            "total_count": len(get_risk_registry()),
-            "categories": RISK_CATEGORIES,
-            "likelihood_levels": LIKELIHOOD_LEVELS,
-            "consequence_levels": CONSEQUENCE_LEVELS
-        }
+# Duplicate endpoint - removed
 
 @api_router.post("/risks/calculate")
 async def calculate_risk(request: dict):
