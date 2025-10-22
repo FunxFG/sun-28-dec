@@ -15,52 +15,32 @@ def load_expanded_risk_register():
         reader = csv.DictReader(f)
         for row in reader:
             risk = {
-                "risk_id": row['risk_id'],
-                "hazard": row['hazard'],
-                "consequence": row['consequence'],
-                "likelihood": row['likelihood'].lower().replace(' ', '_'),
-                "risk_level": row['risk_level'],
-                "control_measures": row['control_measures'].split(',') if ',' in row['control_measures'] else [row['control_measures']],
-                "category": determine_category(row['risk_id']),
-                "agttm_reference": determine_agttm_reference(row['risk_id'])
+                "risk_id": row['ID'],
+                "category": row['Category'],
+                "subcategory": row['Subcategory'] if row['Subcategory'] else None,
+                "hazard": row['Hazard'],
+                "trigger": row['Trigger/Context'] if row['Trigger/Context'] else None,
+                "consequence": row['Potential Consequence'],
+                "likelihood": row['Likelihood'].lower().replace(' ', '_'),
+                "risk_level": row['Risk Rating'],
+                "control_measures": row['Controls / Mitigation'].split(';') if ';' in row['Controls / Mitigation'] else [row['Controls / Mitigation']],
+                "controls_hierarchy": row['Controls Hierarchy'],
+                "monitoring": row['Monitoring / Verification'],
+                "responsible": row['Responsible Role'],
+                "reference": row['Reference'],
+                "residual_risk": row['Residual Risk']
             }
             risks.append(risk)
     
     return risks
 
 def determine_category(risk_id):
-    """Determine risk category from risk ID prefix"""
-    prefix = risk_id[:2]
-    categories = {
-        'TF': 'Traffic Flow',
-        'PC': 'Pedestrian/Cyclist',
-        'WS': 'Worker Safety',
-        'PE': 'Plant & Equipment',
-        'EN': 'Environmental',
-        'SD': 'Signage & Devices',
-        'PB': 'Public Behavior',
-        'EM': 'Emergency Management',
-        'IF': 'Infrastructure',
-        'CA': 'Compliance & Admin'
-    }
-    return categories.get(prefix, 'General')
+    """Keep actual category from CSV"""
+    return None  # Not needed, using CSV category
 
 def determine_agttm_reference(risk_id):
-    """Map to AGTTM reference"""
-    prefix = risk_id[:2]
-    references = {
-        'TF': 'AGTTM Part 3 - Traffic Flow',
-        'PC': 'AGTTM Part 7 - Pedestrian/Cyclist',
-        'WS': 'AS 1742.3 Section 3.2 - Worker Safety',
-        'PE': 'AGTTM Part 5 - Equipment',
-        'EN': 'AGTTM Part 2 - Environmental',
-        'SD': 'AS 1742.3 - Sign Placement',
-        'PB': 'AGTTM Part 4 - Public Interface',
-        'EM': 'AGTTM Part 8 - Emergency',
-        'IF': 'AGTTM Part 6 - Infrastructure',
-        'CA': 'AGTTM Part 1 - Compliance'
-    }
-    return references.get(prefix, 'AS 1742.3')
+    """Keep actual reference from CSV"""
+    return None  # Not needed, using CSV reference
 
 if __name__ == "__main__":
     risks = load_expanded_risk_register()
