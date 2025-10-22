@@ -1554,7 +1554,7 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
 async def get_risks():
     """
     Get comprehensive risk registry for roadwork traffic management
-    Returns all 50 identified risks with controls from CSV data
+    Returns all 106 identified risks from expanded Austroads register
     """
     try:
         import csv
@@ -1568,26 +1568,28 @@ async def get_risks():
                 reader = csv.DictReader(f)
                 for row in reader:
                     risks.append({
-                        'id': row['id'],
-                        'category': row['category'],
-                        'site_type': row['site_type'],
-                        'site_type_normalized': row['site_type_normalized'],
-                        'hazard': row['hazard'],
-                        'cause': row['cause'],
-                        'consequence': row['consequence'],
-                        'likelihood': row['likelihood'],
-                        'consequence_level': row['consequence_level'],
-                        'risk_score': int(row['risk_score']) if row['risk_score'] else 0,
-                        'risk_level': row['risk_level'],
-                        'control_elimination': row['control_elimination'],
-                        'control_substitution': row['control_substitution'],
-                        'control_engineering': row['control_engineering'],
-                        'control_administrative': row['control_administrative'],
-                        'control_ppe': row['control_ppe'],
-                        'residual_likelihood': row['residual_likelihood'],
-                        'residual_consequence_level': row['residual_consequence_level'],
-                        'residual_risk_score': int(row['residual_risk_score']) if row['residual_risk_score'] else 0,
-                        'residual_risk_level': row['residual_risk_level'],
+                        'risk_id': row['ID'],
+                        'category': row['Category'],
+                        'subcategory': row['Subcategory'] if row['Subcategory'] else None,
+                        'hazard': row['Hazard'],
+                        'trigger': row['Trigger/Context'] if row['Trigger/Context'] else None,
+                        'consequence': row['Potential Consequence'],
+                        'likelihood': row['Likelihood'],
+                        'risk_level': row['Risk Rating'],
+                        'control_measures': row['Controls / Mitigation'],
+                        'controls_hierarchy': row['Controls Hierarchy'],
+                        'monitoring': row['Monitoring / Verification'],
+                        'responsible': row['Responsible Role'],
+                        'reference': row['Reference'],
+                        'residual_risk': row['Residual Risk']
+                    })
+        else:
+            logger.warning(f"Risk data CSV not found at {csv_path}")
+        
+        return risks
+    except Exception as e:
+        logger.error(f"Error loading risks: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
                         'standards_refs': row['standards_refs'],
                         'std_SA_WZTM': row.get('std_SA_WZTM', ''),
                         'std_AGTTM': row.get('std_AGTTM', ''),
