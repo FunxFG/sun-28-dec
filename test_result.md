@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Fix JavaScript syntax errors in the Austroads TMP generation application. The app was not working after integrating the TGS (Traffic Guidance Schemes) drawing generator."
+user_problem_statement: "Enhance Austroads TMP auto-population with comprehensive field automation including pedestrian control measures, bilateral signage compliance, side street signing (double gating), and all Austroads-compliant distances. Minimize user input by auto-populating ALL possible fields using APIs."
 
 backend:
   - task: "User Authentication (Login/Register)"
