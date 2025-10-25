@@ -775,23 +775,61 @@ export default function PlanEditor({ user, onLogout }) {
 
   const fetchRoadData = async () => {
     try {
-      const response = await axios.get(`${API}/road-data`, {
+      // Fetch road data
+      const roadResponse = await axios.get(`${API}/road-data`, {
         params: {
           start_address: formData.work_details.start_address,
           end_address: formData.work_details.end_address
         }
       });
       
+      const roadData = roadResponse.data;
+      
+      // Also fetch traffic assessment data (includes SA Government official traffic volumes)
+      const trafficResponse = await axios.get(`${API}/traffic-assessment`, {
+        params: {
+          lat: roadData.start_coords.lat,
+          lng: roadData.start_coords.lng,
+          address: formData.work_details.start_address
+        }
+      });
+      
+      const trafficData = trafficResponse.data;
+      
+      // Update form data with both road and traffic data
       setFormData(prev => ({
         ...prev,
         road_data: {
           ...prev.road_data,
-          ...response.data
+          ...roadData,
+          // Merge traffic assessment data
+          aadt: trafficData.aadt,
+          peak_hour_volume: trafficData.peak_hour_volume,
+          traffic_data_source: trafficData.data_source,
+          traffic_assessment_method: trafficData.assessment_method,
+          heavy_vehicle_percentage: trafficData.heavy_vehicle_percentage
+        },
+        // Also update traffic assessment section if exists
+        traffic_assessment: {
+          ...prev.traffic_assessment,
+          aadt: trafficData.aadt,
+          peak_hour_volume: trafficData.peak_hour_volume,
+          percentile_85_speed: trafficData['85th_percentile_speed'],
+          heavy_vehicle_percentage: trafficData.heavy_vehicle_percentage,
+          crash_history: trafficData.crash_history,
+          data_source: trafficData.data_source
         }
       }));
       
-      toast.success('Road data updated');
+      // Show appropriate toast message
+      if (trafficData.data_source.includes('SA Government')) {
+        toast.success('✅ Road data updated with SA Government official traffic volumes!');
+      } else {
+        toast.success('Road data updated');
+      }
+      
     } catch (error) {
+      console.error('Error fetching road/traffic data:', error);
       toast.error('Failed to fetch road data');
     }
   };
