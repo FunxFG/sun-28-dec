@@ -501,14 +501,14 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Authentication UI (Sign In/Create Account)" 
-    - "Complete end-to-end TMP workflow testing"
-    - "Professional TGS Drawing Generator Integration"
+    - "Comprehensive Auto-Population Endpoint"
+    - "Pedestrian Control Checkbox & Comprehensive Auto-Population Integration"
+    - "Signage compliance with bilateral and side street requirements"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
   test_all: false
-  test_priority: "authentication_critical"
-  backend_testing_complete: true
+  test_priority: "high_first"
+  backend_testing_complete: false
 
 agent_communication:
   - agent: "main"
