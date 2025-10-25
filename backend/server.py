@@ -1920,6 +1920,36 @@ async def recommend_devices(scenario: dict):
         raise HTTPException(status_code=500, detail=str(e))
 
 # ===================================================
+# COMPREHENSIVE AUTO-POPULATION ENDPOINT
+# ===================================================
+
+@api_router.get("/comprehensive-auto-populate")
+async def get_comprehensive_auto_populate(
+    lat: float, 
+    lng: float, 
+    start_address: str, 
+    end_address: str,
+    work_type: str = None
+):
+    """
+    MASTER AUTO-POPULATION ENDPOINT
+    Returns ALL possible auto-populated data to minimize user input
+    Combines: road, traffic, site, side streets, risks, devices, contacts, etc.
+    """
+    try:
+        from comprehensive_auto_population import get_comprehensive_auto_population
+        
+        result = await get_comprehensive_auto_population(
+            lat, lng, start_address, end_address, work_type
+        )
+        
+        return result
+        
+    except Exception as e:
+        logger.error(f"Error in comprehensive auto-population: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ===================================================
 # GOOGLE PLACES API PROXY ENDPOINTS (CORS FIX)
 # ===================================================
 
