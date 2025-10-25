@@ -103,13 +103,15 @@ async def get_comprehensive_auto_population(lat: float, lng: float, start_addres
         'side_streets': [],
         'intersections': [],
         'control_measures': [],
+        'pedestrian_control_measures': [],  # NEW: Pedestrian control
         'recommended_devices': [],
         'suggested_risks': [],
         'governing_body_details': {},
         'notification_requirements': {},
         'environmental_constraints': {},
         'staging_recommendations': {},
-        'public_facilities': {}
+        'public_facilities': {},
+        'signage_plan': {}  # NEW: Detailed signage plan with distances
     }
     
     try:
