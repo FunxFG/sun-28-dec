@@ -2,6 +2,93 @@
 Comprehensive Auto-Population System
 Fetches and deduces ALL possible information to minimize user input
 """
+import httpx
+import logging
+from typing import Dict, List, Any
+
+logger = logging.getLogger(__name__)
+
+async def fetch_osm_road_data(lat: float, lng: float) -> Dict[str, Any]:
+    """Fetch road data from OpenStreetMap Overpass API"""
+    try:
+        overpass_url = "https://overpass-api.de/api/interpreter"
+        
+        query = f"""
+        [out:json][timeout:10];
+        (
+          way(around:50,{lat},{lng})["highway"]["name"];
+        );
+        out body;
+        >;
+        out skel qt;
+        """
+        
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            response = await client.post(overpass_url, data={"data": query})
+            data = response.json()
+        
+        # Extract road information
+        road_info = {
+            'speed_limit': 60,
+            'lanes': 2,
+            'road_name': 'Unknown Road',
+            'highway_type': 'residential',
+            'surface': 'asphalt',
+            'has_footpath': False,
+            'has_cycleway': False,
+            'has_parking': False
+        }
+        
+        for element in data.get('elements', []):
+            if element.get('type') == 'way':
+                tags = element.get('tags', {})
+                
+                if 'name' in tags:
+                    road_info['road_name'] = tags['name']
+                
+                if 'highway' in tags:
+                    road_info['highway_type'] = tags['highway']
+                
+                if 'maxspeed' in tags:
+                    try:
+                        road_info['speed_limit'] = int(tags['maxspeed'].replace(' km/h', '').replace('km/h', ''))
+                    except:
+                        pass
+                
+                if 'lanes' in tags:
+                    try:
+                        road_info['lanes'] = int(tags['lanes'])
+                    except:
+                        pass
+                
+                if 'surface' in tags:
+                    road_info['surface'] = tags['surface']
+                
+                if 'footway' in tags or 'sidewalk' in tags:
+                    road_info['has_footpath'] = True
+                
+                if 'cycleway' in tags:
+                    road_info['has_cycleway'] = True
+                
+                if 'parking' in tags:
+                    road_info['has_parking'] = True
+                
+                break  # Use first matching way
+        
+        return road_info
+        
+    except Exception as e:
+        logger.error(f"Error fetching OSM road data: {str(e)}")
+        return {
+            'speed_limit': 60,
+            'lanes': 2,
+            'road_name': 'Unknown Road',
+            'highway_type': 'residential',
+            'surface': 'asphalt',
+            'has_footpath': False,
+            'has_cycleway': False,
+            'has_parking': False
+        }
 
 async def get_comprehensive_auto_population(lat: float, lng: float, start_address: str, end_address: str, work_type: str = None):
     """
