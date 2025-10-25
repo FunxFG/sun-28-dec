@@ -808,7 +808,24 @@ export default function PlanEditor({ user, onLogout }) {
       
       const siteData = siteResponse.data;
       
-      // Update form data with road, traffic AND site assessment data
+      // Fetch comprehensive auto-population (NEW - includes pedestrian control, signage plan, side streets)
+      let comprehensiveData = null;
+      try {
+        const comprehensiveResponse = await axios.get(`${API}/comprehensive-auto-populate`, {
+          params: {
+            lat: roadData.start_coords.lat,
+            lng: roadData.start_coords.lng,
+            start_address: formData.work_details.start_address,
+            end_address: formData.work_details.end_address,
+            work_type: formData.work_details.work_type
+          }
+        });
+        comprehensiveData = comprehensiveResponse.data;
+      } catch (error) {
+        console.log('Comprehensive auto-populate not available, continuing with basic data');
+      }
+      
+      // Update form data with road, traffic, site AND comprehensive auto-population data
       setFormData(prev => ({
         ...prev,
         road_data: {
@@ -842,6 +859,15 @@ export default function PlanEditor({ user, onLogout }) {
           public_transport: siteData.public_transport,
           utility_services: siteData.utility_services,
           environmental_factors: siteData.environmental_factors
+        },
+        // Update control measures with pedestrian control if comprehensive data available
+        control_measures: {
+          ...prev.control_measures,
+          // Auto-check pedestrian_control if pedestrian facilities detected or comprehensive data suggests it
+          pedestrian_control: comprehensiveData?.pedestrian_control_measures?.barriers_required?.length > 0 ||
+                            siteData.pedestrian_facilities?.includes('sidewalk') ||
+                            siteData.pedestrian_facilities?.includes('footpath') ||
+                            false
         }
       }));
       
@@ -849,6 +875,9 @@ export default function PlanEditor({ user, onLogout }) {
       let message = 'Road and site data updated';
       if (trafficData.data_source.includes('SA Government')) {
         message = '✅ Complete assessment: SA Gov traffic data + OSM site facilities!';
+      }
+      if (comprehensiveData?.pedestrian_control_measures?.barriers_required?.length > 0) {
+        message += ' Pedestrian control measures detected!';
       }
       toast.success(message);
       
