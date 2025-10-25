@@ -419,6 +419,87 @@ async def geocode_address(address: str):
         else:
             raise HTTPException(status_code=400, detail="Address not found")
 
+# ===================================================
+# SA GOVERNMENT TRAFFIC VOLUMES INTEGRATION
+# ===================================================
+
+SA_TRAFFIC_DATA = None  # Will be loaded on first use
+
+async def fetch_sa_traffic_volume(lat: float, lng: float):
+    """
+    Fetch official traffic volumes from SA Government dataset
+    Uses 2024 Traffic Volume Estimates GeoJSON data
+    """
+    global SA_TRAFFIC_DATA
+    
+    try:
+        # Load data on first use (caching)
+        if SA_TRAFFIC_DATA is None:
+            import json
+            import os
+            
+            geojson_path = '/tmp/sa_traffic_volumes_2024.geojson'
+            if os.path.exists(geojson_path):
+                with open(geojson_path, 'r') as f:
+                    SA_TRAFFIC_DATA = json.load(f)
+                logger.info(f"Loaded {len(SA_TRAFFIC_DATA['features'])} SA traffic volume segments")
+            else:
+                logger.warning("SA traffic data not found - will use fallback")
+                return None
+        
+        if not SA_TRAFFIC_DATA:
+            return None
+        
+        # Find nearest road segment within 100m
+        from math import radians, sin, cos, sqrt, atan2
+        
+        def haversine_distance(lat1, lon1, lat2, lon2):
+            """Calculate distance in meters between two points"""
+            R = 6371000  # Earth radius in meters
+            lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
+            dlat = lat2 - lat1
+            dlon = lon2 - lon1
+            a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+            c = 2 * atan2(sqrt(a), sqrt(1-a))
+            return R * c
+        
+        nearest_segment = None
+        min_distance = float('inf')
+        
+        for feature in SA_TRAFFIC_DATA['features']:
+            if feature['geometry']['type'] == 'LineString':
+                coords = feature['geometry']['coordinates']
+                # Check distance to start and end points
+                for coord in [coords[0], coords[-1]]:
+                    dist = haversine_distance(lat, lng, coord[1], coord[0])
+                    if dist < min_distance:
+                        min_distance = dist
+                        nearest_segment = feature
+        
+        # Only use if within 100m
+        if nearest_segment and min_distance < 100:
+            props = nearest_segment['properties']
+            
+            return {
+                'aadt': int(props.get('TESECN_VOLUME', 0)) if props.get('TESECN_VOLUME') else None,
+                'road_no': props.get('ROAD_NO'),
+                'section_id': props.get('TESECN_ID'),
+                'base_year': props.get('TESECN_BASE_YEAR'),
+                'projected_year': props.get('TESECN_PROJECTED_YEAR'),
+                'heavy_vehicle_pct': int(props.get('CV_PERCENT', 0)) if props.get('CV_PERCENT') else None,
+                'distance_to_segment': round(min_distance, 1)
+            }
+        
+        return None
+        
+    except Exception as e:
+        logger.error(f"Error fetching SA traffic volume: {str(e)}")
+        return None
+
+# ===================================================
+# EXISTING TRAFFIC ASSESSMENT ENDPOINT (ENHANCED)
+# ===================================================
+
 @api_router.get("/traffic-assessment")
 async def get_traffic_assessment(lat: float, lng: float, address: str):
     """
