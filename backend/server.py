@@ -423,18 +423,30 @@ async def geocode_address(address: str):
 async def get_traffic_assessment(lat: float, lng: float, address: str):
     """
     Fetch comprehensive traffic assessment data from multiple sources
-    - AADT from Digital Atlas / OpenStreetMap
+    - AADT from SA Government Traffic Volumes (official data)
+    - Digital Atlas / OpenStreetMap (fallback)
     - Peak hour volumes (calculated)
     - Speed data from OSM
     - Crash history from state databases
     - Heavy vehicle data
     """
     try:
-        # Get road data first
+        # Try SA Government official traffic volumes FIRST
+        sa_traffic_data = await fetch_sa_traffic_volume(lat, lng)
+        
+        # Get road data
         osm_data = await fetch_osm_road_data(lat, lng)
         
-        # Calculate AADT estimate based on road classification
-        aadt = calculate_aadt_from_classification(osm_data)
+        # Use official SA data if available, otherwise calculate estimate
+        if sa_traffic_data and sa_traffic_data.get('aadt'):
+            aadt = sa_traffic_data['aadt']
+            data_source = "SA Government Traffic Volumes 2024 (Official)"
+            assessment_method = "Automated using SA DIT official traffic volume estimates"
+        else:
+            # Fallback to calculation
+            aadt = calculate_aadt_from_classification(osm_data)
+            data_source = osm_data.get('data_source', 'Estimated') if osm_data else 'Estimated'
+            assessment_method = "Estimated from road classification (OSM/Digital Atlas)"
         
         # Calculate peak hour volume (typically 10% of AADT)
         peak_hour_volume = int(aadt * 0.10)
@@ -443,21 +455,35 @@ async def get_traffic_assessment(lat: float, lng: float, address: str):
         speed_limit = osm_data.get('speed_limit', 60) if osm_data else 60
         percentile_85_speed = speed_limit + 8
         
-        # Heavy vehicle percentage based on road type
-        heavy_vehicle_pct = estimate_heavy_vehicle_percentage(osm_data)
+        # Heavy vehicle percentage - use SA data if available
+        if sa_traffic_data and sa_traffic_data.get('heavy_vehicle_pct'):
+            heavy_vehicle_pct = sa_traffic_data['heavy_vehicle_pct']
+        else:
+            heavy_vehicle_pct = estimate_heavy_vehicle_percentage(osm_data)
         
         # Fetch crash data from state databases (if available)
         crash_history = await fetch_crash_history(lat, lng, address)
         
-        return {
+        result = {
             "aadt": aadt,
             "peak_hour_volume": peak_hour_volume,
             "85th_percentile_speed": f"{percentile_85_speed} km/h",
             "crash_history": crash_history,
             "heavy_vehicle_percentage": f"{heavy_vehicle_pct}%",
-            "assessment_method": "Automated data from OSM, Digital Atlas, and state databases",
-            "data_source": osm_data.get('data_source', 'Estimated') if osm_data else 'Estimated'
+            "assessment_method": assessment_method,
+            "data_source": data_source
         }
+        
+        # Include SA data details if available
+        if sa_traffic_data:
+            result['sa_traffic_details'] = {
+                'road_no': sa_traffic_data.get('road_no'),
+                'section_id': sa_traffic_data.get('section_id'),
+                'base_year': sa_traffic_data.get('base_year'),
+                'projected_year': sa_traffic_data.get('projected_year')
+            }
+        
+        return result
         
     except Exception as e:
         logger.error(f"Error fetching traffic assessment: {str(e)}")
@@ -467,7 +493,8 @@ async def get_traffic_assessment(lat: float, lng: float, address: str):
             "85th_percentile_speed": "65 km/h",
             "crash_history": "Data unavailable - manual assessment required",
             "heavy_vehicle_percentage": "12%",
-            "assessment_method": "Estimated values"
+            "assessment_method": "Estimated values",
+            "data_source": "Fallback estimates"
         }
 
 def calculate_aadt_from_classification(osm_data):
