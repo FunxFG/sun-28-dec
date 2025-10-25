@@ -1798,6 +1798,194 @@ class SafeRoadWorksAPITester:
                 return False
         return False
 
+    def test_comprehensive_auto_populate_adelaide_cbd(self):
+        """Test comprehensive auto-population endpoint - Adelaide CBD (Pedestrian-heavy area)"""
+        import time
+        start_time = time.time()
+        
+        success, response = self.run_test(
+            "Comprehensive Auto-Population - Adelaide CBD (Pedestrian Area)",
+            "GET",
+            "comprehensive-auto-populate",
+            200,
+            data={
+                "lat": -34.9285,
+                "lng": 138.6007,
+                "start_address": "King William Street, Adelaide SA",
+                "end_address": "North Terrace, Adelaide SA",
+                "work_type": "construction"
+            }
+        )
+        
+        end_time = time.time()
+        response_time = end_time - start_time
+        
+        if success:
+            print(f"   Response time: {response_time:.2f} seconds")
+            
+            # Check all 14 required data categories
+            required_categories = [
+                'road_data', 'traffic_assessment', 'site_assessment', 'side_streets',
+                'intersections', 'control_measures', 'pedestrian_control_measures',
+                'recommended_devices', 'signage_plan', 'suggested_risks',
+                'governing_body_details', 'notification_requirements',
+                'environmental_constraints', 'staging_recommendations'
+            ]
+            
+            missing_categories = [cat for cat in required_categories if cat not in response]
+            if missing_categories:
+                print(f"   ❌ Missing required categories: {missing_categories}")
+                return False
+            
+            print(f"   ✅ All 14 data categories present")
+            
+            # Verify pedestrian control measures structure
+            ped_controls = response.get('pedestrian_control_measures', {})
+            required_ped_fields = ['barriers_required', 'pedestrian_detours', 'signage', 'safety_measures', 'access_requirements']
+            missing_ped_fields = [field for field in required_ped_fields if field not in ped_controls]
+            
+            if not missing_ped_fields:
+                print(f"   ✅ Pedestrian control measures complete with DDA compliance")
+                
+                # Check for DDA compliance
+                access_reqs = ped_controls.get('access_requirements', [])
+                dda_found = any('DDA' in str(req) for req in access_reqs)
+                if dda_found:
+                    print(f"   ✅ DDA compliance requirements included")
+                else:
+                    print(f"   ⚠️ DDA compliance not explicitly mentioned")
+            else:
+                print(f"   ❌ Missing pedestrian control fields: {missing_ped_fields}")
+                return False
+            
+            # Verify signage plan structure
+            signage_plan = response.get('signage_plan', {})
+            required_signage_fields = ['advance_warning_signs', 'workzone_signs', 'side_street_signs', 
+                                     'end_of_works_signs', 'bilateral_requirements', 'distances_documented']
+            missing_signage_fields = [field for field in required_signage_fields if field not in signage_plan]
+            
+            if not missing_signage_fields:
+                print(f"   ✅ Signage plan complete with bilateral requirements")
+                
+                # Check for AS 1742.3 references
+                distances_doc = signage_plan.get('distances_documented', {})
+                as1742_found = any('AS 1742.3' in str(val) for val in distances_doc.values())
+                if as1742_found:
+                    print(f"   ✅ AS 1742.3 references documented")
+                else:
+                    print(f"   ⚠️ AS 1742.3 references not found in distances")
+                
+                # Check for side street double gating
+                side_street_signs = signage_plan.get('side_street_signs', [])
+                double_gating_found = any('DOUBLE GATING' in str(sign) for sign in side_street_signs)
+                if double_gating_found:
+                    print(f"   ✅ Side street DOUBLE GATING requirement documented")
+                else:
+                    print(f"   ⚠️ DOUBLE GATING requirement not found")
+            else:
+                print(f"   ❌ Missing signage plan fields: {missing_signage_fields}")
+                return False
+            
+            # Check side streets and intersections
+            side_streets = response.get('side_streets', [])
+            intersections = response.get('intersections', [])
+            print(f"   Side streets found: {len(side_streets)}")
+            print(f"   Intersections found: {len(intersections)}")
+            
+            return True
+        return False
+
+    def test_comprehensive_auto_populate_highway(self):
+        """Test comprehensive auto-population endpoint - Highway (High-speed road)"""
+        import time
+        start_time = time.time()
+        
+        success, response = self.run_test(
+            "Comprehensive Auto-Population - Highway (High-speed)",
+            "GET",
+            "comprehensive-auto-populate",
+            200,
+            data={
+                "lat": -27.4698,
+                "lng": 153.0251,
+                "start_address": "Pacific Motorway, Brisbane QLD",
+                "end_address": "Gateway Motorway, Brisbane QLD",
+                "work_type": "maintenance"
+            }
+        )
+        
+        end_time = time.time()
+        response_time = end_time - start_time
+        
+        if success:
+            print(f"   Response time: {response_time:.2f} seconds")
+            
+            # Check signage plan for highway-specific requirements
+            signage_plan = response.get('signage_plan', {})
+            distances_doc = signage_plan.get('distances_documented', {})
+            
+            # Check for longer advance warning distances (150m+)
+            adv_warning_dist = distances_doc.get('advance_warning_distance', '')
+            if '150' in adv_warning_dist or '250' in adv_warning_dist or '350' in adv_warning_dist:
+                print(f"   ✅ Highway advance warning distance: {adv_warning_dist}")
+            else:
+                print(f"   ⚠️ Expected 150m+ advance warning, got: {adv_warning_dist}")
+            
+            # Check for fewer pedestrian controls (highway environment)
+            ped_controls = response.get('pedestrian_control_measures', {})
+            barriers = ped_controls.get('barriers_required', [])
+            detours = ped_controls.get('pedestrian_detours', [])
+            
+            if len(barriers) < 2 and len(detours) < 2:
+                print(f"   ✅ Fewer pedestrian controls for highway environment")
+            else:
+                print(f"   ⚠️ High pedestrian controls for highway: {len(barriers)} barriers, {len(detours)} detours")
+            
+            return True
+        return False
+
+    def test_comprehensive_auto_populate_road_closure(self):
+        """Test comprehensive auto-population endpoint - Road Closure"""
+        import time
+        start_time = time.time()
+        
+        success, response = self.run_test(
+            "Comprehensive Auto-Population - Road Closure",
+            "GET",
+            "comprehensive-auto-populate",
+            200,
+            data={
+                "lat": -34.9285,
+                "lng": 138.6007,
+                "start_address": "Hutt Street, Adelaide SA",
+                "end_address": "Hutt Street, Adelaide SA",
+                "work_type": "road closure"
+            }
+        )
+        
+        end_time = time.time()
+        response_time = end_time - start_time
+        
+        if success:
+            print(f"   Response time: {response_time:.2f} seconds")
+            
+            # Check for detour routes (should be present for road closure)
+            if 'detour_routes' in response:
+                detour_routes = response['detour_routes']
+                print(f"   ✅ Detour routes included for road closure")
+                print(f"   Detour routes: {detour_routes}")
+            else:
+                print(f"   ❌ Detour routes missing for road closure work type")
+                return False
+            
+            # Check for enhanced control measures
+            control_measures = response.get('control_measures', {})
+            if control_measures:
+                print(f"   ✅ Control measures provided for road closure")
+            
+            return True
+        return False
+
 def main():
     print("🚦 Comprehensive Austroads TMP Backend API Testing Suite")
     print("=" * 80)
