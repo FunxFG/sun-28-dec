@@ -2034,6 +2034,11 @@ def main():
         ("Proxy Places Details", tester.test_proxy_places_details),
         ("Proxy Weather Forecast", tester.test_proxy_weather_forecast_adelaide),
         
+        # 9. NEW Comprehensive Auto-Population Endpoint Tests
+        ("Comprehensive Auto-Population Adelaide CBD", tester.test_comprehensive_auto_populate_adelaide_cbd),
+        ("Comprehensive Auto-Population Highway", tester.test_comprehensive_auto_populate_highway),
+        ("Comprehensive Auto-Population Road Closure", tester.test_comprehensive_auto_populate_road_closure),
+        
         # Clean up
         ("Delete Plan", tester.test_delete_plan),
     ]
