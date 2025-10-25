@@ -519,6 +519,341 @@ async def calculate_detour_routes(lat: float, lng: float, address: str):
     # This would use Google Directions API with waypoints
     # For now, provide template
     
+
+
+def suggest_pedestrian_controls(work_type: str, osm_data: dict, public_facilities: dict):
+    """
+    Suggest pedestrian control measures based on scenario
+    Includes pedestrian detours, barriers, signage, and safety measures
+    """
+    
+    pedestrian_measures = {
+        'barriers_required': [],
+        'pedestrian_detours': [],
+        'signage': [],
+        'safety_measures': [],
+        'access_requirements': []
+    }
+    
+    has_footpath = osm_data.get('has_footpath', False)
+    has_schools = len(public_facilities.get('schools', [])) > 0
+    has_hospitals = len(public_facilities.get('hospitals', [])) > 0
+    
+    # Barriers
+    if has_footpath:
+        pedestrian_measures['barriers_required'].extend([
+            {
+                'type': 'Pedestrian Barrier Fencing',
+                'location': 'Along workzone perimeter adjacent to footpath',
+                'specification': 'AS 1742.3 compliant, minimum 1.2m high',
+                'quantity_estimate': 'Per meter of workzone length'
+            },
+            {
+                'type': 'Pedestrian Mesh Fencing',
+                'location': 'Separation between workzone and pedestrian path',
+                'specification': '2.0m high chain mesh or solid hoarding',
+                'visibility': 'Must maintain sight lines for pedestrians'
+            }
+        ])
+    
+    # Pedestrian Detours
+    if work_type and ('closure' in work_type.lower() or 'excavation' in work_type.lower()):
+        pedestrian_measures['pedestrian_detours'].append({
+            'type': 'Pedestrian Detour Route',
+            'description': 'Alternative pedestrian path around workzone',
+            'requirements': [
+                'Minimum 1.0m clear width (DDA compliant)',
+                'Maximum grade 1:14 (7.1%) for DDA compliance',
+                'Tactile ground surface indicators at decision points',
+                'Handrails if grade exceeds 1:20',
+                'Clear signage at diversion points'
+            ],
+            'signage_required': [
+                'Pedestrians Use Other Side',
+                'Pedestrian Detour',
+                'Directional arrows'
+            ]
+        })
+    
+    # Signage for Pedestrians
+    pedestrian_measures['signage'].extend([
+        {
+            'code': 'P1-1',
+            'name': 'Pedestrian Detour',
+            'location': 'At start of pedestrian diversion',
+            'placement': 'Both sides if bilateral footpaths'
+        },
+        {
+            'code': 'P1-2',
+            'name': 'Footpath Closed',
+            'location': 'At closure point',
+            'placement': 'Directly at closed footpath entrance'
+        },
+        {
+            'code': 'P1-3',
+            'name': 'Pedestrians Use Other Side',
+            'location': 'Before workzone',
+            'placement': 'With directional arrow'
+        }
+    ])
+    
+    # Safety Measures
+    pedestrian_measures['safety_measures'].extend([
+        {
+            'measure': 'Separation Distance',
+            'requirement': 'Minimum 1.2m clearance between traffic and pedestrian path',
+            'standard': 'AS 1742.3 Table 5.2'
+        },
+        {
+            'measure': 'Lighting',
+            'requirement': 'Adequate lighting for night works',
+            'specification': 'Minimum 20 lux at pedestrian level'
+        },
+        {
+            'measure': 'Visibility',
+            'requirement': 'High visibility bollards and delineators',
+            'spacing': 'Every 2-3 meters along pedestrian path'
+        }
+    ])
+    
+    # Access Requirements
+    if has_schools:
+        pedestrian_measures['access_requirements'].append({
+            'facility': 'Schools',
+            'requirement': 'Maintain safe pedestrian access during school hours',
+            'peak_times': '8:00-9:00am, 3:00-4:00pm',
+            'special_consideration': 'Additional supervision may be required during peak times'
+        })
+    
+    if has_hospitals:
+        pedestrian_measures['access_requirements'].append({
+            'facility': 'Hospital',
+            'requirement': 'Maintain 24/7 pedestrian emergency access',
+            'special_consideration': 'Clear signage to emergency department entrance'
+        })
+    
+    # DDA Compliance
+    pedestrian_measures['access_requirements'].append({
+        'compliance': 'DDA (Disability Discrimination Act)',
+        'requirements': [
+            'Minimum 1.0m clear path width',
+            'Maximum cross-fall 1:40 (2.5%)',
+            'Maximum grade 1:14 (7.1%)',
+            'Tactile ground surface indicators',
+            'No protruding objects above 680mm or below 2000mm'
+        ]
+    })
+    
+    return pedestrian_measures
+
+
+def generate_signage_plan(work_type: str, osm_data: dict, side_streets: list, intersections: list):
+    """
+    Generate comprehensive signage plan with:
+    - Austroads-compliant advance warning distances
+    - Bilateral signage requirements
+    - Side street signing (double gating)
+    - All distances documented
+    """
+    
+    speed = osm_data.get('speed_limit', 60)
+    lanes = osm_data.get('lanes', 2)
+    
+    signage_plan = {
+        'advance_warning_signs': [],
+        'workzone_signs': [],
+        'side_street_signs': [],
+        'end_of_works_signs': [],
+        'bilateral_requirements': {},
+        'distances_documented': {}
+    }
+    
+    # Calculate Austroads advance warning distances based on speed
+    # AS 1742.3 - Table 6.2
+    if speed <= 60:
+        adv_warning_dist = 90  # meters
+        intermediate_dist = 50  # meters
+    elif speed <= 80:
+        adv_warning_dist = 150  # meters
+        intermediate_dist = 90  # meters
+    elif speed <= 100:
+        adv_warning_dist = 250  # meters
+        intermediate_dist = 150  # meters
+    else:
+        adv_warning_dist = 350  # meters
+        intermediate_dist = 250  # meters
+    
+    # Document distances
+    signage_plan['distances_documented'] = {
+        'speed_limit': f'{speed} km/h',
+        'advance_warning_distance': f'{adv_warning_dist}m (AS 1742.3 Table 6.2)',
+        'intermediate_distance': f'{intermediate_dist}m',
+        'taper_length': f'{calculate_taper_length(speed, lanes)}m',
+        'buffer_zone': f'{calculate_buffer_zone(speed)}m',
+        'standard_reference': 'AS 1742.3:2019 - Manual of uniform traffic control devices, Part 3: Traffic control for works on roads'
+    }
+    
+    # Advance Warning Signs (BILATERAL)
+    signage_plan['advance_warning_signs'].append({
+        'sign_code': 'T1-1',
+        'name': 'Road Work Ahead',
+        'position': f'-{adv_warning_dist}m from workzone start',
+        'placement': 'BILATERAL (both sides of road)',
+        'quantity': 2,
+        'mounting_height': '2.0-2.5m (AS 1742.3)',
+        'lateral_offset': '0.5-1.0m from edge of carriageway',
+        'notes': 'Must be on both sides for multi-lane roads'
+    })
+    
+    if lanes > 1:
+        signage_plan['advance_warning_signs'].append({
+            'sign_code': 'T1-2',
+            'name': 'Lane Closure Ahead',
+            'position': f'-{intermediate_dist}m from lane closure',
+            'placement': 'BILATERAL (both sides of road)',
+            'quantity': 2,
+            'mounting_height': '2.0-2.5m',
+            'lateral_offset': '0.5-1.0m from edge of carriageway'
+        })
+    
+    # Speed Reduction Signs (BILATERAL)
+    if speed > 40:
+        signage_plan['advance_warning_signs'].append({
+            'sign_code': 'R4-1(40)',
+            'name': 'Speed Limit 40',
+            'position': f'-{intermediate_dist + 20}m from workzone',
+            'placement': 'BILATERAL (both sides of road)',
+            'quantity': 2,
+            'mounting_height': '2.0-2.5m',
+            'compliance': 'Regulatory sign - enforceable by law'
+        })
+    
+    # Workzone Signs
+    signage_plan['workzone_signs'].extend([
+        {
+            'sign_code': 'T1-3',
+            'name': 'Work Zone',
+            'position': 'At start of workzone',
+            'placement': 'BILATERAL',
+            'quantity': 2
+        },
+        {
+            'sign_code': 'D5-1',
+            'name': 'Traffic Cones 700mm',
+            'position': 'Taper and workzone perimeter',
+            'spacing': f'{calculate_cone_spacing(speed)}m spacing',
+            'quantity': 'Variable based on workzone length',
+            'specification': '700mm high, retroreflective, weighted base'
+        }
+    ])
+    
+    # Side Street Signs (DOUBLE GATING)
+    for side_street in side_streets[:5]:  # Limit to 5 nearest
+        signage_plan['side_street_signs'].append({
+            'side_street_name': side_street['name'],
+            'requirement': 'DOUBLE GATING - Signs on both approaches to intersection',
+            'signs': [
+                {
+                    'sign_code': 'T1-1',
+                    'name': 'Road Work Ahead',
+                    'position': f'On {side_street["name"]} approaching main road',
+                    'placement': 'Both approaches (north & south, or east & west)',
+                    'quantity': 2,
+                    'distance_from_intersection': '50-90m depending on visibility',
+                    'notes': 'AS 1742.3 requires warning on all approaches to workzone'
+                },
+                {
+                    'sign_code': 'T1-5',
+                    'name': 'Expect Delays',
+                    'position': f'On {side_street["name"]} 20m before intersection',
+                    'placement': 'Both approaches',
+                    'quantity': 2
+                }
+            ]
+        })
+    
+    # Intersection Signs
+    for intersection in intersections[:3]:
+        signage_plan['side_street_signs'].append({
+            'intersection_name': intersection['name'],
+            'type': intersection['type'],
+            'requirement': 'BILATERAL WARNING on all approaches',
+            'signs': [
+                {
+                    'sign_code': 'T1-4',
+                    'name': 'Road Work at Intersection',
+                    'placement': 'All intersection approaches (4-way or 3-way)',
+                    'quantity': 3 if intersection['type'] == 'T-intersection' else 4,
+                    'distance_from_intersection': '50-90m on each approach'
+                }
+            ]
+        })
+    
+    # End of Works Signs (BILATERAL)
+    signage_plan['end_of_works_signs'].append({
+        'sign_code': 'G2-4',
+        'name': 'End Road Work',
+        'position': '+50m after workzone end',
+        'placement': 'BILATERAL (both sides of road)',
+        'quantity': 2,
+        'mounting_height': '2.0-2.5m',
+        'notes': 'Indicates return to normal conditions'
+    })
+    
+    if speed > 40:
+        signage_plan['end_of_works_signs'].append({
+            'sign_code': 'R4-1(60)',
+            'name': f'Speed Limit {speed}',
+            'position': '+55m after workzone end',
+            'placement': 'BILATERAL (both sides of road)',
+            'quantity': 2,
+            'notes': 'Reinstates normal speed limit'
+        })
+    
+    # Bilateral Requirements Summary
+    signage_plan['bilateral_requirements'] = {
+        'applies_to': 'Multi-lane roads and roads with speed limits >60 km/h',
+        'definition': 'Signs must be placed on BOTH sides of the road',
+        'standard': 'AS 1742.3 Clause 6.3.2',
+        'total_bilateral_signs': sum([
+            len(signage_plan['advance_warning_signs']),
+            len(signage_plan['workzone_signs']) if 'BILATERAL' in str(signage_plan['workzone_signs']) else 0,
+            len(signage_plan['end_of_works_signs'])
+        ]),
+        'compliance_note': 'All regulatory and warning signs in workzone MUST be bilateral for roads with >1 lane per direction'
+    }
+    
+    return signage_plan
+
+
+def calculate_taper_length(speed: int, lanes: int) -> int:
+    """Calculate taper length per AS 1742.3 formula: L = W * S / 2"""
+    lane_width = 3.5  # Standard lane width in meters
+    if speed <= 60:
+        return int(lane_width * speed / 2)
+    else:
+        return int(lane_width * speed / 1.5)
+
+
+def calculate_buffer_zone(speed: int) -> int:
+    """Calculate buffer zone per AS 1742.3"""
+    if speed <= 60:
+        return 30
+    elif speed <= 80:
+        return 50
+    else:
+        return 80
+
+
+def calculate_cone_spacing(speed: int) -> int:
+    """Calculate cone spacing per AS 1742.3"""
+    if speed <= 60:
+        return 5  # 5m spacing
+    elif speed <= 80:
+        return 10  # 10m spacing
+    else:
+        return 20  # 20m spacing
+
     detour = {
         'northbound': {
             'route': 'Via alternative streets',
