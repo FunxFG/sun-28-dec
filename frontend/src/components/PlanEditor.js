@@ -785,7 +785,7 @@ export default function PlanEditor({ user, onLogout }) {
       
       const roadData = roadResponse.data;
       
-      // Also fetch traffic assessment data (includes SA Government official traffic volumes)
+      // Fetch traffic assessment data (includes SA Government official traffic volumes)
       const trafficResponse = await axios.get(`${API}/traffic-assessment`, {
         params: {
           lat: roadData.start_coords.lat,
@@ -796,7 +796,18 @@ export default function PlanEditor({ user, onLogout }) {
       
       const trafficData = trafficResponse.data;
       
-      // Update form data with both road and traffic data
+      // Fetch site assessment data (road geometry, facilities, utilities)
+      const siteResponse = await axios.get(`${API}/site-assessment`, {
+        params: {
+          lat: roadData.start_coords.lat,
+          lng: roadData.start_coords.lng,
+          address: formData.work_details.start_address
+        }
+      });
+      
+      const siteData = siteResponse.data;
+      
+      // Update form data with road, traffic AND site assessment data
       setFormData(prev => ({
         ...prev,
         road_data: {
@@ -809,7 +820,7 @@ export default function PlanEditor({ user, onLogout }) {
           traffic_assessment_method: trafficData.assessment_method,
           heavy_vehicle_percentage: trafficData.heavy_vehicle_percentage
         },
-        // Also update traffic assessment section if exists
+        // Update traffic assessment section
         traffic_assessment: {
           ...prev.traffic_assessment,
           aadt: trafficData.aadt,
@@ -818,19 +829,31 @@ export default function PlanEditor({ user, onLogout }) {
           heavy_vehicle_percentage: trafficData.heavy_vehicle_percentage,
           crash_history: trafficData.crash_history,
           data_source: trafficData.data_source
+        },
+        // Update site assessment section
+        site_assessment: {
+          ...prev.site_assessment,
+          road_geometry: siteData.road_geometry,
+          sight_distances: siteData.sight_distances,
+          parking_restrictions: siteData.parking_restrictions,
+          pedestrian_facilities: siteData.pedestrian_facilities,
+          cyclist_facilities: siteData.cyclist_facilities,
+          public_transport: siteData.public_transport,
+          utility_services: siteData.utility_services,
+          environmental_factors: siteData.environmental_factors
         }
       }));
       
-      // Show appropriate toast message
+      // Show comprehensive success message
+      let message = 'Road and site data updated';
       if (trafficData.data_source.includes('SA Government')) {
-        toast.success('✅ Road data updated with SA Government official traffic volumes!');
-      } else {
-        toast.success('Road data updated');
+        message = '✅ Complete assessment: SA Gov traffic data + OSM site facilities!';
       }
+      toast.success(message);
       
     } catch (error) {
-      console.error('Error fetching road/traffic data:', error);
-      toast.error('Failed to fetch road data');
+      console.error('Error fetching road/traffic/site data:', error);
+      toast.error('Failed to fetch complete assessment data');
     }
   };
 
