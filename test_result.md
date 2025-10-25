@@ -466,6 +466,18 @@ frontend:
         agent: "testing"
         comment: "✅ BACKEND PROXY ENDPOINTS FULLY OPERATIONAL - CORS FIXES CONFIRMED! All 4 backend proxy endpoints that tmpAutoPopulator.js depends on are working perfectly: /api/proxy/geocode (geocoding addresses), /api/proxy/places/nearby (finding police stations and hospitals), /api/proxy/places/details (getting contact information), and /api/proxy/weather/forecast (environmental conditions). Backend testing confirms all endpoints return 200 OK with proper Google Places API and OpenWeatherMap API response structures. CORS errors should now be resolved for TMP auto-population features including emergency services and weather data fetching. Frontend tmpAutoPopulator.js can now successfully call these proxy endpoints without browser CORS restrictions."
 
+  - task: "Pedestrian Control Checkbox & Comprehensive Auto-Population Integration"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/PlanEditor.js"
+    stuck_count: 0
+    priority: "critical"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added pedestrian_control checkbox to Control Measures section in PlanEditor. Updated fetchRoadData() to call new /api/comprehensive-auto-populate endpoint which provides: pedestrian control measures (barriers, detours, DDA compliance), signage plan with bilateral and side street requirements, side streets list, intersections, public facilities. Checkbox automatically enables when: 1) Comprehensive API detects pedestrian barriers required, 2) Site assessment detects sidewalk/footpath, 3) OSM data shows pedestrian facilities. Success message now includes 'Pedestrian control measures detected!' when applicable. Frontend compiled successfully. Ready for testing."
+
   - task: "Professional TGS Drawing Generator Integration"
     implemented: true
     working: false
