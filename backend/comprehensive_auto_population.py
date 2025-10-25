@@ -115,6 +115,10 @@ async def get_comprehensive_auto_population(lat: float, lng: float, start_addres
     }
     
     try:
+        # 0. FETCH OSM ROAD DATA (foundational)
+        osm_data = await fetch_osm_road_data(lat, lng)
+        result['road_data'] = osm_data
+        
         # 1. SIDE STREETS AND INTERSECTIONS (OSM)
         result['side_streets'] = await fetch_side_streets(lat, lng)
         result['intersections'] = await fetch_intersections(lat, lng)
@@ -126,25 +130,30 @@ async def get_comprehensive_auto_population(lat: float, lng: float, start_addres
         result['public_facilities'] = await fetch_public_facilities(lat, lng)
         
         # 4. SUGGESTED CONTROL MEASURES (based on work type and road)
-        osm_data = await fetch_osm_road_data(lat, lng)
         result['control_measures'] = suggest_control_measures(work_type, osm_data)
         
-        # 5. RECOMMENDED DEVICES (from device library)
+        # 5. PEDESTRIAN CONTROL MEASURES (NEW)
+        result['pedestrian_control_measures'] = suggest_pedestrian_controls(work_type, osm_data, result['public_facilities'])
+        
+        # 6. RECOMMENDED DEVICES (from device library)
         result['recommended_devices'] = recommend_devices(work_type, osm_data)
         
-        # 6. SUGGESTED RISKS (from 106-risk register)
+        # 7. SIGNAGE PLAN with bilateral and side street requirements (NEW)
+        result['signage_plan'] = generate_signage_plan(work_type, osm_data, result['side_streets'], result['intersections'])
+        
+        # 8. SUGGESTED RISKS (from 106-risk register)
         result['suggested_risks'] = suggest_risks_for_scenario(work_type, osm_data)
         
-        # 7. NOTIFICATION REQUIREMENTS
+        # 9. NOTIFICATION REQUIREMENTS
         result['notification_requirements'] = determine_notifications(osm_data)
         
-        # 8. ENVIRONMENTAL CONSTRAINTS
+        # 10. ENVIRONMENTAL CONSTRAINTS
         result['environmental_constraints'] = await assess_environmental_constraints(lat, lng, start_address)
         
-        # 9. STAGING RECOMMENDATIONS
+        # 11. STAGING RECOMMENDATIONS
         result['staging_recommendations'] = generate_staging_plan(osm_data, start_address, end_address)
         
-        # 10. DETOUR ROUTES (if road closure)
+        # 12. DETOUR ROUTES (if road closure)
         if work_type and 'closure' in work_type.lower():
             result['detour_routes'] = await calculate_detour_routes(lat, lng, start_address)
         
