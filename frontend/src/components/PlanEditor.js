@@ -84,6 +84,18 @@ export default function PlanEditor({ user, onLogout }) {
   
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  
+  // State for comprehensive auto-population data
+  const [comprehensiveData, setComprehensiveData] = useState({
+    side_streets: [],
+    intersections: [],
+    signage_plan: null,
+    pedestrian_control_measures: null,
+    public_facilities: null,
+    governing_body_details: null,
+    staging_recommendations: null
+  });
+
   const [formData, setFormData] = useState({
     plan_name: '',
     
