@@ -1434,6 +1434,250 @@ export default function PlanEditor({ user, onLogout }) {
             </Card>
           </div>
 
+            {/* Comprehensive Auto-Population Data Display */}
+            {comprehensiveData.side_streets.length > 0 && (
+              <Card className="border-l-4 border-l-blue-500">
+                <CardHeader>
+                  <CardTitle className="text-blue-700">📍 Side Streets Detected</CardTitle>
+                  <CardDescription>Streets requiring signage within workzone</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {comprehensiveData.side_streets.slice(0, 10).map((street, idx) => (
+                      <div key={idx} className="flex items-center justify-between p-2 bg-blue-50 rounded">
+                        <span className="font-medium">{street.name}</span>
+                        <span className="text-sm text-gray-600 capitalize">{street.type}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {comprehensiveData.signage_plan && (
+              <Card className="border-l-4 border-l-green-500">
+                <CardHeader>
+                  <CardTitle className="text-green-700">🚦 Signage Plan (AS 1742.3 Compliant)</CardTitle>
+                  <CardDescription>Bilateral signage & side street requirements</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Distances */}
+                  {comprehensiveData.signage_plan.distances_documented && (
+                    <div className="bg-green-50 p-4 rounded-lg">
+                      <h4 className="font-semibold mb-2">📏 Documented Distances</h4>
+                      <div className="grid grid-cols-2 gap-2 text-sm">
+                        <div><strong>Speed Limit:</strong> {comprehensiveData.signage_plan.distances_documented.speed_limit}</div>
+                        <div><strong>Advance Warning:</strong> {comprehensiveData.signage_plan.distances_documented.advance_warning_distance}</div>
+                        <div><strong>Taper Length:</strong> {comprehensiveData.signage_plan.distances_documented.taper_length}</div>
+                        <div><strong>Buffer Zone:</strong> {comprehensiveData.signage_plan.distances_documented.buffer_zone}</div>
+                      </div>
+                      <div className="text-xs text-gray-600 mt-2">
+                        {comprehensiveData.signage_plan.distances_documented.standard_reference}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Advance Warning Signs */}
+                  {comprehensiveData.signage_plan.advance_warning_signs?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2">⚠️ Advance Warning Signs</h4>
+                      {comprehensiveData.signage_plan.advance_warning_signs.map((sign, idx) => (
+                        <div key={idx} className="bg-yellow-50 p-3 rounded mb-2">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <div className="font-medium">{sign.sign_code}: {sign.name}</div>
+                              <div className="text-sm text-gray-600">{sign.position}</div>
+                            </div>
+                            <span className="bg-green-600 text-white px-2 py-1 rounded text-xs">
+                              {sign.placement}
+                            </span>
+                          </div>
+                          <div className="text-xs mt-1 text-gray-500">Qty: {sign.quantity} | Height: {sign.mounting_height}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Side Street Signs (DOUBLE GATING) */}
+                  {comprehensiveData.signage_plan.side_street_signs?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2">🔄 Side Street Signs (DOUBLE GATING)</h4>
+                      {comprehensiveData.signage_plan.side_street_signs.slice(0, 3).map((sideStreet, idx) => (
+                        <div key={idx} className="bg-orange-50 p-3 rounded mb-2 border-l-4 border-orange-500">
+                          <div className="font-medium">{sideStreet.side_street_name || sideStreet.intersection_name}</div>
+                          <div className="text-sm text-orange-700 font-semibold">{sideStreet.requirement}</div>
+                          {sideStreet.signs && sideStreet.signs.map((sign, sidx) => (
+                            <div key={sidx} className="text-xs mt-1 ml-4">
+                              • {sign.sign_code}: {sign.name} - {sign.placement}
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Bilateral Requirements */}
+                  {comprehensiveData.signage_plan.bilateral_requirements && (
+                    <div className="bg-blue-50 p-3 rounded">
+                      <h4 className="font-semibold mb-2">↔️ Bilateral Signage Requirements</h4>
+                      <div className="text-sm space-y-1">
+                        <div><strong>Applies to:</strong> {comprehensiveData.signage_plan.bilateral_requirements.applies_to}</div>
+                        <div><strong>Standard:</strong> {comprehensiveData.signage_plan.bilateral_requirements.standard}</div>
+                        <div className="text-xs text-gray-600 mt-2">{comprehensiveData.signage_plan.bilateral_requirements.compliance_note}</div>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {comprehensiveData.pedestrian_control_measures && (
+              <Card className="border-l-4 border-l-purple-500">
+                <CardHeader>
+                  <CardTitle className="text-purple-700">🚶 Pedestrian Control Measures</CardTitle>
+                  <CardDescription>DDA compliant pedestrian safety requirements</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Barriers */}
+                  {comprehensiveData.pedestrian_control_measures.barriers_required?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2">🚧 Barriers Required</h4>
+                      {comprehensiveData.pedestrian_control_measures.barriers_required.map((barrier, idx) => (
+                        <div key={idx} className="bg-purple-50 p-3 rounded mb-2">
+                          <div className="font-medium">{barrier.type}</div>
+                          <div className="text-sm text-gray-600">{barrier.location}</div>
+                          <div className="text-xs text-gray-500 mt-1">{barrier.specification}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Pedestrian Detours */}
+                  {comprehensiveData.pedestrian_control_measures.pedestrian_detours?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2">🔀 Pedestrian Detour Routes</h4>
+                      {comprehensiveData.pedestrian_control_measures.pedestrian_detours.map((detour, idx) => (
+                        <div key={idx} className="bg-blue-50 p-3 rounded mb-2">
+                          <div className="font-medium">{detour.type}</div>
+                          <div className="text-sm mt-1">{detour.description}</div>
+                          {detour.requirements && (
+                            <ul className="text-xs text-gray-600 mt-2 ml-4 space-y-1">
+                              {detour.requirements.map((req, ridx) => (
+                                <li key={ridx}>• {req}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Safety Measures */}
+                  {comprehensiveData.pedestrian_control_measures.safety_measures?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2">✅ Safety Requirements</h4>
+                      <div className="space-y-2">
+                        {comprehensiveData.pedestrian_control_measures.safety_measures.map((measure, idx) => (
+                          <div key={idx} className="bg-green-50 p-2 rounded text-sm">
+                            <strong>{measure.measure}:</strong> {measure.requirement}
+                            <div className="text-xs text-gray-500">{measure.standard || measure.specification}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Access Requirements */}
+                  {comprehensiveData.pedestrian_control_measures.access_requirements?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2">♿ DDA Access Requirements</h4>
+                      {comprehensiveData.pedestrian_control_measures.access_requirements.map((access, idx) => (
+                        <div key={idx} className="bg-indigo-50 p-3 rounded mb-2">
+                          <div className="font-medium">{access.facility || access.compliance}</div>
+                          {access.requirement && <div className="text-sm text-gray-600 mt-1">{access.requirement}</div>}
+                          {access.requirements && (
+                            <ul className="text-xs text-gray-600 mt-2 ml-4 space-y-1">
+                              {access.requirements.map((req, ridx) => (
+                                <li key={ridx}>• {req}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {comprehensiveData.public_facilities && (
+              <Card className="border-l-4 border-l-red-500">
+                <CardHeader>
+                  <CardTitle className="text-red-700">🏫 Public Facilities Detected</CardTitle>
+                  <CardDescription>Facilities requiring special consideration</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {comprehensiveData.public_facilities.schools?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold text-orange-600">Schools Nearby</h4>
+                      {comprehensiveData.public_facilities.schools.map((school, idx) => (
+                        <div key={idx} className="bg-orange-50 p-2 rounded mt-2">
+                          <div className="font-medium">{school.name}</div>
+                          <div className="text-sm text-gray-600">Peak times: {school.peak_times}</div>
+                          <div className="text-xs text-orange-700">Notification required: Yes</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {comprehensiveData.public_facilities.hospitals?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold text-red-600">Hospitals Nearby</h4>
+                      {comprehensiveData.public_facilities.hospitals.map((hospital, idx) => (
+                        <div key={idx} className="bg-red-50 p-2 rounded mt-2">
+                          <div className="font-medium">{hospital.name}</div>
+                          <div className="text-sm text-red-700">⚠️ Emergency access MUST be maintained 24/7</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {comprehensiveData.public_facilities.special_zones?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold text-purple-600">Special Zones</h4>
+                      {comprehensiveData.public_facilities.special_zones.map((zone, idx) => (
+                        <div key={idx} className="bg-purple-50 p-2 rounded mt-2">
+                          <div className="font-medium">{zone.type}</div>
+                          <div className="text-sm text-gray-600">{zone.restrictions}</div>
+                          <div className="text-xs text-purple-700">{zone.additional_signage}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {comprehensiveData.governing_body_details && (
+              <Card className="border-l-4 border-l-gray-500">
+                <CardHeader>
+                  <CardTitle>📞 Road Authority Contacts</CardTitle>
+                  <CardDescription>Governing body for approval & notifications</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2 text-sm">
+                    <div><strong>Authority:</strong> {comprehensiveData.governing_body_details.authority_name}</div>
+                    <div><strong>Phone:</strong> {comprehensiveData.governing_body_details.main_phone}</div>
+                    <div><strong>Email:</strong> {comprehensiveData.governing_body_details.email}</div>
+                    <div><strong>Website:</strong> {comprehensiveData.governing_body_details.website}</div>
+                    <div><strong>Emergency:</strong> {comprehensiveData.governing_body_details.emergency_phone}</div>
+                    <div className="text-xs text-gray-500 pt-2">{comprehensiveData.governing_body_details.office_hours}</div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+
           {/* Right Panel - Map and Devices */}
           <div className="space-y-6">
             {/* Map */}
