@@ -821,7 +821,7 @@ export default function PlanEditor({ user, onLogout }) {
       const siteData = siteResponse.data;
       
       // Fetch comprehensive auto-population (NEW - includes pedestrian control, signage plan, side streets)
-      let comprehensiveData = null;
+      let comprehensiveDataResponse = null;
       try {
         const comprehensiveResponse = await axios.get(`${API}/comprehensive-auto-populate`, {
           params: {
@@ -832,7 +832,18 @@ export default function PlanEditor({ user, onLogout }) {
             work_type: formData.work_details.work_type
           }
         });
-        comprehensiveData = comprehensiveResponse.data;
+        comprehensiveDataResponse = comprehensiveResponse.data;
+        
+        // Store comprehensive data in state for UI display
+        setComprehensiveData({
+          side_streets: comprehensiveDataResponse.side_streets || [],
+          intersections: comprehensiveDataResponse.intersections || [],
+          signage_plan: comprehensiveDataResponse.signage_plan || null,
+          pedestrian_control_measures: comprehensiveDataResponse.pedestrian_control_measures || null,
+          public_facilities: comprehensiveDataResponse.public_facilities || null,
+          governing_body_details: comprehensiveDataResponse.governing_body_details || null,
+          staging_recommendations: comprehensiveDataResponse.staging_recommendations || null
+        });
       } catch (error) {
         console.log('Comprehensive auto-populate not available, continuing with basic data');
       }
@@ -876,7 +887,7 @@ export default function PlanEditor({ user, onLogout }) {
         control_measures: {
           ...prev.control_measures,
           // Auto-check pedestrian_control if pedestrian facilities detected or comprehensive data suggests it
-          pedestrian_control: comprehensiveData?.pedestrian_control_measures?.barriers_required?.length > 0 ||
+          pedestrian_control: comprehensiveDataResponse?.pedestrian_control_measures?.barriers_required?.length > 0 ||
                             siteData.pedestrian_facilities?.includes('sidewalk') ||
                             siteData.pedestrian_facilities?.includes('footpath') ||
                             false
@@ -888,8 +899,11 @@ export default function PlanEditor({ user, onLogout }) {
       if (trafficData.data_source.includes('SA Government')) {
         message = '✅ Complete assessment: SA Gov traffic data + OSM site facilities!';
       }
-      if (comprehensiveData?.pedestrian_control_measures?.barriers_required?.length > 0) {
+      if (comprehensiveDataResponse?.pedestrian_control_measures?.barriers_required?.length > 0) {
         message += ' Pedestrian control measures detected!';
+      }
+      if (comprehensiveDataResponse?.side_streets?.length > 0) {
+        message += ` ${comprehensiveDataResponse.side_streets.length} side streets detected!`;
       }
       toast.success(message);
       
