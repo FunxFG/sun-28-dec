@@ -1901,8 +1901,21 @@ export default function PlanEditor({ user, onLogout }) {
             {comprehensiveData.pedestrian_control_measures && (
               <Card className="border-l-4 border-l-purple-500">
                 <CardHeader>
-                  <CardTitle className="text-purple-700">🚶 Pedestrian Control Measures</CardTitle>
-                  <CardDescription>DDA compliant pedestrian safety requirements</CardDescription>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle className="text-purple-700">🚶 Pedestrian Control Measures</CardTitle>
+                      <CardDescription>DDA compliant pedestrian safety requirements</CardDescription>
+                    </div>
+                    <Button 
+                      onClick={exportPedestrianControlsText}
+                      size="sm"
+                      variant="outline"
+                      className="flex items-center gap-2"
+                    >
+                      <Download className="h-4 w-4" />
+                      TXT
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* Barriers */}
