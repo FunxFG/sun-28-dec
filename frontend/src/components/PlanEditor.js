@@ -1771,6 +1771,40 @@ export default function PlanEditor({ user, onLogout }) {
           </div>
 
             {/* Comprehensive Auto-Population Data Display */}
+            {(comprehensiveData.side_streets.length > 0 || 
+              comprehensiveData.signage_plan || 
+              comprehensiveData.pedestrian_control_measures || 
+              comprehensiveData.public_facilities) && (
+              <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-300">
+                <CardHeader>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <CardTitle className="text-blue-900">📊 Comprehensive Auto-Population Data</CardTitle>
+                      <CardDescription>Download all auto-generated compliance data</CardDescription>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button 
+                        onClick={exportComprehensiveReport}
+                        variant="default"
+                        className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
+                      >
+                        <Download className="h-4 w-4" />
+                        Complete Report
+                      </Button>
+                      <Button 
+                        onClick={exportAllDataJSON}
+                        variant="outline"
+                        className="flex items-center gap-2"
+                      >
+                        <FileText className="h-4 w-4" />
+                        JSON
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+              </Card>
+            )}
+
             {comprehensiveData.side_streets.length > 0 && (
               <Card className="border-l-4 border-l-blue-500">
                 <CardHeader>
