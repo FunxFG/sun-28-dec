@@ -1811,8 +1811,21 @@ export default function PlanEditor({ user, onLogout }) {
             {comprehensiveData.signage_plan && (
               <Card className="border-l-4 border-l-green-500">
                 <CardHeader>
-                  <CardTitle className="text-green-700">🚦 Signage Plan (AS 1742.3 Compliant)</CardTitle>
-                  <CardDescription>Bilateral signage & side street requirements</CardDescription>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle className="text-green-700">🚦 Signage Plan (AS 1742.3 Compliant)</CardTitle>
+                      <CardDescription>Bilateral signage & side street requirements</CardDescription>
+                    </div>
+                    <Button 
+                      onClick={exportSignagePlanText}
+                      size="sm"
+                      variant="outline"
+                      className="flex items-center gap-2"
+                    >
+                      <Download className="h-4 w-4" />
+                      TXT
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* Distances */}
