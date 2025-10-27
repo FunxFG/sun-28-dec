@@ -1774,8 +1774,21 @@ export default function PlanEditor({ user, onLogout }) {
             {comprehensiveData.side_streets.length > 0 && (
               <Card className="border-l-4 border-l-blue-500">
                 <CardHeader>
-                  <CardTitle className="text-blue-700">📍 Side Streets Detected</CardTitle>
-                  <CardDescription>Streets requiring signage within workzone</CardDescription>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle className="text-blue-700">📍 Side Streets Detected</CardTitle>
+                      <CardDescription>Streets requiring signage within workzone</CardDescription>
+                    </div>
+                    <Button 
+                      onClick={exportSideStreetsCSV}
+                      size="sm"
+                      variant="outline"
+                      className="flex items-center gap-2"
+                    >
+                      <Download className="h-4 w-4" />
+                      CSV
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
@@ -1786,6 +1799,11 @@ export default function PlanEditor({ user, onLogout }) {
                       </div>
                     ))}
                   </div>
+                  {comprehensiveData.side_streets.length > 10 && (
+                    <p className="text-xs text-gray-500 mt-2">
+                      Showing 10 of {comprehensiveData.side_streets.length} streets. Download CSV for complete list.
+                    </p>
+                  )}
                 </CardContent>
               </Card>
             )}
