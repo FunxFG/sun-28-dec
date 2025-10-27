@@ -950,6 +950,305 @@ export default function PlanEditor({ user, onLogout }) {
     }
   };
 
+
+  // Export Functions for Comprehensive Data
+  const exportSideStreetsCSV = () => {
+    if (!comprehensiveData.side_streets || comprehensiveData.side_streets.length === 0) {
+      toast.error('No side streets data to export');
+      return;
+    }
+
+    let csv = 'Street Name,Type,Reference\n';
+    comprehensiveData.side_streets.forEach(street => {
+      csv += `"${street.name}","${street.type}","${street.ref || 'N/A'}"\n`;
+    });
+
+    downloadCSV(csv, `side_streets_${formData.plan_name || 'plan'}.csv`);
+    toast.success('Side streets exported to CSV');
+  };
+
+  const exportSignagePlanText = () => {
+    if (!comprehensiveData.signage_plan) {
+      toast.error('No signage plan data to export');
+      return;
+    }
+
+    const plan = comprehensiveData.signage_plan;
+    let text = '═══════════════════════════════════════════════════\n';
+    text += '   AUSTROADS TMP SIGNAGE PLAN (AS 1742.3)\n';
+    text += '═══════════════════════════════════════════════════\n\n';
+
+    // Distances
+    if (plan.distances_documented) {
+      text += '📏 DOCUMENTED DISTANCES\n';
+      text += '─────────────────────────────────────────────────\n';
+      text += `Speed Limit: ${plan.distances_documented.speed_limit}\n`;
+      text += `Advance Warning Distance: ${plan.distances_documented.advance_warning_distance}\n`;
+      text += `Taper Length: ${plan.distances_documented.taper_length}\n`;
+      text += `Buffer Zone: ${plan.distances_documented.buffer_zone}\n`;
+      text += `Standard: ${plan.distances_documented.standard_reference}\n\n`;
+    }
+
+    // Advance Warning Signs
+    if (plan.advance_warning_signs && plan.advance_warning_signs.length > 0) {
+      text += '⚠️  ADVANCE WARNING SIGNS\n';
+      text += '─────────────────────────────────────────────────\n';
+      plan.advance_warning_signs.forEach((sign, idx) => {
+        text += `${idx + 1}. ${sign.sign_code}: ${sign.name}\n`;
+        text += `   Position: ${sign.position}\n`;
+        text += `   Placement: ${sign.placement}\n`;
+        text += `   Quantity: ${sign.quantity}\n`;
+        text += `   Mounting Height: ${sign.mounting_height || 'N/A'}\n\n`;
+      });
+    }
+
+    // Side Street Signs
+    if (plan.side_street_signs && plan.side_street_signs.length > 0) {
+      text += '🔄 SIDE STREET SIGNS (DOUBLE GATING)\n';
+      text += '─────────────────────────────────────────────────\n';
+      plan.side_street_signs.forEach((sideStreet, idx) => {
+        text += `${idx + 1}. ${sideStreet.side_street_name || sideStreet.intersection_name}\n`;
+        text += `   ${sideStreet.requirement}\n`;
+        if (sideStreet.signs) {
+          sideStreet.signs.forEach(sign => {
+            text += `   - ${sign.sign_code}: ${sign.name}\n`;
+            text += `     Placement: ${sign.placement}\n`;
+          });
+        }
+        text += '\n';
+      });
+    }
+
+    // Bilateral Requirements
+    if (plan.bilateral_requirements) {
+      text += '↔️  BILATERAL SIGNAGE REQUIREMENTS\n';
+      text += '─────────────────────────────────────────────────\n';
+      text += `Applies to: ${plan.bilateral_requirements.applies_to}\n`;
+      text += `Standard: ${plan.bilateral_requirements.standard}\n`;
+      text += `Note: ${plan.bilateral_requirements.compliance_note}\n\n`;
+    }
+
+    downloadText(text, `signage_plan_${formData.plan_name || 'plan'}.txt`);
+    toast.success('Signage plan exported');
+  };
+
+  const exportPedestrianControlsText = () => {
+    if (!comprehensiveData.pedestrian_control_measures) {
+      toast.error('No pedestrian control data to export');
+      return;
+    }
+
+    const ped = comprehensiveData.pedestrian_control_measures;
+    let text = '═══════════════════════════════════════════════════\n';
+    text += '   PEDESTRIAN CONTROL MEASURES\n';
+    text += '   (DDA Compliant - AS 1742.3)\n';
+    text += '═══════════════════════════════════════════════════\n\n';
+
+    // Barriers
+    if (ped.barriers_required && ped.barriers_required.length > 0) {
+      text += '🚧 BARRIERS REQUIRED\n';
+      text += '─────────────────────────────────────────────────\n';
+      ped.barriers_required.forEach((barrier, idx) => {
+        text += `${idx + 1}. ${barrier.type}\n`;
+        text += `   Location: ${barrier.location}\n`;
+        text += `   Specification: ${barrier.specification}\n\n`;
+      });
+    }
+
+    // Pedestrian Detours
+    if (ped.pedestrian_detours && ped.pedestrian_detours.length > 0) {
+      text += '🔀 PEDESTRIAN DETOUR ROUTES\n';
+      text += '─────────────────────────────────────────────────\n';
+      ped.pedestrian_detours.forEach((detour, idx) => {
+        text += `${idx + 1}. ${detour.type}\n`;
+        text += `   ${detour.description}\n`;
+        if (detour.requirements) {
+          text += '   Requirements:\n';
+          detour.requirements.forEach(req => {
+            text += `   - ${req}\n`;
+          });
+        }
+        text += '\n';
+      });
+    }
+
+    // Safety Measures
+    if (ped.safety_measures && ped.safety_measures.length > 0) {
+      text += '✅ SAFETY REQUIREMENTS\n';
+      text += '─────────────────────────────────────────────────\n';
+      ped.safety_measures.forEach((measure, idx) => {
+        text += `${idx + 1}. ${measure.measure}\n`;
+        text += `   Requirement: ${measure.requirement}\n`;
+        text += `   Standard: ${measure.standard || measure.specification}\n\n`;
+      });
+    }
+
+    // DDA Compliance
+    if (ped.access_requirements && ped.access_requirements.length > 0) {
+      text += '♿ DDA ACCESS REQUIREMENTS\n';
+      text += '─────────────────────────────────────────────────\n';
+      ped.access_requirements.forEach((access, idx) => {
+        text += `${idx + 1}. ${access.facility || access.compliance}\n`;
+        if (access.requirement) text += `   ${access.requirement}\n`;
+        if (access.requirements) {
+          access.requirements.forEach(req => {
+            text += `   - ${req}\n`;
+          });
+        }
+        text += '\n';
+      });
+    }
+
+    downloadText(text, `pedestrian_controls_${formData.plan_name || 'plan'}.txt`);
+    toast.success('Pedestrian controls exported');
+  };
+
+  const exportPublicFacilitiesCSV = () => {
+    if (!comprehensiveData.public_facilities) {
+      toast.error('No public facilities data to export');
+      return;
+    }
+
+    const facilities = comprehensiveData.public_facilities;
+    let csv = 'Facility Type,Name,Special Requirements,Peak Times\n';
+
+    if (facilities.schools && facilities.schools.length > 0) {
+      facilities.schools.forEach(school => {
+        csv += `"School","${school.name}","Notification required","${school.peak_times}"\n`;
+      });
+    }
+
+    if (facilities.hospitals && facilities.hospitals.length > 0) {
+      facilities.hospitals.forEach(hospital => {
+        csv += `"Hospital","${hospital.name}","24/7 Emergency access required","N/A"\n`;
+      });
+    }
+
+    downloadCSV(csv, `public_facilities_${formData.plan_name || 'plan'}.csv`);
+    toast.success('Public facilities exported to CSV');
+  };
+
+  const exportComprehensiveReport = () => {
+    if (!comprehensiveData.signage_plan && !comprehensiveData.pedestrian_control_measures && 
+        comprehensiveData.side_streets.length === 0) {
+      toast.error('No comprehensive data to export');
+      return;
+    }
+
+    let report = '═══════════════════════════════════════════════════════════\n';
+    report += '        COMPREHENSIVE TMP AUTO-POPULATION REPORT\n';
+    report += '═══════════════════════════════════════════════════════════\n\n';
+    report += `Plan Name: ${formData.plan_name || 'Untitled Plan'}\n`;
+    report += `Generated: ${new Date().toLocaleString()}\n`;
+    report += `Location: ${formData.work_details.start_address} to ${formData.work_details.end_address}\n`;
+    report += `Work Type: ${formData.work_details.work_type || 'N/A'}\n\n`;
+
+    // Side Streets
+    if (comprehensiveData.side_streets.length > 0) {
+      report += '\n📍 SIDE STREETS DETECTED\n';
+      report += '───────────────────────────────────────────────────────\n';
+      comprehensiveData.side_streets.forEach((street, idx) => {
+        report += `${idx + 1}. ${street.name} (${street.type})\n`;
+      });
+    }
+
+    // Signage Plan
+    if (comprehensiveData.signage_plan) {
+      const plan = comprehensiveData.signage_plan;
+      report += '\n\n🚦 SIGNAGE PLAN (AS 1742.3 COMPLIANT)\n';
+      report += '───────────────────────────────────────────────────────\n';
+      
+      if (plan.distances_documented) {
+        report += '\nDocumented Distances:\n';
+        report += `- Speed Limit: ${plan.distances_documented.speed_limit}\n`;
+        report += `- Advance Warning: ${plan.distances_documented.advance_warning_distance}\n`;
+        report += `- Taper Length: ${plan.distances_documented.taper_length}\n`;
+        report += `- Buffer Zone: ${plan.distances_documented.buffer_zone}\n`;
+      }
+
+      if (plan.advance_warning_signs && plan.advance_warning_signs.length > 0) {
+        report += '\nAdvance Warning Signs:\n';
+        plan.advance_warning_signs.forEach(sign => {
+          report += `- ${sign.sign_code}: ${sign.name} at ${sign.position} (${sign.placement})\n`;
+        });
+      }
+
+      if (plan.bilateral_requirements) {
+        report += '\nBilateral Signage: ' + plan.bilateral_requirements.standard + '\n';
+      }
+    }
+
+    // Pedestrian Controls
+    if (comprehensiveData.pedestrian_control_measures) {
+      const ped = comprehensiveData.pedestrian_control_measures;
+      report += '\n\n🚶 PEDESTRIAN CONTROL MEASURES\n';
+      report += '───────────────────────────────────────────────────────\n';
+      
+      if (ped.barriers_required && ped.barriers_required.length > 0) {
+        report += '\nBarriers Required:\n';
+        ped.barriers_required.forEach(barrier => {
+          report += `- ${barrier.type} at ${barrier.location}\n`;
+        });
+      }
+
+      if (ped.pedestrian_detours && ped.pedestrian_detours.length > 0) {
+        report += '\nPedestrian Detours: ' + ped.pedestrian_detours.length + ' route(s) with DDA compliance\n';
+      }
+    }
+
+    // Public Facilities
+    if (comprehensiveData.public_facilities) {
+      const facilities = comprehensiveData.public_facilities;
+      report += '\n\n🏫 PUBLIC FACILITIES\n';
+      report += '───────────────────────────────────────────────────────\n';
+      
+      if (facilities.schools && facilities.schools.length > 0) {
+        report += `\nSchools: ${facilities.schools.length}\n`;
+        facilities.schools.forEach(school => {
+          report += `- ${school.name} (Peak: ${school.peak_times})\n`;
+        });
+      }
+
+      if (facilities.hospitals && facilities.hospitals.length > 0) {
+        report += `\nHospitals: ${facilities.hospitals.length}\n`;
+        facilities.hospitals.forEach(hospital => {
+          report += `- ${hospital.name} (24/7 emergency access required)\n`;
+        });
+      }
+    }
+
+    // Road Authority
+    if (comprehensiveData.governing_body_details) {
+      const authority = comprehensiveData.governing_body_details;
+      report += '\n\n📞 ROAD AUTHORITY CONTACTS\n';
+      report += '───────────────────────────────────────────────────────\n';
+      report += `Authority: ${authority.authority_name}\n`;
+      report += `Phone: ${authority.main_phone}\n`;
+      report += `Email: ${authority.email}\n`;
+      report += `Emergency: ${authority.emergency_phone}\n`;
+    }
+
+    report += '\n\n═══════════════════════════════════════════════════════════\n';
+    report += '              END OF COMPREHENSIVE REPORT\n';
+    report += '═══════════════════════════════════════════════════════════\n';
+
+    downloadText(report, `comprehensive_report_${formData.plan_name || 'plan'}.txt`);
+    toast.success('✅ Comprehensive report exported successfully!');
+  };
+
+  const exportAllDataJSON = () => {
+    const exportData = {
+      plan_name: formData.plan_name,
+      generated: new Date().toISOString(),
+      work_details: formData.work_details,
+      comprehensive_data: comprehensiveData
+    };
+
+    downloadJSON(exportData, `comprehensive_data_${formData.plan_name || 'plan'}.json`);
+    toast.success('All data exported to JSON');
+  };
+
+
   const handleSave = async () => {
     setSaving(true);
     try {
