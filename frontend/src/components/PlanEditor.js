@@ -1993,8 +1993,21 @@ export default function PlanEditor({ user, onLogout }) {
             {comprehensiveData.public_facilities && (
               <Card className="border-l-4 border-l-red-500">
                 <CardHeader>
-                  <CardTitle className="text-red-700">🏫 Public Facilities Detected</CardTitle>
-                  <CardDescription>Facilities requiring special consideration</CardDescription>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle className="text-red-700">🏫 Public Facilities Detected</CardTitle>
+                      <CardDescription>Facilities requiring special consideration</CardDescription>
+                    </div>
+                    <Button 
+                      onClick={exportPublicFacilitiesCSV}
+                      size="sm"
+                      variant="outline"
+                      className="flex items-center gap-2"
+                    >
+                      <Download className="h-4 w-4" />
+                      CSV
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {comprehensiveData.public_facilities.schools?.length > 0 && (
