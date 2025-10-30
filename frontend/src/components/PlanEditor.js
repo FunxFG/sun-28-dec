@@ -130,7 +130,10 @@ export default function PlanEditor({ user, onLogout }) {
     pedestrian_control_measures: null,
     public_facilities: null,
     governing_body_details: null,
-    staging_recommendations: null
+    staging_recommendations: null,
+    crash_statistics: null,  // NEW
+    historical_traffic: null,  // NEW
+    location_history: null  // NEW
   });
 
   const [formData, setFormData] = useState({
