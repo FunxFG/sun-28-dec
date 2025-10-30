@@ -439,7 +439,10 @@ async def get_comprehensive_auto_population(lat: float, lng: float, start_addres
         'environmental_constraints': {},
         'staging_recommendations': {},
         'public_facilities': {},
-        'signage_plan': {}  # NEW: Detailed signage plan with distances
+        'signage_plan': {},  # NEW: Detailed signage plan with distances
+        'crash_statistics': {},  # NEW: Accident data
+        'historical_traffic': {},  # NEW: Historical traffic patterns
+        'location_history': {}  # NEW: Location demographics and history
     }
     
     try:
