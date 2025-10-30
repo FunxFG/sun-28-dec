@@ -488,6 +488,15 @@ async def get_comprehensive_auto_population(lat: float, lng: float, start_addres
         if work_type and 'closure' in work_type.lower():
             result['detour_routes'] = await calculate_detour_routes(lat, lng, start_address)
         
+        # 13. CRASH STATISTICS (NEW - Government accident databases)
+        result['crash_statistics'] = await fetch_crash_statistics(lat, lng, start_address)
+        
+        # 14. HISTORICAL TRAFFIC DATA (NEW - 5-year trends)
+        result['historical_traffic'] = await fetch_historical_traffic_data(lat, lng, start_address)
+        
+        # 15. LOCATION HISTORY (NEW - Demographics, land use, previous works)
+        result['location_history'] = await fetch_location_history(lat, lng, start_address)
+        
         return result
         
     except Exception as e:
