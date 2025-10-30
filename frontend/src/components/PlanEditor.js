@@ -1446,21 +1446,21 @@ export default function PlanEditor({ user, onLogout }) {
                 <Save className="w-4 h-4 mr-2" />
                 {saving ? 'Saving...' : 'Save'}
               </Button>
-              {planId && (
-                <Button
-                  variant="outline"
-                  onClick={handleDownloadPdf}
-                  className="border-slate-300 text-slate-700 hover:bg-slate-50"
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  PDF
-                </Button>
-              )}
-              {formData.devices.length > 0 && (
+              <Button
+                variant="outline"
+                onClick={handleDownloadPdf}
+                className="border-slate-300 text-slate-700 hover:bg-slate-50"
+                title={planId ? "Download from server" : "Generate PDF from current form"}
+              >
+                <Download className="w-4 h-4 mr-2" />
+                PDF
+              </Button>
+              {formData.devices && formData.devices.length > 0 && (
                 <Button
                   variant="outline"
                   onClick={handleDownloadProfessionalTGS}
                   className="border-blue-300 text-blue-700 hover:bg-blue-50"
+                  title={`Download TGS with ${formData.devices.length} devices`}
                 >
                   <FileImage className="w-4 h-4 mr-2" />
                   TGS Drawing
