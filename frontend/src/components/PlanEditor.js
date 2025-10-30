@@ -1340,21 +1340,24 @@ export default function PlanEditor({ user, onLogout }) {
   };
 
   const handleDownloadProfessionalTGS = async () => {
-    if (formData.devices.length === 0) {
-      toast.error('Please place devices on the map first');
+    if (!formData.devices || formData.devices.length === 0) {
+      toast.error('Please place devices on the map first using "Auto-Place Devices" button');
       return;
     }
+
+    toast.info('Generating professional TGS drawing with device images...');
 
     try {
       const tgsGenerator = new ProfessionalTGSGenerator();
       
       // Prepare road data
       const roadData = {
-        workzone_size: formData.road_occupancy?.workzone_length || 0,
-        speed_limit: formData.work_details?.speed_limit || 60,
-        road_classification: formData.work_details?.road_classification || 'Urban Road',
-        lanes: formData.work_details?.lanes || 2,
-        governing_body: formData.work_details?.governing_body || 'Local Council'
+        workzone_size: formData.road_data?.workzone_size || formData.road_occupancy?.workzone_length || 0,
+        speed_limit: formData.road_data?.speed_limit || 60,
+        road_classification: formData.road_data?.road_classification || 'Urban Road',
+        lanes: formData.road_data?.lanes || 2,
+        governing_body: formData.road_data?.governing_body || 'Local Council',
+        road_name: formData.road_data?.road_name || formData.work_details?.start_address || 'Road'
       };
 
       // Prepare company info
@@ -1365,23 +1368,37 @@ export default function PlanEditor({ user, onLogout }) {
         abn: formData.company_details?.abn || ''
       };
 
-      // Generate professional TGS PDF
-      const pdfBlob = tgsGenerator.generateProfessionalPDF(formData, formData.devices, roadData, companyInfo);
+      // Prepare work details
+      const workDetails = {
+        work_type: formData.work_details?.work_type || 'Construction',
+        start_date: formData.work_details?.start_date || new Date().toISOString().split('T')[0],
+        end_date: formData.work_details?.end_date || new Date().toISOString().split('T')[0],
+        start_address: formData.work_details?.start_address || '',
+        end_address: formData.work_details?.end_address || ''
+      };
+
+      // Generate professional TGS PDF with device images
+      const pdfBlob = tgsGenerator.generateProfessionalPDF(
+        {...formData, work_details: workDetails}, 
+        formData.devices, 
+        roadData, 
+        companyInfo
+      );
       
       // Download the PDF
       const url = window.URL.createObjectURL(pdfBlob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `${formData.plan_name.replace(/\s+/g, '_')}_TGS_Drawing.pdf`);
+      link.setAttribute('download', `${(formData.plan_name || 'TGS').replace(/\s+/g, '_')}_TGS_Drawing.pdf`);
       document.body.appendChild(link);
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
       
-      toast.success('Professional TGS Drawing downloaded successfully');
+      toast.success(`✅ Professional TGS Drawing downloaded with ${formData.devices.length} devices!`);
     } catch (error) {
       console.error('Error generating TGS PDF:', error);
-      toast.error('Failed to generate TGS Drawing');
+      toast.error(`Failed to generate TGS Drawing: ${error.message}`);
     }
   };
 
