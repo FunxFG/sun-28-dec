@@ -2166,6 +2166,280 @@ export default function PlanEditor({ user, onLogout }) {
             )}
 
 
+            {comprehensiveData.crash_statistics && comprehensiveData.crash_statistics.total_crashes_5yr > 0 && (
+              <Card className="border-l-4 border-l-red-600">
+                <CardHeader>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle className="text-red-700">⚠️ Crash Statistics (5-Year History)</CardTitle>
+                      <CardDescription>Government accident data within 500m radius</CardDescription>
+                    </div>
+                    {comprehensiveData.crash_statistics.blackspot_status && (
+                      <span className="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold">
+                        BLACKSPOT
+                      </span>
+                    )}
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Summary Stats */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-red-50 p-3 rounded">
+                      <div className="text-2xl font-bold text-red-700">{comprehensiveData.crash_statistics.total_crashes_5yr}</div>
+                      <div className="text-xs text-gray-600">Total Crashes</div>
+                    </div>
+                    <div className="bg-orange-50 p-3 rounded">
+                      <div className="text-2xl font-bold text-orange-700">{comprehensiveData.crash_statistics.fatal_crashes}</div>
+                      <div className="text-xs text-gray-600">Fatal</div>
+                    </div>
+                    <div className="bg-yellow-50 p-3 rounded">
+                      <div className="text-2xl font-bold text-yellow-700">{comprehensiveData.crash_statistics.serious_injury_crashes}</div>
+                      <div className="text-xs text-gray-600">Serious Injury</div>
+                    </div>
+                    <div className="bg-blue-50 p-3 rounded">
+                      <div className="text-2xl font-bold text-blue-700">{comprehensiveData.crash_statistics.minor_injury_crashes}</div>
+                      <div className="text-xs text-gray-600">Minor Injury</div>
+                    </div>
+                  </div>
+
+                  {/* Recent Crashes */}
+                  {comprehensiveData.crash_statistics.recent_crashes && comprehensiveData.crash_statistics.recent_crashes.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">Recent Crashes</h4>
+                      <div className="space-y-2">
+                        {comprehensiveData.crash_statistics.recent_crashes.map((crash, idx) => (
+                          <div key={idx} className="bg-red-50 p-2 rounded text-xs border-l-2 border-red-400">
+                            <div className="font-medium">{crash.date} - {crash.severity}</div>
+                            <div className="text-gray-600">{crash.type} ({crash.distance})</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* High Risk Periods */}
+                  {comprehensiveData.crash_statistics.high_risk_periods && comprehensiveData.crash_statistics.high_risk_periods.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">⏰ High Risk Periods</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {comprehensiveData.crash_statistics.high_risk_periods.map((period, idx) => (
+                          <span key={idx} className="bg-orange-100 text-orange-800 px-2 py-1 rounded text-xs">
+                            {period}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Common Crash Types */}
+                  {comprehensiveData.crash_statistics.common_crash_types && comprehensiveData.crash_statistics.common_crash_types.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">📊 Common Crash Types</h4>
+                      <ul className="text-xs space-y-1 ml-4">
+                        {comprehensiveData.crash_statistics.common_crash_types.map((type, idx) => (
+                          <li key={idx} className="text-gray-700">• {type}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Safety Considerations */}
+                  <div className="bg-yellow-50 border border-yellow-200 p-3 rounded">
+                    <div className="text-xs font-semibold text-yellow-900 mb-1">⚠️ Safety Considerations for TMP</div>
+                    <div className="text-xs text-gray-700">
+                      High crash area - Enhanced signage, traffic control, and monitoring recommended. 
+                      Consider police presence during peak hours.
+                    </div>
+                  </div>
+
+                  <div className="text-xs text-gray-500 italic">
+                    Data source: {comprehensiveData.crash_statistics.data_source}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {comprehensiveData.historical_traffic && (
+              <Card className="border-l-4 border-l-indigo-500">
+                <CardHeader>
+                  <CardTitle className="text-indigo-700">📈 Historical Traffic Data</CardTitle>
+                  <CardDescription>5-year traffic volume trends and patterns</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Traffic Growth */}
+                  {comprehensiveData.historical_traffic.traffic_growth_rate !== 0 && (
+                    <div className="bg-indigo-50 p-4 rounded-lg">
+                      <div className="text-center">
+                        <div className="text-3xl font-bold text-indigo-700">
+                          {comprehensiveData.historical_traffic.traffic_growth_rate > 0 ? '+' : ''}
+                          {comprehensiveData.historical_traffic.traffic_growth_rate}%
+                        </div>
+                        <div className="text-sm text-gray-600">Annual Traffic Growth Rate</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* AADT History */}
+                  {comprehensiveData.historical_traffic.aadt_history && comprehensiveData.historical_traffic.aadt_history.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">📊 AADT History</h4>
+                      <div className="space-y-1">
+                        {comprehensiveData.historical_traffic.aadt_history.map((record, idx) => (
+                          <div key={idx} className="flex justify-between items-center bg-gray-50 p-2 rounded text-xs">
+                            <span className="font-medium">{record.year}</span>
+                            <span className="text-gray-700">{record.aadt.toLocaleString()} vehicles/day</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Peak Hour Trends */}
+                  {comprehensiveData.historical_traffic.peak_hour_trends && comprehensiveData.historical_traffic.peak_hour_trends.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">⏰ Peak Hour Patterns</h4>
+                      <div className="space-y-2">
+                        {comprehensiveData.historical_traffic.peak_hour_trends.map((trend, idx) => (
+                          <div key={idx} className="bg-blue-50 p-2 rounded text-xs">
+                            <div className="font-medium">{trend.period}</div>
+                            <div className="text-gray-600">{trend.volume_increase || trend.volume_decrease}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Seasonal Variations */}
+                  {comprehensiveData.historical_traffic.seasonal_variations && comprehensiveData.historical_traffic.seasonal_variations.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">📅 Seasonal Variations</h4>
+                      <div className="space-y-1">
+                        {comprehensiveData.historical_traffic.seasonal_variations.map((season, idx) => (
+                          <div key={idx} className="flex justify-between text-xs bg-gray-50 p-2 rounded">
+                            <span className="font-medium">{season.season}</span>
+                            <span className="text-gray-600">{season.variation}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="text-xs text-gray-500 italic">
+                    {comprehensiveData.historical_traffic.reliability}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {comprehensiveData.location_history && (
+              <Card className="border-l-4 border-l-green-600">
+                <CardHeader>
+                  <CardTitle className="text-green-700">🏘️ Location History & Context</CardTitle>
+                  <CardDescription>Demographics, land use, and area characteristics</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Area Type */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-green-50 p-3 rounded">
+                      <div className="text-sm font-semibold text-green-700">Area Type</div>
+                      <div className="text-lg font-bold">{comprehensiveData.location_history.area_type}</div>
+                    </div>
+                    <div className="bg-blue-50 p-3 rounded">
+                      <div className="text-sm font-semibold text-blue-700">Population Density</div>
+                      <div className="text-lg font-bold">{comprehensiveData.location_history.population_density}</div>
+                    </div>
+                  </div>
+
+                  {/* Sensitive Areas */}
+                  {(comprehensiveData.location_history.school_zones || 
+                    comprehensiveData.location_history.hospital_zones || 
+                    comprehensiveData.location_history.noise_sensitive_areas) && (
+                    <div className="bg-yellow-50 border border-yellow-200 p-3 rounded">
+                      <div className="font-semibold text-yellow-900 mb-2 text-sm">⚠️ Sensitive Areas Detected</div>
+                      <div className="space-y-1 text-xs">
+                        {comprehensiveData.location_history.school_zones && (
+                          <div className="flex items-center gap-2">
+                            <span className="text-orange-600">🏫</span>
+                            <span>School Zone - Peak hour restrictions apply</span>
+                          </div>
+                        )}
+                        {comprehensiveData.location_history.hospital_zones && (
+                          <div className="flex items-center gap-2">
+                            <span className="text-red-600">🏥</span>
+                            <span>Hospital Zone - Emergency access critical</span>
+                          </div>
+                        )}
+                        {comprehensiveData.location_history.noise_sensitive_areas && (
+                          <div className="flex items-center gap-2">
+                            <span className="text-blue-600">🔇</span>
+                            <span>Noise Sensitive - Restrictions may apply</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Land Use */}
+                  {comprehensiveData.location_history.land_use && comprehensiveData.location_history.land_use.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">🏗️ Land Use</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {comprehensiveData.location_history.land_use.map((use, idx) => (
+                          <span key={idx} className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs capitalize">
+                            {use}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Heritage Status */}
+                  {comprehensiveData.location_history.heritage_status && (
+                    <div className="bg-purple-50 border border-purple-200 p-3 rounded">
+                      <div className="font-semibold text-purple-900 mb-1 text-sm">🏛️ Heritage Area</div>
+                      <div className="text-xs text-gray-700">{comprehensiveData.location_history.heritage_status}</div>
+                      <div className="text-xs text-purple-700 mt-1">Additional approvals may be required</div>
+                    </div>
+                  )}
+
+                  {/* Previous Roadworks */}
+                  {comprehensiveData.location_history.previous_roadworks && comprehensiveData.location_history.previous_roadworks.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">🔧 Previous Roadworks</h4>
+                      <div className="space-y-2">
+                        {comprehensiveData.location_history.previous_roadworks.map((work, idx) => (
+                          <div key={idx} className="bg-gray-50 p-2 rounded text-xs">
+                            <div className="flex justify-between">
+                              <span className="font-medium">{work.year} - {work.type}</span>
+                              <span className="text-gray-600">{work.duration}</span>
+                            </div>
+                            <div className="text-gray-600 text-xs">{work.impact}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Environmental Factors */}
+                  {comprehensiveData.location_history.environmental_factors && comprehensiveData.location_history.environmental_factors.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">🌿 Environmental Considerations</h4>
+                      <div className="space-y-2">
+                        {comprehensiveData.location_history.environmental_factors.map((factor, idx) => (
+                          <div key={idx} className="bg-green-50 p-2 rounded text-xs">
+                            <div className="font-medium">{factor.factor}</div>
+                            <div className="text-gray-600">{factor.consideration}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+
+
           {/* Right Panel - Map and Devices */}
           <div className="space-y-6">
             {/* Map */}
