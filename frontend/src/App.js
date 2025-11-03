@@ -72,7 +72,7 @@ function App() {
       window.location.href = '/dashboard';
     } catch (e) {
       console.error('Error saving auth data:', e);
-      toast.error('Failed to save login session');
+      alert('Failed to save login session. Please try again.');
     }
   };
 
