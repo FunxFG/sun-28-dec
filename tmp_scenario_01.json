@@ -106,29 +106,29 @@
   ],
   "auto_population": {
     "road_data": {
-      "speed_limit": 60,
+      "speed_limit": 30,
       "lanes": 2,
-      "road_name": "Unknown Road",
-      "highway_type": "residential",
-      "surface": "asphalt",
-      "has_footpath": false,
+      "road_name": "Victoria Square",
+      "highway_type": "secondary",
+      "surface": "paving_stones",
+      "has_footpath": true,
       "has_cycleway": false,
       "has_parking": false,
-      "road_classification": "Local Road",
-      "jurisdiction": "Local Council",
-      "functional_class": "Collector"
+      "road_classification": "Regional Road",
+      "jurisdiction": "Department for Infrastructure and Transport SA",
+      "functional_class": "Arterial - Minor"
     },
     "location_metadata_system": {
-      "road_name": "Unknown Road",
-      "road_classification_official": "Local Road",
-      "speed_limit_official": "50 km/h",
-      "maintenance_authority": "Local Council",
-      "crrs_code": "SA-LOC-UNKNOWNROA",
-      "sealed_status": "Sealed",
-      "austroads_class_code": "Local Access",
-      "road_category_code": "Council Network - Local",
-      "functional_hierarchy": "Level 5: Local Access",
-      "data_source": "Default SA Government Standards",
+      "road_name": "Victoria Square",
+      "road_classification_official": "Regional Road",
+      "speed_limit_official": "30 km/h",
+      "maintenance_authority": "Department for Infrastructure and Transport SA",
+      "crrs_code": "SA-LOC-VICTORIASQ",
+      "sealed_status": "Unsealed",
+      "austroads_class_code": "Arterial - Minor",
+      "road_category_code": "State Network - Regional",
+      "functional_hierarchy": "Level 3: Minor Arterial",
+      "data_source": "OpenStreetMap + SA Government Classification Standards",
       "dataset_references": [
         "Dataset 558: Roads",
         "Dataset 1639: State Maintained Roads"
@@ -544,40 +544,13 @@
     "traffic_assessment": {},
     "site_assessment": {},
     "side_streets": [],
-    "intersections": [
-      {
-        "name": "Victoria Square",
-        "signage_required": true,
-        "type": "crossroad"
-      },
-      {
-        "name": "Gawler Place",
-        "signage_required": true,
-        "type": "crossroad"
-      },
-      {
-        "name": "King William Street",
-        "signage_required": true,
-        "type": "T-intersection"
-      },
-      {
-        "name": "Flinders Street",
-        "signage_required": true,
-        "type": "T-intersection"
-      },
-      {
-        "name": "Wakefield Street",
-        "signage_required": true,
-        "type": "T-intersection"
-      }
-    ],
+    "intersections": [],
     "control_measures": {
       "temporal": [
         "off_peak_hours",
         "staged_works"
       ],
       "speed": [
-        "temporary_speed_limit_40",
         "speed_reduction"
       ],
       "lane_management": [
@@ -598,7 +571,20 @@
       ]
     },
     "pedestrian_control_measures": {
-      "barriers_required": [],
+      "barriers_required": [
+        {
+          "type": "Pedestrian Barrier Fencing",
+          "location": "Along workzone perimeter adjacent to footpath",
+          "specification": "AS 1742.3 compliant, minimum 1.2m high",
+          "quantity_estimate": "Per meter of workzone length"
+        },
+        {
+          "type": "Pedestrian Mesh Fencing",
+          "location": "Separation between workzone and pedestrian path",
+          "specification": "2.0m high chain mesh or solid hoarding",
+          "visibility": "Must maintain sight lines for pedestrians"
+        }
+      ],
       "pedestrian_detours": [
         {
           "type": "Pedestrian Detour Route",
@@ -806,15 +792,6 @@
           "quantity": 2,
           "mounting_height": "2.0-2.5m",
           "lateral_offset": "0.5-1.0m from edge of carriageway"
-        },
-        {
-          "sign_code": "R4-1(40)",
-          "name": "Speed Limit 40",
-          "position": "-70m from workzone",
-          "placement": "BILATERAL (both sides of road)",
-          "quantity": 2,
-          "mounting_height": "2.0-2.5m",
-          "compliance": "Regulatory sign - enforceable by law"
         }
       ],
       "workzone_signs": [
@@ -834,50 +811,7 @@
           "specification": "700mm high, retroreflective, weighted base"
         }
       ],
-      "side_street_signs": [
-        {
-          "intersection_name": "Victoria Square",
-          "type": "crossroad",
-          "requirement": "BILATERAL WARNING on all approaches",
-          "signs": [
-            {
-              "sign_code": "T1-4",
-              "name": "Road Work at Intersection",
-              "placement": "All intersection approaches (4-way or 3-way)",
-              "quantity": 4,
-              "distance_from_intersection": "50-90m on each approach"
-            }
-          ]
-        },
-        {
-          "intersection_name": "Gawler Place",
-          "type": "crossroad",
-          "requirement": "BILATERAL WARNING on all approaches",
-          "signs": [
-            {
-              "sign_code": "T1-4",
-              "name": "Road Work at Intersection",
-              "placement": "All intersection approaches (4-way or 3-way)",
-              "quantity": 4,
-              "distance_from_intersection": "50-90m on each approach"
-            }
-          ]
-        },
-        {
-          "intersection_name": "King William Street",
-          "type": "T-intersection",
-          "requirement": "BILATERAL WARNING on all approaches",
-          "signs": [
-            {
-              "sign_code": "T1-4",
-              "name": "Road Work at Intersection",
-              "placement": "All intersection approaches (4-way or 3-way)",
-              "quantity": 3,
-              "distance_from_intersection": "50-90m on each approach"
-            }
-          ]
-        }
-      ],
+      "side_street_signs": [],
       "end_of_works_signs": [
         {
           "sign_code": "G2-4",
@@ -887,28 +821,20 @@
           "quantity": 2,
           "mounting_height": "2.0-2.5m",
           "notes": "Indicates return to normal conditions"
-        },
-        {
-          "sign_code": "R4-1(60)",
-          "name": "Speed Limit 60",
-          "position": "+55m after workzone end",
-          "placement": "BILATERAL (both sides of road)",
-          "quantity": 2,
-          "notes": "Reinstates normal speed limit"
         }
       ],
       "bilateral_requirements": {
         "applies_to": "Multi-lane roads and roads with speed limits >60 km/h",
         "definition": "Signs must be placed on BOTH sides of the road",
         "standard": "AS 1742.3 Clause 6.3.2",
-        "total_bilateral_signs": 7,
+        "total_bilateral_signs": 5,
         "compliance_note": "All regulatory and warning signs in workzone MUST be bilateral for roads with >1 lane per direction"
       },
       "distances_documented": {
-        "speed_limit": "60 km/h",
+        "speed_limit": "30 km/h",
         "advance_warning_distance": "90m (AS 1742.3 Table 6.2)",
         "intermediate_distance": "50m",
-        "taper_length": "105m",
+        "taper_length": "52m",
         "buffer_zone": "30m",
         "standard_reference": "AS 1742.3:2019 - Manual of uniform traffic control devices, Part 3: Traffic control for works on roads"
       }
@@ -1452,9 +1378,8 @@
       "restrictions": [],
       "loading_zones": [],
       "clearway_times": [],
-      "permit_required": true,
-      "data_source": "OpenStreetMap + Inferred Council Regulations",
-      "permit_authority": "Local Council"
+      "permit_required": false,
+      "data_source": "OpenStreetMap + Inferred Council Regulations"
     },
     "school_zones": {
       "school_zones": [
@@ -1608,5 +1533,5 @@
     },
     "detour_routes": null
   },
-  "timestamp": "2025-11-03T16:51:21.181622"
+  "timestamp": "2025-11-03T16:53:29.071984"
 }
