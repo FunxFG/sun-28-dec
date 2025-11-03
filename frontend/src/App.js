@@ -108,19 +108,28 @@ function AppContent() {
     navigate('/auth', { replace: true });
   };
 
+  const authValue = {
+    user,
+    loading,
+    login,
+    loginAsGuest,
+    logout
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+          <p className="text-slate-600">Loading...</p>
+        </div>
       </div>
     );
   }
 
-  console.log('App.js rendering with user:', user ? 'LOGGED IN' : 'NOT LOGGED IN');
-
   return (
-    <div className="App">
-      <BrowserRouter>
+    <AuthContext.Provider value={authValue}>
+      <div className="App">
         <Routes>
           <Route 
             path="/auth" 
@@ -160,9 +169,17 @@ function AppContent() {
             element={<Navigate to={user ? "/dashboard" : "/auth"} replace />} 
           />
         </Routes>
-      </BrowserRouter>
-      <Toaster />
-    </div>
+        <Toaster />
+      </div>
+    </AuthContext.Provider>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
   );
 }
 
