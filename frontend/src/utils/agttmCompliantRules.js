@@ -181,6 +181,14 @@ export class AGTTMCompliantPlacement {
           minimum_between_signs: 60,
           maximum_between_signs: 500
         }
+      },
+
+      // Placement tolerances for compliance verification
+      tolerances: {
+        offset_tolerance: 0.5,      // ±0.5m lateral position tolerance
+        distance_tolerance: 5,      // ±5m longitudinal distance tolerance
+        angle_tolerance: 5,         // ±5° sign angle tolerance
+        height_tolerance: 0.1       // ±0.1m mounting height tolerance
       }
     };
 
