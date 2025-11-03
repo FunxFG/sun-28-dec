@@ -1,0 +1,2018 @@
+Sign Index,,,
+Sign Image,Description,Sign Code,Size (W x H)
+,TES13699 or RX-11,13699,1200 x 1650
+,Railway Crossing Position With Target Board 2 Tracks Stop Look For Trains,13908(2),750 x 1800
+,Event Parking restrictions,19086,1200 x 1650
+,Stadium Parking,19120,1200 x 1650
+,Red Stop Disc Signal (Operational Tram Sign),332-A3-11-2423,230 x 230
+,Compulsary Stop (Operational Tram Sign),CS2-DRG-352357,450 x 300
+,Stopping Place (Operational Tram Sign),CS2-DRG-352358,450 x 300
+,Start Single Line Working (Operational Tram Sign),CS2-DRG-352359,550 x 450
+,End Single Line Working (Operational Tram Sign),CS2-DRG-352360,550 x 450
+,Induction Loop (Operational Tram Sign),CS2-DRG-352361,300 x 450
+,Sound Bell (Operational Tram Sign),CS2-DRG-352362,450 x 400
+,Fouling Point (Operational Tram Sign),CS2-DRG-352363,450 x 300
+,Shunt Limit (Operational Tram Sign),CS2-DRG-352364,450 x 300
+,Unidirectional Hazard Marker,D4-1-1B D4-1-1A,"3200 x 800
+1600 x 400"
+,Unidirectional Hazard Marker,D4-1-2B D4-1-2A,"600 x 600
+450 x 450"
+,Bidirectional Hazard Marker,D4-2-2B D4-2-2A,"400 x 1000
+300 x 750"
+,Bidirectional Hazard Marker (for larger size use D4-SA2- 1),D4-2-3B D4-2-3A,"3200 x 800
+1600 x 400"
+,Width Marker (L or R) (left shown),D4-3A D4-3B,"225 x 450
+450 x 900"
+,Obstruction Marker,D4-5,1800 x 400
+,Chevron Alignment Marker,D4-6S D4-6A D4-6B D4-6C,"450 x 600
+600 x 750
+750 x 900
+900 x 1125"
+,Chevron Median Marker,D4-SA100C D4-SA100B D4-SA100A,"200 x 1200
+150 x 1200
+100 x 1200"
+,Vertical Chevron Marker,D4-SA101,150 x 900
+,Unidirectional Hazard Board,D4-SA1-1,2400 x 400
+,Hazard Marker For Convex Nose Assembly on a Low Maintenance Attenuator ONLY,D4-SA1-4,1000 x 450
+,Bidirectional Hazard Board,D4-SA2-1,2400 x 400
+,BidirectionalHazard Marker (Smaller),D4-SA2-S,400 x 600
+,Obstruction Board,D4-SA5 D4-5,"2400 x 400
+1800 x 400"
+,Hazard Marker For Type F Concrete Safety Barrier ONLY,D4-SA50-1,240 x 445
+,Hazard Marker for VCB Concrete Safety Barrier or Temporary Bollard,D4-SA50-2,150 x 450
+,Width Marker for ET2000 Terminal Ends (L or R) (right shown),D4-SA51-1,350 x 700
+,Width Marker for SKT Terminal (LorR) (right shown),D4-SA51-2,490 x 490
+,Disability Access Arrow Symbol,DA-1,250 x 250
+,Disability Access Train Symbol,DA-101,250 x 250
+,Disability Access Zone X Symbol,DA-102,600 x 450
+,Disability Access Bus Symbol,DA-2,250 x 250
+,Disability Access Parking Symbol,DA-3,250 x 250
+,Disability Access Tram Symbol,DA-4,250 x 250
+,Disability Access Disabled Symbol,DA-5,250 x 250
+,Kilometre Plate,G10-3,450 x 450
+,"Finger with Distance , Destination and Route No.",G3-3,0 x 0
+,Rural Road Name Sign,G3-5,0 x 0
+,Finger Board Guide Sign (Refer to G3-SA6),G3-6,1350 x 200
+,Finger Board Guide Sign,G3-SA6-1,1350 x 200
+,Fingerboard Guide Sign Double Ended,G3-SA6-2,2700 x 200
+,Town Name,G6-1,1350 x 250
+,Stream/River/Creek Name,G6-2,1350 x 200
+,Gate x,G6-SA101A G6-SA101AA,"450 x 150
+300 x 100"
+,Passable to Off-Road Vehicles Only,G6-SA50,1200 x 600
+,Controlled Access Road,G6-SA80,600 x 450
+,Advance - No (symbol) Next 'xxx' km,G7-10-1B G7-10-1A,"1350 x 1800
+900 x 1200"
+,Parking Direction (L or R),G7-11,870 x 150
+,Advance - Service Symbol 'xxx' m on Left (1 symbol) Formerly G7-SA107-1,G7-1-1A MOD G7-1-1B,"900 x 1200
+1200 x 1800"
+,Parking Direction with Name,G7-12,800 x 850
+,Advance - Service Symbol 'xxx' m on Left (2 symbols) Formerly G7-SA107-2,G7-1-2A MOD G7-1-2B,"1200 x 1050
+1485 x 1485"
+,Help Phone,G7-13B G7-13A,"600 x 600
+400 x 400"
+,Advance Sign - Service Symbol 'xxx' m on Left (3) Formerly G7-SA107-3,"G7-1-3B
+G7-1-3A MOD","2220 x 1485
+1200 x 1500"
+,Advance Sign - Service Symbol 'xxx' m on Left (4) Formerly G7-SA107-4,"G7-1-4B
+G7-1-4A MOD","1485 x 2052
+1200 x 1500"
+,Advance Sign - Service Symbol 'xxx' m on Right (1) Formerly G7-SA107-1,"G7-2-1B
+G7-2-1A MOD","1200 x 1800
+900 x 1200"
+,Advance Sign - Service Symbol 'xxx' m on Right (2) Formerly G7-SA107-2,G7-2-2A MOD G7-2-2B,"1200 x 1050
+1485 x 1485"
+,Advance- Service Symbol 'xxx' m on Right (3 symbols) Formerly G7-SA107-3,G7-2-3A MOD G7-2-3B,"1200 x 1500
+2220 x 1485"
+,Advance Sign - Service Symbol 'xxx' m on Right (4) Formerly G7-SA107-4,"G7-2-4B
+G7-2-4A MOD","1485 x 2052
+1200 x 1500"
+,Position Sign - Service Symbol (1) L or R Formerly G7- SA106-1,"G7-3-1B
+G7-3-1A MOD","975 x 1350
+800 x 900"
+,Position Sign - Service Symbol (2) L or R Formerly G7- SA106-2,"G7-3-2B
+G7-3-2A MOD","1695 x 1485
+1200 x 900"
+,Position Sign - Service Symbol (3) L or R Formerly G7- SA106-3,"G7-3-3B
+G7-3-3A MOD","1695 x 2050
+1200 x 1350"
+,Position - Service Symbol (4 symbols) L or R Formerly G7-SA106-4,"G7-3-4B
+G7-3-4A MOD","1695 x 2050
+1200 x 1350"
+,Position - Service Symbol (2 symbols) intersection style (L or R) Formerly G7- SA115-2,"G7-4-2B
+G7-4-2A MOD","2565 x 855
+1650 x 600"
+,Position - Service Symbol (3 symbols) intersection style (L or R) Formerly G7-SA115-3,G7-4-3A MOD G7-4-3B,"2100 x 600
+3195 x 855"
+,Position Sign - Service Symbol (4) intersection style (L or R) Formerly G7- SA115-4,G7-4-4A MOD G7-4-4B,"2550 x 600
+3825 x 855"
+,Location - Service Symbols (1 symbol) with no direction Formerly G7-SA111-1,"G7-6-1B
+G7-6-1A MOD","1035 x 900
+600 x 600"
+,Location Sign - Service Symbols (2) with no direction Formerly G7-SA111-2,G7-6-2A MOD G7-6-2B,"1200 x 600
+1695 x 855"
+,Location Sign - Service Symbols (3) with no direction Formerly G7-SA111-3,G7-6-3A MOD G7-6-3B,"1200 x 1050
+1695 x 1485"
+,Location Sign - Service Symbols (4) with no direction Formerly G7-SA111-4,G7-6-4A MOD G7-6-4B,"1200 x 1050
+1620 x 1420"
+,Advance - Service Symbol Turn Left 'xxx' m (1 symbol) Formerly G7-SA108-1,"G7-7-1B
+G7-7-1A MOD","1200 x 1800
+900 x 1200"
+,Advance Sign - Service Symbol Turn Left 'xxx' m (2) Formerly G7-SA108-2,G7-7-2A MOD G7-7-2B,"1200 x 1050
+1890 x 1485"
+,Advance Sign - Service Symbol Turn Left 'xxx' m (3) Formerly G7-SA108-3,"G7-7-3B
+G7-7-3A MOD","2220 x 1485
+1200 x 1500"
+,Advance Sign - Service Symbol Turn Left 'xxx' m (4) Formerly G7-SA108-4,"G7-7-4B
+G7-7-4A MOD","1890 x 2115
+1200 x 1500"
+,Advance Sign - Service Symbol Turn Right 'xxx' m (1) Formerly G7-SA108-1,G7-8-1A MOD G7-8-1B,"900 x 1200
+1200 x 1800"
+,Advance - Service Symbol Turn Right 'xxx' m (2 symbols) Formerly G7-SA108-2,"G7-8-2B
+G7-8-2A MOD","1965 x 1485
+1200 x 1050"
+,Advance Sign - Service Symbol Turn Right 'xxx' m (3) Formerly G7-SA108-3,"G7-8-3B
+G7-8-3A MOD","1965 x 1485
+1200 x 1500"
+,Advance Sign - Service Symbol Turn Right 'xxx' m (4) Formerly G7-SA108-4,"G7-8-4B
+G7-8-4A MOD","1965 x 2115
+1200 x 1500"
+,Advance - Next (symbol) 'x' km,G7-9-1B G7-9-1A,"1200 x 1485
+780 x 990"
+,XXX Rest Area 'x' km On Left,G7-SA1,2100 x 1350
+Sign Image,Sign Code,Description,Size (W x H)
+,Advance Sign - Service Symbol 'x' km Left/Right -1,G7-SA109-1,900 x 1050
+,Advance Sign - Service Symbol 'x' km Left/Right -2,G7-SA109-2,1200 x 900
+,Advance Sign - Service Symbol 'x' km Left/Right -3,G7-SA109-3,1200 x 1350
+,Advance Sign - Service Symbol 'x' km Left/Right -4,G7-SA109-4,1200 x 1350
+,Position Sign - Service Symbol (1),G7-SA110-1,800 x 900
+,Position Sign - Service Symbol (2),G7-SA110-2,1200 x 900
+,Position Sign - Service Symbol (3),G7-SA110-3,1200 x 1350
+,Position Sign - Service Symbol (4),G7-SA110-4,1200 x 1350
+,Position Sign - Services Left and Right,G7-SA116,900 x 1050
+,Position Sign - Blank Services Left and Right (L and R),G7-SA117,1200 x 1350
+,Supplementary Plate - 'x' km (mounted under service plates),G7-SA120-1C G7-SA120-1D G7-SA120-1A G7-SA120-1B,"900 x 360
+1200 x 420
+600 x 240
+800 x 300"
+,Supplementary Plate - 'xxx' m (mounted under service plates),G7-SA120-2B G7-SA120-2A G7-SA120-2D G7-SA120-2C,"800 x 300
+600 x 240
+1200 x 420
+900 x 360"
+,Position Sign - \ or / Service Sign with (1) symbol,G7-SA121-1A G7-SA121-1B,"600 x 900
+1200 x 1800"
+,Position Sign - \ or / Service Sign with (2) symbols,G7-SA121-2,1200 x 900
+,Position Sign - \ or / Service Sign with (3) symbols,G7-SA121-3,1200 x 1350
+,Position Sign - \ or / Service Sign with (4) symbols,G7-SA121-4,1200 x 1350
+,Location/Advance Sign - Rest Area Facilities Sign,G7-SA122-1,600 x 300
+,Rest Area with next Township Directions,G7-SA122-2,600 x 300
+,Advance Sign - Rest Area - 1km ON LEFT - TAKE A BREAK,G7-SA123-1,2400 x 1800
+,Advance Sign - Rest Area 1 km ON LEFT - STOP REVIVE SURVIVE,G7-SA123-2,2400 x 1800
+,Advance Sign - Rest Area 1 km ON LEFT - REST IF TIRED,G7-SA123-3,2400 x 1800
+,Advance Sign - Rest Area 1 km ON LEFT - DROWSY DRIVERS DIE,G7-SA123-4,2400 x 1800
+,Advance Sign - Rest Area 1 km ON LEFT - SURVIVE THIS DRIVE,G7-SA123-5,2400 x 1800
+,Advance Sign - Rest Area 1 km ON LEFT - FATIGUE IS FATAL,G7-SA123-6,2400 x 1800
+,Location/Position Sign - Car Parking / \Truck Parking Rest Area Complex,G7-SA124-1,900 x 1050
+,Location/Position Sign - Truck Parking / \Car Parking Rest Area Complex,G7-SA124-2,900 x 1050
+,Disability Access Direction Sign - Service Symbol (1),G7-SA126-1,300 x 600
+,Disability Access Direction Sign - Service Symbol (2),G7-SA126-2,300 x 750
+,Disability Access Position Sign - Service Symbol (1),G7-SA126-7,300 x 300
+,Advance Sign - Next Rest Area - XXXX xx,G7-SA127,2700 x 1200
+,Advance Sign - Truck Parking 1km ON LEFT - TAKE A BREAK,G7-SA128-1,2400 x 1800
+,Advance Sign - Truck Parking 1km ON LEFT - STOP REVIVE SURVIVE,G7-SA128-2,2400 x 1800
+,Advance Sign - Truck Parking 1km ON LEFT - REST IF TIRED,G7-SA128-3,2400 x 1800
+,Advance Sign - Truck Parking 1km ON LEFT - DROWSY DRIVERS DIE,G7-SA128-4,2400 x 1800
+,Advance Sign - Truck Parking 1km ON LEFT - SURVIVE THIS DRIVE,G7-SA128-5,2400 x 1800
+,Advance Sign - Truck Parking 1km ON LEFT - FATIGUE IS FATAL,G7-SA128-6,2400 x 1800
+,Advance Sign - Truck Parking 400m ON LEFT - TAKE A BREAK,G7-SA129-1,2550 x 1800
+,Advance Sign - Truck Parking 400m ON LEFT - STOP REVIVE SURVIVE,G7-SA129-2,2550 x 1800
+,Advance Sign - Truck Parking 400m ON LEFT - REST IF TIRED,G7-SA129-3,2550 x 1800
+,Advance Sign - Truck Parking 400m ON LEFT - DROWSY DRIVERS DIE,G7-SA129-4,2550 x 1800
+,Advance Sign - Truck Parking 400m ON LEFT - SURVIVE THIS DRIVE,G7-SA129-5,2550 x 1800
+,Advance Sign - Truck Parking 400m ON LEFT - FATIGUE IS FATAL,G7-SA129-6,2550 x 1800
+,Advance Sign - Rest Area - 400m ON LEFT - TAKE A BREAK,G7-SA130-1,2400 x 1800
+,Advance Sign - Rest Area - 400m ON LEFT - STOP REVIVE SURVIVE,G7-SA130-2,2400 x 1800
+,Advance Sign - Rest Area - 400m ON LEFT - REST IF TIRED,G7-SA130-3,2400 x 1800
+,Advance Sign - Rest Area - 400m ON LEFT - DROWSY DRIVERS DIE,G7-SA130-4,2400 x 1800
+,Advance Sign - Rest Area - 400m ON LEFT - SURVIVE THIS DRIVE,G7-SA130-5,2400 x 1800
+,Advance Sign - Rest Area - 400m ON LEFT - FATIGUE IS FATAL,G7-SA130-6,2400 x 1800
+,EV Electric Vehicle Parking,G7-SA131,450 x 900
+,Accessible Parking Spaces,G7-SA132,450 x 900
+,Accessible Parking,G7-SA133,450 x 600
+,Position Sign - < or > Service Sign with (2) symbols,G7-SA134A G7-SA134B,"450 x 900
+600 x 900"
+,Hospital Precinct - Use under R4-1A/B,G7-SA135-B G7-SA135-A,"600 x 300
+450 x 250"
+,XXX Rest Area 'x' km On Right,G7-SA2,2100 x 1350
+,XXX Rest Area,G7-SA3,2100 x 1350
+,XXX Rest Area,G7-SA4,2850 x 900
+,Tourist Drive Route Marker (with arrow),G8-9-1,360 x 360
+,Tourist Drive Route Marker (route number and end),G8-9-11,450 x 800
+,Tourist Drive Route Marker - End,G8-9-3,360 x 360
+,Tourist Drive Route Marker (LorR),G8-9-7,450 x 800
+,Tourist Drive Route Marker (straight ahead),G8-9-8,450 x 800
+,"Slow Vehicle Lane Ahead (Approval required for use - refer to Manager, Traffic Services, DPTI)",G9-10,900 x 900
+,"Slow Vehicle Lane 'x' km Ahead (Approval required for use - refer to Manager, Traffic Services, DPTI)",G9-11,900 x 1100
+,"Slow Vehicles Use Left Lane (Approval required for use - refer to Manager, Traffic Services, DPTI)",G9-12,950 x 1100
+,Form 1 Lane,G9-15C G9-15A G9-15B,"1200 x 1600
+600 x 800
+900 x 1200"
+,Form x Lanes,G9-16C G9-16B G9-16A,"1200 x 1600
+900 x 1200
+600 x 800"
+,"Winding Road Ends 'x' km (Approval required for use - refer to Manager, Traffic Services, DPTI)",G9-17,1100 x 400
+,No Through Road,G9-18A G9-18B,"600 x 400
+900 x 600"
+,Road Closed,G9-20,900 x 550
+,Road Subject to Flooding Indicators Show Depth,G9-21-1,2150 x 800
+,Road Subject to Flooding Indicators Show Depth,G9-21-2,1400 x 1400
+,"Depth Indicators 0 to 2m, 2 to 4m, 4 to 6m",G9-22-2 G9-22-1 G9-22-3,"200 x 2350
+200 x 2350
+200 x 2350"
+,Safety Ramp 'x.x' km,G9-24-1A G9-24-1B,"2200 x 800
+4400 x 1600"
+,Safety Ramp 'x.x' km,G9-24-2A G9-24-2B,"1500 x 1200
+3000 x 2400"
+,Safety Ramp 'xx' m,G9-25-1A G9-25-1B,"2200 x 800
+4400 x 1600"
+,Safety Ramp 'xx' m,G9-25-2A G9-25-2B,"1500 x 1200
+3000 x 2400"
+,Safety,G9-27A G9-27B,"2000 x 750
+3000 x 1125"
+,Ramp,G9-28B G9-28A,"2400 x 1125
+1600 x 750"
+,Low Bridge Ahead 'x.x' m High Vehicles Detour (L or R),G9-3,1700 x 900
+,Railway,G9-32,2100 x 450
+,Crossing,G9-33,2100 x 450
+,Overtaking Lane 'xxx' m Ahead,G9-37,2600 x 1300
+Sign Image,Sign Code,Description,Size (W x H)
+,Overtaking Lane 'x' km Ahead,G9-38,2600 x 1300
+,Load Limit on Bridge 'xx' t Heavy Vehicles Detour (L or R),G9-4,1700 x 900
+,Local Traffic Only,G9-40-1,900 x 600
+,Local Traffic Only (Roadworks ONLY),G9-40-2A G9-40-2B,"900 x 600
+1200 x 900"
+,Unsuitable For Large Vehicles,G9-41B G9-41A,"600 x 400
+450 x 300"
+,"Very Steep Climb 'x' km Not Suitable for T, B, C,& T (Approval required for use - refer to Manager, Traffic Services, DPTI)",G9-46,2800 x 1800
+,"Very Steep Climb Next 'x' km (Approval required for use - refer to Manager, Traffic Services, DPTI)",G9-47,3000 x 1800
+,Look for Trains,G9-48B G9-48C G9-48A,"750 x 750
+900 x 900
+600 x 600"
+,On Bridge,G9-49A G9-49C G9-49B,"450 x 300
+900 x 600
+600 x 400"
+,Slow Vehicle Turnout 'xxx' m,G9-50A G9-50B,"900 x 900
+1200 x 1200"
+,Detour for High Vehicles (L or R),G9-5-1,1300 x 350
+,Slow Vehicle Turnout (ARR-130),G9-51B G9-51A,"1200 x 1330
+900 x 1000"
+,Alternative Route For Trucks and Buses,G9-52,2400 x 400
+,Detour for Heavy Vechicles (L or R),G9-5-2,1400 x 350
+,Very Steep Descent 'x' km Ahead Not Suitable For Trucks Buses Caravans and Trailers,G9-53,2800 x 1800
+,Detour for Long Vehicles (L or R),G9-5-3,1300 x 350
+,Take Ticket,G9-54,600 x 350
+,Detour for Wide Vehicles (L or R),G9-5-4,1300 x 350
+,Way Out (L or R),G9-55,875 x 150
+,Way Out to (Street Name),G9-56,950 x 450
+,Watch For Bicycles,G9-57A G9-57B,"900 x 800
+1200 x 1067"
+,Cyclists Dismount,G9-58A G9-58B,"450 x 450
+600 x 600"
+,All Bicycles,G9-60A G9-60B,"450 x 600
+600 x 800"
+,Bicycle Symbol Use Ramp,G9-62,600 x 1200
+,Bicycles Cross Here With Care (L or R),G9-63,900 x 900
+,Bicycles Use Left Shoulder,G9-64,750 x 600
+,Bicycles Must Exit,G9-65,600 x 1200
+,Supplementary Distance Plate,G9-66,0 x 0
+,Keep Tracks Clear (Formerly W7-16-1),G9-67-1B G9-67-1A,"750 x 750
+600 x 600"
+,Keep Tracks Clear (Box Marking) (Formerly W7-16-2),G9-67-2,600 x 1200
+,"Keep Tracks Clear (Approval required for use - refer to Manager, Traffic Services, DPTI)",G9-67-2AA,300 x 600
+,Emergency Exit Push Gate,G9-68,400 x 300
+,Wrong Way Go Back (Formerly R2-12),G9-69,2300 x 1470
+,No Stopping on Freeway (Formerly R2-18),G9-70,1400 x 1400
+,Service Road Entry,G9-71,600 x 750
+,Left Turn From Service Road Only,G9-72,1200 x 1000
+,Merge Right,G9-73A G9-73B,"900 x 900
+1200 x 1200"
+,Railway Crossing Not In Use,G9-74,750 x 600
+,Length Limit Ahead 'x.x' m Long Vehicles Detour,G9-75,2100 x 900
+,Narrow Bridge Ahead 'x.x' m Wide Vehicles Detour,G9-76,1700 x 900
+,Slower Vehicles Use Turnouts Next 'x' km,G9-77,1800 x 750
+,'xxx' m,G9-78A G9-78C G9-78B,"600 x 200
+1200 x 400
+900 x 300"
+,On Right (1 Line),G9-80-1A G9-80-1B,"1800 x 450
+3600 x 900"
+,On Right (2 Line),G9-80-2A G9-80-2B,"1500 x 800
+3000 x 1600"
+,Service Road,G9-81,600 x 400
+,Steep Descent,G9-82,3000 x 1400
+,Long Steep Descent Next 'x' km,G9-83AA G9-83,"2400 x 1500
+3000 x 1800"
+,After Signals (May be used with G9-15 or G9-16),G9-84C G9-84A G9-84B,"1200 x 800
+600 x 400
+900 x 600"
+,After Roundabout (May be used with G9-15 or G9-16),G9-85C G9-85B G9-85A,"1200 x 800
+900 x 600
+600 x 400"
+,Advance Buses Prohibited,G9-87-1A G9-87-1B G9-87-1C,"600 x 600
+900 x 900
+1200 x 1200"
+,Advance Trucks Prohibited,G9-87-2C G9-87-2A G9-87-2B,"1200 x 1200
+600 x 600
+900 x 900"
+,No Lines Do Not Overtake,G9-89,1500 x 900
+,Reduce Speed,G9-9AA G9-9B G9-9A,"450 x 225
+1800 x 900
+1500 x 750"
+,No Green Arrows 1 Time Period,G9-SA101-1,750 x 900
+,No Green Arrows 2 Time Periods,G9-SA101-2,750 x 1150
+,Stop Press Button And Wait For Walk Signal,G9-SA102,150 x 215
+,Cyclists Press Button And Wait For Green Bicycle Symbol,G9-SA103,150 x 250
+,Heavy Vehicle Route (L or R),G9-SA104,1950 x 600
+,Heavy Vehicle Route (L or R),G9-SA105,2100 x 600
+,Diagonal Crossing May Be Permitted Cross Only in Direction of Walk Signal,G9-SA106,150 x 300
+,High Vehicles Use Left Lane,G9-SA108,950 x 1100
+,High Vehicles Must Use Left / Right Lane,G9-SA109,950 x 1100
+,Remember Give Way to Peds Bicycles When Turning - (Temporary Signage Only),G9-SA110,800 x 1120
+,Divided Road 'x' km Ahead,G9-SA111B G9-SA111A,"1400 x 1400
+1000 x 1000"
+,Distorted Image,G9-SA112B G9-SA112A,"750 x 400
+450 x 250"
+,In Case of Breakdown Use Emergency Phone,G9-SA113,1500 x 450
+,Road Hazard (ONLY to be used under R4-1),G9-SA114A G9-SA114B,"450 x 300
+600 x 400"
+,No Parking,G9-SA115A G9-SA115B,"900 x 200
+1200 x 300"
+,Do Not Queue Over,G9-SA120A G9-SA120B,"600 x 750
+750 x 900"
+,Pedestrians Look Both Ways (Use with W8-SA103 only),G9-SA121,300 x 400
+,Sealed Road 'x' km Ahead,G9-SA122,1400 x 1400
+,Sealed Road Next 'x' km,G9-SA123,1400 x 1400
+,High Vehicles Use Centre Lane,G9-SA125,1350 x 750
+,Overhead Signals 'x.x' m,G9-SA126,1800 x 600
+,Pedestrians Push Button And Stand On Yellow Tile,G9-SA127,150 x 225
+,Please Allow Vehicles to Pass (Install under G9-50),G9-SA128B G9-SA128A,"1200 x 1200
+900 x 900"
+,Speed Limit AHEAD (Use on Vehicle Mounted Frames only for Mobile Work Sites),G9-SA129,1200 x 450
+,Speed Limit AHEAD - Time Based,G9-SA131,450 x 750
+,Speed Limit On Side Road - Time Based,G9-SA132,450 x 750
+,Speed Limit On Side Road - Time Based,G9-SA133,450 x 750
+,Children Crossing on Side Road (L or R),G9-SA134A G9-SA134B,"450 x 1050
+600 x 1400"
+,U Turn Facility xxx m Ahead,G9-SA135A G9-SA135B,"450 x 600
+900 x 1200"
+,U Turn Facility - (L or R),G9-SA136A,450 x 600
+,Merge Left,G9-SA137A G9-SA137B,"900 x 900
+1200 x 1200"
+,"Speed Limit 60 on Side Road, School Days - Timed Based",G9-SA138A G9-SA138B,"450 x 1050
+600 x 1400"
+,"Speed Limit 50 on Side Road, School Days - Timed Based",G9-SA139B G9-SA139A,"600 x 1400
+450 x 1050"
+,Remember Keep Intersection Clear - (Temporary Signage Only),G9-SA140 G9-SA140C,"600 x 750
+900 x 1200"
+,All Pedestrians,G9-SA141A,450 x 600
+,"Speed Limit 60 Ahead, School Days - Timed Based",G9-SA143B G9-SA143A,"600 x 1400
+450 x 1050"
+,"Speed Limit 60 on Side Road, School Days - Timed Based",G9-SA144B G9-SA144A,"600 x 1400
+450 x 1050"
+,"Speed Limit 40 Ahead, School Days - Timed Based",G9-SA145A G9-SA145B,"450 x 1200
+600 x 1600"
+,"Speed Limit 40 on Side Road, School Days - Timed Based",G9-SA146B G9-SA146A,"600 x 1600
+450 x 1200"
+,"Speed Limit 40 on Side Road, School Days - Timed Based (Left or Right)",G9-SA147A G9-SA147B,"450 x 1200
+600 x 1600"
+,"Speed Limit 50 Ahead, School Days - Timed Based",G9-SA148A G9-SA148B,"450 x 1050
+600 x 1400"
+,"Speed Limit 50 on Side Road, School Days - Timed Based",G9-SA149B G9-SA149A,"600 x 1400
+450 x 1050"
+,"Watch for Bicycles (only to be used in 40, 50 or 60 km/h speed zones where standard size will not fit)",G9-SA57,350 x 550
+,"Speed Limit AHEAD (Approval required for use - refer to Manager, Traffic Services Section of DIT)",G9-SA79E G9-SA79D,"1200 x 2000
+900 x 1500"
+,"Exit Sign (Approval required for use - refer to Manager, Traffic Services, DPTI)",GE2-3,1800 x 1600
+,"End Freeway 1 km (Approval required for use - refer to Manager, Traffic Services, DPTI)",GE6-10,2300 x 1500
+,"Prohibited On Freeway (refer to GE6-SA2-1 or GE6-SA2- 2) (Approval required for use - refer to Manager, Traffic Services, DPTI)",GE6-2,1200 x 1200
+,Next Service 'x' km,GE6-8,0 x 0
+,"End Freeway 'x' km (Approval required for use - refer to Manager, Traffic Services, DPTI)",GE6-9,2300 x 1500
+,End Expressway 'x' km,GE6-SA112,3000 x 1500
+,Ramp X Use with R6-SA108,GE6-SA114,1200 x 300
+,Ramp X (Use with GE2-3),GE6-SA115,1800 x 450
+,Prohibited on Freeway Pedestrians Bicycles Animals Animal Drawn Vehicles,GE6-SA2-1,1200 x 1350
+,Prohibited on Expressway Pedestrians Bicycles Animals Animal Drawn Vehicles,GE6-SA2-2,1200 x 1350
+,Help Phone Pedestrian Indicator (L or R),GE7-8,200 x 350
+,Help Phone Distance Plate for Pedestrian Indicator 'xxx' m,GE7-9,200 x 100
+,Wrong Way,GE9-15AA GE9-15A GE9-15B,"450 x 300
+600 x 400
+750 x 500"
+,Merge Right ( Right Only ),GE9-22-2B GE9-22-2A,"2350 x 2015
+1750 x 1500"
+,Emergency Median Crossing,GE9-23-1A GE9-23-1B,"450 x 450
+600 x 600"
+Sign Image,Sign Code,Description,Size (W x H)
+,Emergency Median Crossing - Distance,GE9-23-2A GE9-23-2B,"450 x 600
+600 x 800"
+,"Reduce Speed Now (Approval required for use - refer to Manager, Traffic Services, DPTI)",GE9-3,2600 x 2000
+,At Intersection (Multi-Message Sign ONLY),GM-91B,1200 x 300
+,At Signals (Multi-Message Sign ONLY),GM-92B,1200 x 300
+,Local Traffic Only (Multi-Message Sign ONLY),GM9-40-2A,600 x 600
+,Cyclists Dismount (Multi-Message Sign ONLY),GM9-58A,600 x 600
+,Speed Limit AHEAD (Multi-Message Sign ONLY),GM9-79D,600 x 900
+,No Lines Do Not Overtake (Multi-Message Sign ONLY),GM9-89C,1200 x 600
+,Do Not Overtake (Multi-Message Sign ONLY) (Replaces G9-SA124M),GM9-90B,1200 x 300
+Sign Image,Sign Code,Description,Size (W x H)
+,Car Park Access Only (Multi-Message Sign ONLY),GM9-SA130A,600 x 600
+,No Through Road (Multi-Message Sign ONLY),GM9-SA18A,600 x 600
+,Watch for Bicycles (Multi-Message Sign ONLY),GM9-SA57A,600 x 600
+,Speed Limit AHEAD (Multi-Message Sign ONLY),GM9-SA79A,600 x 600
+,Reduce Speed (Multi-Message Sign ONLY),GM9-SA9A,600 x 600
+,Reduce Speed (Multi-Message Sign ONLY),GM9-SA9B,1200 x 300
+,Bandicoot Symbol (Refer to Traffic Operations Section of DPTI),IS123,420 x 350
+,Duck Symbol (Refer to Traffic Operations Section of DPTI),IS134,350 x 350
+,Mallee Fowl Symbol (Refer to Traffic Operations Section of DPTI),IS135,350 x 350
+,Swan Symbol (Refer to Traffic Operations Section of DPTI),IS147,280 x 350
+,Stop (ARR-56),R1-1B R1-1A,"750 x 750
+600 x 600"
+,"Give Way (ARR-67,70,71,122)",R1-2C R1-2A R1-2AA R1-2B,"1200 x 1200
+750 x 750
+375 x 375
+900 x 900"
+,Roundabout (ARR-109),R1-3B R1-3A,"900 x 900
+750 x 750"
+,"Two Way (ARR-98,132,136)",R2-11A R2-11B,"450 x 600
+600 x 800"
+,All Traffic Turn (L or R) (ARR-88 or 89),R2-14A R2-14B,"600 x 800
+900 x 1200"
+,"U Turn Permitted (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-40)",R2-15B R2-15A R2-15AA,"600 x 800
+450 x 600
+300 x 400"
+,One Way (Repeater),R2-17A R2-17B R2-17C,"450 x 800
+600 x 1050
+900 x 1600"
+,Left Lane Must Exit,R2-19,800 x 1200
+,"Left Turn on Red Permitted After Stopping (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-59)",R2-20,450 x 800
+,"Right Turn From Left Only (Used in R2-SA62) (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-34)",R2-21AA R2-21,"300 x 400
+800 x 1100"
+,"No Hook Turn by Bicycles (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-36)",R2-22,750 x 750
+,One Way (L or R) (ARR-98),R2-2A R2-2B,"450 x 600
+600 x 800"
+,One Way (L or R),R2-2A R2-2B R2-3S,"450 x 600
+600 x 800
+300 x 400"
+,"Keep Left or Keep Right (ARR-99,135)",R2-3B R2-3AA R2-3A,"600 x 800
+300 x 400
+450 x 600"
+,No Entry,R2-4B R2-4A R2-4C R2-4D R2-4S,"600 x 600
+450 x 450
+750 x 750
+900 x 900
+300 x 300"
+,No entry (ARR-100),R2-4C R2-4A R2-4B R2-4AA R2-4D,"750 x 750
+450 x 450
+600 x 600
+300 x 300
+900 x 900"
+,No U Turn (ARR-39),R2-5C R2-5D R2-5A R2-5AA R2-5B,"750 x 750
+900 x 900
+450 x 450
+300 x 300
+600 x 600"
+,No Right Turn and No Left Turn (L or R),R2-6B R2-6S R2-6A R2-6D,"600 x 600
+300 x 300
+450 x 450
+900 x 900"
+,,R2-6C,750 x 750
+,No Right Turn or No Left Turn (ARR-91),R2-6B R2-6C R2-6A R2-6AA R2-6D,"600 x 600
+750 x 750
+450 x 450
+300 x 300
+900 x 900"
+,No Turns,R2-7A R2-7S R2-7B,"450 x 600
+300 x 400
+600 x 800"
+,No Turns (ARR-98),R2-7B R2-7AA R2-7A,"600 x 800
+300 x 400
+450 x 600"
+,Left Lane Must Turn Left and Right Lane Must Turn Right (L or R) (ARR-88),R2-9AA R2-9A R2-9C R2-9B,"300 x 500
+450 x 750
+900 x 1500
+600 x 1000"
+,No Entry-Emergency & Maintenance Vehicles Excepted Gate X,R2-SA101,900 x 600
+,Left Turn (Right Turn) Give Way To Pedestrians & Cyclists (Replaces R2-10),R2-SA102,750 x 750
+,No Entry To Busway,R2-SA103C R2-SA103B R2-SA103A,"900 x 1440
+750 x 1200
+600 x 960"
+,Keep Left (used ONLY where back to back median is installed),R2-SA3,150 x 1150
+,Left Lane Must Turn Left Buses & Bicycles Excepted,R2-SA50A R2-SA50B,"450 x 1050
+600 x 1400"
+,No Right Turn with single time period Mon - Frid,R2-SA51-1S R2-SA51-1C R2-SA51-1B R2-SA51-1A,"300 x 500
+900 x 1500
+600 x 1000
+450 x 750"
+,No Right Turn with two time periods Mon - Fri,R2-SA51-2A R2-SA51-2C R2-SA51-2S R2-SA51-2B,"450 x 900
+900 x 1800
+300 x 600
+600 x 1200"
+,Right Lane Buses Only,R2-SA57,600 x 750
+,No U Turn with single time period Mon - Fri,R2-SA60-1AA R2-SA60-1B R2-SA60-1C R2-SA60-1A,"300 x 500
+600 x 1000
+900 x 1500
+450 x 750"
+Sign Image,Sign Code,Description,Size (W x H)
+,No U Turn with two time periods Mon - Fri,R2-SA60-2B R2-SA60-2C R2-SA60-2A R2-SA60-2AA,"600 x 1200
+900 x 1800
+450 x 900
+300 x 600"
+,"Right Turn From Left Only Adelaide Metro Buses Only without Times (Approval required for use - refer to Manager, Traffic Services, DPTI)",R2-SA61,300 x 700
+,"Right Turn From Left Only Adelaide Metro Buses Only with Times (Approval required for use - refer to Manager, Traffic Services, DPTI)",R2-SA62,300 x 1000
+,Pedestrian Crossing,R3-1C R3-1A R3-1B,"900 x 900
+600 x 600
+750 x 750"
+,"Safety Zone (ARR-162,190)(Approval required for use - refer to Manager, Traffic Services, DPTI)",R3-2B R3-2A,"600 x 600
+450 x 450"
+,Children crossing (flag) (ARR-80),R3-3,600 x 600
+,"Pedestrians May Cross Diagonally (L or R) (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-230,234)",R3-5A R3-5B,"90 x 110
+300 x 400"
+Sign Image,Sign Code,Description,Size (W x H)
+,Speed Limit - 50 Other Times,R3-SA101A R3-SA101B,"430 x 300
+600 x 400"
+,Speed Limit - 60 Other Times,R3-SA102A R3-SA102B,"450 x 300
+600 x 400"
+,Koala Pedestrian Crossing . Formerly R4-SA56 (ARR-80),R3-SA56B R3-SA56A,"600 x 1600
+450 x 1200"
+,Children Crossing - 25 When Lights Flashing,R3-SA57A R3-SA57B,"650 x 1400
+800 x 1800"
+,School Zone Speed Limit. Formerly R4-SA58 (ARR-23),R3-SA58A R3-SA58B,"450 x 1555
+600 x 2070"
+,"Speed Limit Area (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-22)",R4-10A R4-10B,"450 x 750
+600 x 1000"
+,"End Speed Limit Area (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-22)",R4-11B R4-11A,"600 x 1000
+450 x 750"
+,"End Speed Restriction (Approval required for use - refer to Manager, Traffic Services DIT) (ARR-21)",R4-12B R4-12C,"600 x 1000
+800 x 1334"
+,End 40 Area,R4-13,600 x 200
+,You Are Within A 40 Area,R4-14(Illus.),450 x 750
+,"Speed Restriction (Approval required for use - refer to Manager, Traffic Services Section DIT) (ARR-21,316)",R4-1A R4-1C R4-1D R4-1B,"450 x 600
+900 x 1200
+1200 x 1600
+600 x 800"
+,Roadwork,R4-3C R4-3B R4-3A,"900 x 600
+600 x 400
+450 x 300"
+,"Shared Zone (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-24)",R4-4,450 x 750
+,"End Shared Zone (Approval required for use - refer to Manager, Traffic Services Section of DIT) (ARR-24)",R4-5,450 x 750
+,Speed Limit - Line Marking (Use on Vehicle Mounted Frames only for Mobile Work Sites),R4-SA100,1200 x 450
+,End Speed Limit (Use on Vehicle Mounted Frames only for Mobile Work Sites),R4-SA101,1200 x 450
+,Speed Limit - Time Based,R4-SA102,450 x 650
+,School Speed Limit 40 - Time Based School Days.,R4-SA105A R4-SA105B,"450 x 1350
+600 x 1800"
+,Speed Limit - Timed Based,R4-SA107,900 x 1300
+,Speed Limit - Timed Based,R4-SA108,900 x 1300
+,End School Zone Speed Limit (ARR-23),R4-SA59A R4-SA59B,"450 x 900
+600 x 1200"
+,End School Zone (km/h) Area,R4-SA60B R4-SA60A,"600 x 1200
+450 x 900"
+,"End School Zone - End (km/h) Area (Approval required for use - refer to Manager, Traffic Services, DPTI)",R4-SA61A R4-SA61B,"450 x 1050
+600 x 1400"
+,"Parking Signs (Refer to Australian Standards for designs) (R5-39 requires approval from Manager, Traffic Services, DPTI)",R5-1,0 x 0
+,Accessible Parking (Generic sign code only),R5-10,225 x 450
+,Event Parking (Generic sign code only),R5-2,225 x 450
+,Bus Zone,R5-20,225 x 300
+,No Standing (with Times) School Days (Generic sign code only),R5-36,225 x 400
+,Tow Away Zone (Requires approval from Manager Traffic Services DIT),R5-39A R5-39B,"600 x 225
+900 x 337"
+,No Parking - During Stadium Events (Generic sign code only),R5-41,225 x 450
+,"Clearway with one or two time periods periods/days or At All Times (Approval required for use - refer to Manager, Traffic Services, DPTI (ARR-176)",R5-50A R5-50B,"600 x 800
+900 x 1200"
+,"End Clearway (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-176)",R5-51A R5-51B,"600 x 600
+900 x 900"
+,"Emergency Stopping Lane Only (L or R) (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-95)",R5-58,1500 x 1100
+,Parking Area One or two time/day periods (not used on DPTI maintained Rd's),R5-60B R5-60A,"3000 x 1500
+2000 x 1000"
+,Parking Area requiring ticket Time and date period (not used on DPTI maintained Rd's),R5-61B R5-61A,"900 x 1350
+600 x 900"
+,Parking Area Two time/day periods (not used on DPTI maintained Rd's),R5-62B R5-62A,"600 x 1065
+450 x 800"
+,End of Parking Area (not used on DPTI maintained roads) (ARR-335),R5-63A R5-63B,"600 x 600
+900 x 900"
+,Area Parking Control Ahead (not used on DPTI maintained Rd's),R5-64A R5-64B,"600 x 600
+800 x 800"
+,Park in Bays Only (not used on DPTI maintained Rd's) (ARR-211),R5-65A R5-65B,"450 x 300
+600 x 400"
+,No Stopping Area - 2 Times (not used on DPTI maintained Rd's),R5-70B R5-70A,"3000 x 1500
+2000 x 1000"
+,No Stopping Area - 1 Time (not used on DPTI maintained Rd's) (ARR-167),R5-71AA R5-71B R5-71A,"450 x 600
+900 x 1200
+600 x 800"
+,No Stopping Area - Internal (not used on DPTI maintained Rd's),R5-72A R5-72B,"450 x 800
+600 x 1065"
+,No Stopping Area - End (not used on DPTI maintained Rd's) (ARR-335),R5-73B R5-73A,"600 x 800
+450 x 600"
+,No Parking Area - 2 Times (not used on DPTI maintained Rd's),R5-80,2000 x 1000
+,No Parking Area - 1 Time (not used on DPTI maintained Rd's) (ARR-168),R5-81C R5-81A R5-81B,"900 x 1200
+450 x 600
+600 x 800"
+,No Parking - Internal (not used on DPTI maintained Rd's),R5-82A R5-82B,"450 x 800
+600 x 1065"
+,End No Parking Area (not used on DPTI maintained Rd's) (ARR-335),R5-83,450 x 600
+,Part Time Bus Lane / Parking - One Time Period,R5-SA100-1N,225 x 600
+,Part Time Bus Lane / Parking - One Time Period,R5-SA100-1W,450 x 450
+,Part Time Bus Lane / Parking - Two Time Periods,R5-SA100-2N,225 x 800
+Sign Image,Sign Code,Description,Size (W x H)
+,Part Time Bus Lane / Parking - Two Time Periods,R5-SA100-2W,450 x 450
+,Part Time Bicycle Lane / Parking - One Time Period,R5-SA101-1N,225 x 600
+,Part Time Bicycle Lane / Parking - One Time Period,R5-SA101-1W,450 x 450
+,Part Time Bicycle Lane / Parking - Two Time Periods,R5-SA101-2N,225 x 800
+,Part Time Bicycle Lane / Parking - Two Time Periods,R5-SA101-2W,450 x 450
+,Bicycle Lane - Two time periods,R5-SA102,225 x 450
+,Parking Permitted In This Bay During Clearway Period,R5-SA163,225 x 300
+,Parking (any time period) Permitted In This Bay At All Times,R5-SA164,225 x 300
+,No Stopping When Lights Flashing,R5-SA165,225 x 450
+,X P Trucks Only Times,R5-SA166,225 x 300
+,No Parking / No Stopping - EV Electric Vehicles Excepted,R5-SA167,225 x 450
+,Clearway - One Time Period,R5-SA46-1,225 x 300
+,Clearway - Two Time Periods,R5-SA46-2,225 x 450
+,Buses Prohibited (to enter or travel on a road) (ARR-106),R6-10-1C R6-10-1A R6-10-1B,"1200 x 1200
+600 x 600
+900 x 900"
+,Trucks Prohibited (to enter or travel on a road) (ARR-104),R6-10-2B R6-10-2C R6-10-2A,"900 x 900
+1200 x 1200
+600 x 600"
+,"The riding of bicycles is prohibited beyond this sign (ARR-239,242,252)",R6-10-3B R6-10-3C R6-10-3D R6-10-3A,"600 x 600
+750 x 750
+900 x 900
+450 x 450"
+,Low Clearance (m) (ARR-102),R6-11,1950 x 600
+,Clearance (m) (ARR-102),R6-12,1500 x 600
+,"No Pedestrians Bicycles Animals Beyond This Point.
+Also refer to R6-SA101 (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-97,229)",R6-13,1200 x 1500
+,Stop Here On Red Arrow (ARR-56),R6-14A R6-14B,"450 x 750
+675 x 1125"
+,Pedestrians Prohibited (ARR-228),R6-15M R6-15B R6-15A,"600 x 600
+450 x 450
+300 x 300"
+,Low Clearance (m) (Narrow Format),R6-16,1950 x 180
+,Bridge Load Limit (Per Axle Group) (t) (ARR-103),R6-17,1200 x 750
+,"Buses Must Enter (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-107)",R6-18C R6-18B R6-18A,"1200 x 1400
+900 x 1050
+600 x 700"
+,"Start Freeway Formerly GE6-13 Refer R6-SA108 (Approval required for use - refer to Manager, Traffic Services, DPTI)(ARR-177)",R6-19A R6-19B,"1200 x 600
+1800 x 900"
+,No Overtaking Or Passing (ARR-93),R6-1B R6-1A,"1200 x 1440
+750 x 900"
+,"Freeway Entrance (Approval required for use - refer to Manager, Traffic Services, DPTI)",R6-20B R6-20A,"1800 x 900
+1200 x 600"
+,"End Freeway Formerly GE6-11 Refer R6-SA107 (Approval required for use - refer to Manager, Traffic Services,
+DPTI) (ARR-97,177)",R6-21A R6-21B,"900 x 450
+1800 x 900"
+,"Trucks & Buses Must Use Low Gear (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR- 108)",R6-22B R6-22C R6-22A,"1400 x 1200
+1800 x 1500
+1200 x 1000"
+,"End Truck & Bus Low Gear Area (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-108)",R6-23B R6-23A,"1500 x 1200
+1000 x 800"
+,Railway Crossing Position With Target Board Formerly W7-6 Replaced by Rail Auth. ONLY (ARR-120),R6-25C R6-25,"1500 x 1000
+1350 x 900"
+,Tramway Crossing Position (ARR-120),R6-26,1350 x 900
+,"Trucks Must Enter (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-105)",R6-27C R6-27A R6-27B,"1200 x 1400
+600 x 700
+900 x 1050"
+,"Trucks Use Left Lane (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-159)",R6-28C R6-28A R6-28B,"1800 x 1800
+900 x 900
+1200 x 1200"
+,"Keep Left Unless Overtaking Formerly G9-39 (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-130)",R6-29B R6-29A R6-29C,"1800 x 900
+1200 x 600
+2400 x 1200"
+,No Overtaking On Bridge (ARR-94),R6-2B R6-2A,"1200 x 1440
+750 x 900"
+,"Median Turning Lane (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-86)",R6-30A R6-30B,"600 x 1200
+900 x 1800"
+,Give way to Buses Attached to rear of bus only,R6-31,450 x 450
+,"End Keep Left Unless Overtaking (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-130)",R6-32,1200 x 800
+,Overall Length Limit 'x'm,R6-33,1200 x 1350
+,Bridge Load Limit (t) Gross (ARR-103),R6-3A R6-3B,"600 x 900
+900 x 1350"
+,Gross Load Limit (t) (ARR-103),R6-4B R6-4A,"900 x 1350
+600 x 900"
+,Stop Here On Red Signal (ARR-56),R6-6B R6-6A,"675 x 1125
+450 x 750"
+,"Hand Stop Banner Koala Pedestrian Crossing (double sided) ('AA' size used only at crossings)(ARR-80,101)",R6-7A R6-7B R6-7AA,"450 x 450
+600 x 600
+375 x 375"
+,Stop/Slow Bat (Stop Face) and Stop Railway Gate sign,R6-8A R6-8B,"450 x 450
+600 x 600"
+,Stop On Red Signal (ARR-56),R6-9,450 x 600
+,"No Peds Bicycles Animals Small Wheeled Vehicles Beyond This Point Except In Emergency (ARR-97,229) At Gates only",R6-SA101,300 x 600
+,Fishing From Causeway Prohibited,R6-SA102,900 x 600
+,"Skaters Permitted (Approval required for use - refer to Manager, Traffic Services, DPTI)",R6-SA103,225 x 300
+,"All Skaters Prohibited (Approval required for use - refer to Manager, Traffic Services, DPTI)",R6-SA104,225 x 300
+,Next 'x'km (mounted under R6-22),R6-SA105B R6-SA105C R6-SA105AA R6-SA105A,"1440 x 450
+1800 x 560
+900 x 280
+1200 x 370"
+,Next XXXm (mounted under R6-22),R6-SA106C R6-SA106A R6-SA106B,"1800 x 560
+1200 x 370
+1440 x 450"
+,"End Expressway/Freeway (ARR-97,177)",R6-SA107A R6-SA107B,"900 x 450
+1800 x 900"
+,Start Expressway/Freeway (ARR-177),R6-SA108B R6-SA108A,"1800 x 900
+1200 x 600"
+,Clearance x.x m,R6-SA12,2100 x 450
+,Fishing From Bridge Prohibited,R6-SA66,900 x 600
+,Adelaide Metro Buses Only,R6-SA67,300 x 300
+,Adelaide Metro Buses Excepted,R6-SA68,300 x 300
+,Tram Only,R7-10E R7-10C R7-10D,"1200 x 1600
+600 x 800
+900 x 1200"
+,Crossing Arrow - both ways (Use with G9-87-1 & G9-87- 2),R7-11-1D R7-11-1C R7-11-1E,"900 x 300
+600 x 200
+1200 x 400"
+,Crossing Arrow - one way left (Use with G9-87-1 & G9- 87-2),R7-11-2C R7-11-2E,"600 x 200
+1200 x 400"
+,Crossing Arrow - one way right (Use with G9-87-1 & G9- 87-2),R7-11-3E R7-11-3D R7-11-3C,"1200 x 400
+900 x 300
+600 x 200"
+,"Bus Lane (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-154)",R7-1-1D R7-1-1E R7-1-1C,"900 x 1200
+1200 x 1600
+600 x 800"
+,"Truck Lane (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-157)",R7-1-3D R7-1-3E R7-1-3C,"900 x 1200
+1200 x 1600
+600 x 800"
+,"Bicycle Lane (ARR-153,252)",R7-1-4C R7-1-4D R7-1-4B,"600 x 800
+900 x 1200
+450 x 600"
+,"Tram Lane (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-155)",R7-1-5C R7-1-5B R7-1-5D,"600 x 800
+450 x 600
+900 x 1200"
+,"Bus/Bicycle Lane (Approval required for use - refer to Manager, Traffic Services, DPTI)",R7-1-6C R7-1-6D R7-1-6E,"600 x 800
+900 x 1200
+1200 x 1600"
+,Ahead use with R7-1 only (Also See R7-SA2),R7-2C R7-2E R7-2D R7-2B,"600 x 200
+1200 x 400
+900 x 300
+450 x 150"
+,Left Lane / Right Lane (L or R) (Use with R7-1 series only),R7-3C R7-3B R7-3D R7-3E,"600 x 400
+450 x 300
+900 x 600
+1200 x 800"
+,End,R7-4D R7-4E R7-4A R7-4B R7-4C,"900 x 300
+1200 x 400
+300 x 100
+450 x 150
+600 x 200"
+,Overhead Arrow (Use with R7-1 series only),R7-5B R7-5D R7-5C R7-5E,"450 x 300
+900 x 600
+600 x 400
+1200 x 800"
+,Left Lane (Used with R6-11 or R6-12),R7-6-1,1400 x 400
+,Kerb Lane (Used with R6-11 or R6-12),R7-6-2,1400 x 400
+,Centre Lane (Used with R6-11 or R6-12),R7-6-3,1600 x 400
+,This Lane (Used with R6-11 of R6-12),R7-6-4,1600 x 400
+,"Transit Lane (T2) (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-156)",R7-7-1E R7-7-1D R7-7-1C,"1200 x 1600
+900 x 1200
+600 x 800"
+,"Transit Lane (T3) (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-156)",R7-7-2C R7-7-2E R7-7-2D,"600 x 800
+1200 x 1600
+900 x 1200"
+,"Bus Only (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-154)",R7-8E R7-8D R7-8C,"1200 x 1600
+900 x 1200
+600 x 800"
+,"End Transit Lane (T2) (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-156)",R7-9-1E R7-9-1C R7-9-1D,"1200 x 1200
+600 x 600
+900 x 900"
+,"End Transit Lane (T3) (Approval required for use - refer to Manager, Traffic Services, DPTI) (ARR-157)",R7-9-2C R7-9-2E R7-9-2D,"600 x 600
+1200 x 1200
+900 x 900"
+,'xxx' m Ahead (For use with R6-22),R7-SA100A R7-SA100B R7-SA100C,"1200 x 800
+1440 x 960
+1800 x 1200"
+,Ahead (Also see R7-2),R7-SA2B R7-SA2A,"1800 x 600
+1650 x 550"
+,End,R7-SA4,1650 x 600
+,"Bicycle Path Only (ARR-239,242,252)",R8-1C R8-1B R8-1A,"600 x 800
+450 x 600
+300 x 400"
+,"Shared Path (ARR-242,252)",R8-2A R8-2B R8-2C,"300 x 400
+450 x 600
+600 x 800"
+,"Separated Path (L or R) (left shown) (ARR-239,252)",R8-3A R8-3C R8-3B,"300 x 300
+600 x 600
+450 x 450"
+,Pedestrian Cyclist and Horses,R8-SA100,300 x 675
+,Over 'xx' t GVM,R9-10A R9-10B R9-10C,"600 x 400
+900 x 600
+1200 x 800"
+,Vehicles Over xxm Long,"R9-11-1D R9-11-1C R9-11-1A
+R9-11-1B(Illust.)","1200 x 1000
+900 x 750
+450 x 375
+600 x 500"
+,Over xxm Long,R9-11-2AA R9-11-2C R9-11-2A R9-11-2B,"450 x 300
+1200 x 800
+600 x 400
+900 x 600"
+,Times of operation module - single time period,R9-1-1B R9-1-1D R9-1-1AA R9-1-1C R9-1-1A,"600 x 450
+1200 x 800
+300 x 200
+900 x 600
+450 x 300"
+,Times of operation Module - two time periods,R9-1-2B R9-1-2AA R9-1-2A R9-1-2C R9-1-2D,"600 x 600
+300 x 300
+450 x 450
+900 x 900
+1200 x 1200"
+Sign Image,Sign Code,Description,Size (W x H)
+,At All Times (Use of this sign is restricted see AS1742.12),R9-1-3C R9-1-3D R9-1-3B,"900 x 600
+1200 x 800
+600 x 400"
+,Regulatory,R9-19B R9-19C R9-19A,"900 x 750
+1050 x 875
+750 x 625"
+,Buses Excepted (Use with R2-9),R9-2AA R9-2A R9-2C R9-2B,"300 x 200
+450 x 300
+750 x 500
+600 x 400"
+,Bicycles Excepted (Use with R2-9),R9-3A R9-3AA R9-3C R9-3D R9-3B,"450 x 300
+300 x 200
+750 x 500
+1500 x 300
+600 x 400"
+,Authorised Vehicles Excepted (application Road Traffic Act Regulations ONLY),R9-4C R9-4A R9-4B,"750 x 500
+450 x 300
+600 x 400"
+,On Freeway,R9-5C R9-5D,"750 x 375
+900 x 450"
+,Next 'x' m (One Line),R9-6-1B R9-6-1C R9-6-1A,"1000 x 200
+1200 x 240
+750 x 150"
+Sign Image,Sign Code,Description,Size (W x H)
+,Next 'x' m (Two Lines),R9-6-2A R9-6-2C R9-6-2B,"450 x 300
+750 x 500
+600 x 400"
+,Next 'x' km (One Line),R9-7-1B R9-7-1C R9-7-1A,"1000 x 200
+1200 x 240
+750 x 150"
+,Next 'x' km (Two Lines),R9-7-2A R9-7-2C R9-7-2B,"450 x 300
+750 x 500
+600 x 400"
+,AT (Street Name) (formerly R9-SA53-1),R9-8A R9-8B R9-8C,"450 x 450
+600 x 600
+750 x 750"
+,One Lane,R9-9B R9-9A,"750 x 500
+600 x 400"
+,Busway Buses Excepted,R9-SA101A R9-SA101D R9-SA101C R9-SA101B,"450 x 300
+900 x 600
+750 x 500
+600 x 400"
+,Emergency Vehicles Excepted,R9-SA102A R9-SA102B R9-SA102C,"450 x 300
+600 x 400
+900 x 600"
+,Fuel Tankers Excepted,R9-SA103B R9-SA103A,"600 x 400
+450 x 300"
+,Trams Excepted,R9-SA104C R9-SA104B R9-SA104A,"750 x 500
+600 x 400
+450 x 300"
+,Local Delivery or Pickup Excepted (Use only with R6-10- 2) (Refer to Manger Traffic Services Section of DIT before use),R9-SA105B R9-SA105C R9-SA105A,"900 x 750
+1200 x 1000
+600 x 500"
+,"Over XX.X t (Only use with R6-28) (Approval required for use - refer to Manager, Traffic Services, DPTI)",R9-SA106B R9-SA106C,"1200 x 700
+1800 x 1050"
+,"On green arrow (only to be used with R2-15)(Approval required for use - refer to Manager, Traffic Services, DPTI)",R9-SA107B R9-SA107A,"600 x 800
+450 x 600"
+,Bus Lane Vehicles Excepted (Refer to Manager Traffic Services Section of DIT before use) (ARR-154),R9-SA108A R9-SA108B,"450 x 450
+600 x 600"
+,Heavy Vehicles Excepted,R9-SA109C R9-SA109A R9-SA109B,"750 x 500
+450 x 300
+600 x 400"
+,Hook Turn Excepted,R9-SA110A R9-SA110B,"450 x 300
+600 x 400"
+,Garbage Trucks Excepted,R9-SA111A R9-SA111B R9-SA111C,"450 x 300
+600 x 400
+750 x 500"
+,Trucks Excepted,R9-SA113C R9-SA113A R9-SA113B,"750 x 500
+450 x 300
+600 x 400"
+,On Ramp,R9-SA17B R9-SA17C,"600 x 400
+900 x 600"
+,Police Vehicles Excepted,R9-SA50C R9-SA50A R9-SA50B,"750 x 500
+450 x 300
+600 x 400"
+,Ambulances Excepted,R9-SA51B R9-SA51C R9-SA51A,"600 x 400
+750 x 500
+450 x 300"
+,High Vehicles Excepted,R9-SA52C R9-SA52B R9-SA52A,"750 x 500
+600 x 400
+450 x 300"
+,"AT - (Three lines-name of road ) install in advance of intersection with R2-5, R2-6, R2-7, R2-9 only",R9-SA53-2A R9-SA53-2B R9-SA53-2C,"450 x 450
+600 x 600
+750 x 750"
+,Emergency and Maintenance Vehicles Excepted (application Road Traffic Act Regulations ONLY),R9-SA54B R9-SA54A R9-SA54C,"600 x 600
+450 x 450
+750 x 750"
+,"TO - (Two lines - name of road) installed at intersection with R2-5, R2-6, R2-7, R2-9 only",R9-SA55-1A R9-SA55-1C R9-SA55-1B,"450 x 300
+750 x 500
+600 x 400"
+,"TO - (Three lines-name of road) installed at intersection with R2-5,R2-6, R2-7, R2-9 only",R9-SA55-2B R9-SA55-2A R9-SA55-2C,"600 x 600
+450 x 450
+750 x 750"
+,Sat - Sun,R9-SA56,450 x 150
+,Dual Times School Days,R9-SA57C R9-SA57D R9-SA57A R9-SA57B,"900 x 900
+1200 x 1200
+450 x 450
+600 x 600"
+,Give Way (Multi-Message Sign ONLY),RM1-2A,600 x 600
+,All Traffic Turn (Multi-Message Sign ONLY),RM2-14A,600 x 600
+,No Entry (Multi-Message Sign ONLY),RM2-4A,600 x 600
+,No Left Turn / No Right Turn (Multi-Message Sign ONLY),RM2-6A,600 x 600
+,End Speed Limit (Multi-Message Sign ONLY),RM4-12D,600 x 900
+,Speed Restriction (Multi-Message Sign ONLY),RM4-1A,600 x 600
+,End Speed Limit (Multi-Message Sign ONLY),RM4-SA12A,600 x 600
+,No Overtaking Or Passing (Multi-Message Sign ONLY),RM6-1C,1200 x 600
+,Stop Here On Red Signal (Multi-Message Sign ONLY),RM6-6C,1200 x 600
+,One Lane (Multi-Message Sign ONLY),RM9-9A,600 x 600
+,Heavy Vehicles Excepted (Multi-Message Sign ONLY),RM9-SA109A,600 x 600
+,Buses Excepted (Multi-Message Sign ONLY),RM9-SA2A,600 x 600
+,Railway Crossing Width Marker Assembly - G9-32 G9-33 D4-3(L) D4-3(R),RX-9,2550 x 900
+,Airport / Name Symbol(L or R or Through),S109,350 x 350
+,Airfield Symbol (L or R or through),S11,350 x 350
+,24 Hr Emergency Service Symbol,S110,350 x 350
+,Accommodation Symbol (B&B),S112-B,420 x 350
+,Accommodation Symbol (Cabins),S112-C,420 x 350
+,Accommodation Symbol (Hostel),S112-HOS,420 x 350
+,Accommodation Symbol (Hotel),S112-HOT,420 x 350
+,Accommodation Symbol (Motel),S112-M,420 x 350
+,Barbecue Symbol,S113,350 x 350
+,Accredited Visitor Information Centre Symbol - ONLY Golden 'i'. (Refer to Traffic Operations Section of DPTI),S114,350 x 350
+,Bus (Refer to Traffic Operations Section of DPTI),S117,350 x 350
+,Park 'n' Ride (bus),S118,420 x 350
+,Hook Turn Symbol (for R2-21s),S119,420 x 420
+,Rest Area Symbol,S12,350 x 350
+,Road Train Symbol (Refer to Traffic Operations Section of DPTI),S120,1960 x 350
+,Car Towing Caravan Symbol (Refer to Traffic Operations Section of DPTI),S125,1400 x 350
+,24 hr Fuel Symbol,S126,350 x 350
+,Truck Parking Area Symbol,S13,420 x 350
+,Ferry or Ferries Symbol (Coastal Waters),S137,1190 x 350
+,Interstate Bus Terminal Symbol (Refer to Traffic Operations Section of DPTI),S138,420 x 350
+,Interstate Train Terminal Symbol (Refer to Traffic Operations Section of DPTI),S139,420 x 350
+,Parking Symbol,S14,350 x 350
+,Train / Tram Station Symbol,S140,280 x 350
+,Park 'n' Ride (train),S141,420 x 350
+,Disabled Parking Symbol,S143,420 x 350
+,Train & Bus Station Parking Symbol,S144,420 x 350
+,EV Electric Vehicle Charging - For use at rapid charging facilities with min 50 kW in urban areas and 75 kW in rural areas.,S148,350 x 350
+,Toilet Symbol,S16,350 x 350
+,Fireplace Symbol (see S113 barbecue symbol),S18,420 x 350
+,12 hour Casualty Service Symbol (Clinic),S1-C,350 x 350
+,12 hour Casualty Service Symbol (First Aid),S1-F,350 x 350
+,12 hour Casualty Service Symbol (Hospital),S1-H,350 x 350
+,Phone (Public) Symbol,S2,280 x 350
+,Drinking Water Symbol,S20,280 x 350
+,Boat Ramp Symbol,S21,420 x 350
+,Disabled Access Symbol,S22,280 x 350
+,No Truck Parking Symbol (Formerly S108),S23,350 x 350
+,Police Symbol (Formerly S101),S24,350 x 350
+,Help Phone Symbol (Formerly S127),S25,420 x 350
+,Caravan Dump Point Symbol (Refer to Traffic Operations Section of DPTI) (Formerly S142),S26,350 x 350
+,Information Bay Symbol (Formerly S124),S27,350 x 350
+,Public Golf Course Symbol (Refer to Traffic Operations Section of DPTI) (Formerly TS145),S28,350 x 350
+,Petrol Symbol - open for at least 12 hrs (Refer to S126 for 24 hr fuel),S3,350 x 350
+,Information Symbol (White I)- Not for accredited Visitor Information Centres. (Refer to Traffic Operations Section of DPTI),S4,280 x 350
+,Restaurant Symbol,S5,280 x 350
+,Accommodation Symbol,S6,420 x 350
+,Refreshment Symbol,S7,420 x 350
+,Camping Area Symbol,S8,420 x 350
+,Caravan Park Symbol,S9,420 x 350
+,Traffic Hazard,T1-10,1200 x 600
+,Roadwork 'x' km Ahead,T1-16B T1-16A,"2400 x 900
+1800 x 600"
+,Prepare To Stop,T1-18A T1-18B,"900 x 600
+1200 x 900"
+,(Symbolic) Stock Ahead (Not to be used in S.A. - refer to TES6396),T1-19A T1-19B,"900 x 600
+1200 x 900"
+,Roadwork Ahead,T1-1A T1-1B,"1800 x 600
+2400 x 900"
+,New Roundabout,T1-21,1800 x 600
+,Changed Signals,T1-22,1200 x 600
+,Changed Traffic Conditions (Install for 3 Months max),T1-23AA T1-23,"1200 x 750
+1800 x 900"
+,Roadwork Next 'x' km,T1-24A T1-24B,"1800 x 600
+2400 x 900"
+,Roadwork On Side Road,T1-25AA T1-25,"900 x 900
+1800 x 600"
+,Road Plant On Side Road,T1-27,1800 x 600
+,Next 'x' km,T1-28B T1-28A,"900 x 900
+600 x 600"
+,Bridgework 'x' km Ahead,T1-29,1800 x 600
+,Bridgework Ahead,T1-2A,1800 x 600
+,Signals Ahead (Symbolic),T1-30,900 x 600
+,Roadwork Ahead (3 lines),T1-31AA T1-31,"600 x 800
+900 x 1200"
+,Road Plant Ahead (3 lines),T1-3-1A,900 x 600
+,Side Road Closed,T1-32,1500 x 600
+,Side Road Closed,T1-32AA,600 x 800
+,Road Plant Ahead (2 lines),T1-3-2B,1800 x 600
+,Changed Intersection (Install for 3 months max),T1-33,1800 x 600
+,Traffic Controller (Symbolic),T1-34B T1-34A,"1200 x 900
+900 x 600"
+,Stop Here When Directed,T1-35B T1-35A,"1200 x 900
+900 x 600"
+,Grader Ahead,T1-4A,900 x 600
+,Workers (Symbolic),T1-5A T1-5B,"900 x 600
+1200 x 900"
+,Detour Ahead,T1-6B T1-6A,"1800 x 900
+1200 x 600"
+,Next 'x' km,T1-SA102,1200 x 300
+,Speed Limit Changed Ahead (3 lines),T1-SA103A T1-SA103B,"1200 x 750
+1800 x 1170"
+,Speed Limit / Changed Ahead hinged,T1-SA104B T1-SA104A,"1500 x 750
+1200 x 600"
+,Advance Notice Traffic Signals Switch On (time and date),T1-SA105,1500 x 900
+,Event Ahead Speed Limit Changed (optionally hinged),T1-SA106,1200 x 900
+,Speed Limit Changed to be used with R4-1 or R4-10 ONLY (maximum use 2 months. If a longer time is required refer to Tech. Services),T1-SA109A T1-SA109C T1-SA109B,"450 x 450
+900 x 900
+600 x 600"
+,Traffic Accident Ahead,T1-SA11,1200 x 900
+,Heavy Vehicle Detour Ahead,T1-SA112,900 x 600
+,Heavy Vehicle Detour (variable direction arrows),T1-SA113,900 x 600
+,Detour For Heavy Vehicles (L or R),T1-SA114,2100 x 600
+,Signals Not Operating (Refer OI 3.16),T1-SA116B T1-SA116A,"900 x 720
+750 x 600"
+,Caution Vehicle Frequently Stopping (Vehicle Mounted sign),T1-SA117,1350 x 750
+,Signals Not Operating (used at pedestrian facility Refer OI 3.16),T1-SA118,160 x 210
+,Signals Operating Ahead,T1-SA119B T1-SA119A,"1200 x 900
+900 x 675"
+,Workers With Speed Limit 25,T1-SA120B T1-SA120A,"1800 x 900
+1200 x 600"
+,Narrow Lanes Over Bridge,T1-SA121,1200 x 900
+,Left Lane Ends 'x' km Ahead,T1-SA122,1200 x 750
+,'x' km Ahead (used with T2-6-1),T1-SA123,1200 x 300
+,Road Closed Ahead,T1-SA134,600 x 800
+,Linemarking Changed Ahead,T1-SA143,1200 x 750
+,Tram Works Ahead (advice to tram drivers only),T1-SA144,600 x 800
+,Bridgework Ahead (3 lines narrow format),T1-SA2,900 x 1200
+,Changed Traffic Conditions (Install for 3 Months max,T1-SA23D T1-SA23C T1-SA23AA T1-SA23B T1-SA23A,"900 x 600
+750 x 500
+300 x 200
+600 x 400
+450 x 300"
+,Road Plant Next 'x' km,T1-SA26,1800 x 600
+,Workers (Symbolic),T1-SA5,600 x 800
+,Fuel Spill Ahead,T1-SA50,1200 x 900
+,Event Ahead [Reduce Speed],T1-SA51,1500 x 900
+,Grader Ahead Rocks On Road Next 'x' km,T1-SA66A,900 x 600
+,Event Ahead,T1-SA67D T1-SA67A T1-SA67C T1-SA67B,"1200 x 750
+450 x 300
+800 x 500
+600 x 400"
+,Water Over Road,T2-13B T2-13A,"1200 x 900
+900 x 600"
+,End Roadwork (2 line),T2-16A,1800 x 600
+,End Roadwork (3 lines),T2-17AA T2-17A,"600 x 800
+900 x 1200"
+,End Detour,T2-23,1200 x 600
+,Two Way Traffic (Symbolic),T2-24,900 x 600
+,Trucks ( Crossing or Entering)(Symbolic),T2-25,900 x 600
+,Road Closed (previously black/yellow - may be used until 31 December 2021),T2-4,1800 x 300
+,Lane Status (2 Lanes),T2-6-1A T2-6-1B,"1200 x 900
+1800 x 1200"
+,Lane Status (3 Lanes),T2-6-2A T2-6-2B,"1800 x 900
+2400 x 1200"
+,2 Lane Status (reverse curve),T2-6-SA101,1200 x 900
+,3 Lane Status (2 reverse curves),T2-6-SA102,1800 x 900
+,3 Lane Status,T2-6-SA103,1800 x 900
+,3 Lanes Status,T2-6-SA104,1800 x 900
+,Lane Status Left Lanes Blocked Right Thru Median,T2-6-SA106,1200 x 900
+,3 Lane Status (With Right Turn),T2-6-SA107,1800 x 900
+,3 Lane Status (narrow format),T2-6-SA108,900 x 900
+,2 Lane Status (narrow format),T2-6-SA109,900 x 900
+,3 Lane Status (2 Reverse curves thru median),T2-6-SA110,1200 x 1350
+,2 Lane Status (with right turn),T2-6-SA117,1200 x 900
+,4 Lane Status (with left / right turns),T2-6-SA118,1500 x 900
+,2 Lanes Status,T2-6-SA119,1800 x 900
+,4 lanes status,T2-6-SA120,1500 x 900
+,4 Lanes Status,T2-6-SA3,1800 x 900
+,Track Closed,T2-SA101,1350 x 600
+,Bridge Closed,T2-SA102,1800 x 300
+,Bridgework on Side Road (3 lines),T2-SA103,900 x 900
+,End Event,T2-SA104B T2-SA104A,"600 x 400
+450 x 300"
+,Do not queue over driveways,T2-SA105A,600 x 600
+,Bridge Closed,T2-SA106,1200 x 300
+,"Farm Machinery (Approval required for use - refer to Manager, Traffic Services, DPTI)",T2-SA109,900 x 600
+,End Bridgework (3 lines),T2-SA54,900 x 1200
+,New Work No Lines Marked,T3-11,1500 x 900
+,No Lines Do Not Overtake Unless Safe,T3-12,1500 x 900
+,Gravel Road,T3-13A T3-13B,"900 x 600
+1500 x 900"
+,Loose Surface,T3-14A T3-14B,"900 x 600
+1500 x 900"
+,Bicycle Path Rough Surface,T3-15,600 x 450
+,Advisory Speed 'xx' km/h (2 line),T3-16-1A T3-16-1B,"600 x 600
+900 x 900"
+,Advisory Speed 'xx' km/h (1 line),T3-16-2B T3-16-2A,"1500 x 600
+900 x 400"
+,Slippery (Symbolic),T3-3B T3-3A,"1500 x 900
+900 x 600"
+,Soft Edges,T3-6B T3-6A,"1500 x 900
+900 x 600"
+,Rough Surface,T3-7A T3-7B,"900 x 600
+1500 x 900"
+,Loose Stones (Symbolic),T3-9A T3-9B,"900 x 600
+1500 x 900"
+,End Blasting Area,T4-3AA T4-3A,"1200 x 450
+1800 x 600"
+,Powerline Works In Progress,T4-5,1800 x 900
+,Smoke Hazard,T4-6B T4-6A,"1200 x 900
+900 x 600"
+,Blasting Area Switch Off Radio Transmitters And Mobile Phones,T4-7,1200 x 900
+,Vertical Chevron Marker (Temporary),T4-SA101,150 x 900
+,Road Plates in Use,T4-SA108,600 x 800
+,Rat Collection Point,T4-SA109,1200 x 930
+,Detour > (L or R or S),T5-1A T5-1B,"1200 x 300
+1800 x 450"
+,Temporary Hazard Marker,T5-4,1500 x 450
+,Temporary Hazard Marker,T5-5,600 x 600
+,"Detour Marker (L, R or S)",T5-6,600 x 600
+,Temporary Hazard Marker,T5-7,250 x 1200
+,Driveway Access,T5-SA101,900 x 600
+,Bi-directional Temporary Hazard Marker,T5-SA5,1200 x 600
+,Temporary Post Mounted Delineator for Star Dropper,T5-SA52,125 x 170
+,School Bus,T6-4,1200 x 230
+,Pilot Vehicle Do Not Overtake (Vehicle Mounted),T6-5A T6-5B,"1000 x 350
+1200 x 500"
+,Pilot Vehicle In Use (Vehicle Mounted),T6-6B T6-6A,"1200 x 900
+900 x 600"
+,Linemarking (temporary hazard marker) (L&R),T6-SA1,1000 x 600
+,"Survey Vehicle (Refer to Traffic Operations Section, DPTI
+)",T6-SA109,800 x 600
+,SLOW bat (use on back of R6-8 STOP),T7-1A T7-1B,"450 x 450
+600 x 600"
+,Pedestrians Watch Your Step,T8-1,900 x 600
+,Pedestrians (L or R),T8-2,1200 x 300
+,Use Other Footpath,T8-3,900 x 600
+,Footpath Closed,T8-4,900 x 600
+,Look Both Ways Two-Way Traffic,T8-5,900 x 600
+,Shared Path Closed,T8-SA103,900 x 600
+,Temporary Advance Notice Sign (advising of Road or Bridgeworks or Community Events),TES13004A TES13004B,"1400 x 1650
+1400 x 1950"
+,Railway Crossing Position With Target Board Stop Look For Trains,TES 13908(1),750 x 1800
+,Remember 50 Unless Otherwise Signed,TES15342,1200 x 1050
+,"SA Government Black Spot Project Sign (install at
+project commencement / remove at project completion)",TES15567B TES15567A,"900 x 1200
+600 x 900"
+,"SA Government Funded Project Sign (only projects
+>$500,000 / install at project commencement / remove at project completion)",TES17031B TES17031A,"3000 x 2000
+1800 x 1200"
+,Keep Track Tracks Clear Xm,TES 18383,1400 x 1800
+,"Drive on Left (not to be used on road network, property & carpark exits only)",TES18546,450 x 600
+,Cross Road Intersection (Unsealed Road Only),TES18903,750 x 750
+,For Roadwork Enquiries Phone (Multi-Message Sign ONLY),TES18977,1200 x 900
+,Speed Limit Changed Warning Sign,TES19085,750 x 450
+,Red Light & Speed Camera Ahead (< 80 km/h),TES19687,1350 x 1200
+,Red Light & Speed Camera Ahead (>= 80 km/h),TES19688,1950 x 1650
+,Speed Camera Ahead (< 80 km/h),TES19689,1350 x 1200
+,Speed Camera Ahead (>= 80 km/h),TES19690,1950 x 1650
+,Speed Limits Apply 40 On Beach 25 Within 50m of a Person - See OI 4.12 for use.,TES20179,1350 x 900
+,Stock on Road,TES6396,900 x 600
+,Advance Notice - Roadworks Commencing,TES9571,1350 x 1050
+,Grain Trucks Crossing (O.I .2.24),TES9899,1350 x 900
+,Lane Status (Multi-Message Sign ONLY),TM10-10A,600 x 600
+,Lane Status (Multi-Message Sign ONLY),TM10-11A,600 x 600
+,Lane Status (Multi-Message Sign ONLY),TM10-12A,600 x 600
+,Lane Status (Multi-Message Sign ONLY),TM10-13A,600 x 600
+,Lane Status (Multi-Message Sign ONLY),TM10-14A,600 x 600
+,Lane Status (Multi-Message Sign ONLY),TM10-15A,600 x 600
+,Lane Status (Multi-Message Sign ONLY),TM10-16A,600 x 600
+,Lane Status - Through Median (Multi-Message Sign ONLY) (Replaces T2-SA6-3M),TM10-17A,600 x 600
+,Lane Through Ahead (Multi-Message Sign ONLY) (Replaces T2-SA6-1M),TM10-1A,600 x 600
+,Lane Closed Ahead (Multi-Message Sign ONLY) (Replaces T2-SA6-2M),TM10-2A,600 x 600
+,Left Lane of Two Lane Closed (Multi-Message Sign ONLY) (Replaces T2-6-1M),TM10-3A,600 x 600
+,Right Lane of Two Lane Closed (Multi-Message Sign ONLY),TM10-4A,600 x 600
+,Two Lanes Ahead (Multi-Message Sign ONLY),TM10-5A,600 x 600
+,Two Lanes Closed Ahead (Multi-Message Sign ONLY),TM10-6A,600 x 600
+,Lane Status (Multi-Message Sign ONLY),TM10-7A,600 x 600
+,Lane Status (Multi-Message Sign ONLY),TM10-8A,600 x 600
+,Lane Status (Multi-Message Sign ONLY),TM10-9A,600 x 600
+,Merge Left (Multi-Message Sign ONLY),TM10-SA111A,600 x 600
+,Merge Right (Multi-Message Sign ONLY),TM10-SA112A,600 x 600
+,Lateral Shift Left - 2 Lanes (Multi-Message Sign ONLY),TM10-SA113A,600 x 600
+,Lateral Shift Right - 2 Lanes (Multi-Message Sign ONLY),TM10-SA114A,600 x 600
+,Merge Left - Right Lane (Multi-Message Sign ONLY),TM10-SA115A,600 x 600
+,Merge Right - Left Lane (Multi-Message Sign ONLY),TM10-SA116A,600 x 600
+,Lane Status - Through Arrow - Narrow,TM10-SA117A,300 x 600
+,Lane Status - Lane Ends - Narrow,TM10-SA118A,300 x 600
+,Lane Status - Right - Narrow,TM10-SA119A,300 x 600
+,Lane Status - Left - Narrow,TM10-SA120A,300 x 600
+,Lane Status - Right Through - Narrow,TM10-SA121A,300 x 600
+,Lane Status - Through Left - Narrow,TM10-SA122A,300 x 600
+,2 Lanes Status (Multi-Message Sign ONLY),TM10-SA14C,1200 x 600
+,Traffic Hazard (Multi-Message Sign ONLY),TM1-10A,600 x 600
+,Traffic Hazard (Multi-Message Sign ONLY),TM1-10C,1200 x 600
+,Prepare to Stop (Multi-Message sign ONLY),TM1-18A,600 x 600
+,Prepare To Stop (Multi-Message Sign ONLY),TM1-18B,1200 x 300
+,Roadwork Ahead (Multi-Message Sign ONLY),TM1-1A,600 x 600
+,Roadwork Ahead (Multi-Message Sign ONLY) (Replaces T1-1M),TM1-1B,1200 x 300
+,Roadwork Ahead (Multi-Message Sign ONLY),TM1-1C,1200 x 600
+,Roadwork On Side Road (Multi-Message Sign ONLY),TM1-25C,1200 x 600
+,Road Plant On Side Road (Multi-Message Sign ONLY),TM1-27C,1200 x 600
+,Next 'xx' km (Multi-Message Sign ONLY),TM1-28A,600 x 600
+,Next 'x' km (Multi-Message Sign ONLY),TM1-28B,1200 x 300
+,Bridgework Ahead (Multi-Message Sign ONLY) (Replaces T1-2M),TM1-2A,600 x 600
+,Bridgework Ahead (Multi-Message Sign ONLY),TM1-2C,1200 x 600
+,Signals Ahead (Symbolic) (Multi-Message Sign ONLY),TM1-30A,600 x 600
+,Road Plant Ahead (Multi-Message Sign ONLY) (Replaces T1-3-1M),TM1-3-1A,600 x 600
+,Side Road Closed (Multi-Message Sign ONLY),TM1-32A,600 x 600
+,Road Plant Ahead (Multi-Message Sign ONLY),TM1-3-2C,1200 x 600
+,Traffic Controller (Symbolic) (Multi-Message Sign ONLY),TM1-34A,600 x 600
+,Stop Here When Directed (Multi-Message Sign ONLY),TM1-35C,1200 x 600
+,'x' km Ahead (Multi-Message Sign ONLY),TM1-36B,1200 x 300
+,Surveyors Ahead (Multi-Message Sign ONLY),TM1-37C,1200 x 600
+,Road Hump Ahead (Multi-Message Sign ONLY) (Replaces T1-SA129M),TM1-38A,600 x 600
+,Signal Works Ahead (Multi-Message Sign ONLY),TM1-39A,600 x 600
+,Line Marking Ahead (Multi-Message Sign ONLY),TM1-40A,600 x 600
+,Mowing Ahead (Multi-Message Sign ONLY),TM1-41A,600 x 600
+,Tram Works Ahead (Multi-Message Sign ONLY),TM1-42A,600 x 600
+,Road Closed Ahead (Multi-Message Sign ONLY) (Replaces T1-SA134M),TM1-43A,600 x 600
+,Road Closed Ahead (Multi-Message Sign ONLY),TM1-43C,1200 x 600
+,Burning Off Ahead (Multi-Message Sign ONLY),TM1-44A,600 x 600
+,Burning Off Ahead (Multi-Message Sign ONLY),TM1-44C,1200 x 600
+,Traffic Incident Ahead (Multi-Message Sign ONLY),TM1-45A,600 x 600
+,Burning Off Ahead (Multi-Message Sign ONLY),TM1-45C,1200 x 600
+,Queued Traffic Ahead (Multi-Message Sign ONLY),TM1-46A,600 x 600
+,Queued Traffic Symbol (Multi-Message Sign ONLY),TM1-47A,600 x 600
+,Road Side Hazard (Multi-Message Sign ONLY),TM1-49A,600 x 600
+,Grader Ahead (Multi-Message Sign ONLY) (Replaces T1- 4M),TM1-4A,600 x 600
+,Watch For Wandering Animals (Multi-Message Sign ONLY),TM1-50A,600 x 600
+,Ahead (Multi-Message Sign ONLY),TM1-51B,1200 x 300
+,Workers (Symbolic) (Multi-Message Sign ONLY),TM1-5A,600 x 600
+,Workers (Symbolic) (Multi-Message Sign ONLY),TM1-5C,1200 x 600
+Sign Image,Sign Code,Description,Size (W x H)
+,Detour Ahead (Multi-Message Sign ONLY),TM1-6A,600 x 600
+,Detour Ahead (Multi-Message Sign ONLY),TM1-6B,1200 x 300
+,Traffic Hazard (Multi-Message Sign ONLY),TM1-SA10B,1200 x 300
+,'xxx' m Ahead (Multi-Message Sign ONLY),TM1-SA140B,1200 x 300
+,Merge 'xxx' m Ahead (Multi-Message Sign ONLY),TM1-SA141B,1200 x 300
+,Bicycle Detour Ahead,TM1-SA145A,600 x 600
+,Drive Carefully (Multi-Message Sign ONLY),TM1-SA147B,1200 x 300
+,Expect Delays 'xx' min (Multi-Message Sign ONLY),TM1-SA149A,600 x 600
+,Use Alt Route (Multi-Message Sign ONLY),TM1-SA150A,600 x 600
+,End Roadwork (Multi-Message Sign ONLY),TM2-17A,600 x 600
+,End Roadwork,TM2-17B,1200 x 300
+,End Roadwork (Multi-Message Sign ONLY),TM2-17C,1200 x 600
+,End Detour (Multi-Message Sign ONLY),TM2-23C,1200 x 600
+,Two Way Traffic Lane Status (Multi-Message Sign ONLY),TM2-24A,600 x 600
+,Trucks (Symbolic) (Multi-Message Sign ONLY),TM2-25A,600 x 600
+,Roadwork (Multi-Message Sign ONLY),TM2-26A,600 x 600
+,Roadwork (Multi-Message Sign ONLY),TM2-26B,1200 x 300
+,Roadwork (Multi-Message Sign ONLY),TM2-26C,1200 x 600
+,Bridgework (Multi-Message Sign ONLY),TM2-27A,600 x 600
+,Bridgework (Multi-Message Sign ONLY),TM2-27B,1200 x 300
+,Bridgework (Multi-Message Sign ONLY),TM2-27C,1200 x 600
+,End Bridgework (Multi-Message Sign ONLY),TM2-28A,600 x 600
+,Trenching Works (Multi-Message Sign ONLY) (Replaces T4-SA104-2M),TM2-29A,600 x 600
+,Trenching Works (Multi-Message Sign ONLY) (Replaces T4-SA104-1M),TM2-29B,1200 x 300
+,Mowing (Multi-Message Sign ONLY),TM2-30B,1200 x 300
+,Litter Collection (Multi-Message Sign ONLY) (Replaces T4-SA106-2M),TM2-31A,600 x 600
+,Litter Collection (Multi-Message Sign ONLY) (Replaces T4-SA106-1M),TM2-31B,1200 x 300
+,Utility Repairs (Multi-Message Sign ONLY) (Replaces T4- SA102-2M),TM2-32A,600 x 600
+,Utility Repairs (Multi-Message Sign ONLY) (Replaces T4- SA102-1M),TM2-32B,1200 x 300
+,Emergency Works (Multi-Message Sign ONLY) (Replaces T4-SA103-2M),TM2-33A,600 x 600
+,Emergency Works (Multi-Message Sign ONLY) (Replaces T4-SA103-1M),TM2-33B,1200 x 300
+,Survey Works (Multi-Message Sign ONLY) (Replaces T1- SA110M),TM2-34A,600 x 600
+,Surveyors (Multi-Message Sign ONLY),TM2-35B,1200 x 300
+,Road Plates In Use (Multi-Message Sign ONLY) (Replaces T4-SA108-2M),TM2-36A,600 x 600
+,Road Plates In Use (Multi-Message Sign ONLY) (Replaces T4-SA108-1M),TM2-36C,1200 x 600
+,Powerline Works (Multi-Message Sign ONLY),TM2-37A,600 x 600
+,Powerline Works (Multi-Message Sign ONLY),TM2-37C,1200 x 600
+,On Ramp (Multi-Message Sign ONLY),TM2-38A,600 x 600
+,On Ramp (Multi-Message Sign ONLY),TM2-38B,1200 x 600
+,Merge Left (Multi-Message Sign ONLY),TM2-39A,600 x 600
+,Merge Left (Multi-Message Sign ONLY),TM2-39B,1200 x 300
+,Merge Right (Multi-Message Sign ONLY),TM2-40A,600 x 600
+,Merge Right (Multi-Message Sign ONLY),TM2-40B,1200 x 300
+,Local Access Only (Multi-Message Sign ONLY),TM2-41A,600 x 600
+,Slow Moving Vehicle (Multi-Message Sign ONLY),TM2-42A,600 x 600
+,Changed Traffic Conditions (Multi-Message Sign ONLY),TM2-44A,600 x 600
+,Oversize Vehicle (Multi-Message Sign ONLY),TM2-45A,600 x 600
+,Heavy Vehicles (Multi-Message Sign ONLY),TM2-46A,600 x 600
+,High Vehicles (Multi-Message Sign ONLY),TM2-47A,600 x 600
+,Signals Not Operating Symbolic (Multi-Message Sign ONLY),TM2-48A,600 x 600
+,Signals Not In Use (Multi-Message Sign ONLY),TM2-49A,600 x 600
+,Road Closed (Multi-Message Sign ONLY) (previously black/yellow - may be used until 31 December 2021),TM2-4B,1200 x 300
+,Road Closed (Multi-Message Sign ONLY) (previously black/yellow - may be used until 31 December 2021),TM2-4C,1200 x 600
+,Signals Under Repair (Multi-Message Sign ONLY),TM2-50A,600 x 600
+,Road Hump (Multi-Message Sign ONLY) (Replaces T1- SA130M),TM2-51A,600 x 600
+,Boom Barrier (Multi-Message sign ONLY) (Replaces T1- SA146M),TM2-52A,600 x 600
+,Keep Tracks Clear (Multi-Message Sign ONLY) (Replaces T1-SA124M),TM2-53A,600 x 600
+,Tram Only (Multi-Message Sign ONLY) (Replaces T1- SA142M),TM2-54A,600 x 600
+,Tram Works (Multi-Message Sign ONLY),TM2-55A,600 x 600
+,End Tram Works (Multi-Message sign ONLY) (Replaces T2-SA55M),TM2-56A,600 x 600
+,For Roadwork Enquiries (Multi-Message Sign ONLY),TM2-57C,1200 x 600
+,Driveway Access (Multi-Message Sign ONLY),TM2-SA101A,600 x 600
+,End (Multi-Message Sign ONLY),TM2-SA106A,600 x 600
+,End (Multi-Message Sign ONLY),TM2-SA106C,1200 x 600
+,Road Inspection (Multi-Message Sign ONLY),TM2-SA107A,600 x 600
+,Road Inspection (Multi-Message Sign ONLY),TM2-SA107B,1200 x 300
+,Weed Control (Multi-Message Sign ONLY),TM2-SA110A,600 x 600
+,Weed Control (Multi-Message Sign ONLY),TM2-SA110B,1200 x 300
+,Tree Planting (Multi-Message Sign Only),TM2-SA111A,600 x 600
+,Tree Planting (Multi-Message Sign Only),TM2-SA111B,1200 x 300
+,Business And Residential Traffic Only,TM2-SA112A,600 x 600
+,Do not queue over driveways,TM2-SA113A,600 x 600
+,Do not queue over driveways,TM2-SA114,1200 x 600
+,Road Closed (Multi-Message Sign ONLY) (previously black/yellow - may be used until 31 December 2021),TM2-SA4A,600 x 600
+,New Work No Lines Marked (Multi-Message Sign ONLY),TM3-11C,1200 x 600
+,No Lines Do Not Overtake Unless Safe (Multi-Message Sign ONLY),TM3-12C,1200 x 600
+,Gravel Road (Multi-Message Sign ONLY),TM3-13A,600 x 600
+,Gravel Road (Multi-Message Sign ONLY),TM3-13B,1200 x 300
+,Loose Surface (Multi-Message Sign ONLY),TM3-14A,600 x 600
+,Loose Surface (Multi-Message Sign ONLY),TM3-14B,1200 x 300
+,'xx' km/h (Multi-Message Sign ONLY),TM3-16-1A,600 x 600
+,No Lines (Multi-Message Sign ONLY),TM3-17A,600 x 600
+,Line Marking (Multi-Message Sign ONLY),TM3-18A,600 x 600
+,Line Marking (Multi-Message Sign ONLY),TM3-18B,1200 x 300
+,Loose Stones (Multi-Message Sign ONLY),TM3-19B,1200 x 600
+,Wet Bitumen (Multi-Message Sign ONLY),TM3-20A,600 x 600
+,Water Over Road (Multi-Message Sign ONLY),TM3-21A,600 x 600
+,Due To Flooding (Multi-Message Sign ONLY),TM3-22B,1200 x 300
+,Fallen Rocks (Multi-Message Sign ONLY),TM3-23B,1200 x 600
+,Road Flooded (Multi-Message Sign ONLY),TM3-24A,600 x 600
+,Deep Edge Drop (Multi-Message Sign ONLY) (Replaces T3-SA101-2M),TM3-25A,600 x 600
+,Slippery (Multi-Message Sign ONLY),TM3-3A,600 x 600
+,Soft Edges (Multi-Message Sign ONLY),TM3-6A,600 x 600
+,Soft Edges (Multi-Message Sign ONLY),TM3-6B,1200 x 300
+,Rough Surface (Multi-Message Sign ONLY),TM3-7A,600 x 600
+,Rough Surface (Multi-Message Sign ONLY),TM3-7B,1200 x 300
+,Loose Stones (Symbolic) (Multi-Message Sign ONLY),TM3-9A,600 x 600
+,Wet Paint On Road (Multi-Message Sign ONLY),TM3-SA101C,1200 x 600
+,Deep Edge Drop (Symbolic) (Multi-Message Sign ONLY) refer TES16542 for larger size,TM3-SA102A,600 x 600
+,Road Surfacing (Multi-Message Sign ONLY),TM3-SA103A,600 x 600
+,Road Surfacing (Multi-Message Sign ONLY),TM3-SA103B,1200 x 300
+,Kerbing Repairs (Multi-Message Sign ONLY),TM3-SA104A,600 x 600
+,Kerbing Repairs (Multi-Message Sign ONLY),TM3-SA104B,1200 x 300
+,New Surface (Multi-Message Sign ONLY),TM3-SA105B,1200 x 300
+,No Lines Marked (Multi-Message Sign ONLY),TM3-SA106A,600 x 600
+,No Lines Marked (Multi-Message Sign ONLY),TM3-SA106B,1200 x 300
+,No Lines Marked (Multi-Message Sign ONLY),TM3-SA106C,1200 x 600
+,Deep Edge Drop (Multi-Message Sign ONLY),TM3-SA25B,1200 x 300
+,Hazardous Material (Multi-Message Sign ONLY),TM4-10A,600 x 600
+,End Blasting Area (Multi-Message Sign ONLY),TM4-3C,1200 x 600
+,Powerline Works In Progress (Multi-Message Sign ONLY),TM4-5C,1200 x 600
+,Smoke Hazard (Multi-Message Sign ONLY) (Replaces T4- 6M),TM4-6A,600 x 600
+,Smoke Hazard (Multi-Message Sign ONLY),TM4-6B,1200 x 600
+,UHF Channel (Multi-Message Sign ONLY),TM4-8A,600 x 600
+,UHF Channel (Multi-Message Sign ONLY) (Replaces T1- SA148M),TM4-8B,1200 x 300
+,Bush Fire (Multi-Message Sign ONLY),TM4-9A,600 x 600
+,Bush Fire (Multi-Message Sign ONLY),TM4-9B,1200 x 300
+,Covid-19 Testing (Multi-Message Sign ONLY),TM4-SA101A,600 x 600
+,DAMAGED BARRIER (Multi-Message Sign ONLY),TM4-SA109A,600 x 600
+,DAMAGED BARRIER (Multi-Message Sign ONLY),TM4-SA109B,1200 x 300
+,Prescribed Burn (Multi-Message Sign ONLY),TM4-SA112B,1200 x 300
+,COVID-19 TESTING QUEUES,TM4-SA113A,600 x 600
+,COVID-19 TRAFFIC ONLY,TM4-SA114A,600 x 600
+,No queuing for covid-19 testing,TM4-SA115A,600 x 900
+,Rat Collection Point,TM4-SA116C,1200 x 600
+,Rat pick up point,TM4-SA117A,600 x 600
+,On Side Road L/R (Multi-Message Sign ONLY),TM5-10B,1200 x 300
+,Detour For Heavy Vehicles L/R (Multi-Message Sign ONLY),TM5-11C,1200 x 600
+,Detour For High Vehicles L/R (Multi-Message Sign ONLY),TM5-12C,1200 x 600
+,< Detour (Multi-Message Sign ONLY) (Left or Right or Straight),TM5-1B,1200 x 300
+,Detour Marker (Multi-Message Sign ONLY),TM5-6A,600 x 600
+,Detour (Multi-Message Sign ONLY),TM5-7A,600 x 600
+,Detour (Multi-Message Sign ONLY),TM5-7B,1200 x 300
+,Horizontal Arrow (Multi-Message Sign ONLY),TM5-8B,1200 x 300
+,On Side Road (Multi-Message Sign ONLY) (Replaces T1- 25-2M),TM5-9A,600 x 600
+,On Side Road (Multi-Message Sign ONLY) (Replaces T1- 25-1M),TM5-9B,1200 x 300
+,Bicycle Detour,TM5-SA101A,600 x 600
+,Bicycle Detour,TM5-SA102A,600 x 600
+,Proceed When Clear (Multi-Message Sign ONLY),TM5-SA103B,1200 x 300
+,Narrow Footpath Ahead (Multi-Message Sign ONLY),TM8-10A,600 x 600
+,Path Closed Ahead,TM8-11A,600 x 600
+,Path Closed (Multi-Message Sign ONLY),TM8-12A,600 x 600
+,Pedestrian Hazard (Multi-Message Sign ONLY) (Replaces T8-SA101-2M),TM8-13A,600 x 600
+,Pedestrian Hazard (Multi-Message Sign ONLY) (Replaces T8-SA101-1M),TM8-13B,1200 x 300
+,Cycling Hazard (Multi-Message Sign ONLY) (Replaces T1-SA132-2M),TM8-14A,600 x 600
+,Cycling Hazard (Multi-Message Sign ONLY) (Replace T1- SA132-1M),TM8-14B,1200 x 300
+,Bicycle Lane Closed Ahead,TM8-15A,600 x 600
+,Bicycle Lane Closed (Multi-Message Sign ONLY),TM8-16A,600 x 600
+,Symbolic Bicycle Ahead (Multi-Message Sign ONLY),TM8-17A,600 x 600
+,Symbolic Bicycle (Multi-Message Sign ONLY),TM8-18A,600 x 600
+,Accessible Path and Pedestrian Path (Multi-Message Sign ONLY),TM8-19C,1200 x 600
+,Pedestrians Watch Your Step (Multi-Message Sign ONLY),TM8-1C,1200 x 600
+,Accessible Path (Multi-Message Sign ONLY),TM8-20B,1200 x 300
+,Pedestrians (Multi-Message Sign ONLY),TM8-2B,1200 x 300
+,Use Other Footpath (Multi-Message Sign ONLY),TM8-3A,600 x 600
+,Footpath Closed (Multi-Message Sign ONLY),TM8-4A,600 x 600
+,Look Both Ways Two-Way Traffic (Multi-Message Sign ONLY),TM8-5C,1200 x 600
+,Look Both Ways (Multi-Message Sign ONLY),TM8-6A,600 x 600
+,Watch Your Step (Multi-Message Sign ONLY),TM8-7A,600 x 600
+,Symbolic Pedestrians (Multi-Message Sign ONLY),TM8-8A,600 x 600
+,Footpath Closed Ahead (Multi-Message Sign ONLY),TM8-9A,600 x 600
+,Footpath Repairs (Multi-Message Sign ONLY),TM8-SA102A,600 x 600
+,Footpath Repairs (Multi-Message Sign ONLY),TM8-SA102B,1200 x 300
+,Bikeway / Bicycle Path Closed,TM8-SA110A,600 x 600
+,Bicycle End Detour,TM8-SA111A,600 x 600
+,Pedestrian Wait Here (Multi-Message Sign ONLY),TM8-SA112A,600 x 600
+,Pedestrians,TM8-SA2A,600 x 600
+,Footpath Closed (Multi-Message Sign ONLY),TM8-SA4B,1200 x 300
+,Event Ahead (Multi-Message Sign ONLY) (Replaces T1- SA67-2M),TM9-1A,600 x 600
+,Event Ahead (Multi-Message Sign ONLY) (Replaces T1- SA67-1M),TM9-1B,1200 x 300
+,End Event (Multi-Message Sign ONLY) (Replaces T2- SA104-2M),TM9-2A,600 x 600
+,End Event (Multi-Message Sign ONLY) (Replaces T2- SA104-1M),TM9-2B,1200 x 300
+,Event in Progress (Multi-Message Sign ONLY) (Replaces T2-SA105-2M),TM9-3A,600 x 600
+,Event in Progress (Multi-Message Sign ONLY) (Replaces T2-SA105-1M),TM9-3B,1200 x 300
+,Event on Side of Road (Multi-Message Sign ONLY),TM9-4C,1200 x 600
+,Event On Side Road L/R (Multi-Message Sign ONLY),TM9-5B,1200 x 300
+,Community Event Ahead (Multi-Message Sign ONLY) (Replaces T1-SA133M),TM9-6C,1200 x 600
+,Cyclist Racing (Multi-Message Sign ONLY) (Replaces T1- SA127M),TM9-7A,600 x 600
+,Runner Symbolic (Multi-Message Sign ONLY) (Replaces T1-SA128M),TM9-8A,600 x 600
+,Event Turn Left/Right (Multi-Message Sign ONLY),TM9-SA107A,600 x 600
+,Event Parking (Multi-Message Sign ONLY),TM9-SA108A,600 x 600
+,Speed Limit Changed (Multi-Message Sign ONLY),TM9-SA109A,600 x 600
+,Event Pedestrian (Multi-Message Sign ONLY),TM9-SA126A,600 x 600
+,On Side Road (Multi-Message Sign ONLY),TM9-SA25A,600 x 600
+,On Side Road (Multi-Message Sign ONLY),TM9-SA25B,1200 x 300
+,Next 'x' km (Multi-Message Sign ONLY),TM9-SA28A,600 x 600
+,Next 'x' km (Multi-Message Sign ONLY),TM9-SA28B,1200 x 300
+,Aboriginal Heritage Symbol (Refer to Traffic Operations Section of DPTI),TS1,350 x 350
+,Nature Symbol (Refer to Traffic Operations Section of DPTI),TS105,350 x 350
+,Cairn / Monument Symbol (Refer to Traffic Operations Section of DPTI),TS106,350 x 350
+,Lookout Symbol,TS2,350 x 350
+,Walking Trail Symbol,TS3,350 x 350
+,Heritage Site / Attraction Symbol (Refer to Traffic Operations Section of DPTI) (Formerly TS143),TS5,350 x 350
+,Museum Symbol (Formerly TS144),TS6,350 x 350
+,Whale Watching Symbol (Refer to Traffic Operations Section of DPTI) (Formerly TS146),TS7,350 x 350
+,Multi Message Sign,Various,600 x 600
+,Turn (L or R),W1-1B W1-1A W1-1C W1-1D,"750 x 750
+600 x 600
+900 x 900
+1200 x 1200"
+,Reverse Turn (L or R),W1-2C W1-2A W1-2B W1-2D,"900 x 900
+600 x 600
+750 x 750
+1200 x 1200"
+,Curve (L or R),W1-3D W1-3A W1-3B W1-3C,"1200 x 1200
+600 x 600
+750 x 750
+900 x 900"
+,Reverse Curve (L or R),W1-4C W1-4D W1-4B W1-4A,"900 x 900
+1200 x 1200
+750 x 750
+600 x 600"
+,Winding Road (L or R),W1-5AA W1-5A W1-5ES W1-5D W1-5B W1-5C,"450 x 450
+600 x 600
+300 x 300
+1200 x 1200
+750 x 750
+900 x 900"
+,Hairpin Bend (L or R),W1-7C W1-7D W1-7B W1-7A,"900 x 900
+1200 x 1200
+750 x 750
+600 x 600"
+,Exit Speed ('x' km/h),W1-9-1AA W1-9-1,"900 x 1200
+1400 x 1800"
+,Exit Speed Curve 'xxx' km/h Formerly W1-SA68,W1-9-2AA W1-9-2,"900 x 1650
+1400 x 2400"
+,Exit Speed Turn 'xx' km/h,W1-9-3AA W1-9-3,"900 x 1800
+1400 x 2400"
+,Exit Speed Reverse Curve 'xx' km/h Formerly W1-SA69,W1-9-4 W1-9-4AA,"1400 x 2400
+900 x 1650"
+,Exit Speed Hairpin Bend (km/h) Formerly W1-SA67,W1-9-5AA W1-9-5,"900 x 1650
+1400 x 2400"
+,"Gravel Roads MAXIMUM 80 km/h Drive To The Road
+Conditions (Approval required for other speeds - refer to Manager, Traffic Services, DIT) See OI 4.10 for reference of use.",W1-SA101,900 x 1050
+,Truck Tilting with Curve (W1-1) (L or R),W1-SA50-1B W1-SA50-1A,"1500 x 3000
+1000 x 2000"
+,Truck Tilting with Curve (W1-2) (L or R),W1-SA50-2A W1-SA50-2B,"1000 x 2000
+1500 x 3000"
+,Truck Tilting with Curve (W1-3) (L or R),W1-SA50-3A W1-SA50-3B,"1000 x 2000
+1500 x 3000"
+,Truck Tilting with Curve (W1-4) (L or R),W1-SA50-4B W1-SA50-4A,"1500 x 3000
+1000 x 2000"
+,Truck Tilting with Curve (W1-5) (L or R),W1-SA50-5B W1-SA50-5A,"1500 x 3000
+1000 x 2000"
+,Truck Tilting with Curve (W1-7) (L or R),W1-SA50-6B W1-SA50-6A,"1500 x 3000
+1000 x 2000"
+,Curve with two intersections on outside (L or R),W1-SA64C W1-SA64B,"900 x 900
+750 x 750"
+,Exit Speed Winding Road (km/h) (L or R),W1-SA70AA W1-SA70,"900 x 1650
+1400 x 2400"
+,Side Road Intersection on a Curve - inside (LorR) Formerly W1-SA60,W2-10C W2-10B W2-10A W2-10D,"900 x 900
+750 x 750
+600 x 600
+1200 x 1200"
+,Successive Side Road Intersections on a Curve - 1st intersection on RHS Formerly W1-SA66,"W2-11D(L)
+W2-11A(L)
+W2-11B(L)
+W2-11C(L)","1200 x 1200
+600 x 600
+750 x 750
+900 x 900"
+,Successive Side Road Intersections on a Curve - 1st intersection on RHS Formerly W1-SA66,"W2-11A(R)
+W2-11C(R)
+W2-11D(R)
+W2-11B(R)","600 x 600
+900 x 900
+1200 x 1200
+750 x 750"
+,Successive Side Road Intersections on a Curve - 1st intersection on LHS Formerly W1-SA65,"W2-12C(L)
+W2-12A(L)
+W2-12B(L)","900 x 900
+600 x 600
+750 x 750"
+,,W2-12D(L),1200 x 1200
+,Successive Side Road Intersections on a Curve - 1st intersection on LHS Formerly W1-SA65,"W2-12B(R)
+W2-12D(R)
+W2-12A(R)
+W2-12C(R)","750 x 750
+1200 x 1200
+600 x 600
+900 x 900"
+,Successive Side Road Intersections on a straight (L or R),W2-13D W2-13A W2-13C W2-13B,"1200 x 1200
+600 x 600
+900 x 900
+750 x 750"
+,T Intersection Beyond a Curve (L or R),W2-14A W2-14B W2-14D W2-14C,"600 x 600
+750 x 750
+1200 x 1200
+900 x 900"
+,Crossroad on Curve (L or R) Formerly W1-SA61,W2-15C W2-15D W2-15A W2-15B,"900 x 900
+1200 x 1200
+600 x 600
+750 x 750"
+,Side Road Intersection on a Curve - Side Road on Straight Alignment (L or R) Formerly W9-4,W2-16C W2-16B W2-16A W2-16D,"900 x 900
+750 x 750
+600 x 600
+1200 x 1200"
+,Cross Road,W2-1D W2-1C W2-1A W2-1B,"1200 x 1200
+900 x 900
+600 x 600
+750 x 750"
+,T Intersection,W2-3D W2-3B W2-3A W2-3C,"1200 x 1200
+750 x 750
+600 x 600
+900 x 900"
+,"Side Road Intersection, Straight (L or R)",W2-4D W2-4A W2-4B W2-4C,"1200 x 1200
+600 x 600
+750 x 750
+900 x 900"
+,Roundabout (Ahead),W2-7B W2-7C W2-7D W2-7A,"750 x 750
+900 x 900
+1200 x 1200
+600 x 600"
+,"Staggered Side Road Intersection, Straight (L or R)",W2-8B W2-8C W2-8D W2-8A,"750 x 750
+900 x 900
+1200 x 1200
+600 x 600"
+,Side Road Intersection on Outside of Curve (LorR) Formerly W1-SA56,W2-9C W2-9D W2-9A W2-9B,"900 x 900
+1200 x 1200
+600 x 600
+750 x 750"
+,T Intersection with Multi-laned Divided Road,W2-SA57B W2-SA57C,"750 x 750
+900 x 900"
+,T intersection on bend with side road on o/side of curve (L or R),W2-SA65B W2-SA65C,"750 x 750
+900 x 900"
+,Stop Sign Ahead,W3-1D W3-1C W3-1A W3-1B,"1200 x 1200
+900 x 900
+600 x 600
+750 x 750"
+,Give Way Sign Ahead,W3-2A W3-2B W3-2C W3-2D,"600 x 600
+750 x 750
+900 x 900
+1200 x 1200"
+,Signals Ahead,W3-3-1C W3-3-1B W3-3-1A W3-3-1D,"900 x 900
+750 x 750
+600 x 600
+1200 x 1200"
+,Signals Ahead (FYG),W3-3-2C W3-3-2D W3-3-2A W3-3-2B,"900 x 900
+1200 x 1200
+600 x 600
+750 x 750"
+,Road Humps Ahead,W3-4B W3-4A,"750 x 750
+600 x 600"
+,Road Humps on Side Road,W3-SA4B W3-SA4A,"750 x 750
+600 x 600"
+,Lane Allocation (3 lanes),W4-10C W4-10B,"900 x 900
+750 x 750"
+,Two-way,W4-11D W4-11A W4-11B W4-11C,"1200 x 1200
+600 x 600
+750 x 750
+900 x 900"
+,Narrow Bridge,W4-1B W4-1ES W4-1AA W4-1C W4-1A,"750 x 750
+300 x 300
+450 x 450
+900 x 900
+600 x 600"
+,Road Narrows,W4-3A W4-3B W4-3C W4-3ES,"600 x 600
+750 x 750
+900 x 900
+300 x 300"
+,Divided Road,W4-4B W4-4C W4-4A W4-4D,"750 x 750
+900 x 900
+600 x 600
+1200 x 1200"
+,Island,W4-5C W4-5A W4-5B,"900 x 900
+600 x 600
+750 x 750"
+,End Divided Road (W4-4 Divided Road sign inverted),W4-6B W4-6A W4-6C W4-6D,"750 x 750
+600 x 600
+900 x 900
+1200 x 1200"
+,Low Clearance ('x' m),W4-8B W4-8C W4-8AA,"750 x 750
+900 x 900
+450 x 450"
+,Left Lane Ends,W4-9B W4-9C,"750 x 750
+900 x 900"
+,Right Lane Ends,W4-SA101B W4-SA101D W4-SA101C,"750 x 750
+1200 x 1200
+900 x 900"
+,Lane Deviation (with island),W4-SA102C W4-SA102B,"900 x 900
+750 x 750"
+,Lane Allocation (4 lanes),W4-SA50C W4-SA50B,"900 x 900
+750 x 750"
+,Replaced by TES13695,W4-SA51,0 x 0
+,No Overtaking Unless Both Oncoming Lanes Are Clear,W4-SA52,2700 x 1200
+,Two Way Traffic With Dividing Barrier,W4-SA53C W4-SA53B W4-SA53D,"900 x 900
+750 x 750
+1200 x 1200"
+,Road Hump,W5-10C W5-10B W5-10A,"900 x 900
+750 x 750
+600 x 600"
+,Crest,W5-11B W5-11A W5-11C,"750 x 750
+600 x 600
+900 x 900"
+,Steep Descent,W5-12A W5-12C W5-12B,"600 x 600
+900 x 900
+750 x 750"
+,Steep Climb,W5-13B W5-13A W5-13C,"750 x 750
+600 x 600
+900 x 900"
+,Gate,W5-14B W5-14A W5-14C,"750 x 750
+600 x 600
+900 x 900"
+,Grid,W5-16B W5-16C W5-16A,"750 x 750
+900 x 900
+600 x 600"
+,Road Ends,W5-18A W5-18B W5-18C,"600 x 600
+750 x 750
+900 x 900"
+,Gravel Road,W5-19B W5-19A W5-19C,"750 x 750
+600 x 600
+900 x 900"
+,Ferry,W5-1A W5-1C W5-1B,"600 x 600
+900 x 900
+750 x 750"
+,Slippery,W5-20A W5-20C W5-20B,"600 x 600
+900 x 900
+750 x 750"
+,Trucks Crossing or Entering (from private property),W5-22B W5-22A W5-22C,"750 x 750
+600 x 600
+900 x 900"
+,Kangaroos,W5-29A W5-29B W5-29C,"600 x 600
+750 x 750
+900 x 900"
+,Opening Bridge,W5-2A W5-2C W5-2B,"600 x 600
+900 x 900
+750 x 750"
+,Aircraft,W5-30A W5-30C W5-30B,"600 x 600
+900 x 900
+750 x 750"
+,Slow Point,W5-33A W5-33B,"600 x 600
+750 x 750"
+,Merging Traffic (L or R) (Replaces W5-24),W5-34B W5-34C W5-34A W5-34D,"750 x 750
+900 x 900
+600 x 600
+1200 x 1200"
+,Added Lane (L or R) Used only with W8-26,W5-35C W5-35A W5-35D,"900 x 900
+600 x 600
+1200 x 1200"
+,Fire Station,W5-36A W5-36C W5-36B,"600 x 600
+900 x 900
+750 x 750"
+,Ambulance Station,W5-37B W5-37C W5-37A,"750 x 750
+900 x 900
+600 x 600"
+,Stock (Replaces W5-27 and W5-28),W5-38A W5-38B W5-38C,"600 x 600
+750 x 750
+900 x 900"
+,Fallen Rocks Formerly W5-SA69,W5-42B W5-42A W5-42C,"750 x 750
+600 x 600
+900 x 900"
+,Uneven Surface (Formerly W5-SA107),W5-43C W5-43B W5-43A,"900 x 900
+750 x 750
+600 x 600"
+,Camel (Formerly W5-SA62),W5-44C W5-44A W5-44B,"900 x 900
+600 x 600
+750 x 750"
+,Emu,W5-45A W5-45B W5-45C,"600 x 600
+750 x 750
+900 x 900"
+,Horse (Formerly W5-SA64),W5-46A W5-46B W5-46C,"600 x 600
+750 x 750
+900 x 900"
+,Koala (Formerly W5-SA66),W5-47C W5-47A W5-47B,"900 x 900
+600 x 600
+750 x 750"
+,Wombat (Formerly W5-SA57),W5-48A W5-48B W5-48C,"600 x 600
+750 x 750
+900 x 900"
+,"Farm Machinery (Approval required for use - refer to Manager, Traffic Services, DPTI)",W5-50C W5-50B W5-50A,"900 x 900
+750 x 750
+600 x 600"
+,Horse and Rider,W5-53C W5-53B W5-53A,"900 x 900
+750 x 750
+600 x 600"
+,Concealed Driveway,W5-55-1C W5-55-1B W5-55-1A,"900 x 900
+750 x 750
+600 x 600"
+,Concealed Driveways,W5-55-2A W5-55-2B W5-55-2C,"600 x 600
+750 x 750
+900 x 900"
+,Wildlife,W5-56B W5-56C W5-56A,"750 x 750
+900 x 900
+600 x 600"
+,Ford,W5-6A W5-6B W5-6C,"600 x 600
+750 x 750
+900 x 900"
+,Floodway,W5-7-1C W5-7-1B W5-7-1A,"900 x 900
+750 x 750
+600 x 600"
+,Floodways (Formerly W5-SA76),W5-7-2B W5-7-2A W5-7-2C,"750 x 750
+600 x 600
+900 x 900"
+,Low Level Bridge,W5-8A W5-8C W5-8B,"600 x 600
+900 x 900
+750 x 750"
+,Dip,W5-9C W5-9B W5-9A,"900 x 900
+750 x 750
+600 x 600"
+,Cross Wind,W5-SA101A W5-SA101B W5-SA101C,"600 x 600
+750 x 750
+900 x 900"
+,Creek,W5-SA109B W5-SA109C W5-SA109A,"750 x 750
+900 x 900
+600 x 600"
+,Creeks,W5-SA110A W5-SA110C W5-SA110B,"600 x 600
+900 x 900
+750 x 750"
+,Rocky Creek Bed Track,W5-SA111,750 x 750
+,Advisory Tram Speed,W5-SA113A W5-SA113B,"300 x 400
+450 x 600"
+,Tram Works,W5-SA114A W5-SA114B,"300 x 200
+450 x 300"
+,Dry Weather Road Only (Outback Roads Only),W5-SA115,750 x 750
+,Deer,W5-SA116C W5-SA116A W5-SA116B,"900 x 900
+600 x 600
+750 x 750"
+,Rough Surface,W5-SA117B W5-SA117C W5-SA117A,"750 x 750
+900 x 900
+600 x 600"
+,"Cow (Use for north of dog fence, otherwise use W5-38)",W5-SA63C W5-SA63A W5-SA63B,"900 x 900
+600 x 600
+750 x 750"
+,Emergency Vehicles,W5-SA70B W5-SA70C,"750 x 750
+900 x 900"
+,Tipping Truck (L or R) (without advisory speed),W5-SA72B,750 x 750
+,Warning Gravel Roads Surface Conditions Change Often Drive Carefully (See Managing Unsealed Roads in SA (LGA)),W5-SA73,900 x 1200
+,Low Branches (Must be used with W8-SA64),W5-SA74B,750 x 750
+,Forklifts,W5-SA75B W5-SA75C W5-SA75A,"750 x 750
+900 x 900
+600 x 600"
+,Gap Hazard Formerly W6-SA107,W6-10A W6-10B,"600 x 600
+750 x 750"
+,Slippery for Bicycles (bicycle paths only) Formerly W5- SA104,W6-11C W6-11A W6-11B,"600 x 600
+300 x 300
+450 x 450"
+,Steep Decent Bicycle (bicycle paths only) Formerly W5- SA103,W6-12C W6-12A W6-12B,"600 x 600
+300 x 300
+450 x 450"
+,Steep Climb Bicycle (bicycle paths only) Formerly W5- SA102,W6-13C W6-13B W6-13A,"600 x 600
+450 x 450
+300 x 300"
+,Pedestrians (L or R) - (R) has pedestrians facing right and is installed on left side of the road (formerly W6-SA1).,W6-1B W6-1A W6-1C,"750 x 750
+600 x 600
+900 x 900"
+,Pedestrian Crossing Ahead,W6-2-1C W6-2-1B W6-2-1A,"900 x 900
+750 x 750
+600 x 600"
+,Pedestrian Crossing Ahead - 45 degrees,W6-2-2A W6-2-2C W6-2-2B,"600 x 600
+900 x 900
+750 x 750"
+,Pedestrian Crossing Ahead - 90 degrees,W6-2-3A W6-2-3C W6-2-3B,"600 x 600
+900 x 900
+750 x 750"
+,Children (L or R) - (R) has pedestrians facing right and is installed on left side of the road (formerly W6-SA3).,W6-3A W6-3B W6-3C,"600 x 600
+750 x 750
+900 x 900"
+,Bicycles (Can be used with W8-23),W6-7C W6-7B W6-7A,"900 x 900
+750 x 750
+600 x 600"
+,Road Ahead (for use on bicycle paths only),W6-8B W6-8A,"450 x 450
+300 x 300"
+,Bicycles/Pedestrians - See W6-SA110 for Fluoro Yellow Green,W6-9B W6-9C W6-9A,"750 x 750
+900 x 900
+600 x 600"
+,School Zone (Refer to Speed Limit Guidelines - used above W8-SA108),W6-SA106B W6-SA106A W6-SA106C,"750 x 750
+600 x 600
+900 x 900"
+,"Pedestrians, bicycles, horses (only to be used at recognised multi-user trail crossing points)",W6-SA109C W6-SA109B,"900 x 900
+750 x 750"
+,Pedestrian Bike - See DIT Supplement AS 1742.10,W6-SA110B W6-SA110A,"750 x 750
+600 x 600"
+,Railway Crossing Ahead Diagammatic - Crossing on Side Road (L or R),W7-12D W7-12A W7-12B W7-12C,"1200 x 1200
+600 x 600
+750 x 750
+900 x 900"
+,Railway Crossing Ahead Diagrammatic - Crossing on Cross Road (L or R),W7-13A W7-13B W7-13C,"600 x 600
+750 x 750
+900 x 900"
+,Railway Crossing Pedestrian Warning - Look for Trains 'x' tracks,W7-14-4,300 x 450
+,Railway Crossing Pedestrian Warning - Look For Trains,W7-14-5,300 x 450
+,Railway Crossing Pedestrian Warning - Do Not Cross While Lights Are Displayed Or Alarm Sounding 'x' Tracks,W7-14-6,450 x 600
+,Railway Gate,W7-15C W7-15B W7-15A,"900 x 900
+750 x 750
+600 x 600"
+,Railway Crossing Ahead Diagrammatic - Crossing on bar of T intersection (L or R),W7-17A W7-17C W7-17B,"600 x 600
+900 x 900
+750 x 750"
+,'x' Tracks (Rail Authority only to replace),W7-2-1A W7-2-1B,"600 x 275
+800 x 367"
+,x Tracks (Rail Authority only to replace),W7-2-2,1000 x 150
+,Railway Level Crossing Flashing Light Ahead,W7-4B W7-4C,"750 x 750
+900 x 900"
+,Rail Level Crossing Ahead (L or R) - (L) has train facing right and installed on left side of the road.,W7-7A W7-7B W7-7C,"600 x 600
+750 x 750
+900 x 900"
+,Railway Crossing Ahead Diagrammatic - Right Angle Crossing,W7-8B W7-8A W7-8C,"750 x 750
+600 x 600
+900 x 900"
+,Railway Crossing Ahead Diagrammatic - Oblique Crossing (L or R),W7-9C W7-9B W7-9A,"900 x 900
+750 x 750
+600 x 600"
+,Diagrammatic Warning on Side Road (roundabout) (L or R),W7-SA101C W7-SA101B,"900 x 900
+750 x 750"
+,Diagrammatic Warning on Main Road (after roundabout),W7-SA102C W7-SA102B,"900 x 900
+750 x 750"
+,Diagrammatic Warning on Main Road (before roundabout),W7-SA103B W7-SA103C,"750 x 750
+900 x 900"
+,Diagrammatic Warning on Side Road (stagger intersections) (L or R),W7-SA104B W7-SA104C,"750 x 750
+900 x 900"
+,Diagrammatic Warning on Side Road (stagger intersections) (L or R),W7-SA105B W7-SA105C,"750 x 750
+900 x 900"
+,Diagrammatic Warning on Each Side Road (T intersection),W7-SA50B W7-SA50A W7-SA50C,"750 x 750
+600 x 600
+900 x 900"
+,USE TES13698,W7-SA53,0 x 0
+,Play Ground (formerly W8-SA13),W8-13A W8-13B W8-13C,"600 x 400
+750 x 500
+900 x 900"
+,School (formerly W8-SA14),W8-14C W8-14B W8-14A,"900 x 300
+750 x 250
+600 x 200"
+,Merge Right,W8-15B W8-15C,"750 x 500
+900 x 600"
+,One Lane,W8-16C W8-16B W8-16A,"900 x 600
+750 x 500
+600 x 400"
+,NEXT 'x' km,W8-17-1A W8-17-1D W8-17-1C W8-17-1B,"600 x 400
+1200 x 800
+900 x 600
+750 x 500"
+,Next 'x' m,W8-17-2A W8-17-2B,"600 x 400
+750 x 500"
+,Aged (formerly W8-SA18),W8-18C W8-18A W8-18B,"900 x 300
+600 x 200
+750 x 250"
+,Blind (formerly W8-SA19),W8-19B W8-19C W8-19A,"750 x 250
+900 x 300
+600 x 200"
+,Disabled (formerly W8-SA20),W8-20C W8-20A W8-20B,"900 x 300
+600 x 200
+750 x 250"
+,Boggy When Wet,W8-21C W8-21B W8-21A,"900 x 600
+750 x 500
+600 x 400"
+,Crossing Ahead (use only with fluorescent yellow green W3-3-2 or W6-3) (formerly W8-SA22),W8-22C W8-22A W8-22B,"900 x 600
+600 x 400
+750 x 500"
+,"Crossing Arrows (use only with W6-7,W6-9)",W8-23A W8-23C W8-23B,"600 x 200
+900 x 300
+750 x 250"
+,Preschool (formerly W8-SA24),W8-24B W8-24C W8-24A,"750 x 250
+900 x 300
+600 x 200"
+,Refuge Island (formerly W8-SA25),W8-25B W8-25A W8-25C,"750 x 500
+600 x 400
+900 x 600"
+,Added Lane,W8-26D W8-26C,"1200 x 800
+900 x 600"
+,Prepare To Stop,W8-27C W8-27B W8-27D,"900 x 450
+750 x 375
+1200 x 600"
+,Crossing Ramp (for bikeways),W8-28B W8-28C,"750 x 500
+900 x 600"
+,On Bridge When Frosty,W8-29A W8-29C W8-29B,"600 x 750
+900 x 1125
+750 x 937"
+,Advisory Speed,W8-2C W8-2D W8-2B W8-2A,"900 x 600
+1200 x 800
+750 x 500
+600 x 400"
+,On Side Road (L or R) (Also refer to W8-SA3 when yellow/green required ),W8-3C W8-3B W8-3A,"900 x 600
+750 x 500
+600 x 400"
+,Distance 'xxx' m (Also refer to W8-SA5 when yellow/green required),W8-5C W8-5A W8-5B,"900 x 300
+600 x 200
+750 x 250"
+,When Wet,W8-7B W8-7C W8-7A,"750 x 500
+900 x 600
+600 x 400"
+,When Frosty,W8-8A W8-8C W8-8B,"600 x 400
+900 x 600
+750 x 500"
+,Under Snow,W8-9C W8-9B W8-9A,"900 x 600
+750 x 500
+600 x 400"
+,Merge Left,W8-SA101C W8-SA101B W8-SA101D,"900 x 600
+750 x 500
+1200 x 800"
+,Unfenced Road,W8-SA102B W8-SA102C,"750 x 500
+900 x 600"
+,Two Way Traffic (Only to be used with G9-SA121),W8-SA103,300 x 300
+,Hiking Trail (only to be used with W6-SA1),W8-SA104B W8-SA104C W8-SA104A,"750 x 500
+900 x 600
+600 x 400"
+,'xxx' m Ahead,W8-SA105A W8-SA105B W8-SA105C,"600 x 400
+750 x 500
+900 x 600"
+,Pedestrian Precinct,W8-SA106A W8-SA106B,"600 x 300
+750 x 400"
+,On Side Road,W8-SA107B W8-SA107A W8-SA107C W8-SA107D,"750 x 500
+600 x 400
+900 x 600
+1200 x 800"
+,Distance 'xxx' m AHEAD (Use under W6-SA106),W8-SA108C W8-SA108B W8-SA108A,"900 x 600
+750 x 500
+600 x 400"
+,School Bus,W8-SA109B W8-SA109A W8-SA109C,"750 x 500
+600 x 400
+900 x 600"
+,50 km/h When Lights Flashing,W8-SA110,1060 x 770
+,70 km/h When Lights Flashing,W8-SA111,1230 x 850
+,Slow Down - Used for smaller bicycle warning signs,W8-SA112B W8-SA112A,"450 x 300
+300 x 225"
+,Warning,W8-SA113-1A W8-SA113-1B,"600 x 400
+750 x 500"
+,School Crossing Ahead,W8-SA114C W8-SA114A W8-SA114B,"900 x 780
+600 x 520
+750 x 650"
+,Next 'x' m (Fluorescent Yellow Green),W8-SA17-2B W8-SA17-2A,"750 x 500
+600 x 400"
+,Crossing Arrows (use only with W6-SA110),W8-SA23A W8-SA23B W8-SA23C,"600 x 200
+750 x 250
+900 x 300"
+,On Side Road (L or R),W8-SA3C W8-SA3D W8-SA3A W8-SA3B,"900 x 600
+1200 x 800
+600 x 400
+750 x 500"
+,Over Crest,W8-SA54,750 x 500
+,Mud On Road,W8-SA55,750 x 500
+,School Bus,W8-SA56C W8-SA56B W8-SA56A,"900 x 600
+750 x 500
+600 x 400"
+,Riding Area (Only with W5-59),W8-SA57,750 x 500
+,Distance 'xxx' m,W8-SA5D W8-SA5B W8-SA5A W8-SA5C,"1200 x 400
+750 x 250
+600 x 200
+900 x 300"
+,Watch For Road Trains,W8-SA62B W8-SA62C,"750 x 500
+900 x 600"
+,Height Gauge,W8-SA63,750 x 500
+,Pruning Planned (Only with W5-SA74),W8-SA64,750 x 500
+,On Green Signal,W8-SA65B W8-SA65C,"750 x 500
+900 x 600"
+,Modified T-Intersection (L or R),W9-1B W9-1A W9-1C,"750 x 750
+600 x 600
+900 x 900"
+,Modified T-Intersection (L or R),W9-2A W9-2C W9-2B,"600 x 600
+900 x 900
+750 x 750"
+,Modified Crossroad (L or R),W9-3A W9-3C W9-3B,"600 x 600
+900 x 900
+750 x 750"
+,Give Way Ahead (Multi-Message Sign ONLY),WM3-2A,600 x 600
+,4WD Only Symbol (Refer to Traffic Operations Section of DPTI),WS111,350 x 350
+,Kangaroo Symbol (Refer to Traffic Operations Section of DPTI),WS121,420 x 350
+,Cow Symbol (Refer to Traffic Operations Section of DPTI),WS122,420 x 350
+,Camel Symbol (Refer to Traffic Operations Section of DPTI),WS128,420 x 350
+,Horse & Rider Symbol (Refer to Traffic Operations Section of DPTI),WS129,350 x 350
+,Wombat Symbol (Refer to Traffic Operations Section of DPTI),WS130,420 x 350
+,Horse Symbol (Refer to Traffic Operations Section of DPTI),WS131,420 x 350
+,Tilting Truck Symbol (Refer to Traffic Operations Section of DPTI),WS132,350 x 350
+,Koala Symbol (Refer to Traffic Operations Section of DPTI),WS133,240 x 350
+,Wild Horse Symbol (Refer to Traffic Operations Section of DPTI),WS136,420 x 350
+,Deer Symbol (Refer to Traffic Operations Section of DPTI),WS137,350 x 350
+,Triple Road Train Symbol (Refer to Traffic Operations Section of DPTI),WS140,2800 x 350
+,Semi Truck Symbol,WS141,1050 x 350
+,Parking Signs - Refer to Australian Standards for sign sizes and design detail,,
+,Controlled Access Road (L and R),,
