@@ -209,7 +209,7 @@ def main():
         ("SA Signs Statistics", tester.test_sa_signs_stats),
         ("SA Signs Get All Paginated", tester.test_sa_signs_get_all_paginated),
         ("SA Signs Search Functionality", tester.test_sa_signs_search_functionality),
-        ("SA Signs Get by AS 1742.3 Code", tester.test_sa_signs_get_by_code_as1742),
+        ("SA Signs Get by Available Code", tester.test_sa_signs_get_by_code_as1742),
         ("SA Signs Recommend for TMP", tester.test_sa_signs_recommend_for_tmp),
     ]
     
