@@ -119,13 +119,14 @@ function AppContent() {
   const loginAsGuest = () => {
     console.log('=== GUEST LOGIN ===');
     const guestUser = {
-      id: 'guest-user',
+      id: 'guest-user-' + Date.now(),
       email: 'guest@demo.com',
       company_name: 'Demo User',
       role: 'guest'
     };
     const guestToken = 'guest-demo-token-' + Date.now();
     
+    console.log('Guest user created:', guestUser);
     login(guestToken, guestUser);
   };
 
