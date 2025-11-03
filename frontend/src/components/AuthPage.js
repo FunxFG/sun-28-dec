@@ -185,6 +185,17 @@ export default function AuthPage({ onLogin, onGuestLogin }) {
                   >
                     {loading ? 'Signing In...' : 'Sign In'}
                   </Button>
+                  
+                  {/* Guest Mode Button for Testing */}
+                  {onGuestLogin && (
+                    <Button 
+                      onClick={onGuestLogin}
+                      variant="outline"
+                      className="w-full h-11 border-2 border-blue-300 text-blue-700 hover:bg-blue-50 font-semibold mt-3"
+                    >
+                      🚀 Continue as Guest (Demo Mode)
+                    </Button>
+                  )}
                 </TabsContent>
                 
                 <TabsContent value="register" className="space-y-4">
