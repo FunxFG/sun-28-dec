@@ -1,0 +1,1278 @@
+{
+  "scenario": {
+    "id": 4,
+    "name": "Complete Road Closure - North Terrace",
+    "location": "North Terrace, Adelaide SA",
+    "center_lat": -34.9205,
+    "center_lng": 138.601,
+    "work_type": "road closure",
+    "road_classification": "State Arterial Road",
+    "duration": "1 day",
+    "speed_limit": 50
+  },
+  "tmp_data": {
+    "project_name": "Complete Road Closure - North Terrace",
+    "location": "North Terrace, Adelaide SA",
+    "work_type": "road closure",
+    "duration": "1 day",
+    "speed_limit": 50,
+    "road_classification": "State Arterial Road",
+    "devices_count": 5,
+    "data_categories": 27,
+    "has_visual_tgs": false,
+    "has_streetview": false
+  },
+  "visual_tgs": {
+    "satellite_tgs": {
+      "error": "Failed to fetch satellite imagery"
+    },
+    "streetview_images": [],
+    "metadata": {
+      "total_signs": 5,
+      "center": {
+        "lat": -34.9205,
+        "lng": 138.601
+      },
+      "has_streetview": false,
+      "generation_timestamp": "ISO8601 timestamp"
+    }
+  },
+  "devices": [
+    {
+      "code": "T1-1",
+      "name": "Road Work Ahead",
+      "latitude": -34.915499999999994,
+      "longitude": 138.6035,
+      "distance": 50,
+      "side": "left",
+      "dimensions": {
+        "width_mm": 600,
+        "height_mm": 600
+      },
+      "description": "General warning of road works ahead"
+    },
+    {
+      "code": "D1-1",
+      "name": "Traffic Cones",
+      "latitude": -34.9105,
+      "longitude": 138.596,
+      "distance": 100,
+      "side": "right",
+      "dimensions": {
+        "width_mm": 300,
+        "height_mm": 750
+      },
+      "description": "750mm traffic cones for delineation"
+    },
+    {
+      "code": "T1-2",
+      "name": "Road Closed Ahead",
+      "latitude": -34.900499999999994,
+      "longitude": 138.611,
+      "distance": 200,
+      "side": "left",
+      "dimensions": {
+        "width_mm": 600,
+        "height_mm": 600
+      },
+      "description": "Warning of complete road closure ahead"
+    },
+    {
+      "code": "R5-1",
+      "name": "No Entry",
+      "latitude": -34.890499999999996,
+      "longitude": 138.586,
+      "distance": 300,
+      "side": "right",
+      "dimensions": {
+        "width_mm": 600,
+        "height_mm": 600
+      },
+      "description": "Prohibition of entry to road"
+    },
+    {
+      "code": "G1-1",
+      "name": "Detour Arrow Left",
+      "latitude": -34.8705,
+      "longitude": 138.626,
+      "distance": 500,
+      "side": "left",
+      "dimensions": {
+        "width_mm": 900,
+        "height_mm": 600
+      },
+      "description": "Direction guidance for detour route"
+    }
+  ],
+  "auto_population": {
+    "road_data": {
+      "speed_limit": 60,
+      "lanes": 2,
+      "road_name": "Unknown Road",
+      "highway_type": "residential",
+      "surface": "asphalt",
+      "has_footpath": false,
+      "has_cycleway": false,
+      "has_parking": false,
+      "road_classification": "Local Road",
+      "jurisdiction": "Local Council",
+      "functional_class": "Collector"
+    },
+    "location_metadata_system": {
+      "road_name": "Unknown Road",
+      "road_classification_official": "Local Road",
+      "speed_limit_official": "50 km/h",
+      "maintenance_authority": "Local Council",
+      "crrs_code": "SA-LOC-UNKNOWNROA",
+      "sealed_status": "Sealed",
+      "austroads_class_code": "Local Access",
+      "road_category_code": "Council Network - Local",
+      "functional_hierarchy": "Level 5: Local Access",
+      "data_source": "Default SA Government Standards",
+      "dataset_references": [
+        "Dataset 558: Roads",
+        "Dataset 1639: State Maintained Roads"
+      ]
+    },
+    "dit_infrastructure_assets": {
+      "road_condition": "Good",
+      "pavement_type": "Asphalt",
+      "last_maintenance": null,
+      "asset_inventory": [],
+      "maintenance_schedule": {
+        "inspection_frequency": "Annual",
+        "maintenance_type": "Routine",
+        "contact": "Local Council",
+        "phone": "Contact local council",
+        "email": "Contact local council",
+        "responsibility": "Local Government"
+      },
+      "infrastructure_projects": [],
+      "data_source": "DIT Asset Management System + Geoscience Australia + OSM"
+    },
+    "traffic_assessment": {},
+    "site_assessment": {},
+    "side_streets": [
+      {
+        "name": "North Terrace",
+        "type": "secondary",
+        "ref": ""
+      },
+      {
+        "name": "Clubhouse Lane",
+        "type": "service",
+        "ref": ""
+      },
+      {
+        "name": "Fowlers Lane",
+        "type": "service",
+        "ref": ""
+      },
+      {
+        "name": "Pathway of Honour",
+        "type": "footway",
+        "ref": ""
+      },
+      {
+        "name": "King William Street",
+        "type": "secondary",
+        "ref": ""
+      },
+      {
+        "name": "Stephens Place",
+        "type": "service",
+        "ref": ""
+      },
+      {
+        "name": "Morgan Thomas Lane",
+        "type": "service",
+        "ref": ""
+      },
+      {
+        "name": "Gallerie Place",
+        "type": "service",
+        "ref": ""
+      },
+      {
+        "name": "King William Road",
+        "type": "secondary",
+        "ref": ""
+      },
+      {
+        "name": "Kintore Avenue",
+        "type": "tertiary",
+        "ref": ""
+      }
+    ],
+    "intersections": [],
+    "control_measures": {
+      "temporal": [
+        "off_peak_hours",
+        "staged_works"
+      ],
+      "speed": [
+        "temporary_speed_limit_40",
+        "speed_reduction"
+      ],
+      "lane_management": [
+        "lane_closure",
+        "merge_taper"
+      ],
+      "safety": [
+        "static_signs",
+        "delineation_devices",
+        "water_filled_barriers",
+        "traffic_controllers",
+        "lighting_systems"
+      ],
+      "communication": [
+        "public_notification",
+        "stakeholder_consultation",
+        "emergency_services_notification"
+      ]
+    },
+    "pedestrian_control_measures": {
+      "barriers_required": [],
+      "pedestrian_detours": [
+        {
+          "type": "Pedestrian Detour Route",
+          "description": "Alternative pedestrian path around workzone",
+          "requirements": [
+            "Minimum 1.0m clear width (DDA compliant)",
+            "Maximum grade 1:14 (7.1%) for DDA compliance",
+            "Tactile ground surface indicators at decision points",
+            "Handrails if grade exceeds 1:20",
+            "Clear signage at diversion points"
+          ],
+          "signage_required": [
+            "Pedestrians Use Other Side",
+            "Pedestrian Detour",
+            "Directional arrows"
+          ]
+        }
+      ],
+      "signage": [
+        {
+          "code": "P1-1",
+          "name": "Pedestrian Detour",
+          "location": "At start of pedestrian diversion",
+          "placement": "Both sides if bilateral footpaths"
+        },
+        {
+          "code": "P1-2",
+          "name": "Footpath Closed",
+          "location": "At closure point",
+          "placement": "Directly at closed footpath entrance"
+        },
+        {
+          "code": "P1-3",
+          "name": "Pedestrians Use Other Side",
+          "location": "Before workzone",
+          "placement": "With directional arrow"
+        }
+      ],
+      "safety_measures": [
+        {
+          "measure": "Separation Distance",
+          "requirement": "Minimum 1.2m clearance between traffic and pedestrian path",
+          "standard": "AS 1742.3 Table 5.2"
+        },
+        {
+          "measure": "Lighting",
+          "requirement": "Adequate lighting for night works",
+          "specification": "Minimum 20 lux at pedestrian level"
+        },
+        {
+          "measure": "Visibility",
+          "requirement": "High visibility bollards and delineators",
+          "spacing": "Every 2-3 meters along pedestrian path"
+        }
+      ],
+      "access_requirements": [
+        {
+          "compliance": "DDA (Disability Discrimination Act)",
+          "requirements": [
+            "Minimum 1.0m clear path width",
+            "Maximum cross-fall 1:40 (2.5%)",
+            "Maximum grade 1:14 (7.1%)",
+            "Tactile ground surface indicators",
+            "No protruding objects above 680mm or below 2000mm"
+          ]
+        }
+      ]
+    },
+    "recommended_devices": [
+      {
+        "code": "W1-1",
+        "name": "Road Work Ahead",
+        "position": "-90m",
+        "placement": "bilateral",
+        "quantity": 2
+      },
+      {
+        "code": "W1-2",
+        "name": "Lane Closure Ahead",
+        "position": "-45m",
+        "placement": "bilateral",
+        "quantity": 2
+      },
+      {
+        "code": "R4-1(40)",
+        "name": "Speed Limit 40",
+        "position": "-55m",
+        "placement": "bilateral",
+        "quantity": 2
+      },
+      {
+        "code": "D5-1",
+        "name": "Traffic Cones 700mm",
+        "position": "taper",
+        "quantity": 20
+      },
+      {
+        "code": "G2-4",
+        "name": "End Road Work",
+        "position": "+50m after workzone",
+        "placement": "bilateral",
+        "quantity": 2
+      }
+    ],
+    "suggested_risks": [
+      "TF1",
+      "TF2",
+      "TF3",
+      "WS1",
+      "WS2",
+      "PC1",
+      "SD1",
+      "EM1",
+      "TF4",
+      "PB1",
+      "IF1"
+    ],
+    "governing_body_details": {
+      "authority_name": "SA Department for Infrastructure and Transport",
+      "main_phone": "1300 794 880",
+      "email": "DIT.TMApprovals@sa.gov.au",
+      "website": "www.dit.sa.gov.au",
+      "notification_email": "DIT.RoadworkNotifications@sa.gov.au",
+      "emergency_phone": "1800 018 313",
+      "office_hours": "Monday to Friday, 8:30am - 5:00pm"
+    },
+    "notification_requirements": {
+      "road_authority": {
+        "required": true,
+        "timeframe": "5 business days minimum",
+        "method": "Online portal or email"
+      },
+      "emergency_services": {
+        "required": true,
+        "timeframe": "48 hours before works",
+        "contacts": [
+          "SA Police",
+          "SA Ambulance",
+          "SA Fire"
+        ]
+      },
+      "public_transport": {
+        "required": false,
+        "timeframe": "7 days before",
+        "authority": "Adelaide Metro"
+      },
+      "adjacent_properties": {
+        "required": true,
+        "timeframe": "3 days before",
+        "method": "Letter box drop or door knock"
+      }
+    },
+    "environmental_constraints": {
+      "heritage_areas": [
+        {
+          "area": "Adelaide CBD Heritage Zone",
+          "restrictions": "State Heritage approval may be required",
+          "contact": "Heritage SA"
+        }
+      ],
+      "environmental_zones": [],
+      "tree_protection": false,
+      "noise_restrictions": {
+        "weekday_evening": "6pm - 7am (>5dB above background)",
+        "weekend": "Saturday 1pm - Monday 7am",
+        "public_holidays": "No noisy works"
+      },
+      "dust_management": true
+    },
+    "staging_recommendations": {
+      "recommended_stages": [
+        {
+          "stage": 1,
+          "description": "Single lane closure with traffic control",
+          "duration": "Full project",
+          "traffic_impact": "Moderate delays expected"
+        }
+      ],
+      "rationale": "2-lane road requires single stage with traffic controllers"
+    },
+    "public_facilities": {
+      "schools": [],
+      "hospitals": [],
+      "businesses": [],
+      "special_zones": []
+    },
+    "signage_plan": {
+      "advance_warning_signs": [
+        {
+          "sign_code": "T1-1",
+          "name": "Road Work Ahead",
+          "position": "-90m from workzone start",
+          "placement": "BILATERAL (both sides of road)",
+          "quantity": 2,
+          "mounting_height": "2.0-2.5m (AS 1742.3)",
+          "lateral_offset": "0.5-1.0m from edge of carriageway",
+          "notes": "Must be on both sides for multi-lane roads"
+        },
+        {
+          "sign_code": "T1-2",
+          "name": "Lane Closure Ahead",
+          "position": "-50m from lane closure",
+          "placement": "BILATERAL (both sides of road)",
+          "quantity": 2,
+          "mounting_height": "2.0-2.5m",
+          "lateral_offset": "0.5-1.0m from edge of carriageway"
+        },
+        {
+          "sign_code": "R4-1(40)",
+          "name": "Speed Limit 40",
+          "position": "-70m from workzone",
+          "placement": "BILATERAL (both sides of road)",
+          "quantity": 2,
+          "mounting_height": "2.0-2.5m",
+          "compliance": "Regulatory sign - enforceable by law"
+        }
+      ],
+      "workzone_signs": [
+        {
+          "sign_code": "T1-3",
+          "name": "Work Zone",
+          "position": "At start of workzone",
+          "placement": "BILATERAL",
+          "quantity": 2
+        },
+        {
+          "sign_code": "D5-1",
+          "name": "Traffic Cones 700mm",
+          "position": "Taper and workzone perimeter",
+          "spacing": "5m spacing",
+          "quantity": "Variable based on workzone length",
+          "specification": "700mm high, retroreflective, weighted base"
+        }
+      ],
+      "side_street_signs": [
+        {
+          "side_street_name": "North Terrace",
+          "requirement": "DOUBLE GATING - Signs on both approaches to intersection",
+          "signs": [
+            {
+              "sign_code": "T1-1",
+              "name": "Road Work Ahead",
+              "position": "On North Terrace approaching main road",
+              "placement": "Both approaches (north & south, or east & west)",
+              "quantity": 2,
+              "distance_from_intersection": "50-90m depending on visibility",
+              "notes": "AS 1742.3 requires warning on all approaches to workzone"
+            },
+            {
+              "sign_code": "T1-5",
+              "name": "Expect Delays",
+              "position": "On North Terrace 20m before intersection",
+              "placement": "Both approaches",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "side_street_name": "Clubhouse Lane",
+          "requirement": "DOUBLE GATING - Signs on both approaches to intersection",
+          "signs": [
+            {
+              "sign_code": "T1-1",
+              "name": "Road Work Ahead",
+              "position": "On Clubhouse Lane approaching main road",
+              "placement": "Both approaches (north & south, or east & west)",
+              "quantity": 2,
+              "distance_from_intersection": "50-90m depending on visibility",
+              "notes": "AS 1742.3 requires warning on all approaches to workzone"
+            },
+            {
+              "sign_code": "T1-5",
+              "name": "Expect Delays",
+              "position": "On Clubhouse Lane 20m before intersection",
+              "placement": "Both approaches",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "side_street_name": "Fowlers Lane",
+          "requirement": "DOUBLE GATING - Signs on both approaches to intersection",
+          "signs": [
+            {
+              "sign_code": "T1-1",
+              "name": "Road Work Ahead",
+              "position": "On Fowlers Lane approaching main road",
+              "placement": "Both approaches (north & south, or east & west)",
+              "quantity": 2,
+              "distance_from_intersection": "50-90m depending on visibility",
+              "notes": "AS 1742.3 requires warning on all approaches to workzone"
+            },
+            {
+              "sign_code": "T1-5",
+              "name": "Expect Delays",
+              "position": "On Fowlers Lane 20m before intersection",
+              "placement": "Both approaches",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "side_street_name": "Pathway of Honour",
+          "requirement": "DOUBLE GATING - Signs on both approaches to intersection",
+          "signs": [
+            {
+              "sign_code": "T1-1",
+              "name": "Road Work Ahead",
+              "position": "On Pathway of Honour approaching main road",
+              "placement": "Both approaches (north & south, or east & west)",
+              "quantity": 2,
+              "distance_from_intersection": "50-90m depending on visibility",
+              "notes": "AS 1742.3 requires warning on all approaches to workzone"
+            },
+            {
+              "sign_code": "T1-5",
+              "name": "Expect Delays",
+              "position": "On Pathway of Honour 20m before intersection",
+              "placement": "Both approaches",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "side_street_name": "King William Street",
+          "requirement": "DOUBLE GATING - Signs on both approaches to intersection",
+          "signs": [
+            {
+              "sign_code": "T1-1",
+              "name": "Road Work Ahead",
+              "position": "On King William Street approaching main road",
+              "placement": "Both approaches (north & south, or east & west)",
+              "quantity": 2,
+              "distance_from_intersection": "50-90m depending on visibility",
+              "notes": "AS 1742.3 requires warning on all approaches to workzone"
+            },
+            {
+              "sign_code": "T1-5",
+              "name": "Expect Delays",
+              "position": "On King William Street 20m before intersection",
+              "placement": "Both approaches",
+              "quantity": 2
+            }
+          ]
+        }
+      ],
+      "end_of_works_signs": [
+        {
+          "sign_code": "G2-4",
+          "name": "End Road Work",
+          "position": "+50m after workzone end",
+          "placement": "BILATERAL (both sides of road)",
+          "quantity": 2,
+          "mounting_height": "2.0-2.5m",
+          "notes": "Indicates return to normal conditions"
+        },
+        {
+          "sign_code": "R4-1(60)",
+          "name": "Speed Limit 60",
+          "position": "+55m after workzone end",
+          "placement": "BILATERAL (both sides of road)",
+          "quantity": 2,
+          "notes": "Reinstates normal speed limit"
+        }
+      ],
+      "bilateral_requirements": {
+        "applies_to": "Multi-lane roads and roads with speed limits >60 km/h",
+        "definition": "Signs must be placed on BOTH sides of the road",
+        "standard": "AS 1742.3 Clause 6.3.2",
+        "total_bilateral_signs": 7,
+        "compliance_note": "All regulatory and warning signs in workzone MUST be bilateral for roads with >1 lane per direction"
+      },
+      "distances_documented": {
+        "speed_limit": "60 km/h",
+        "advance_warning_distance": "90m (AS 1742.3 Table 6.2)",
+        "intermediate_distance": "50m",
+        "taper_length": "105m",
+        "buffer_zone": "30m",
+        "standard_reference": "AS 1742.3:2019 - Manual of uniform traffic control devices, Part 3: Traffic control for works on roads"
+      }
+    },
+    "crash_statistics": {
+      "total_crashes_5yr": 0,
+      "fatal_crashes": 0,
+      "serious_injury_crashes": 0,
+      "minor_injury_crashes": 0,
+      "property_damage_only": 0,
+      "recent_crashes": [],
+      "high_risk_periods": [],
+      "common_crash_types": [],
+      "contributing_factors": [],
+      "data_source": "SA Government Road Crash Data",
+      "blackspot_status": false
+    },
+    "historical_traffic": {
+      "aadt_history": [],
+      "traffic_growth_rate": 0.0,
+      "peak_hour_trends": [
+        {
+          "period": "Morning Peak (7-9am)",
+          "volume_increase": "35-45% above average"
+        },
+        {
+          "period": "Afternoon Peak (3-6pm)",
+          "volume_increase": "40-50% above average"
+        },
+        {
+          "period": "Off-peak",
+          "volume_decrease": "30-40% below average"
+        }
+      ],
+      "seasonal_variations": [
+        {
+          "season": "Summer holidays",
+          "variation": "-15% to -25% (reduced commuter traffic)"
+        },
+        {
+          "season": "School term",
+          "variation": "Baseline (100%)"
+        },
+        {
+          "season": "Public holidays",
+          "variation": "-30% to -50% (minimal traffic)"
+        }
+      ],
+      "heavy_vehicle_trends": [],
+      "previous_traffic_counts": [],
+      "data_period": "Last 5 years",
+      "reliability": "Estimated from regional data"
+    },
+    "location_history": {
+      "area_type": "Residential",
+      "population_density": "Medium",
+      "land_use": [],
+      "nearby_developments": [],
+      "previous_roadworks": [
+        {
+          "year": "2022",
+          "type": "Road resurfacing",
+          "duration": "2 weeks",
+          "impact": "Single lane closure"
+        },
+        {
+          "year": "2020",
+          "type": "Utility works",
+          "duration": "1 week",
+          "impact": "Partial road closure"
+        }
+      ],
+      "future_projects": [],
+      "heritage_status": null,
+      "environmental_factors": [
+        {
+          "factor": "Air Quality",
+          "consideration": "Dust suppression required during earthworks"
+        },
+        {
+          "factor": "Noise Management",
+          "consideration": "Noise monitoring may be required if near sensitive receivers"
+        },
+        {
+          "factor": "Stormwater",
+          "consideration": "Sediment control measures required"
+        }
+      ],
+      "noise_sensitive_areas": false,
+      "school_zones": false,
+      "hospital_zones": false
+    },
+    "current_roadworks": {
+      "current_roadworks": [],
+      "planned_roadworks": [],
+      "nearby_closures": [],
+      "traffic_incidents": [],
+      "conflict_detected": false,
+      "data_source": "Traffic SA - SA Government"
+    },
+    "traffic_signals": {
+      "nearby_signals": [
+        {
+          "location": "Signal at -34.921647, 138.596990",
+          "distance": "387m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921341, 138.599497",
+          "distance": "166m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921621, 138.598064",
+          "distance": "295m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921688, 138.597204",
+          "distance": "370m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924140, 138.603760",
+          "distance": "477m",
+          "crossing": "traffic_signals",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924230, 138.603917",
+          "distance": "493m",
+          "crossing": "traffic_signals",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921611, 138.599691",
+          "distance": "172m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921495, 138.599171",
+          "distance": "200m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921805, 138.599351",
+          "distance": "209m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924430, 138.599873",
+          "distance": "449m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924537, 138.599552",
+          "distance": "468m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924354, 138.599394",
+          "distance": "453m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924219, 138.599720",
+          "distance": "430m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.922866, 138.599611",
+          "distance": "292m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.923095, 138.599446",
+          "distance": "321m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.923003, 138.599283",
+          "distance": "319m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924234, 138.601828",
+          "distance": "422m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924319, 138.602109",
+          "distance": "437m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924172, 138.603090",
+          "distance": "451m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.922557, 138.605569",
+          "distance": "475m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.922815, 138.605588",
+          "distance": "491m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.922676, 138.605753",
+          "distance": "496m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921648, 138.595854",
+          "distance": "486m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921779, 138.596094",
+          "distance": "469m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921598, 138.596985",
+          "distance": "386m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921732, 138.597211",
+          "distance": "372m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921563, 138.597628",
+          "distance": "329m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921690, 138.597997",
+          "distance": "304m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921257, 138.601847",
+          "distance": "114m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921374, 138.601704",
+          "distance": "116m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921521, 138.602036",
+          "distance": "148m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921618, 138.601835",
+          "distance": "146m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921273, 138.603655",
+          "distance": "257m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921399, 138.604014",
+          "distance": "292m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921192, 138.605265",
+          "distance": "396m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921453, 138.605487",
+          "distance": "423m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921334, 138.605723",
+          "distance": "440m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921135, 138.606385",
+          "distance": "496m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.918844, 138.599319",
+          "distance": "240m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.918981, 138.599116",
+          "distance": "241m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.919781, 138.599392",
+          "distance": "167m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.919992, 138.599208",
+          "distance": "173m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921903, 138.596030",
+          "distance": "479m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924121, 138.601954",
+          "distance": "412m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924414, 138.601974",
+          "distance": "444m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.917058, 138.599095",
+          "distance": "420m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.917355, 138.598968",
+          "distance": "396m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.917173, 138.599337",
+          "distance": "400m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924084, 138.603284",
+          "distance": "450m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.916120, 138.601906",
+          "distance": "494m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.917851, 138.603883",
+          "distance": "395m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.917837, 138.604054",
+          "distance": "406m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.918614, 138.601642",
+          "distance": "218m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.918771, 138.601653",
+          "distance": "201m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924293, 138.600644",
+          "distance": "423m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924372, 138.601040",
+          "distance": "431m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.923076, 138.597784",
+          "distance": "410m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.923094, 138.597409",
+          "distance": "436m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921492, 138.603873",
+          "distance": "284m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921354, 138.604010",
+          "distance": "290m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921343, 138.603656",
+          "distance": "260m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921259, 138.605269",
+          "distance": "398m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921267, 138.605722",
+          "distance": "439m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921202, 138.606391",
+          "distance": "498m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921455, 138.602023",
+          "distance": "141m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921441, 138.601699",
+          "distance": "123m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.919986, 138.599278",
+          "distance": "167m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921543, 138.599798",
+          "distance": "160m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921554, 138.598977",
+          "distance": "219m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921923, 138.599428",
+          "distance": "213m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921278, 138.599423",
+          "distance": "168m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.918960, 138.599198",
+          "distance": "237m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.918959, 138.599236",
+          "distance": "235m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.918870, 138.599191",
+          "distance": "245m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.918869, 138.599229",
+          "distance": "243m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921606, 138.597634",
+          "distance": "331m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921737, 138.596082",
+          "distance": "469m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.921713, 138.595854",
+          "distance": "488m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        }
+      ],
+      "signal_coordination_required": true,
+      "signal_timing_contact": "Department for Infrastructure and Transport SA - Traffic Signals Branch",
+      "data_source": "OpenStreetMap + SA Government Traffic Signals"
+    },
+    "parking_restrictions": {
+      "restrictions": [],
+      "loading_zones": [],
+      "clearway_times": [],
+      "permit_required": false,
+      "data_source": "OpenStreetMap + Inferred Council Regulations"
+    },
+    "school_zones": {
+      "school_zones": [
+        {
+          "name": "University Senior College",
+          "distance": "503m",
+          "type": "primary/secondary"
+        },
+        {
+          "name": "AHMS Building",
+          "distance": "887m",
+          "type": "primary/secondary"
+        },
+        {
+          "name": "Terry Simpson Studios",
+          "distance": "435m",
+          "type": "primary/secondary"
+        }
+      ],
+      "school_times": [
+        {
+          "period": "Morning Peak",
+          "time": "8:00 AM - 9:00 AM",
+          "speed_limit": "40 km/h",
+          "restrictions": "Enhanced traffic control required"
+        },
+        {
+          "period": "Afternoon Peak",
+          "time": "2:30 PM - 3:30 PM",
+          "speed_limit": "40 km/h",
+          "restrictions": "Enhanced traffic control required"
+        }
+      ],
+      "enhanced_restrictions": true,
+      "data_source": "OpenStreetMap + SA Education Facilities"
+    },
+    "public_transport_detailed": {
+      "bus_stops": [],
+      "tram_stops": [],
+      "train_stations": [],
+      "access_impact": "none",
+      "data_source": "OpenStreetMap + Adelaide Metro"
+    },
+    "utility_infrastructure": {
+      "underground_utilities": [],
+      "overhead_utilities": [],
+      "dial_before_dig_required": true,
+      "utility_contacts": [
+        {
+          "utility": "Dial Before You Dig",
+          "phone": "1100",
+          "service": "All underground utilities",
+          "notice": "3 business days minimum"
+        },
+        {
+          "utility": "SA Water",
+          "phone": "1300 SA WATER (1300 729 283)",
+          "service": "Water and sewer mains",
+          "notice": "5 business days recommended"
+        },
+        {
+          "utility": "SA Power Networks",
+          "phone": "13 12 61",
+          "service": "Electricity distribution",
+          "notice": "5 business days recommended"
+        },
+        {
+          "utility": "Australian Gas Networks",
+          "phone": "1300 001 001",
+          "service": "Gas distribution",
+          "notice": "5 business days recommended"
+        },
+        {
+          "utility": "NBN Co",
+          "phone": "1800 OUR NBN (1800 687 626)",
+          "service": "Telecommunications",
+          "notice": "10 business days recommended"
+        }
+      ],
+      "data_source": "OpenStreetMap + Utility Providers"
+    },
+    "detour_routes": null
+  },
+  "timestamp": "2025-11-03T16:55:42.715985"
+}
