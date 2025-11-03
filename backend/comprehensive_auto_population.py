@@ -593,6 +593,9 @@ async def get_comprehensive_auto_population(lat: float, lng: float, start_addres
         # 15. LOCATION HISTORY (NEW - Demographics, land use, previous works)
         result['location_history'] = await fetch_location_history(lat, lng, start_address)
         
+        # 16. CURRENT ROADWORKS (NEW - Traffic SA dataset)
+        result['current_roadworks'] = await fetch_current_roadworks(lat, lng, start_address)
+        
         return result
         
     except Exception as e:
