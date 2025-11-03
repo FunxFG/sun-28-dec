@@ -111,7 +111,7 @@ function App() {
           <Route 
             path="/auth" 
             element={
-              user ? <Navigate to="/dashboard" replace /> : <AuthPage onLogin={login} />
+              user ? <Navigate to="/dashboard" replace /> : <AuthPage onLogin={login} onGuestLogin={loginAsGuest} />
             } 
           />
           <Route 
