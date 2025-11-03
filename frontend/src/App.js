@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import './App.css';
 import AuthPage from './components/AuthPage';
 import Dashboard from './components/Dashboard';
@@ -8,6 +8,17 @@ import { Toaster } from './components/ui/sonner';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://trafficease-3.preview.emergentagent.com';
 const API = `${BACKEND_URL}/api`;
+
+// Create AuthContext for global auth state management
+const AuthContext = React.createContext(null);
+
+export const useAuth = () => {
+  const context = React.useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within AuthProvider');
+  }
+  return context;
+};
 
 function App() {
   // Initialize user state from localStorage immediately to prevent flash
