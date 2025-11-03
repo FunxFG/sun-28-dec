@@ -3757,6 +3757,20 @@ export default function PlanEditor({ user, onLogout }) {
                 )}
               </CardContent>
             </Card>
+
+            {/* Visual TGS with Sign Overlays */}
+            <VisualTGSViewer 
+              planData={formData}
+              placedDevices={formData.devices.map(d => ({
+                code: d.device_code || d.device_name.split(' ').map(w => w[0]).join(''),
+                name: d.device_name,
+                latitude: d.position_lat,
+                longitude: d.position_lng,
+                distance: d.properties?.distance || 0,
+                side: d.properties?.side || 'left'
+              }))}
+            />
+
           </div>
         </div>
       </div>
