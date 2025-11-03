@@ -2545,6 +2545,326 @@ export default function PlanEditor({ user, onLogout }) {
               </Card>
             )}
 
+            {/* NEW: Traffic Signals Card */}
+            {comprehensiveData.traffic_signals && comprehensiveData.traffic_signals.nearby_signals?.length > 0 && (
+              <Card className="border-l-4 border-l-purple-500">
+                <CardHeader>
+                  <CardTitle className="text-purple-700">🚦 Traffic Signals</CardTitle>
+                  <CardDescription>Signal coordination requirements</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {comprehensiveData.traffic_signals.signal_coordination_required && (
+                    <div className="bg-purple-50 border-2 border-purple-500 p-3 rounded-lg">
+                      <div className="font-bold text-purple-900 mb-1">⚠️ SIGNAL COORDINATION REQUIRED</div>
+                      <div className="text-sm text-purple-800">
+                        Contact: {comprehensiveData.traffic_signals.signal_timing_contact}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="space-y-2">
+                    {comprehensiveData.traffic_signals.nearby_signals.map((signal, idx) => (
+                      <div key={idx} className="bg-gray-50 border border-gray-200 p-3 rounded">
+                        <div className="flex justify-between items-start">
+                          <div className="font-medium">{signal.location}</div>
+                          <span className="text-xs text-gray-600">{signal.distance}</span>
+                        </div>
+                        {signal.crossing !== 'unknown' && (
+                          <div className="text-sm text-gray-600 mt-1">Crossing: {signal.crossing}</div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  <Button
+                    onClick={() => downloadJSON(comprehensiveData.traffic_signals, 'traffic_signals.json')}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Signals Data
+                  </Button>
+
+                  <div className="text-xs text-gray-500 italic pt-2 border-t">
+                    Data source: {comprehensiveData.traffic_signals.data_source}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* NEW: School Zones Card */}
+            {comprehensiveData.school_zones && comprehensiveData.school_zones.school_zones?.length > 0 && (
+              <Card className="border-l-4 border-l-yellow-500">
+                <CardHeader>
+                  <CardTitle className="text-yellow-700">🏫 School Zones</CardTitle>
+                  <CardDescription>Enhanced restrictions and school hours</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {comprehensiveData.school_zones.enhanced_restrictions && (
+                    <div className="bg-yellow-50 border-2 border-yellow-500 p-3 rounded-lg">
+                      <div className="font-bold text-yellow-900 mb-1">⚠️ SCHOOL ZONE - ENHANCED RESTRICTIONS</div>
+                      <div className="text-sm text-yellow-800">
+                        40 km/h speed limit applies during school times
+                      </div>
+                    </div>
+                  )}
+
+                  <div>
+                    <h4 className="font-semibold mb-2 text-sm">Nearby Schools</h4>
+                    <div className="space-y-2">
+                      {comprehensiveData.school_zones.school_zones.map((school, idx) => (
+                        <div key={idx} className="bg-yellow-50 border border-yellow-200 p-3 rounded">
+                          <div className="flex justify-between items-start">
+                            <div className="font-medium">{school.name}</div>
+                            <span className="text-xs text-gray-600">{school.distance}</span>
+                          </div>
+                          <div className="text-sm text-gray-600 capitalize">{school.type}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {comprehensiveData.school_zones.school_times?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">School Hours Restrictions</h4>
+                      <div className="space-y-2">
+                        {comprehensiveData.school_zones.school_times.map((time, idx) => (
+                          <div key={idx} className="bg-white border border-gray-200 p-2 rounded text-sm">
+                            <div className="font-semibold">{time.period}</div>
+                            <div className="text-gray-600">{time.time}</div>
+                            <div className="text-xs text-gray-500 mt-1">{time.restrictions}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <Button
+                    onClick={() => downloadJSON(comprehensiveData.school_zones, 'school_zones.json')}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download School Zones Data
+                  </Button>
+
+                  <div className="text-xs text-gray-500 italic pt-2 border-t">
+                    Data source: {comprehensiveData.school_zones.data_source}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* NEW: Parking Restrictions Card */}
+            {comprehensiveData.parking_restrictions && (comprehensiveData.parking_restrictions.restrictions?.length > 0 || comprehensiveData.parking_restrictions.permit_required) && (
+              <Card className="border-l-4 border-l-indigo-500">
+                <CardHeader>
+                  <CardTitle className="text-indigo-700">🅿️ Parking Restrictions</CardTitle>
+                  <CardDescription>Parking, loading zones, and permits</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {comprehensiveData.parking_restrictions.permit_required && (
+                    <div className="bg-indigo-50 border border-indigo-300 p-3 rounded">
+                      <div className="font-semibold mb-1">Permit Required</div>
+                      <div className="text-sm text-gray-700">
+                        Authority: {comprehensiveData.parking_restrictions.permit_authority}
+                      </div>
+                    </div>
+                  )}
+
+                  {comprehensiveData.parking_restrictions.restrictions?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">Parking Regulations</h4>
+                      <div className="space-y-2">
+                        {comprehensiveData.parking_restrictions.restrictions.slice(0, 5).map((restriction, idx) => (
+                          <div key={idx} className="bg-gray-50 border border-gray-200 p-2 rounded text-sm">
+                            <div className="font-medium capitalize">{restriction.type}</div>
+                            <div className="text-gray-600 text-xs">{restriction.restriction || restriction.access}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <Button
+                    onClick={() => downloadJSON(comprehensiveData.parking_restrictions, 'parking_restrictions.json')}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Parking Data
+                  </Button>
+
+                  <div className="text-xs text-gray-500 italic pt-2 border-t">
+                    Data source: {comprehensiveData.parking_restrictions.data_source}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* NEW: Public Transport Detailed Card */}
+            {comprehensiveData.public_transport_detailed && (
+              (comprehensiveData.public_transport_detailed.bus_stops?.length > 0 || 
+               comprehensiveData.public_transport_detailed.tram_stops?.length > 0 || 
+               comprehensiveData.public_transport_detailed.train_stations?.length > 0)) && (
+              <Card className="border-l-4 border-l-cyan-500">
+                <CardHeader>
+                  <CardTitle className="text-cyan-700">🚌 Public Transport Facilities</CardTitle>
+                  <CardDescription>Bus, tram, and train services</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {comprehensiveData.public_transport_detailed.access_impact !== 'none' && (
+                    <div className={`border p-3 rounded ${
+                      comprehensiveData.public_transport_detailed.access_impact === 'high' 
+                        ? 'bg-red-50 border-red-300' 
+                        : 'bg-yellow-50 border-yellow-300'
+                    }`}>
+                      <div className="font-semibold mb-1">
+                        {comprehensiveData.public_transport_detailed.access_impact === 'high' ? '⚠️ HIGH' : '⚡'} Impact Level
+                      </div>
+                      <div className="text-sm text-gray-700">
+                        {comprehensiveData.public_transport_detailed.access_requirements}
+                      </div>
+                    </div>
+                  )}
+
+                  {comprehensiveData.public_transport_detailed.bus_stops?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">🚌 Bus Stops ({comprehensiveData.public_transport_detailed.bus_stops.length})</h4>
+                      <div className="space-y-1">
+                        {comprehensiveData.public_transport_detailed.bus_stops.slice(0, 3).map((stop, idx) => (
+                          <div key={idx} className="bg-gray-50 border border-gray-200 p-2 rounded text-sm flex justify-between">
+                            <span>{stop.name}</span>
+                            <span className="text-gray-600">{stop.distance}</span>
+                          </div>
+                        ))}
+                        {comprehensiveData.public_transport_detailed.bus_stops.length > 3 && (
+                          <div className="text-xs text-gray-500 pl-2">
+                            +{comprehensiveData.public_transport_detailed.bus_stops.length - 3} more stops
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {comprehensiveData.public_transport_detailed.tram_stops?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">🚊 Tram Stops ({comprehensiveData.public_transport_detailed.tram_stops.length})</h4>
+                      <div className="space-y-1">
+                        {comprehensiveData.public_transport_detailed.tram_stops.map((stop, idx) => (
+                          <div key={idx} className="bg-gray-50 border border-gray-200 p-2 rounded text-sm flex justify-between">
+                            <span>{stop.name}</span>
+                            <span className="text-gray-600">{stop.distance}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {comprehensiveData.public_transport_detailed.train_stations?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">🚆 Train Stations ({comprehensiveData.public_transport_detailed.train_stations.length})</h4>
+                      <div className="space-y-1">
+                        {comprehensiveData.public_transport_detailed.train_stations.map((stop, idx) => (
+                          <div key={idx} className="bg-gray-50 border border-gray-200 p-2 rounded text-sm flex justify-between">
+                            <span>{stop.name}</span>
+                            <span className="text-gray-600">{stop.distance}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <Button
+                    onClick={() => downloadJSON(comprehensiveData.public_transport_detailed, 'public_transport.json')}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Transport Data
+                  </Button>
+
+                  <div className="text-xs text-gray-500 italic pt-2 border-t">
+                    Data source: {comprehensiveData.public_transport_detailed.data_source}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* NEW: Utility Infrastructure Card */}
+            {comprehensiveData.utility_infrastructure && (
+              <Card className="border-l-4 border-l-red-500">
+                <CardHeader>
+                  <CardTitle className="text-red-700">⚡ Utility Infrastructure</CardTitle>
+                  <CardDescription>Underground and overhead utilities</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="bg-red-50 border-2 border-red-500 p-3 rounded-lg">
+                    <div className="font-bold text-red-900 mb-1">⚠️ DIAL BEFORE YOU DIG - MANDATORY</div>
+                    <div className="text-sm text-red-800">
+                      Call 1100 at least 3 business days before commencing work
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold mb-2 text-sm">Utility Contacts</h4>
+                    <div className="space-y-2">
+                      {comprehensiveData.utility_infrastructure.utility_contacts?.slice(0, 5).map((contact, idx) => (
+                        <div key={idx} className="bg-white border border-gray-200 p-2 rounded">
+                          <div className="font-medium text-sm">{contact.utility}</div>
+                          <div className="text-xs text-gray-600">📞 {contact.phone}</div>
+                          <div className="text-xs text-gray-500">{contact.service}</div>
+                          <div className="text-xs text-blue-600 mt-1">Notice: {contact.notice}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {comprehensiveData.utility_infrastructure.overhead_utilities?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm text-orange-700">⚡ Overhead Utilities Detected</h4>
+                      <div className="bg-orange-50 border border-orange-300 p-2 rounded text-sm">
+                        {comprehensiveData.utility_infrastructure.overhead_utilities.length} overhead utility/utilities detected.
+                        Minimum clearance requirements apply.
+                      </div>
+                    </div>
+                  )}
+
+                  {comprehensiveData.utility_infrastructure.underground_utilities?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">🔽 Expected Underground Utilities</h4>
+                      <div className="text-xs text-gray-600 space-y-1">
+                        {comprehensiveData.utility_infrastructure.underground_utilities.slice(0, 3).map((utility, idx) => (
+                          <div key={idx} className="bg-gray-50 p-2 rounded">
+                            <span className="font-medium">{utility.type}</span> - {utility.provider}
+                            <div className="text-gray-500">Depth: {utility.depth}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <Button
+                    onClick={() => downloadJSON(comprehensiveData.utility_infrastructure, 'utility_infrastructure.json')}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Utilities Data
+                  </Button>
+
+                  <div className="text-xs text-gray-500 italic pt-2 border-t">
+                    Data source: {comprehensiveData.utility_infrastructure.data_source}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
           {/* Right Panel - Map and Devices */}
           <div className="space-y-6">
             {/* Map */}
