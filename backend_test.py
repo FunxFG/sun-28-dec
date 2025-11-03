@@ -1665,7 +1665,7 @@ class SafeRoadWorksAPITester:
             "GET",
             "sa-signs/search",
             200,
-            data={"q": "warning", "limit": 20}
+            data={"q": "stop", "limit": 20}
         )
         
         if success:
