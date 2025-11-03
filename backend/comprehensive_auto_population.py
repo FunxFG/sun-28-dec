@@ -1114,6 +1114,21 @@ async def get_comprehensive_auto_population(lat: float, lng: float, start_addres
         # 16. CURRENT ROADWORKS (NEW - Traffic SA dataset)
         result['current_roadworks'] = await fetch_current_roadworks(lat, lng, start_address)
         
+        # 17. TRAFFIC SIGNALS (NEW - Signal coordination requirements)
+        result['traffic_signals'] = await fetch_traffic_signals_data(lat, lng, start_address)
+        
+        # 18. PARKING RESTRICTIONS (NEW - Parking and loading zones)
+        result['parking_restrictions'] = await fetch_parking_restrictions(lat, lng, start_address)
+        
+        # 19. SCHOOL ZONES (NEW - School proximity and restrictions)
+        result['school_zones'] = await fetch_school_zones_data(lat, lng, start_address)
+        
+        # 20. PUBLIC TRANSPORT (NEW - Bus, tram, train facilities)
+        result['public_transport_detailed'] = await fetch_public_transport_facilities(lat, lng, start_address)
+        
+        # 21. UTILITY INFRASTRUCTURE (NEW - Underground and overhead utilities)
+        result['utility_infrastructure'] = await fetch_utility_infrastructure(lat, lng, start_address)
+        
         return result
         
     except Exception as e:
