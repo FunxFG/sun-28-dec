@@ -2044,10 +2044,6 @@ async def recommend_sa_signs_for_tmp(request: dict):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-@api_router.post("/devices/recommend")
-async def recommend_devices_old(scenario: dict):
     """
     Get recommended devices based on work scenario
     Request body example:
