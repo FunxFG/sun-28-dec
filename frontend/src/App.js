@@ -58,19 +58,21 @@ function App() {
     console.log('User data:', userData);
     
     try {
+      // Save to localStorage first
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
-      setUser(userData);
       
       console.log('Auth data saved to localStorage');
+      
+      // Update state
+      setUser(userData);
       console.log('User state updated:', userData);
       
-      // Force a small delay to ensure state is set before navigation
-      setTimeout(() => {
-        window.location.href = '/dashboard';
-      }, 100);
+      // Force immediate redirect without delay
+      window.location.href = '/dashboard';
     } catch (e) {
       console.error('Error saving auth data:', e);
+      toast.error('Failed to save login session');
     }
   };
 
