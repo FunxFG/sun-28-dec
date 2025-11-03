@@ -700,6 +700,39 @@ async def enhance_with_sa_roads_data(lat: float, lng: float, road_info: Dict) ->
 
 async def fetch_crash_statistics(lat: float, lng: float, address: str) -> Dict[str, Any]:
     """
+    Fetch road crash statistics from SA Government database
+    Enhanced integration with data.sa.gov.au Road Crash Data
+    """
+    from enhanced_crash_data import get_enhanced_crash_statistics
+    
+    try:
+        # Use enhanced crash data integration
+        crash_data = await get_enhanced_crash_statistics(lat, lng, address)
+        return crash_data
+        
+    except Exception as e:
+        logger.error(f"Error fetching enhanced crash statistics: {str(e)}")
+        
+        # Fallback to basic crash data structure
+        return {
+            'total_crashes': 0,
+            'casualties': 0,
+            'fatal_crashes': 0,
+            'serious_injury': 0,
+            'minor_injury': 0,
+            'property_damage_only': 0,
+            'crashes_by_year': {},
+            'common_factors': ['Unable to fetch data'],
+            'peak_times': [],
+            'recent_crashes': [],
+            'data_source': 'SA Government Road Crash Database (data.sa.gov.au)',
+            'warning': f'Error accessing crash data: {str(e)}',
+            'risk_assessment': {
+                'risk_level': 'UNKNOWN',
+                'risk_description': 'Unable to assess crash risk - manual review required'
+            }
+        }
+    """
     Fetch crash/accident statistics from Australian Government databases
     Sources: data.sa.gov.au, data.gov.au (Australian Road Deaths Database)
     """
