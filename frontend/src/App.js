@@ -82,24 +82,36 @@ function AppContent() {
     console.log('User data:', userData);
     
     try {
-      // Save to localStorage
+      // Validate inputs
+      if (!token || !userData) {
+        throw new Error('Invalid token or user data');
+      }
+      
+      // Save to localStorage immediately
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
       
-      // Update state
+      console.log('✅ Auth data saved to localStorage');
+      
+      // Update state - this will trigger re-render and navigation
       setUser(userData);
       
-      console.log('✅ Auth data saved successfully');
+      console.log('✅ User state updated');
       console.log('Navigating to dashboard...');
       
-      // Use React Router navigate instead of window.location
+      // Use setTimeout to ensure state update completes before navigation
+      // This helps with React.StrictMode double-mount behavior
       setTimeout(() => {
         navigate('/dashboard', { replace: true });
-      }, 100);
+      }, 50);
       
     } catch (e) {
       console.error('❌ Error in login function:', e);
-      alert('Failed to save login session');
+      // Clean up on error
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      setUser(null);
+      alert('Failed to save login session: ' + e.message);
     }
   };
 
