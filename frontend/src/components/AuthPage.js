@@ -147,6 +147,29 @@ export default function AuthPage({ onLogin, onGuestLogin }) {
               </CardDescription>
             </CardHeader>
             <CardContent>
+              {/* Guest Mode Button - Always Visible at Top */}
+              {onGuestLogin && (
+                <div className="mb-6">
+                  <Button 
+                    onClick={onGuestLogin}
+                    className="w-full h-12 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-bold text-lg shadow-lg"
+                  >
+                    🚀 Try Demo Now (No Login Required)
+                  </Button>
+                  <p className="text-center text-xs text-slate-500 mt-2">
+                    Test all features instantly without creating an account
+                  </p>
+                  <div className="relative my-6">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t border-slate-300" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-white px-2 text-slate-500">Or sign in with your account</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
               <Tabs defaultValue="login" className="w-full">
                 <TabsList className="grid w-full grid-cols-2 mb-6">
                   <TabsTrigger value="login">Sign In</TabsTrigger>
