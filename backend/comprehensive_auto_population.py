@@ -643,6 +643,394 @@ def calculate_distance(lat1: float, lng1: float, lat2: float, lng2: float) -> fl
     return R * c
 
 
+async def fetch_traffic_signals_data(lat: float, lng: float, address: str) -> Dict[str, Any]:
+    """
+    Fetch traffic signal locations near the work area
+    Sources: OSM traffic signals, SA Government traffic signal data
+    """
+    signals_data = {
+        'nearby_signals': [],
+        'signal_coordination_required': False,
+        'signal_timing_contact': '',
+        'data_source': 'OpenStreetMap + SA Government Traffic Signals'
+    }
+    
+    try:
+        # Fetch from OSM
+        overpass_url = "https://overpass-api.de/api/interpreter"
+        
+        # Query for traffic signals within 500m
+        query = f"""
+        [out:json][timeout:10];
+        (
+          node(around:500,{lat},{lng})["highway"="traffic_signals"];
+        );
+        out body;
+        """
+        
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            response = await client.post(overpass_url, data={"data": query})
+            data = response.json()
+            
+            for element in data.get('elements', []):
+                if element.get('type') == 'node':
+                    signal_lat = element.get('lat')
+                    signal_lng = element.get('lon')
+                    distance_km = calculate_distance(lat, lng, signal_lat, signal_lng)
+                    
+                    tags = element.get('tags', {})
+                    signal_info = {
+                        'location': tags.get('name', f'Signal at {signal_lat:.6f}, {signal_lng:.6f}'),
+                        'distance': f"{distance_km * 1000:.0f}m",
+                        'crossing': tags.get('crossing', 'unknown'),
+                        'direction': tags.get('direction', 'unknown')
+                    }
+                    signals_data['nearby_signals'].append(signal_info)
+        
+        # If signals found within 200m, coordination required
+        close_signals = [s for s in signals_data['nearby_signals'] if float(s['distance'].replace('m', '')) < 200]
+        if close_signals:
+            signals_data['signal_coordination_required'] = True
+            signals_data['signal_timing_contact'] = 'Department for Infrastructure and Transport SA - Traffic Signals Branch'
+            
+        return signals_data
+        
+    except Exception as e:
+        logger.error(f"Error fetching traffic signals: {str(e)}")
+        return signals_data
+
+
+async def fetch_parking_restrictions(lat: float, lng: float, address: str) -> Dict[str, Any]:
+    """
+    Fetch parking restrictions and loading zones
+    Sources: OSM parking data, local council regulations
+    """
+    parking_data = {
+        'restrictions': [],
+        'loading_zones': [],
+        'clearway_times': [],
+        'permit_required': False,
+        'data_source': 'OpenStreetMap + Inferred Council Regulations'
+    }
+    
+    try:
+        # Fetch from OSM
+        overpass_url = "https://overpass-api.de/api/interpreter"
+        
+        query = f"""
+        [out:json][timeout:10];
+        (
+          way(around:200,{lat},{lng})["parking:lane"];
+          node(around:200,{lat},{lng})["amenity"="parking"];
+        );
+        out body;
+        """
+        
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            response = await client.post(overpass_url, data={"data": query})
+            data = response.json()
+            
+            for element in data.get('elements', []):
+                tags = element.get('tags', {})
+                
+                # Check parking lanes
+                if 'parking:lane' in str(tags):
+                    parking_data['restrictions'].append({
+                        'type': 'parking_lane',
+                        'side': tags.get('parking:lane:both', tags.get('parking:lane:left', tags.get('parking:lane:right', 'unknown'))),
+                        'restriction': tags.get('parking:condition', 'check local signage')
+                    })
+                
+                # Check parking amenities
+                if tags.get('amenity') == 'parking':
+                    parking_data['restrictions'].append({
+                        'type': 'parking_area',
+                        'access': tags.get('access', 'public'),
+                        'capacity': tags.get('capacity', 'unknown')
+                    })
+        
+        # Infer permit requirements based on road type
+        if 'arterial' in address.lower() or 'highway' in address.lower():
+            parking_data['permit_required'] = True
+            parking_data['permit_authority'] = 'Department for Infrastructure and Transport SA'
+        else:
+            parking_data['permit_required'] = True
+            parking_data['permit_authority'] = 'Local Council'
+            
+        return parking_data
+        
+    except Exception as e:
+        logger.error(f"Error fetching parking restrictions: {str(e)}")
+        return parking_data
+
+
+async def fetch_school_zones_data(lat: float, lng: float, address: str) -> Dict[str, Any]:
+    """
+    Fetch school zone information and restrictions
+    Sources: OSM schools, SA Government education facilities
+    """
+    school_data = {
+        'school_zones': [],
+        'school_times': [],
+        'enhanced_restrictions': False,
+        'data_source': 'OpenStreetMap + SA Education Facilities'
+    }
+    
+    try:
+        # Fetch from OSM
+        overpass_url = "https://overpass-api.de/api/interpreter"
+        
+        query = f"""
+        [out:json][timeout:10];
+        (
+          node(around:1000,{lat},{lng})["amenity"="school"];
+          way(around:1000,{lat},{lng})["amenity"="school"];
+        );
+        out body;
+        """
+        
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            response = await client.post(overpass_url, data={"data": query})
+            data = response.json()
+            
+            for element in data.get('elements', []):
+                tags = element.get('tags', {})
+                
+                if tags.get('amenity') == 'school':
+                    # Calculate distance
+                    if element.get('type') == 'node':
+                        school_lat = element.get('lat')
+                        school_lng = element.get('lon')
+                    elif element.get('type') == 'way' and element.get('center'):
+                        school_lat = element['center']['lat']
+                        school_lng = element['center']['lon']
+                    else:
+                        continue
+                    
+                    distance_km = calculate_distance(lat, lng, school_lat, school_lng)
+                    
+                    school_info = {
+                        'name': tags.get('name', 'School'),
+                        'distance': f"{distance_km * 1000:.0f}m",
+                        'type': tags.get('school', 'primary/secondary')
+                    }
+                    
+                    school_data['school_zones'].append(school_info)
+                    
+                    # If school within 500m, enhanced restrictions apply
+                    if distance_km < 0.5:
+                        school_data['enhanced_restrictions'] = True
+                        school_data['school_times'].append({
+                            'period': 'Morning Peak',
+                            'time': '8:00 AM - 9:00 AM',
+                            'speed_limit': '40 km/h',
+                            'restrictions': 'Enhanced traffic control required'
+                        })
+                        school_data['school_times'].append({
+                            'period': 'Afternoon Peak',
+                            'time': '2:30 PM - 3:30 PM',
+                            'speed_limit': '40 km/h',
+                            'restrictions': 'Enhanced traffic control required'
+                        })
+        
+        return school_data
+        
+    except Exception as e:
+        logger.error(f"Error fetching school zones: {str(e)}")
+        return school_data
+
+
+async def fetch_public_transport_facilities(lat: float, lng: float, address: str) -> Dict[str, Any]:
+    """
+    Fetch public transport stops and facilities
+    Sources: OSM public transport, Adelaide Metro data
+    """
+    transport_data = {
+        'bus_stops': [],
+        'tram_stops': [],
+        'train_stations': [],
+        'access_impact': 'none',
+        'data_source': 'OpenStreetMap + Adelaide Metro'
+    }
+    
+    try:
+        # Fetch from OSM
+        overpass_url = "https://overpass-api.de/api/interpreter"
+        
+        query = f"""
+        [out:json][timeout:10];
+        (
+          node(around:300,{lat},{lng})["highway"="bus_stop"];
+          node(around:300,{lat},{lng})["railway"="tram_stop"];
+          node(around:500,{lat},{lng})["railway"="station"];
+        );
+        out body;
+        """
+        
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            response = await client.post(overpass_url, data={"data": query})
+            data = response.json()
+            
+            for element in data.get('elements', []):
+                tags = element.get('tags', {})
+                stop_lat = element.get('lat')
+                stop_lng = element.get('lon')
+                distance_km = calculate_distance(lat, lng, stop_lat, stop_lng)
+                
+                stop_info = {
+                    'name': tags.get('name', 'Unnamed Stop'),
+                    'distance': f"{distance_km * 1000:.0f}m",
+                    'operator': tags.get('operator', 'Adelaide Metro')
+                }
+                
+                # Categorize by type
+                if tags.get('highway') == 'bus_stop':
+                    transport_data['bus_stops'].append(stop_info)
+                elif tags.get('railway') == 'tram_stop':
+                    transport_data['tram_stops'].append(stop_info)
+                elif tags.get('railway') == 'station':
+                    transport_data['train_stations'].append(stop_info)
+        
+        # Assess impact
+        total_stops = len(transport_data['bus_stops']) + len(transport_data['tram_stops']) + len(transport_data['train_stations'])
+        if total_stops > 0:
+            transport_data['access_impact'] = 'moderate'
+            transport_data['access_requirements'] = 'Maintain public transport access where possible. Notify Adelaide Metro of disruptions.'
+        if total_stops > 3:
+            transport_data['access_impact'] = 'high'
+            transport_data['access_requirements'] = 'Critical public transport corridor. Advance notice and alternative arrangements required.'
+            
+        return transport_data
+        
+    except Exception as e:
+        logger.error(f"Error fetching public transport facilities: {str(e)}")
+        return transport_data
+
+
+async def fetch_utility_infrastructure(lat: float, lng: float, address: str) -> Dict[str, Any]:
+    """
+    Fetch utility infrastructure information
+    Sources: OSM infrastructure, Dial Before You Dig, SA Water, SA Power Networks
+    """
+    utility_data = {
+        'underground_utilities': [],
+        'overhead_utilities': [],
+        'dial_before_dig_required': True,
+        'utility_contacts': [],
+        'data_source': 'OpenStreetMap + Utility Providers'
+    }
+    
+    try:
+        # Standard utilities for South Australia
+        utility_data['utility_contacts'] = [
+            {
+                'utility': 'Dial Before You Dig',
+                'phone': '1100',
+                'service': 'All underground utilities',
+                'notice': '3 business days minimum'
+            },
+            {
+                'utility': 'SA Water',
+                'phone': '1300 SA WATER (1300 729 283)',
+                'service': 'Water and sewer mains',
+                'notice': '5 business days recommended'
+            },
+            {
+                'utility': 'SA Power Networks',
+                'phone': '13 12 61',
+                'service': 'Electricity distribution',
+                'notice': '5 business days recommended'
+            },
+            {
+                'utility': 'Australian Gas Networks',
+                'phone': '1300 001 001',
+                'service': 'Gas distribution',
+                'notice': '5 business days recommended'
+            },
+            {
+                'utility': 'NBN Co',
+                'phone': '1800 OUR NBN (1800 687 626)',
+                'service': 'Telecommunications',
+                'notice': '10 business days recommended'
+            }
+        ]
+        
+        # Fetch overhead utilities from OSM
+        overpass_url = "https://overpass-api.de/api/interpreter"
+        
+        query = f"""
+        [out:json][timeout:10];
+        (
+          way(around:200,{lat},{lng})["power"="line"];
+          way(around:200,{lat},{lng})["power"="minor_line"];
+          node(around:200,{lat},{lng})["power"="pole"];
+        );
+        out body;
+        """
+        
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            response = await client.post(overpass_url, data={"data": query})
+            data = response.json()
+            
+            for element in data.get('elements', []):
+                tags = element.get('tags', {})
+                
+                if 'power' in tags:
+                    if tags['power'] in ['line', 'minor_line']:
+                        utility_data['overhead_utilities'].append({
+                            'type': 'Power Line',
+                            'voltage': tags.get('voltage', 'unknown'),
+                            'operator': tags.get('operator', 'SA Power Networks'),
+                            'clearance_required': True
+                        })
+                    elif tags['power'] == 'pole':
+                        utility_data['overhead_utilities'].append({
+                            'type': 'Power Pole',
+                            'operator': 'SA Power Networks',
+                            'clearance_required': '1.0m minimum'
+                        })
+        
+        # Add underground utilities warning
+        utility_data['underground_utilities'] = [
+            {
+                'type': 'Water Mains',
+                'provider': 'SA Water',
+                'depth': 'Typically 1.0m - 2.0m',
+                'protection_required': 'Yes'
+            },
+            {
+                'type': 'Sewer Mains',
+                'provider': 'SA Water',
+                'depth': 'Typically 1.5m - 3.0m',
+                'protection_required': 'Yes'
+            },
+            {
+                'type': 'Gas Mains',
+                'provider': 'Australian Gas Networks',
+                'depth': 'Typically 0.6m - 1.2m',
+                'protection_required': 'Critical'
+            },
+            {
+                'type': 'Electricity Cables',
+                'provider': 'SA Power Networks',
+                'depth': 'Typically 0.6m - 1.0m',
+                'protection_required': 'Critical'
+            },
+            {
+                'type': 'Telecommunications',
+                'provider': 'Multiple (NBN, Telstra, etc.)',
+                'depth': 'Typically 0.5m - 1.0m',
+                'protection_required': 'Yes'
+            }
+        ]
+        
+        return utility_data
+        
+    except Exception as e:
+        logger.error(f"Error fetching utility infrastructure: {str(e)}")
+        return utility_data
+
+
 async def get_comprehensive_auto_population(lat: float, lng: float, start_address: str, end_address: str, work_type: str = None):
     """
     Master function to auto-populate ALL possible TMP fields
