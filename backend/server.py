@@ -1918,6 +1918,148 @@ async def recommend_devices(scenario: dict):
     }
     """
     try:
+        devices = get_required_devices_for_scenario(**scenario)
+        return {
+            "scenario": scenario,
+            "recommended_devices": devices,
+            "count": len(devices)
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ============================================
+# SA SIGN LIBRARY ENDPOINTS (NEW)
+# ============================================
+
+@api_router.get("/sa-signs/stats")
+async def get_sa_sign_statistics():
+    """
+    Get statistics about the SA Sign Library
+    Returns total signs, categories, etc.
+    """
+    try:
+        stats = get_device_statistics()
+        return stats
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/sa-signs")
+async def get_all_sa_signs(
+    category: Optional[str] = None,
+    limit: Optional[int] = 100,
+    skip: Optional[int] = 0
+):
+    """
+    Get all SA signs or filter by category
+    Query params:
+    - category: Filter by category (Warning, Regulatory, Guide, etc.)
+    - limit: Max number of results (default 100)
+    - skip: Number of records to skip (default 0)
+    """
+    try:
+        if category:
+            signs = get_sa_signs_by_category(category)
+        else:
+            signs = SA_SIGNS
+        
+        # Apply pagination
+        paginated_signs = signs[skip:skip + limit]
+        
+        return {
+            "total": len(signs),
+            "skip": skip,
+            "limit": limit,
+            "signs": paginated_signs
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/sa-signs/search")
+async def search_sa_sign_library(
+    q: str,
+    category: Optional[str] = None,
+    limit: Optional[int] = 20
+):
+    """
+    Search SA sign library by code or description
+    Query params:
+    - q: Search query (searches code and description)
+    - category: Filter by category
+    - limit: Max results (default 20)
+    """
+    try:
+        results = search_sa_signs(q, category=category, limit=limit)
+        return {
+            "query": q,
+            "category": category,
+            "results": results,
+            "count": len(results)
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/sa-signs/{code}")
+async def get_sa_sign_by_sign_code(code: str):
+    """
+    Get a specific SA sign by its code
+    Example: /api/sa-signs/T1-1 or /api/sa-signs/13699
+    """
+    try:
+        sign = get_sa_sign_by_code(code)
+        if not sign:
+            raise HTTPException(status_code=404, detail=f"SA Sign {code} not found")
+        
+        return sign
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.post("/sa-signs/recommend")
+async def recommend_sa_signs_for_tmp(request: dict):
+    """
+    Get recommended SA signs for a TMP based on work type and road classification
+    Request body example:
+    {
+        "work_type": "lane closure",
+        "road_classification": "State Arterial Road"
+    }
+    """
+    try:
+        work_type = request.get('work_type', 'general')
+        road_classification = request.get('road_classification', 'local')
+        
+        recommended = get_recommended_signs_for_tmp(work_type, road_classification)
+        
+        return {
+            "work_type": work_type,
+            "road_classification": road_classification,
+            "recommended_signs": recommended,
+            "count": len(recommended)
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.post("/devices/recommend")
+async def recommend_devices_old(scenario: dict):
+    """
+    Get recommended devices based on work scenario
+    Request body example:
+    {
+        "work_type": "static",
+        "speed_limit": 80,
+        "lanes": 2,
+        "duration": "medium",
+        "time_of_day": "day"
+    }
+    """
+    try:
         required_codes = get_required_devices_for_scenario(scenario)
         devices = [get_device_by_code(code) for code in required_codes]
         
