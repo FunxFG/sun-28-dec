@@ -1661,11 +1661,11 @@ class SafeRoadWorksAPITester:
     def test_sa_signs_search_functionality(self):
         """Test SA signs search functionality"""
         success, response = self.run_test(
-            "SA Signs - Search (road work)",
+            "SA Signs - Search (warning)",
             "GET",
             "sa-signs/search",
             200,
-            data={"q": "road work", "limit": 20}
+            data={"q": "warning", "limit": 20}
         )
         
         if success:
