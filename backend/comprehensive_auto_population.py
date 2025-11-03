@@ -1270,6 +1270,13 @@ async def get_comprehensive_auto_population(lat: float, lng: float, start_addres
         osm_data = await fetch_osm_road_data(lat, lng)
         result['road_data'] = osm_data
         
+        # 0a. FETCH LOCATION METADATA SYSTEM DATA (Official SA Government)
+        road_name = osm_data.get('road_name', 'Unknown Road')
+        result['location_metadata_system'] = await fetch_location_metadata_system_data(lat, lng, road_name)
+        
+        # 0b. FETCH DIT INFRASTRUCTURE ASSETS
+        result['dit_infrastructure_assets'] = await fetch_dit_infrastructure_assets(lat, lng, start_address)
+        
         # 1. SIDE STREETS AND INTERSECTIONS (OSM)
         result['side_streets'] = await fetch_side_streets(lat, lng)
         result['intersections'] = await fetch_intersections(lat, lng)
