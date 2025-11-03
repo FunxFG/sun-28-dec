@@ -1,0 +1,282 @@
+[
+  {
+    "title": "Traffic volumes on top 40 road sections in SA",
+    "landing_page": "/data/dataset/6d9f9ab2-85eb-49ee-8124-d4bd9c1764e9",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "daily",
+    "dataset_id": "6d9f9ab2-85eb-49ee-8124-d4bd9c1764e9"
+  },
+  {
+    "title": "Traffic Intersection Volumes",
+    "landing_page": "/data/dataset/1492e6ae-1ee1-4490-8e01-5a9e8a28fb3a",
+    "publisher": "City of Adelaide",
+    "update_freq": "daily",
+    "dataset_id": "1492e6ae-1ee1-4490-8e01-5a9e8a28fb3a"
+  },
+  {
+    "title": "Traffic Lane Vehicle Counts at Signalised Intersections and Pedestrian Crossings (sample)",
+    "landing_page": "/data/dataset/e6c1f446-de74-4270-811d-5dc5ec79643b",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "Once off",
+    "dataset_id": "e6c1f446-de74-4270-811d-5dc5ec79643b"
+  },
+  {
+    "title": "Traffic Signals",
+    "landing_page": "/data/dataset/ded7c11d-2cd3-4bff-8d6f-dd850250a486",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "weekly",
+    "dataset_id": "ded7c11d-2cd3-4bff-8d6f-dd850250a486"
+  },
+  {
+    "title": "Traffic Volumes",
+    "landing_page": "/data/dataset/e5d6588a-f163-4f6a-bc57-25e95c87b5bd",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "other",
+    "dataset_id": "e5d6588a-f163-4f6a-bc57-25e95c87b5bd"
+  },
+  {
+    "title": "Driver Licensing - Vehicle on Road Test (VORT)",
+    "landing_page": "/data/dataset/1bfc25d1-f660-476b-9d92-eed2d469c5a7",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "annual",
+    "dataset_id": "1bfc25d1-f660-476b-9d92-eed2d469c5a7"
+  },
+  {
+    "title": "Major and Minor Roads",
+    "landing_page": "/data/dataset/d337f781-d87e-4e1f-9c54-ac360c6e90c8",
+    "publisher": NaN,
+    "update_freq": "daily",
+    "dataset_id": "d337f781-d87e-4e1f-9c54-ac360c6e90c8"
+  },
+  {
+    "title": "Mount Barker District Council Roads",
+    "landing_page": "/data/dataset/6ac47902-380f-492c-aa68-d8af86f42134",
+    "publisher": "Mount Barker District Council",
+    "update_freq": "asRequired",
+    "dataset_id": "6ac47902-380f-492c-aa68-d8af86f42134"
+  },
+  {
+    "title": "Outback Road Warnings",
+    "landing_page": "/data/dataset/f87c3fe7-e175-4538-a4cb-78521bc02eec",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "daily",
+    "dataset_id": "f87c3fe7-e175-4538-a4cb-78521bc02eec"
+  },
+  {
+    "title": "Prompted and Unprompted Awareness of Road Safety Advertising",
+    "landing_page": "/data/dataset/d7b93ffb-82e5-428a-a7fd-0f432f90a357",
+    "publisher": "Motor Accident Commission",
+    "update_freq": "Once off",
+    "dataset_id": "d7b93ffb-82e5-428a-a7fd-0f432f90a357"
+  },
+  {
+    "title": "Regional South Australia 4G Signal Strengths",
+    "landing_page": "/data/dataset/f60ba58f-b43b-4dfc-8b32-0064b0d3e4ab",
+    "publisher": "TAFE SA",
+    "update_freq": "never",
+    "dataset_id": "f60ba58f-b43b-4dfc-8b32-0064b0d3e4ab"
+  },
+  {
+    "title": "South Australian Signalised Intersections and Crossings",
+    "landing_page": "/data/dataset/a9cf6a81-9454-4d43-9dab-66b85439bf01",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "quarterly",
+    "dataset_id": "a9cf6a81-9454-4d43-9dab-66b85439bf01"
+  },
+  {
+    "title": "Traffic Lane Vehicle Counts at Signalised Intersections and Pedestrian Crossings (sample)",
+    "landing_page": "/data/dataset/e6c1f446-de74-4270-811d-5dc5ec79643b",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "Once off",
+    "dataset_id": "e6c1f446-de74-4270-811d-5dc5ec79643b"
+  },
+  {
+    "title": "Traffic Signals",
+    "landing_page": "/data/dataset/ded7c11d-2cd3-4bff-8d6f-dd850250a486",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "weekly",
+    "dataset_id": "ded7c11d-2cd3-4bff-8d6f-dd850250a486"
+  },
+  {
+    "title": "2019-20 Council Enforcement Actions - Food Transporters",
+    "landing_page": "/data/dataset/a259478d-e192-4cd5-8c7d-f42f0cd720b6",
+    "publisher": "SA Health",
+    "update_freq": "never",
+    "dataset_id": "a259478d-e192-4cd5-8c7d-f42f0cd720b6"
+  },
+  {
+    "title": "2020-21 Enforcement Actions - Councils - Food Transporter Sector",
+    "landing_page": "/data/dataset/92ff673b-f67c-40e2-822a-8445d5125af4",
+    "publisher": "SA Health",
+    "update_freq": "never",
+    "dataset_id": "92ff673b-f67c-40e2-822a-8445d5125af4"
+  },
+  {
+    "title": "2022-23 Enforcement Actions - Council - Food Transporter Sector",
+    "landing_page": "/data/dataset/ce5e9118-75bc-4c5d-9fa1-9aad6dce9a76",
+    "publisher": "SA Health",
+    "update_freq": "daily",
+    "dataset_id": "ce5e9118-75bc-4c5d-9fa1-9aad6dce9a76"
+  },
+  {
+    "title": "Adelaide Public Transport Stop Data",
+    "landing_page": "/data/dataset/0d2f65f9-4386-4352-b46e-1259ebc06afe",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "weekly",
+    "dataset_id": "0d2f65f9-4386-4352-b46e-1259ebc06afe"
+  },
+  {
+    "title": "Consultants engaged by the Department of Planning, Transport and Infrastructure",
+    "landing_page": "/data/dataset/510d1d28-59dc-4d58-aa81-c3ab314df88a",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "annual",
+    "dataset_id": "510d1d28-59dc-4d58-aa81-c3ab314df88a"
+  },
+  {
+    "title": "Road Crash Data",
+    "landing_page": "/data/dataset/21386a53-56a1-4edf-bd0b-61ed15f10acf",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "daily",
+    "dataset_id": "21386a53-56a1-4edf-bd0b-61ed15f10acf"
+  },
+  {
+    "title": "Road Crash Locations in SA",
+    "landing_page": "/data/dataset/cf8d8549-b976-4523-88ad-46dd32053696",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "other",
+    "dataset_id": "cf8d8549-b976-4523-88ad-46dd32053696"
+  },
+  {
+    "title": "Disability Parking Permits by Postcode",
+    "landing_page": "/data/dataset/a993b8a0-e6d1-4149-8f37-02c9089668b5",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "other",
+    "dataset_id": "a993b8a0-e6d1-4149-8f37-02c9089668b5"
+  },
+  {
+    "title": "On Street Parking Ticket Machines",
+    "landing_page": "/data/dataset/7c92fd11-a2f4-4ca6-b7f2-f23bf123dff9",
+    "publisher": NaN,
+    "update_freq": "daily",
+    "dataset_id": "7c92fd11-a2f4-4ca6-b7f2-f23bf123dff9"
+  },
+  {
+    "title": "On Street Parking Zones",
+    "landing_page": "/data/dataset/0cb3b204-41f6-4703-aabf-c8c5adfc08d0",
+    "publisher": NaN,
+    "update_freq": "weekly",
+    "dataset_id": "0cb3b204-41f6-4703-aabf-c8c5adfc08d0"
+  },
+  {
+    "title": "Parking Expiations Issued by Adelaide City Council",
+    "landing_page": "/data/dataset/fece0507-8509-4761-9d1f-375777db1a34",
+    "publisher": "City of Adelaide",
+    "update_freq": "monthly",
+    "dataset_id": "fece0507-8509-4761-9d1f-375777db1a34"
+  },
+  {
+    "title": "Bike and Pedestrian Paths",
+    "landing_page": "/data/dataset/0f2403fd-a8f9-4d4c-9fb3-8a613c7b4022",
+    "publisher": NaN,
+    "update_freq": "daily",
+    "dataset_id": "0f2403fd-a8f9-4d4c-9fb3-8a613c7b4022"
+  },
+  {
+    "title": "Pedestrian Crossings",
+    "landing_page": "/data/dataset/2d972378-33e0-4be3-a412-c65a02fccb25",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "asRequired",
+    "dataset_id": "2d972378-33e0-4be3-a412-c65a02fccb25"
+  },
+  {
+    "title": "Traffic Lane Vehicle Counts at Signalised Intersections and Pedestrian Crossings (sample)",
+    "landing_page": "/data/dataset/e6c1f446-de74-4270-811d-5dc5ec79643b",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "Once off",
+    "dataset_id": "e6c1f446-de74-4270-811d-5dc5ec79643b"
+  },
+  {
+    "title": "Road Lane and Intersection Network",
+    "landing_page": "/data/dataset/be301846-02cd-4e1b-8d1e-c7ee938791e2",
+    "publisher": "City of Adelaide",
+    "update_freq": "daily",
+    "dataset_id": "be301846-02cd-4e1b-8d1e-c7ee938791e2"
+  },
+  {
+    "title": "South Australian Signalised Intersections and Crossings",
+    "landing_page": "/data/dataset/a9cf6a81-9454-4d43-9dab-66b85439bf01",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "quarterly",
+    "dataset_id": "a9cf6a81-9454-4d43-9dab-66b85439bf01"
+  },
+  {
+    "title": "Top 40 arterial road intersections for heavy vehicles",
+    "landing_page": "/data/dataset/4c03f866-380d-4199-8966-68e789744a61",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "daily",
+    "dataset_id": "4c03f866-380d-4199-8966-68e789744a61"
+  },
+  {
+    "title": "Traffic Intersection Volumes",
+    "landing_page": "/data/dataset/1492e6ae-1ee1-4490-8e01-5a9e8a28fb3a",
+    "publisher": "City of Adelaide",
+    "update_freq": "daily",
+    "dataset_id": "1492e6ae-1ee1-4490-8e01-5a9e8a28fb3a"
+  },
+  {
+    "title": "Traffic Lane Vehicle Counts at Signalised Intersections and Pedestrian Crossings (sample)",
+    "landing_page": "/data/dataset/e6c1f446-de74-4270-811d-5dc5ec79643b",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "Once off",
+    "dataset_id": "e6c1f446-de74-4270-811d-5dc5ec79643b"
+  },
+  {
+    "title": "Customer Interaction Volumes",
+    "landing_page": "/data/dataset/050a9513-8fbc-494b-bf8d-2ac120a590a5",
+    "publisher": "City of Adelaide",
+    "update_freq": "daily",
+    "dataset_id": "050a9513-8fbc-494b-bf8d-2ac120a590a5"
+  },
+  {
+    "title": "Port Pirie High Volume Sampler Air Quality monitoring stations lead (Pb) data",
+    "landing_page": "/data/dataset/a7ef9046-af83-496a-b02d-bf7e083df484",
+    "publisher": "Environment Protection Authority (EPA)",
+    "update_freq": "monthly",
+    "dataset_id": "a7ef9046-af83-496a-b02d-bf7e083df484"
+  },
+  {
+    "title": "Reservoir Volumes",
+    "landing_page": "/data/dataset/987a4cd9-e95e-43f1-9fb0-e3f629e06190",
+    "publisher": "SA Water",
+    "update_freq": "monthly",
+    "dataset_id": "987a4cd9-e95e-43f1-9fb0-e3f629e06190"
+  },
+  {
+    "title": "Traffic volumes on top 40 road sections in SA",
+    "landing_page": "/data/dataset/6d9f9ab2-85eb-49ee-8124-d4bd9c1764e9",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "daily",
+    "dataset_id": "6d9f9ab2-85eb-49ee-8124-d4bd9c1764e9"
+  },
+  {
+    "title": "Traffic Intersection Volumes",
+    "landing_page": "/data/dataset/1492e6ae-1ee1-4490-8e01-5a9e8a28fb3a",
+    "publisher": "City of Adelaide",
+    "update_freq": "daily",
+    "dataset_id": "1492e6ae-1ee1-4490-8e01-5a9e8a28fb3a"
+  },
+  {
+    "title": "Travel Speed in Metropolitan Adelaide",
+    "landing_page": "/data/dataset/6165be8c-de3c-43df-b8ef-adecda469880",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "annual",
+    "dataset_id": "6165be8c-de3c-43df-b8ef-adecda469880"
+  },
+  {
+    "title": "Roadworks, Incidents, Road Closures and Detours Real-time Information",
+    "landing_page": "/data/dataset/8d75dfcc-cc95-4be3-8747-ff273e8c53db",
+    "publisher": "Department for Infrastructure and Transport",
+    "update_freq": "other",
+    "dataset_id": "8d75dfcc-cc95-4be3-8747-ff273e8c53db"
+  }
+]
