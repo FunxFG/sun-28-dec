@@ -2701,6 +2701,17 @@ def main():
         ("Location Metadata System Highway", tester.test_location_metadata_system_highway),
         ("Location Metadata System Residential", tester.test_location_metadata_system_residential),
         
+        # 11. NEW SA Sign Library API Endpoints Tests
+        ("SA Signs Statistics", tester.test_sa_signs_stats),
+        ("SA Signs Get All Paginated", tester.test_sa_signs_get_all_paginated),
+        ("SA Signs Category Filter", tester.test_sa_signs_category_filter),
+        ("SA Signs Search Functionality", tester.test_sa_signs_search_functionality),
+        ("SA Signs Search with Category Filter", tester.test_sa_signs_search_with_category_filter),
+        ("SA Signs Get by AS 1742.3 Code", tester.test_sa_signs_get_by_code_as1742),
+        ("SA Signs Get by Numeric Code", tester.test_sa_signs_get_by_numeric_code),
+        ("SA Signs Non-existent Code (404)", tester.test_sa_signs_get_nonexistent_code),
+        ("SA Signs Recommend for TMP", tester.test_sa_signs_recommend_for_tmp),
+        
         # Clean up
         ("Delete Plan", tester.test_delete_plan),
     ]
