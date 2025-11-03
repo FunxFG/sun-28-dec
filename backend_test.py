@@ -1527,6 +1527,350 @@ class SafeRoadWorksAPITester:
         return False
 
     # ==========================================
+    # SA SIGN LIBRARY API ENDPOINTS TESTING (NEW)
+    # ==========================================
+
+    def test_sa_signs_stats(self):
+        """Test SA Signs statistics endpoint"""
+        success, response = self.run_test(
+            "SA Signs Statistics",
+            "GET",
+            "sa-signs/stats",
+            200
+        )
+        
+        if success:
+            # Check required fields
+            required_fields = ['total_core_devices', 'total_sa_signs', 'categories']
+            missing_fields = [field for field in required_fields if field not in response]
+            
+            if missing_fields:
+                print(f"   ❌ Missing required fields: {missing_fields}")
+                return False
+            
+            total_sa_signs = response.get('total_sa_signs', 0)
+            total_core_devices = response.get('total_core_devices', 0)
+            categories_count = response.get('categories', 0)
+            
+            print(f"   Total SA signs: {total_sa_signs}")
+            print(f"   Total core devices: {total_core_devices}")
+            print(f"   Categories count: {categories_count}")
+            
+            # Verify expected 1203 SA signs
+            if total_sa_signs == 1203:
+                print(f"   ✅ Correct number of SA signs (1203)")
+            else:
+                print(f"   ⚠️ Expected 1203 SA signs, got {total_sa_signs}")
+            
+            # Verify reasonable number of categories
+            if categories_count > 0:
+                print(f"   ✅ Categories count is reasonable: {categories_count}")
+            else:
+                print(f"   ❌ No categories found")
+                return False
+            
+            return True
+        return False
+
+    def test_sa_signs_get_all_paginated(self):
+        """Test getting all SA signs with pagination"""
+        success, response = self.run_test(
+            "SA Signs - Get All (Paginated)",
+            "GET",
+            "sa-signs",
+            200,
+            data={"limit": 10, "skip": 0}
+        )
+        
+        if success:
+            # Check response structure
+            required_fields = ['total', 'skip', 'limit', 'signs']
+            missing_fields = [field for field in required_fields if field not in response]
+            
+            if missing_fields:
+                print(f"   ❌ Missing required fields: {missing_fields}")
+                return False
+            
+            total = response.get('total', 0)
+            skip = response.get('skip', 0)
+            limit = response.get('limit', 0)
+            signs = response.get('signs', [])
+            
+            print(f"   Total signs: {total}")
+            print(f"   Skip: {skip}, Limit: {limit}")
+            print(f"   Returned signs: {len(signs)}")
+            
+            # Verify pagination
+            if len(signs) <= limit:
+                print(f"   ✅ Pagination working correctly")
+            else:
+                print(f"   ❌ Returned more signs than limit")
+                return False
+            
+            # Check sign structure if signs exist
+            if signs:
+                first_sign = signs[0]
+                sign_required_fields = ['code', 'description', 'category']
+                sign_missing_fields = [field for field in sign_required_fields if field not in first_sign]
+                
+                if not sign_missing_fields:
+                    print(f"   ✅ Sign structure complete")
+                    print(f"   First sign: {first_sign.get('code')} - {first_sign.get('description', 'No description')[:50]}...")
+                else:
+                    print(f"   ❌ Missing sign fields: {sign_missing_fields}")
+                    return False
+            
+            return True
+        return False
+
+    def test_sa_signs_category_filter(self):
+        """Test SA signs with category filter"""
+        success, response = self.run_test(
+            "SA Signs - Category Filter (Warning)",
+            "GET",
+            "sa-signs",
+            200,
+            data={"category": "Warning", "limit": 10}
+        )
+        
+        if success:
+            signs = response.get('signs', [])
+            total = response.get('total', 0)
+            
+            print(f"   Warning signs found: {len(signs)}")
+            print(f"   Total in category: {total}")
+            
+            # Verify category filtering
+            if signs:
+                # Check if all returned signs are Warning category
+                warning_signs = [s for s in signs if s.get('category') == 'Warning']
+                if len(warning_signs) == len(signs):
+                    print(f"   ✅ Category filtering working correctly")
+                else:
+                    print(f"   ⚠️ Category filtering may not be working - mixed results")
+                
+                # Show first sign
+                first_sign = signs[0]
+                print(f"   First warning sign: {first_sign.get('code')} - {first_sign.get('description', 'No description')[:50]}...")
+            else:
+                print(f"   ⚠️ No warning signs found")
+            
+            return True
+        return False
+
+    def test_sa_signs_search_functionality(self):
+        """Test SA signs search functionality"""
+        success, response = self.run_test(
+            "SA Signs - Search (road work)",
+            "GET",
+            "sa-signs/search",
+            200,
+            data={"q": "road work", "limit": 20}
+        )
+        
+        if success:
+            # Check response structure
+            required_fields = ['query', 'results', 'count']
+            missing_fields = [field for field in required_fields if field not in response]
+            
+            if missing_fields:
+                print(f"   ❌ Missing required fields: {missing_fields}")
+                return False
+            
+            query = response.get('query')
+            results = response.get('results', [])
+            count = response.get('count', 0)
+            
+            print(f"   Search query: '{query}'")
+            print(f"   Results found: {count}")
+            
+            # Verify search results
+            if results:
+                print(f"   ✅ Search returned {len(results)} results")
+                
+                # Check if results are relevant
+                first_result = results[0]
+                code = first_result.get('code', '')
+                description = first_result.get('description', '')
+                
+                print(f"   First result: {code} - {description[:50]}...")
+                
+                # Check if search term appears in code or description
+                search_term_lower = query.lower()
+                if (search_term_lower in code.lower() or 
+                    search_term_lower in description.lower()):
+                    print(f"   ✅ Search results are relevant")
+                else:
+                    print(f"   ⚠️ Search results may not be relevant to query")
+            else:
+                print(f"   ⚠️ No search results found for '{query}'")
+            
+            return True
+        return False
+
+    def test_sa_signs_search_with_category_filter(self):
+        """Test SA signs search with category filter"""
+        success, response = self.run_test(
+            "SA Signs - Search with Category Filter",
+            "GET",
+            "sa-signs/search",
+            200,
+            data={"q": "parking", "category": "Parking", "limit": 10}
+        )
+        
+        if success:
+            query = response.get('query')
+            category = response.get('category')
+            results = response.get('results', [])
+            count = response.get('count', 0)
+            
+            print(f"   Search: '{query}' in category '{category}'")
+            print(f"   Results found: {count}")
+            
+            if results:
+                # Verify category filtering in search
+                parking_signs = [r for r in results if r.get('category') == 'Parking']
+                if len(parking_signs) == len(results):
+                    print(f"   ✅ Category filtering in search working")
+                else:
+                    print(f"   ⚠️ Category filtering in search may not be working")
+                
+                first_result = results[0]
+                print(f"   First result: {first_result.get('code')} - {first_result.get('description', 'No description')[:50]}...")
+            else:
+                print(f"   ⚠️ No parking signs found")
+            
+            return True
+        return False
+
+    def test_sa_signs_get_by_code_as1742(self):
+        """Test getting specific SA sign by AS 1742.3 code"""
+        success, response = self.run_test(
+            "SA Signs - Get by AS 1742.3 Code (T1-1)",
+            "GET",
+            "sa-signs/T1-1",
+            200
+        )
+        
+        if success:
+            # Check sign structure
+            required_fields = ['code', 'description', 'category', 'dimensions']
+            missing_fields = [field for field in required_fields if field not in response]
+            
+            if missing_fields:
+                print(f"   ❌ Missing required fields: {missing_fields}")
+                return False
+            
+            code = response.get('code')
+            description = response.get('description')
+            category = response.get('category')
+            dimensions = response.get('dimensions', {})
+            
+            print(f"   Sign code: {code}")
+            print(f"   Description: {description}")
+            print(f"   Category: {category}")
+            
+            # Check dimensions structure
+            if 'width_mm' in dimensions and 'height_mm' in dimensions:
+                width = dimensions.get('width_mm')
+                height = dimensions.get('height_mm')
+                print(f"   Dimensions: {width}mm x {height}mm")
+                print(f"   ✅ Complete sign details with dimensions")
+            else:
+                print(f"   ⚠️ Missing width_mm or height_mm in dimensions")
+            
+            return True
+        return False
+
+    def test_sa_signs_get_by_numeric_code(self):
+        """Test getting specific SA sign by numeric code"""
+        success, response = self.run_test(
+            "SA Signs - Get by Numeric Code (13699)",
+            "GET",
+            "sa-signs/13699",
+            200
+        )
+        
+        if success:
+            code = response.get('code')
+            description = response.get('description')
+            category = response.get('category')
+            
+            print(f"   Sign code: {code}")
+            print(f"   Description: {description}")
+            print(f"   Category: {category}")
+            print(f"   ✅ Numeric code lookup working")
+            return True
+        return False
+
+    def test_sa_signs_get_nonexistent_code(self):
+        """Test getting non-existent SA sign (should return 404)"""
+        success, response = self.run_test(
+            "SA Signs - Non-existent Code (should return 404)",
+            "GET",
+            "sa-signs/NONEXISTENT-999",
+            404
+        )
+        
+        if success:
+            print(f"   ✅ Correctly returned 404 for non-existent sign code")
+            return True
+        return False
+
+    def test_sa_signs_recommend_for_tmp(self):
+        """Test SA signs recommendation for TMP"""
+        request_data = {
+            "work_type": "lane closure",
+            "road_classification": "State Arterial Road"
+        }
+        
+        success, response = self.run_test(
+            "SA Signs - Recommend for TMP",
+            "POST",
+            "sa-signs/recommend",
+            200,
+            data=request_data
+        )
+        
+        if success:
+            # Check response structure
+            if 'recommended_signs' in response:
+                recommended_signs = response.get('recommended_signs', [])
+                work_type = response.get('work_type')
+                road_classification = response.get('road_classification')
+                
+                print(f"   Work type: {work_type}")
+                print(f"   Road classification: {road_classification}")
+                print(f"   Recommended signs: {len(recommended_signs)}")
+                
+                if recommended_signs:
+                    # Check first recommended sign structure
+                    first_sign = recommended_signs[0]
+                    sign_required_fields = ['code', 'description', 'dimensions']
+                    sign_missing_fields = [field for field in sign_required_fields if field not in first_sign]
+                    
+                    if not sign_missing_fields:
+                        print(f"   ✅ Recommended sign structure complete")
+                        print(f"   First recommendation: {first_sign.get('code')} - {first_sign.get('description', 'No description')[:50]}...")
+                        
+                        # Check dimensions
+                        dimensions = first_sign.get('dimensions', {})
+                        if 'width_mm' in dimensions and 'height_mm' in dimensions:
+                            print(f"   Dimensions: {dimensions.get('width_mm')}mm x {dimensions.get('height_mm')}mm")
+                        
+                        return True
+                    else:
+                        print(f"   ❌ Missing sign fields: {sign_missing_fields}")
+                        return False
+                else:
+                    print(f"   ⚠️ No signs recommended for this scenario")
+                    return True  # This could be valid
+            else:
+                print(f"   ❌ Missing 'recommended_signs' in response")
+                return False
+        return False
+
+    # ==========================================
     # NEW GOOGLE PLACES API PROXY ENDPOINTS TESTING (CORS FIX)
     # ==========================================
 
