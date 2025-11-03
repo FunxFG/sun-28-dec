@@ -134,7 +134,14 @@ export default function PlanEditor({ user, onLogout }) {
     crash_statistics: null,  // NEW
     historical_traffic: null,  // NEW
     location_history: null,  // NEW
-    current_roadworks: null  // NEW - Traffic SA data
+    current_roadworks: null,  // NEW - Traffic SA data
+    traffic_signals: null,  // NEW
+    parking_restrictions: null,  // NEW
+    school_zones: null,  // NEW
+    public_transport_detailed: null,  // NEW
+    utility_infrastructure: null,  // NEW
+    location_metadata_system: null,  // NEW: LMS
+    dit_infrastructure_assets: null  // NEW: DIT Assets
   });
 
   const [formData, setFormData] = useState({
