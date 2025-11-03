@@ -63,7 +63,8 @@ async def test_lms_integration():
         if 'dit_infrastructure_assets' in result:
             dit_result = result['dit_infrastructure_assets']
             print(f"   DIT Road Condition: {dit_result.get('road_condition')}")
-            print(f"   DIT Maintenance Contact: {dit_result.get('maintenance_schedule', {}).get('contact')}")
+            maintenance_schedule = dit_result.get('maintenance_schedule') or {}
+            print(f"   DIT Maintenance Contact: {maintenance_schedule.get('contact', 'N/A')}")
         
         print()
         print("✅ Location Metadata System integration test completed successfully!")
