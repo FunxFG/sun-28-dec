@@ -1,0 +1,116 @@
+{
+  "total_scenarios": 12,
+  "successful": 12,
+  "failed": 0,
+  "generation_time": "2025-11-03T17:02:38.176693",
+  "scenarios": [
+    {
+      "id": 1,
+      "name": "CBD Lane Closure - King William Street",
+      "status": "success",
+      "devices": 5,
+      "has_visual_tgs": false,
+      "has_streetview": false,
+      "data_file": "tmp_scenario_01.json"
+    },
+    {
+      "id": 2,
+      "name": "Highway Maintenance - Port Wakefield Road",
+      "status": "success",
+      "devices": 4,
+      "has_visual_tgs": false,
+      "has_streetview": false,
+      "data_file": "tmp_scenario_02.json"
+    },
+    {
+      "id": 3,
+      "name": "School Zone Roadwork - Unley",
+      "status": "success",
+      "devices": 2,
+      "has_visual_tgs": false,
+      "has_streetview": false,
+      "data_file": "tmp_scenario_03.json"
+    },
+    {
+      "id": 4,
+      "name": "Complete Road Closure - North Terrace",
+      "status": "success",
+      "devices": 5,
+      "has_visual_tgs": false,
+      "has_streetview": false,
+      "data_file": "tmp_scenario_04.json"
+    },
+    {
+      "id": 5,
+      "name": "Utility Installation - Residential Street",
+      "status": "success",
+      "devices": 2,
+      "has_visual_tgs": false,
+      "has_streetview": false,
+      "data_file": "tmp_scenario_05.json"
+    },
+    {
+      "id": 6,
+      "name": "Bridge Work - Torrens River Crossing",
+      "status": "success",
+      "devices": 2,
+      "has_visual_tgs": false,
+      "has_streetview": false,
+      "data_file": "tmp_scenario_06.json"
+    },
+    {
+      "id": 7,
+      "name": "Emergency Repair - Arterial Road",
+      "status": "success",
+      "devices": 4,
+      "has_visual_tgs": false,
+      "has_streetview": false,
+      "data_file": "tmp_scenario_07.json"
+    },
+    {
+      "id": 8,
+      "name": "Intersection Upgrade - Marion Road",
+      "status": "success",
+      "devices": 2,
+      "has_visual_tgs": false,
+      "has_streetview": false,
+      "data_file": "tmp_scenario_08.json"
+    },
+    {
+      "id": 9,
+      "name": "Pedestrian Crossing Installation",
+      "status": "success",
+      "devices": 2,
+      "has_visual_tgs": false,
+      "has_streetview": false,
+      "data_file": "tmp_scenario_09.json"
+    },
+    {
+      "id": 10,
+      "name": "Roundabout Construction",
+      "status": "success",
+      "devices": 2,
+      "has_visual_tgs": false,
+      "has_streetview": false,
+      "data_file": "tmp_scenario_10.json"
+    },
+    {
+      "id": 11,
+      "name": "Tram Line Maintenance",
+      "status": "success",
+      "devices": 2,
+      "has_visual_tgs": false,
+      "has_streetview": false,
+      "data_file": "tmp_scenario_11.json"
+    },
+    {
+      "id": 12,
+      "name": "Highway Resurfacing - Southern Expressway",
+      "status": "success",
+      "devices": 4,
+      "has_visual_tgs": false,
+      "has_streetview": false,
+      "data_file": "tmp_scenario_12.json"
+    }
+  ]
+}

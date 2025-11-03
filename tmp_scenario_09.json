@@ -1,0 +1,925 @@
+{
+  "scenario": {
+    "id": 9,
+    "name": "Pedestrian Crossing Installation",
+    "location": "Rundle Mall, Adelaide SA",
+    "center_lat": -34.924,
+    "center_lng": 138.599,
+    "work_type": "pedestrian infrastructure",
+    "road_classification": "Urban Collector",
+    "duration": "3 days",
+    "speed_limit": 40
+  },
+  "tmp_data": {
+    "project_name": "Pedestrian Crossing Installation",
+    "location": "Rundle Mall, Adelaide SA",
+    "work_type": "pedestrian infrastructure",
+    "duration": "3 days",
+    "speed_limit": 40,
+    "road_classification": "Urban Collector",
+    "devices_count": 2,
+    "data_categories": 26,
+    "has_visual_tgs": false,
+    "has_streetview": false
+  },
+  "visual_tgs": {
+    "satellite_tgs": {
+      "error": "Failed to fetch satellite imagery"
+    },
+    "streetview_images": [],
+    "metadata": {
+      "total_signs": 2,
+      "center": {
+        "lat": -34.924,
+        "lng": 138.599
+      },
+      "has_streetview": false,
+      "generation_timestamp": "ISO8601 timestamp"
+    }
+  },
+  "devices": [
+    {
+      "code": "T1-1",
+      "name": "Road Work Ahead",
+      "latitude": -34.919,
+      "longitude": 138.6015,
+      "distance": 50,
+      "side": "left",
+      "dimensions": {
+        "width_mm": 600,
+        "height_mm": 600
+      },
+      "description": "General warning of road works ahead"
+    },
+    {
+      "code": "D1-1",
+      "name": "Traffic Cones",
+      "latitude": -34.914,
+      "longitude": 138.594,
+      "distance": 100,
+      "side": "right",
+      "dimensions": {
+        "width_mm": 300,
+        "height_mm": 750
+      },
+      "description": "750mm traffic cones for delineation"
+    }
+  ],
+  "auto_population": {
+    "road_data": {
+      "speed_limit": 60,
+      "lanes": 2,
+      "road_name": "Unknown Road",
+      "highway_type": "residential",
+      "surface": "asphalt",
+      "has_footpath": false,
+      "has_cycleway": false,
+      "has_parking": false,
+      "road_classification": "Local Road",
+      "jurisdiction": "Local Council",
+      "functional_class": "Collector"
+    },
+    "location_metadata_system": {
+      "road_name": "Unknown Road",
+      "road_classification_official": "Local Road",
+      "speed_limit_official": "50 km/h",
+      "maintenance_authority": "Local Council",
+      "crrs_code": "SA-LOC-UNKNOWNROA",
+      "sealed_status": "Sealed",
+      "austroads_class_code": "Local Access",
+      "road_category_code": "Council Network - Local",
+      "functional_hierarchy": "Level 5: Local Access",
+      "data_source": "Default SA Government Standards",
+      "dataset_references": [
+        "Dataset 558: Roads",
+        "Dataset 1639: State Maintained Roads"
+      ]
+    },
+    "dit_infrastructure_assets": {
+      "road_condition": "Good",
+      "pavement_type": "Asphalt",
+      "last_maintenance": null,
+      "asset_inventory": [],
+      "maintenance_schedule": {
+        "inspection_frequency": "Annual",
+        "maintenance_type": "Routine",
+        "contact": "Local Council",
+        "phone": "Contact local council",
+        "email": "Contact local council",
+        "responsibility": "Local Government"
+      },
+      "infrastructure_projects": [],
+      "data_source": "DIT Asset Management System + Geoscience Australia + OSM"
+    },
+    "traffic_assessment": {},
+    "site_assessment": {},
+    "side_streets": [
+      {
+        "name": "Bank Street",
+        "type": "living_street",
+        "ref": ""
+      },
+      {
+        "name": "Gresham Street",
+        "type": "residential",
+        "ref": ""
+      },
+      {
+        "name": "Gilbert Place",
+        "type": "service",
+        "ref": ""
+      },
+      {
+        "name": "Woodsons Lane",
+        "type": "service",
+        "ref": ""
+      },
+      {
+        "name": "Waymouth Place",
+        "type": "service",
+        "ref": ""
+      },
+      {
+        "name": "Cordwainers Lane",
+        "type": "service",
+        "ref": ""
+      },
+      {
+        "name": "Schrader Street",
+        "type": "residential",
+        "ref": ""
+      },
+      {
+        "name": "Hindley Street",
+        "type": "tertiary",
+        "ref": ""
+      },
+      {
+        "name": "Grenfell Street",
+        "type": "secondary",
+        "ref": ""
+      },
+      {
+        "name": "Leigh Street",
+        "type": "pedestrian",
+        "ref": ""
+      }
+    ],
+    "intersections": [],
+    "control_measures": {
+      "temporal": [
+        "off_peak_hours",
+        "staged_works"
+      ],
+      "speed": [
+        "temporary_speed_limit_40",
+        "speed_reduction"
+      ],
+      "lane_management": [
+        "lane_closure",
+        "merge_taper"
+      ],
+      "safety": [
+        "static_signs",
+        "delineation_devices",
+        "water_filled_barriers",
+        "traffic_controllers",
+        "lighting_systems"
+      ],
+      "communication": [
+        "public_notification",
+        "stakeholder_consultation",
+        "emergency_services_notification"
+      ]
+    },
+    "pedestrian_control_measures": {
+      "barriers_required": [],
+      "pedestrian_detours": [],
+      "signage": [
+        {
+          "code": "P1-1",
+          "name": "Pedestrian Detour",
+          "location": "At start of pedestrian diversion",
+          "placement": "Both sides if bilateral footpaths"
+        },
+        {
+          "code": "P1-2",
+          "name": "Footpath Closed",
+          "location": "At closure point",
+          "placement": "Directly at closed footpath entrance"
+        },
+        {
+          "code": "P1-3",
+          "name": "Pedestrians Use Other Side",
+          "location": "Before workzone",
+          "placement": "With directional arrow"
+        }
+      ],
+      "safety_measures": [
+        {
+          "measure": "Separation Distance",
+          "requirement": "Minimum 1.2m clearance between traffic and pedestrian path",
+          "standard": "AS 1742.3 Table 5.2"
+        },
+        {
+          "measure": "Lighting",
+          "requirement": "Adequate lighting for night works",
+          "specification": "Minimum 20 lux at pedestrian level"
+        },
+        {
+          "measure": "Visibility",
+          "requirement": "High visibility bollards and delineators",
+          "spacing": "Every 2-3 meters along pedestrian path"
+        }
+      ],
+      "access_requirements": [
+        {
+          "facility": "Schools",
+          "requirement": "Maintain safe pedestrian access during school hours",
+          "peak_times": "8:00-9:00am, 3:00-4:00pm",
+          "special_consideration": "Additional supervision may be required during peak times"
+        },
+        {
+          "compliance": "DDA (Disability Discrimination Act)",
+          "requirements": [
+            "Minimum 1.0m clear path width",
+            "Maximum cross-fall 1:40 (2.5%)",
+            "Maximum grade 1:14 (7.1%)",
+            "Tactile ground surface indicators",
+            "No protruding objects above 680mm or below 2000mm"
+          ]
+        }
+      ]
+    },
+    "recommended_devices": [
+      {
+        "code": "W1-1",
+        "name": "Road Work Ahead",
+        "position": "-90m",
+        "placement": "bilateral",
+        "quantity": 2
+      },
+      {
+        "code": "W1-2",
+        "name": "Lane Closure Ahead",
+        "position": "-45m",
+        "placement": "bilateral",
+        "quantity": 2
+      },
+      {
+        "code": "R4-1(40)",
+        "name": "Speed Limit 40",
+        "position": "-55m",
+        "placement": "bilateral",
+        "quantity": 2
+      },
+      {
+        "code": "D5-1",
+        "name": "Traffic Cones 700mm",
+        "position": "taper",
+        "quantity": 20
+      },
+      {
+        "code": "G2-4",
+        "name": "End Road Work",
+        "position": "+50m after workzone",
+        "placement": "bilateral",
+        "quantity": 2
+      }
+    ],
+    "suggested_risks": [
+      "TF1",
+      "TF2",
+      "TF3",
+      "WS1",
+      "WS2",
+      "PC1",
+      "SD1",
+      "EM1"
+    ],
+    "governing_body_details": {
+      "authority_name": "SA Department for Infrastructure and Transport",
+      "main_phone": "1300 794 880",
+      "email": "DIT.TMApprovals@sa.gov.au",
+      "website": "www.dit.sa.gov.au",
+      "notification_email": "DIT.RoadworkNotifications@sa.gov.au",
+      "emergency_phone": "1800 018 313",
+      "office_hours": "Monday to Friday, 8:30am - 5:00pm"
+    },
+    "notification_requirements": {
+      "road_authority": {
+        "required": true,
+        "timeframe": "5 business days minimum",
+        "method": "Online portal or email"
+      },
+      "emergency_services": {
+        "required": true,
+        "timeframe": "48 hours before works",
+        "contacts": [
+          "SA Police",
+          "SA Ambulance",
+          "SA Fire"
+        ]
+      },
+      "public_transport": {
+        "required": false,
+        "timeframe": "7 days before",
+        "authority": "Adelaide Metro"
+      },
+      "adjacent_properties": {
+        "required": true,
+        "timeframe": "3 days before",
+        "method": "Letter box drop or door knock"
+      }
+    },
+    "environmental_constraints": {
+      "heritage_areas": [],
+      "environmental_zones": [],
+      "tree_protection": false,
+      "noise_restrictions": {
+        "weekday_evening": "6pm - 7am (>5dB above background)",
+        "weekend": "Saturday 1pm - Monday 7am",
+        "public_holidays": "No noisy works"
+      },
+      "dust_management": true
+    },
+    "staging_recommendations": {
+      "recommended_stages": [
+        {
+          "stage": 1,
+          "description": "Single lane closure with traffic control",
+          "duration": "Full project",
+          "traffic_impact": "Moderate delays expected"
+        }
+      ],
+      "rationale": "2-lane road requires single stage with traffic controllers"
+    },
+    "public_facilities": {
+      "schools": [
+        {
+          "name": "Terry Simpson Studios",
+          "notification_required": true,
+          "peak_times": "8:00-9:00am, 3:00-4:00pm"
+        }
+      ],
+      "hospitals": [],
+      "businesses": [],
+      "special_zones": [
+        {
+          "type": "School Zone",
+          "restrictions": "Avoid peak drop-off/pick-up times",
+          "additional_signage": "Children Crossing signs may be required"
+        }
+      ]
+    },
+    "signage_plan": {
+      "advance_warning_signs": [
+        {
+          "sign_code": "T1-1",
+          "name": "Road Work Ahead",
+          "position": "-90m from workzone start",
+          "placement": "BILATERAL (both sides of road)",
+          "quantity": 2,
+          "mounting_height": "2.0-2.5m (AS 1742.3)",
+          "lateral_offset": "0.5-1.0m from edge of carriageway",
+          "notes": "Must be on both sides for multi-lane roads"
+        },
+        {
+          "sign_code": "T1-2",
+          "name": "Lane Closure Ahead",
+          "position": "-50m from lane closure",
+          "placement": "BILATERAL (both sides of road)",
+          "quantity": 2,
+          "mounting_height": "2.0-2.5m",
+          "lateral_offset": "0.5-1.0m from edge of carriageway"
+        },
+        {
+          "sign_code": "R4-1(40)",
+          "name": "Speed Limit 40",
+          "position": "-70m from workzone",
+          "placement": "BILATERAL (both sides of road)",
+          "quantity": 2,
+          "mounting_height": "2.0-2.5m",
+          "compliance": "Regulatory sign - enforceable by law"
+        }
+      ],
+      "workzone_signs": [
+        {
+          "sign_code": "T1-3",
+          "name": "Work Zone",
+          "position": "At start of workzone",
+          "placement": "BILATERAL",
+          "quantity": 2
+        },
+        {
+          "sign_code": "D5-1",
+          "name": "Traffic Cones 700mm",
+          "position": "Taper and workzone perimeter",
+          "spacing": "5m spacing",
+          "quantity": "Variable based on workzone length",
+          "specification": "700mm high, retroreflective, weighted base"
+        }
+      ],
+      "side_street_signs": [
+        {
+          "side_street_name": "Bank Street",
+          "requirement": "DOUBLE GATING - Signs on both approaches to intersection",
+          "signs": [
+            {
+              "sign_code": "T1-1",
+              "name": "Road Work Ahead",
+              "position": "On Bank Street approaching main road",
+              "placement": "Both approaches (north & south, or east & west)",
+              "quantity": 2,
+              "distance_from_intersection": "50-90m depending on visibility",
+              "notes": "AS 1742.3 requires warning on all approaches to workzone"
+            },
+            {
+              "sign_code": "T1-5",
+              "name": "Expect Delays",
+              "position": "On Bank Street 20m before intersection",
+              "placement": "Both approaches",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "side_street_name": "Gresham Street",
+          "requirement": "DOUBLE GATING - Signs on both approaches to intersection",
+          "signs": [
+            {
+              "sign_code": "T1-1",
+              "name": "Road Work Ahead",
+              "position": "On Gresham Street approaching main road",
+              "placement": "Both approaches (north & south, or east & west)",
+              "quantity": 2,
+              "distance_from_intersection": "50-90m depending on visibility",
+              "notes": "AS 1742.3 requires warning on all approaches to workzone"
+            },
+            {
+              "sign_code": "T1-5",
+              "name": "Expect Delays",
+              "position": "On Gresham Street 20m before intersection",
+              "placement": "Both approaches",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "side_street_name": "Gilbert Place",
+          "requirement": "DOUBLE GATING - Signs on both approaches to intersection",
+          "signs": [
+            {
+              "sign_code": "T1-1",
+              "name": "Road Work Ahead",
+              "position": "On Gilbert Place approaching main road",
+              "placement": "Both approaches (north & south, or east & west)",
+              "quantity": 2,
+              "distance_from_intersection": "50-90m depending on visibility",
+              "notes": "AS 1742.3 requires warning on all approaches to workzone"
+            },
+            {
+              "sign_code": "T1-5",
+              "name": "Expect Delays",
+              "position": "On Gilbert Place 20m before intersection",
+              "placement": "Both approaches",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "side_street_name": "Woodsons Lane",
+          "requirement": "DOUBLE GATING - Signs on both approaches to intersection",
+          "signs": [
+            {
+              "sign_code": "T1-1",
+              "name": "Road Work Ahead",
+              "position": "On Woodsons Lane approaching main road",
+              "placement": "Both approaches (north & south, or east & west)",
+              "quantity": 2,
+              "distance_from_intersection": "50-90m depending on visibility",
+              "notes": "AS 1742.3 requires warning on all approaches to workzone"
+            },
+            {
+              "sign_code": "T1-5",
+              "name": "Expect Delays",
+              "position": "On Woodsons Lane 20m before intersection",
+              "placement": "Both approaches",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "side_street_name": "Waymouth Place",
+          "requirement": "DOUBLE GATING - Signs on both approaches to intersection",
+          "signs": [
+            {
+              "sign_code": "T1-1",
+              "name": "Road Work Ahead",
+              "position": "On Waymouth Place approaching main road",
+              "placement": "Both approaches (north & south, or east & west)",
+              "quantity": 2,
+              "distance_from_intersection": "50-90m depending on visibility",
+              "notes": "AS 1742.3 requires warning on all approaches to workzone"
+            },
+            {
+              "sign_code": "T1-5",
+              "name": "Expect Delays",
+              "position": "On Waymouth Place 20m before intersection",
+              "placement": "Both approaches",
+              "quantity": 2
+            }
+          ]
+        }
+      ],
+      "end_of_works_signs": [
+        {
+          "sign_code": "G2-4",
+          "name": "End Road Work",
+          "position": "+50m after workzone end",
+          "placement": "BILATERAL (both sides of road)",
+          "quantity": 2,
+          "mounting_height": "2.0-2.5m",
+          "notes": "Indicates return to normal conditions"
+        },
+        {
+          "sign_code": "R4-1(60)",
+          "name": "Speed Limit 60",
+          "position": "+55m after workzone end",
+          "placement": "BILATERAL (both sides of road)",
+          "quantity": 2,
+          "notes": "Reinstates normal speed limit"
+        }
+      ],
+      "bilateral_requirements": {
+        "applies_to": "Multi-lane roads and roads with speed limits >60 km/h",
+        "definition": "Signs must be placed on BOTH sides of the road",
+        "standard": "AS 1742.3 Clause 6.3.2",
+        "total_bilateral_signs": 7,
+        "compliance_note": "All regulatory and warning signs in workzone MUST be bilateral for roads with >1 lane per direction"
+      },
+      "distances_documented": {
+        "speed_limit": "60 km/h",
+        "advance_warning_distance": "90m (AS 1742.3 Table 6.2)",
+        "intermediate_distance": "50m",
+        "taper_length": "105m",
+        "buffer_zone": "30m",
+        "standard_reference": "AS 1742.3:2019 - Manual of uniform traffic control devices, Part 3: Traffic control for works on roads"
+      }
+    },
+    "crash_statistics": {
+      "total_crashes_5yr": 0,
+      "fatal_crashes": 0,
+      "serious_injury_crashes": 0,
+      "minor_injury_crashes": 0,
+      "property_damage_only": 0,
+      "recent_crashes": [],
+      "high_risk_periods": [],
+      "common_crash_types": [],
+      "contributing_factors": [],
+      "data_source": "SA Government Road Crash Data",
+      "blackspot_status": false
+    },
+    "historical_traffic": {
+      "aadt_history": [],
+      "traffic_growth_rate": 0.0,
+      "peak_hour_trends": [
+        {
+          "period": "Morning Peak (7-9am)",
+          "volume_increase": "35-45% above average"
+        },
+        {
+          "period": "Afternoon Peak (3-6pm)",
+          "volume_increase": "40-50% above average"
+        },
+        {
+          "period": "Off-peak",
+          "volume_decrease": "30-40% below average"
+        }
+      ],
+      "seasonal_variations": [
+        {
+          "season": "Summer holidays",
+          "variation": "-15% to -25% (reduced commuter traffic)"
+        },
+        {
+          "season": "School term",
+          "variation": "Baseline (100%)"
+        },
+        {
+          "season": "Public holidays",
+          "variation": "-30% to -50% (minimal traffic)"
+        }
+      ],
+      "heavy_vehicle_trends": [],
+      "previous_traffic_counts": [],
+      "data_period": "Last 5 years",
+      "reliability": "Estimated from regional data"
+    },
+    "location_history": {
+      "area_type": "Mixed Use",
+      "population_density": "Medium",
+      "land_use": [],
+      "nearby_developments": [],
+      "previous_roadworks": [
+        {
+          "year": "2022",
+          "type": "Road resurfacing",
+          "duration": "2 weeks",
+          "impact": "Single lane closure"
+        },
+        {
+          "year": "2020",
+          "type": "Utility works",
+          "duration": "1 week",
+          "impact": "Partial road closure"
+        }
+      ],
+      "future_projects": [],
+      "heritage_status": "memorial",
+      "environmental_factors": [
+        {
+          "factor": "Air Quality",
+          "consideration": "Dust suppression required during earthworks"
+        },
+        {
+          "factor": "Noise Management",
+          "consideration": "Noise monitoring may be required if near sensitive receivers"
+        },
+        {
+          "factor": "Stormwater",
+          "consideration": "Sediment control measures required"
+        }
+      ],
+      "noise_sensitive_areas": false,
+      "school_zones": false,
+      "hospital_zones": false
+    },
+    "current_roadworks": {
+      "current_roadworks": [],
+      "planned_roadworks": [],
+      "nearby_closures": [],
+      "traffic_incidents": [],
+      "conflict_detected": false,
+      "data_source": "Traffic SA - SA Government"
+    },
+    "traffic_signals": {
+      "nearby_signals": [],
+      "signal_coordination_required": false,
+      "signal_timing_contact": "",
+      "data_source": "OpenStreetMap + SA Government Traffic Signals"
+    },
+    "parking_restrictions": {
+      "restrictions": [],
+      "loading_zones": [],
+      "clearway_times": [],
+      "permit_required": false,
+      "data_source": "OpenStreetMap + Inferred Council Regulations"
+    },
+    "school_zones": {
+      "school_zones": [
+        {
+          "name": "University Senior College",
+          "distance": "707m",
+          "type": "primary/secondary"
+        },
+        {
+          "name": "AHMS Building",
+          "distance": "743m",
+          "type": "primary/secondary"
+        },
+        {
+          "name": "Terry Simpson Studios",
+          "distance": "487m",
+          "type": "primary/secondary"
+        }
+      ],
+      "school_times": [
+        {
+          "period": "Morning Peak",
+          "time": "8:00 AM - 9:00 AM",
+          "speed_limit": "40 km/h",
+          "restrictions": "Enhanced traffic control required"
+        },
+        {
+          "period": "Afternoon Peak",
+          "time": "2:30 PM - 3:30 PM",
+          "speed_limit": "40 km/h",
+          "restrictions": "Enhanced traffic control required"
+        }
+      ],
+      "enhanced_restrictions": true,
+      "data_source": "OpenStreetMap + SA Education Facilities"
+    },
+    "public_transport_detailed": {
+      "bus_stops": [
+        {
+          "name": "Stop B1 King William Street - East side",
+          "distance": "223m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop C2 King William Street - East side",
+          "distance": "74m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop C3 King William Street - East side",
+          "distance": "65m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop D1 King William Street - East side",
+          "distance": "102m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop D2 King William Street - East side",
+          "distance": "147m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop D3 Currie Street - North side",
+          "distance": "261m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop E1 Currie Street - North side",
+          "distance": "99m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop E2 Currie Street - North side",
+          "distance": "62m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop E3 Currie Street - North side",
+          "distance": "38m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop F1 Grenfell Street - North side",
+          "distance": "148m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop F2 Grenfell Street - North side",
+          "distance": "217m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop F3 Grenfell Street - North side",
+          "distance": "234m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop G1 Grenfell Street - North side",
+          "distance": "298m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop U1 Grenfell Street - South side",
+          "distance": "191m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop U1 North Terrace - South side",
+          "distance": "299m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop U2 Grenfell Street - South side",
+          "distance": "126m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop V1 Currie Street - South side",
+          "distance": "57m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop V2 Currie Street - South side",
+          "distance": "67m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop V3 Currie Street - South side",
+          "distance": "96m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop V2 King William Street - West side",
+          "distance": "243m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop W1 North Terrace - South side",
+          "distance": "291m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop W2 King William Street - West side",
+          "distance": "91m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop X1 King William Street - West side",
+          "distance": "48m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop X2 King William Street - West side",
+          "distance": "93m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop Y2 King William Street - West side",
+          "distance": "233m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop D4 Currie St - North Side",
+          "distance": "166m",
+          "operator": "Adelaide Metro"
+        }
+      ],
+      "tram_stops": [
+        {
+          "name": "Adelaide Railway Station Tram Stop",
+          "distance": "297m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Rundle Mall Tram Stop",
+          "distance": "148m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Pirie Street",
+          "distance": "163m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Rundle Mall Tram Stop",
+          "distance": "150m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Pirie Street",
+          "distance": "165m",
+          "operator": "Adelaide Metro"
+        }
+      ],
+      "train_stations": [
+        {
+          "name": "Adelaide",
+          "distance": "391m",
+          "operator": "Torrens Transit"
+        }
+      ],
+      "access_impact": "high",
+      "data_source": "OpenStreetMap + Adelaide Metro",
+      "access_requirements": "Critical public transport corridor. Advance notice and alternative arrangements required."
+    },
+    "utility_infrastructure": {
+      "underground_utilities": [],
+      "overhead_utilities": [],
+      "dial_before_dig_required": true,
+      "utility_contacts": [
+        {
+          "utility": "Dial Before You Dig",
+          "phone": "1100",
+          "service": "All underground utilities",
+          "notice": "3 business days minimum"
+        },
+        {
+          "utility": "SA Water",
+          "phone": "1300 SA WATER (1300 729 283)",
+          "service": "Water and sewer mains",
+          "notice": "5 business days recommended"
+        },
+        {
+          "utility": "SA Power Networks",
+          "phone": "13 12 61",
+          "service": "Electricity distribution",
+          "notice": "5 business days recommended"
+        },
+        {
+          "utility": "Australian Gas Networks",
+          "phone": "1300 001 001",
+          "service": "Gas distribution",
+          "notice": "5 business days recommended"
+        },
+        {
+          "utility": "NBN Co",
+          "phone": "1800 OUR NBN (1800 687 626)",
+          "service": "Telecommunications",
+          "notice": "10 business days recommended"
+        }
+      ],
+      "data_source": "OpenStreetMap + Utility Providers"
+    }
+  },
+  "timestamp": "2025-11-03T16:59:18.594688"
+}
