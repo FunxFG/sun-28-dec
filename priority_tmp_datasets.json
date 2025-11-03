@@ -1,0 +1,890 @@
+{
+  "critical": [
+    {
+      "title": "Road Crash Data",
+      "description": "Details of reported road crashes and casualties in South Australia.",
+      "update_frequency": "daily",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/21386a53-56a1-4edf-bd0b-61ed15f10acf",
+      "keywords": "car, casualties, casualty, crash, cyclist, injury, motorcycle, motor vehicle, pedestrian, road, road crashes, severity",
+      "groups": "emergency-and-safety"
+    },
+    {
+      "title": "Road Crash Locations in SA",
+      "description": "Sites of Road Crashes in South Australia.",
+      "update_frequency": "other",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/cf8d8549-b976-4523-88ad-46dd32053696",
+      "keywords": "crash, road, road crashes",
+      "groups": "emergency-and-safety, transport-travel-and-motoring"
+    },
+    {
+      "title": "Traffic volumes on top 40 road sections in SA",
+      "description": "A ranking of the top 40 road sections based on the average daily two way traffic count.",
+      "update_frequency": "daily",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/6d9f9ab2-85eb-49ee-8124-d4bd9c1764e9",
+      "keywords": "motor vehicle, road, traffic",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Traffic Intersection Volumes",
+      "description": "Data from the traffic signalling system (SCATS). The dataset contains hourly traffic volumes for the Adelaide City Council jurisdiction.\r\n\r\nMetadata:\r\n\r\n<ul>\r\n  <li>- site_no: Unique site identifier f",
+      "update_frequency": "daily",
+      "publisher": "City of Adelaide",
+      "landing_page": "/data/dataset/1492e6ae-1ee1-4490-8e01-5a9e8a28fb3a",
+      "keywords": "count, intersection, traffic, volumes",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Traffic Volumes",
+      "description": "Estimated traffic volume information along sealed South Australian roads. \r\nTraffic Volumes is the sum of traffic travelling in both directions on a two way road passing a roadside observation point o",
+      "update_frequency": "other",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/e5d6588a-f163-4f6a-bc57-25e95c87b5bd",
+      "keywords": "motoring, roads, traffic, volumes",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Traffic volumes on top 40 intersections in SA",
+      "description": "A ranking of the top 40 intersections based on the number of vehicles passing through each intersection.",
+      "update_frequency": "daily",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/30923a23-a396-445c-a082-43dc19c2f789",
+      "keywords": "intersection, road, traffic, vehicle",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Luminaires by Tariff",
+      "description": "Number of luminaires by tariff at signalised intersections",
+      "update_frequency": "quarterly",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/524999dc-8312-403f-ab4b-452980ef080f",
+      "keywords": "Intersection, Roads, Traffic Lights, Traffic Signals",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "South Australian Signalised Intersections and Crossings",
+      "description": "Number of Individual Lamps at Signalised Intersections and Crossings",
+      "update_frequency": "quarterly",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/a9cf6a81-9454-4d43-9dab-66b85439bf01",
+      "keywords": "Intersections, Traffic Lights, Traffic Signals",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Traffic Lane Vehicle Counts at Signalised Intersections and Pedestrian Crossings (sample)",
+      "description": "The lane count data for Signalised Intersections and Pedestrian Crossings from 8 June 2017 to 14 June 2017. Behind the stop line at most signalised location there are loops that detect vehicle presenc",
+      "update_frequency": "Once off",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/e6c1f446-de74-4270-811d-5dc5ec79643b",
+      "keywords": "count, crossing, intersection, lane, pedestrian, SCATS, traffic, vehicle",
+      "groups": "developer-portal"
+    },
+    {
+      "title": "Roadworks, Incidents, Road Closures and Detours Real-time Information",
+      "description": "This web service provides information about road works and incidents that are currently active in the metropolitan Adelaide area. It describes the location and type of the incident, the maximum delay ",
+      "update_frequency": "other",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/8d75dfcc-cc95-4be3-8747-ff273e8c53db",
+      "keywords": "closure, delays, detours, incidents, real-time, road  closures, road works",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Adelaide Metro Real-Time Passenger Information",
+      "description": "\u00e2\u0080\u0098This link contains Stop Specific Real-Time information for buses, trains and trams for the Adelaide metro network. Real-Time is a free, convenient and easy to use service. Adelaide Metro provides R",
+      "update_frequency": "daily",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/e794a379-fbf5-457f-b195-7a0be974cc69",
+      "keywords": "Bus, Transport, Travel",
+      "groups": "transport-travel-and-motoring, developer-portal"
+    },
+    {
+      "title": "Real-Time Water Data",
+      "description": "Near real-time water observations available (water.data.sa.gov.au) from surface water and groundwater monitoring networks including water levels, flows, water quality and meteorology. Data is presente",
+      "update_frequency": "as required",
+      "publisher": "Department for Environment and Water",
+      "landing_page": "/data/dataset/d002ac71-239c-491a-97c8-6150d10dbdae",
+      "keywords": "Groundwater, Groundwater Management, Surface Water, water",
+      "groups": "water-energy-resources-environment-and-science"
+    },
+    {
+      "title": "Bluetooth Detection Sites",
+      "description": "This dataset defines the location of all Bluetooth traffic detection sites.",
+      "update_frequency": "asRequired",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/54b072b7-ce24-48f5-9b57-e5e9bf380c00",
+      "keywords": "bluetooth, detection, sites, traffic",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Bluetooth Vehicle Origins and Destinations (sample only)",
+      "description": "This dataset defines the first and last Site where a Probe was detected as it travelled through the network. The sample data contains about three weeks of records from partway through 26 May 2017 to p",
+      "update_frequency": "Once off",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/e5d60ae3-24a9-42ef-a813-a8f7a3eade5c",
+      "keywords": "bluetooth, destination, detection, origin, probe, vehicle",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Detection of Vehicle-based Bluetooth devices (sample only)",
+      "description": "This dataset defines when a Probe was detected at a Bluetooth Site. The sample data contains one week of records from 8 June 2017 to 14 June 2017 inclusive.\r\nFor Bluetooth Detection Site locations, pl",
+      "update_frequency": "asRequired",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/611230b9-ef4d-4f58-aa5a-56e20222ffe8",
+      "keywords": "bluetooth, detection, vehicle",
+      "groups": "developer-portal, transport-travel-and-motoring"
+    }
+  ],
+  "high": [
+    {
+      "title": "Torrens Lake Meterological Data",
+      "description": "ACC have 3 monitoring stations in the Torrens Lake located at the Weir, beneath the Adelaide University footbridge and beneath the Adelaide Zoo footbridge.\r\nInformation recorded includes water tempera",
+      "update_frequency": "daily",
+      "publisher": "City of Adelaide",
+      "landing_page": "/data/dataset/62a683f6-b38b-48da-87c9-63ac9cde0384",
+      "keywords": "adelaide, meteorlogical, torrens lake, water quality",
+      "groups": "water-energy-resources-environment-and-science"
+    },
+    {
+      "title": "Travel Speed in Metropolitan Adelaide",
+      "description": "Travel time surveys are conducted annually on ten metropolitan Adelaide arterial road routes using the \u00e2\u0080\u0098floating car\u00e2\u0080\u0099 technique. They are conducted on weekdays during both the morning and afternoo",
+      "update_frequency": "annual",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/6165be8c-de3c-43df-b8ef-adecda469880",
+      "keywords": "transport, travel speed",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Travel time performance indicators",
+      "description": "Travel time surveys are conducted annually on ten metropolitan Adelaide arterial road routes using the \u00e2\u0080\u0098floating car\u00e2\u0080\u0099 technique. They are conducted on weekdays during both the morning and afternoo",
+      "update_frequency": "annual",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/49957d6f-4b19-4e78-81b5-d1f694f5b4d0",
+      "keywords": "adelaide, metropolitan, Travel Speed, vehicle",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "City of Adelaide Census of Land Use and Employment",
+      "description": "Provides a statistical snapshot of the City\u00e2\u0080\u0099s employment by industry and location.\r\n\r\nThe census also captures parking and venue capacities however for simplicity this data has not been included in ",
+      "update_frequency": "other",
+      "publisher": NaN,
+      "landing_page": "/data/dataset/6f9688c0-6952-4805-8da8-8e090202c55c",
+      "keywords": "adelaide, anzic, business, council, employment, housing, industry, land use, location",
+      "groups": "finance-and-employment, community-information-and-citizen-services"
+    },
+    {
+      "title": "Bluebays Accessible Car Parks",
+      "description": "The State Government has developed a free mobile phone app to help people with disability share and locate accessible parking spaces around South Australia.\r\n\r\n- It provides information about the loca",
+      "update_frequency": "infrequently",
+      "publisher": "Department of Human Services",
+      "landing_page": "/data/dataset/5a561b5b-3989-4fae-8088-247be8110222",
+      "keywords": "Bluebays, Car, Carpark, Disability",
+      "groups": NaN
+    },
+    {
+      "title": "Customer Interaction Volumes",
+      "description": "The Interaction Volumes are determined from our Contact Centre Telephony application - Customer Interaction Centre (CIC). CIC handles and routes all calls, emails, and web chats that come into our Mai",
+      "update_frequency": "daily",
+      "publisher": "City of Adelaide",
+      "landing_page": "/data/dataset/050a9513-8fbc-494b-bf8d-2ac120a590a5",
+      "keywords": "calls, contact, customer, customer centre, interaction",
+      "groups": "community-information-and-citizen-services"
+    },
+    {
+      "title": "Disability Parking Permits by Postcode",
+      "description": "The number of disability parking permits issued by postcode\r\n\r\nWhen communicating with the Department about this dataset, please reference TRLB06.",
+      "update_frequency": "other",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/a993b8a0-e6d1-4149-8f37-02c9089668b5",
+      "keywords": "Disability, parking, permits",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Event Notification",
+      "description": "Provides a breakdown of whether subscribers have registered to receive updates for event parking controls and/or event roads closures and/or permanent parking control changes. This information also in",
+      "update_frequency": "daily",
+      "publisher": "City of Adelaide",
+      "landing_page": "/data/dataset/cbcb4acb-a366-420f-9a5c-98eb2a7c6dc1",
+      "keywords": "car parking, email, events, notification, On Street Parking, parking controls, road closure, sms",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "On Street Parking Ticket Machines",
+      "description": "Provides locations of all the parking machines that exist within the Adelaide City Council area.",
+      "update_frequency": "daily",
+      "publisher": NaN,
+      "landing_page": "/data/dataset/7c92fd11-a2f4-4ca6-b7f2-f23bf123dff9",
+      "keywords": "On Street Parking, Parking, planning, Ticket Machines",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "On Street Parking Zones",
+      "description": "Displays the on-street parking zones located in the Adelaide City Council areas.\r\nInformation provided includes the zone\u00e2\u0080\u0099s location, status, number of spaces available, size of park, and any associa",
+      "update_frequency": "weekly",
+      "publisher": NaN,
+      "landing_page": "/data/dataset/0cb3b204-41f6-4703-aabf-c8c5adfc08d0",
+      "keywords": "access, adelaide, business, consumer, Limits, Parking, residential, Street, taxi, Zone",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Parking Expiations Issued by Adelaide City Council",
+      "description": "This dataset includes all parking expiations issued by the Adelaide City Council, and includes data such as payments, current status and exemptions for all parking expiations issued during the last th",
+      "update_frequency": "monthly",
+      "publisher": "City of Adelaide",
+      "landing_page": "/data/dataset/fece0507-8509-4761-9d1f-375777db1a34",
+      "keywords": "adelaide, adelaide city council, car parking, expiations, fines, infringement, parking",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "UPark Car Parks - Available Spaces",
+      "description": "Displays the number of current car parking spaces available at each of the UPark car parks located in the city.\r\n\r\nFurther information re UPark locations, operating hours, rates are available at: http",
+      "update_frequency": "daily",
+      "publisher": "City of Adelaide",
+      "landing_page": "/data/dataset/0a66175c-e9d4-4513-ad8e-83c0f1b845ef",
+      "keywords": "available spaces, car park, car parking, city car parks, city parking, parking, upark, uparks",
+      "groups": "community-information-and-citizen-services"
+    },
+    {
+      "title": "Bike and Pedestrian Paths",
+      "description": "Displays the bicycle and pedestrian paths located throughout the Adelaide Park Lands surrounding the city.\r\n\r\nInformation provided includes the path type ie. informal, path, roadway, sealed, sealed pa",
+      "update_frequency": "daily",
+      "publisher": NaN,
+      "landing_page": "/data/dataset/0f2403fd-a8f9-4d4c-9fb3-8a613c7b4022",
+      "keywords": "adelaide, bikes, environment, health, nature, parkland, paths, recreation, routes, safety, transport",
+      "groups": "sports-and-recreation"
+    },
+    {
+      "title": "Bollards",
+      "description": "Provides locations of all the bollards that exist within the Adelaide City Council area.\r\n\r\nBollards are the posts in the ground that stop cars from driving up ono the footpaths and hitting pedestrian",
+      "update_frequency": "daily",
+      "publisher": NaN,
+      "landing_page": "/data/dataset/e6e0a010-7074-4776-ad48-b168a1b90b27",
+      "keywords": "bollards, planning",
+      "groups": "housing-land-planning-and-infrastructure"
+    },
+    {
+      "title": "Bridges in the City of Port Adelaide Enfield",
+      "description": "Bridges in the City of Port Adelaide Enfield that the Council is responsible for the maintenance of.  The majority of these bridges are structures for pedestrians only. Bridges are represented by line",
+      "update_frequency": "asRequired",
+      "publisher": "Port Adelaide Enfield Council",
+      "landing_page": "/data/dataset/c9c0cd8b-3aa3-4a15-917f-ea0970ec007f",
+      "keywords": "assets, bridge, bridges, government assets, infrastructure",
+      "groups": "housing-land-planning-and-infrastructure"
+    },
+    {
+      "title": "Pedestrian Crossings",
+      "description": "South Australian intersections pedestrian crossing locations and information.",
+      "update_frequency": "asRequired",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/2d972378-33e0-4be3-a412-c65a02fccb25",
+      "keywords": "intersections, pedestrian, railways, roads",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Traffic Lane Vehicle Counts at Signalised Intersections and Pedestrian Crossings (sample)",
+      "description": "The lane count data for Signalised Intersections and Pedestrian Crossings from 8 June 2017 to 14 June 2017. Behind the stop line at most signalised location there are loops that detect vehicle presenc",
+      "update_frequency": "Once off",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/e6c1f446-de74-4270-811d-5dc5ec79643b",
+      "keywords": "count, crossing, intersection, lane, pedestrian, SCATS, traffic, vehicle",
+      "groups": "developer-portal"
+    },
+    {
+      "title": "Cycling",
+      "description": "South Australian residents riding a bicycle in a typical week. ",
+      "update_frequency": "biennially",
+      "publisher": "Department of the Premier and Cabinet",
+      "landing_page": "/data/dataset/a79f87b6-9710-4fa6-8be3-8b2f8c29ac45",
+      "keywords": "cycling, sasp",
+      "groups": "health-and-wellbeing"
+    },
+    {
+      "title": "Our Environment",
+      "description": "Statistical information about waste and recycling, water consumption and solar installations in Onkaparinga",
+      "update_frequency": "asRequired",
+      "publisher": "City of Onkaparinga",
+      "landing_page": "/data/dataset/cf8c1e59-eda7-4a7b-ac91-f2336a334420",
+      "keywords": "onkaparinga, recycling, statistics, waste, water",
+      "groups": "water-energy-resources-environment-and-science"
+    },
+    {
+      "title": "Recycling Collection Areas",
+      "description": "Recycling Collection areas in the City of Port Adelaide Enfield containing polygons that define each area of recycling collection, sorted into day of week and which alternate week the collection is do",
+      "update_frequency": "asRequired",
+      "publisher": "Port Adelaide Enfield Council",
+      "landing_page": "/data/dataset/94b7d95b-b722-4b52-8127-97580037be3f",
+      "keywords": "council, port adelaide enfield, recycling, rubbish collection, waste collection",
+      "groups": "community-information-and-citizen-services, water-energy-resources-environment-and-science"
+    },
+    {
+      "title": "SASP T002 - Cycling",
+      "description": "Number of people cycling in South Australia\r\n",
+      "update_frequency": "asRequired",
+      "publisher": "Department of the Premier and Cabinet",
+      "landing_page": "/data/dataset/6d18294b-088b-4d2a-8f74-6d019e531d29",
+      "keywords": "Cycling",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Waste Management",
+      "description": "The amount of waste collected in tonnes and by number of bins. This is broken down into categories: rubbish, recycling, organics, hard waste, e-waste",
+      "update_frequency": "daily",
+      "publisher": "City of Adelaide",
+      "landing_page": "/data/dataset/b35fa9df-b442-4d11-981e-863235387d4b",
+      "keywords": "bin lift, bins, e-waste, recycling, refuse, rubbish collection, tonnes, waste collection, waste management",
+      "groups": "water-energy-resources-environment-and-science"
+    },
+    {
+      "title": "Adelaide Metro Bus, Train and Tram Complaints per 100k boardings",
+      "description": "The number of bus, train and tram specific complaints received each quarter per 100,000 boardings.",
+      "update_frequency": "other",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/31efb556-1372-434c-8682-2545e07d53c0",
+      "keywords": "bus, complaints, public transport, train, tram",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Adelaide Metro Real-Time Passenger Information",
+      "description": "\u00e2\u0080\u0098This link contains Stop Specific Real-Time information for buses, trains and trams for the Adelaide metro network. Real-Time is a free, convenient and easy to use service. Adelaide Metro provides R",
+      "update_frequency": "daily",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/e794a379-fbf5-457f-b195-7a0be974cc69",
+      "keywords": "Bus, Transport, Travel",
+      "groups": "transport-travel-and-motoring, developer-portal"
+    },
+    {
+      "title": "Adelaide Public Transport Stop Data",
+      "description": "The dataset contains public transport stop data for buses, trains and trams in shapefile, geojson and kml format.",
+      "update_frequency": "weekly",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/0d2f65f9-4386-4352-b46e-1259ebc06afe",
+      "keywords": "bus, bus stops, esri, public transport, shapefile, stops, trains, trams",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Australian Vocational Education and Training (VET) statistics",
+      "description": "Students and Courses and Apprentices and Trainees: These statistics cover administrative data sets on student enrolments and qualifications attained with approximately 2 million students enrolling on ",
+      "update_frequency": "other",
+      "publisher": "Unleashed 2014 Industry and Community Data",
+      "landing_page": "/data/dataset/6a3284d3-d2a2-4cb6-bddf-5a31d622f4d8",
+      "keywords": "apprentices, educatio, employment, ncver, outcomes, salaries, statistics, students, training, VET, vocational, vocational education",
+      "groups": NaN
+    },
+    {
+      "title": "Bool and Hacks Lagoons Landcover Model Output 2022",
+      "description": "The Friends of Bool and Hacks Lagoon group and BirdLife Australia provided Lynker Analytics with aerial photography for the Bools and Hacks lagoon. The imagery consisted of 66 ECW files which covered ",
+      "update_frequency": "never",
+      "publisher": "Friends of Bool and Hacks Lagoons",
+      "landing_page": "/data/dataset/e99ccbc7-ff9f-4ccc-b20e-ebaee2239189",
+      "keywords": "2022, Bool Lagoon Game Reserve, Hacks Lagoon Conservation Park, inundation, Landcover Model, Limestone Coast, vegetation, wetland",
+      "groups": "water-energy-resources-environment-and-science"
+    },
+    {
+      "title": "Driver Licensing - Competency Based Training and Assessment (CBT&A)",
+      "description": "Competency Based Training and Assessment \u00e2\u0080\u0093 is a system of training and assessment conducted by an Authorised Examiner whereby the applicant must successfully complete a series of 30 tasks in total \u00e2",
+      "update_frequency": "annual",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/afa38997-aaa8-481a-bd1e-6810e5e2ee30",
+      "keywords": "car, driver, drivers license, test, training",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Eligibility Rules for 'Skills for All' Funding",
+      "description": "This data is used to help learners and training providers establish if a learner is eligible for Skills for All funding to access funded training. ",
+      "update_frequency": "asRequired",
+      "publisher": "Department for Industry, Innovation and Science",
+      "landing_page": "/data/dataset/1aeefd7e-2bc7-4b4a-aee7-841f89a31423",
+      "keywords": "Education, Eligibility, Rule, Skills, Training",
+      "groups": "education-skills-and-learning"
+    },
+    {
+      "title": "Equal Opportunity Commission Annual Report Data - Training and Community Education",
+      "description": "Equal Opportunity Commission Annual Report Data \u00e2\u0080\u0093 Training and Community Education presented as a time series",
+      "update_frequency": "annual",
+      "publisher": "Attorney-General's Department",
+      "landing_page": "/data/dataset/cf2a60a3-2768-4876-ad78-fa4a1a4aeef3",
+      "keywords": "Annual Report, anti-discrimination, community education, discrimination, equal opportunities, Equal opportunity, equal opportunity commission, training",
+      "groups": "government-reporting-and-policy"
+    },
+    {
+      "title": "Professional Development Courses List",
+      "description": "A list of training professional development courses available to training providers in SA.",
+      "update_frequency": "asRequired",
+      "publisher": "Department for Industry, Innovation and Science",
+      "landing_page": "/data/dataset/193ec67b-50b1-4a4c-a6b7-1675c1ae902b",
+      "keywords": "business, Business, Courses, education, skills, Training, Training Providers",
+      "groups": "education-skills-and-learning"
+    },
+    {
+      "title": "SASP Target 54 - Learning or Earning",
+      "description": "Increase the proportion of 15-24 year olds engaged full-time in school, post-school education, training or employment (or combination thereof) to 85% by 2020.",
+      "update_frequency": "biennially",
+      "publisher": "Department of the Premier and Cabinet",
+      "landing_page": "/data/dataset/cf261f0f-73c0-4083-a520-ad97116d8c94",
+      "keywords": "education, employment, learning, sasp, training",
+      "groups": NaN
+    },
+    {
+      "title": "SASP Target 90 - Share of Overseas Students",
+      "description": "Increase the number of overseas students across all education and training sectors from 13 737 in 2003 to 45 000 by 2014.",
+      "update_frequency": "biennially",
+      "publisher": "Department of the Premier and Cabinet",
+      "landing_page": "/data/dataset/772621fd-265b-41ab-a0a4-77088e3b361a",
+      "keywords": "education, overseas, sasp, students",
+      "groups": "education-skills-and-learning"
+    },
+    {
+      "title": "SASP Target 93 -Tertiary education and training",
+      "description": "Increase the proportion of South Australians aged 15 - 64 participating in tertiary education and training to 17% by 2016.",
+      "update_frequency": "biennially",
+      "publisher": "Department of the Premier and Cabinet",
+      "landing_page": "/data/dataset/9dda8d3e-e204-43f1-8dfd-1c7efc665bcb",
+      "keywords": "education, sasp, tertiary, training",
+      "groups": "education-skills-and-learning"
+    },
+    {
+      "title": "Skills for All Course Search",
+      "description": "This data can be used to find Skills for All subsidised, and other, courses in South Australia, as well as training providers who deliver each course and their contact information.",
+      "update_frequency": "Annually",
+      "publisher": "Department for Industry, Innovation and Science",
+      "landing_page": "/data/dataset/dad92d3b-c6cd-4f88-b2ac-2f6aa3ea46e3",
+      "keywords": "Course Selection, education, Qualification, skills, Training, Training Providers, VET",
+      "groups": "education-skills-and-learning"
+    },
+    {
+      "title": "State Records - Records relating to training",
+      "description": "Records relating to training conducted by State Records",
+      "update_frequency": "never",
+      "publisher": "State Records",
+      "landing_page": "/data/dataset/9568af57-165e-4d5f-8d7f-35e0eb37a654",
+      "keywords": "archive, State Records, training",
+      "groups": "arts-culture-history"
+    },
+    {
+      "title": "Traineeships and Apprenticeships",
+      "description": "The datasets contain South Australian Training Contract commencement, completion and in-training data. All three types of data can be downloaded as separate zip files. Please download the zip file und",
+      "update_frequency": "other",
+      "publisher": "Department for Education",
+      "landing_page": "/data/dataset/878e08bb-732a-49dd-bf66-bfce88cccefd",
+      "keywords": "Apprentice, Apprenticeship, business, Business, Commencement, Completion, Contract, Education, skills, Trainee, Traineeship, Training",
+      "groups": "education-skills-and-learning, finance-and-employment"
+    },
+    {
+      "title": "Volunteers and Community Group ICT Access",
+      "description": "Location and contact information for ICT services that is available to Volunteers or community groups at no or low cost.  Includes computer access, Internet access, IT training and other resources.",
+      "update_frequency": "asRequired",
+      "publisher": "Department of Human Services",
+      "landing_page": "/data/dataset/29cad2b9-34d9-4912-b891-f0e21cb68a65",
+      "keywords": "access, community, computer, ict, internet, training, volunteer",
+      "groups": "community-information-and-citizen-services"
+    },
+    {
+      "title": "Water Quality",
+      "description": "SA Water operate drinking water supplies across metropolitan, regional and remote Aboriginal communities within South Australia.  They are extensively tested for health, aesthetic and operational rela",
+      "update_frequency": "monthly",
+      "publisher": "SA Water",
+      "landing_page": "/data/dataset/996ec2ae-d52c-4d7e-be9c-d4dab1c1aa45",
+      "keywords": "ADWG, Australian Drinking Water Guidelines, water, Water Quality Management, water quality results",
+      "groups": "water-energy-resources-environment-and-science"
+    },
+    {
+      "title": "Adelaide Metro Enquiries Response Performance",
+      "description": "The number of enquiries received per quarter from January 2016 and the percentage answered within two days. Enquiries relate to online enquiries regarding public transport information and are received",
+      "update_frequency": "as required",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/e7b481dc-7216-429c-960f-1a48e8fb5aaa",
+      "keywords": "bus, enquiries, public transport, train, tram",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Adelaide Metro Infoline Performance",
+      "description": "The number of incoming Adelaide Metro Infoline calls per quarter from January 2016 and the percentage answered within 2 minutes. These calls relate to numerous specific public transport topics such as",
+      "update_frequency": "other",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/26e651df-a904-4387-bd8a-d3917a3ba772",
+      "keywords": "performance, phone calls, public transport",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Community Bus Routes",
+      "description": "The City of Port Adelaide Enfield Community Bus Service provides a fixed route service for all residents, especially for those who are unable to access public transport, have a limited income and/or m",
+      "update_frequency": "asRequired",
+      "publisher": "Port Adelaide Enfield Council",
+      "landing_page": "/data/dataset/cba945c5-3421-46fb-a38b-b360bb28410e",
+      "keywords": "bus, buses, community services, council, transport",
+      "groups": "transport-travel-and-motoring, community-information-and-citizen-services"
+    },
+    {
+      "title": "Adelaide Metro General Transit Feed",
+      "description": "The General Transit Feed Specification (GTFS) defines a common format for public transportation schedules and associated geographic information. GTFS \"feeds\" allow public transit agencies to publish t",
+      "update_frequency": "daily",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/4e191c1e-b971-441f-83f7-45e266c41b99",
+      "keywords": "bus, bus stops, maps, public transport, stop, timetables, trains, trams, transport",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "SASP Target 63 - Use of Public Transport",
+      "description": "Increase the use of public transport to 10% of metropolitan weekday passenger vehicle kilometres travelled by 2018.",
+      "update_frequency": "biennially",
+      "publisher": "Department of the Premier and Cabinet",
+      "landing_page": "/data/dataset/1cae6a95-4aaa-4fc5-a47b-a138030147aa",
+      "keywords": "public, sasp, transport",
+      "groups": "transport-travel-and-motoring"
+    }
+  ],
+  "medium": [
+    {
+      "title": "Burnside Street Trees",
+      "description": "The details and locations of the 38,000 street trees in the City of Burnside council.",
+      "update_frequency": "Once off",
+      "publisher": "City of Burnside (Local Council)",
+      "landing_page": "/data/dataset/b7e1c8f6-169c-41bd-b5d7-140395a41c38",
+      "keywords": "environment, open space, parks, planning, street trees, trees",
+      "groups": NaN
+    },
+    {
+      "title": "Street Trees",
+      "description": "Provides data on the street trees that exist within the Adelaide City Council area.\r\n\r\nCo-ordinate System\r\nGeographic Coordinate System:  GCS_WGS_1984.\r\nDatum: D_WGS_1984.\r\nPrime Meridian: Greenwich.\r",
+      "update_frequency": "daily",
+      "publisher": NaN,
+      "landing_page": "/data/dataset/1a36b15d-7f2a-4ef9-8c71-1f1da954da36",
+      "keywords": "native trees, planning, street trees, trees",
+      "groups": "water-energy-resources-environment-and-science"
+    },
+    {
+      "title": "Bridges and Culverts",
+      "description": "Provides geographic location and attribute data for all Bridges and Culverts assets within the Adelaide City Council area\r\n",
+      "update_frequency": "daily",
+      "publisher": "City of Adelaide",
+      "landing_page": "/data/dataset/ea3e581f-e70a-4f9a-9bd6-c86a0170935e",
+      "keywords": "Bridge, Culvert",
+      "groups": "housing-land-planning-and-infrastructure"
+    },
+    {
+      "title": "Bridges in the City of Port Adelaide Enfield",
+      "description": "Bridges in the City of Port Adelaide Enfield that the Council is responsible for the maintenance of.  The majority of these bridges are structures for pedestrians only. Bridges are represented by line",
+      "update_frequency": "asRequired",
+      "publisher": "Port Adelaide Enfield Council",
+      "landing_page": "/data/dataset/c9c0cd8b-3aa3-4a15-917f-ea0970ec007f",
+      "keywords": "assets, bridge, bridges, government assets, infrastructure",
+      "groups": "housing-land-planning-and-infrastructure"
+    },
+    {
+      "title": "Murray Bridge Photographs",
+      "description": "Selected images (54) from the State Library of South Australia collections of Murray Bridge.",
+      "update_frequency": "Once off",
+      "publisher": "State Library of South Australia",
+      "landing_page": "/data/dataset/02ae1642-b8cc-4c98-a7d7-6e2c7e1ec7cb",
+      "keywords": "buildings, collections, floods, history, Murray Bridge, photographs, portraits, River Murray Steamers, shipping, steamers, trade, transport",
+      "groups": "arts-culture-history"
+    },
+    {
+      "title": "Planning Regions 2020",
+      "description": "Planning regions are used for regional and greater Adelaide planning strategies and other planning related matters. \r\n\r\nThe Governor declared seven South Australian planning regions on recommendation ",
+      "update_frequency": "as required",
+      "publisher": "Department for Housing and Urban Development",
+      "landing_page": "/data/dataset/a479f997-dec5-417c-897f-c4f25e617ffd",
+      "keywords": "boundary, greater adelaide, PDI act, planning, region",
+      "groups": "housing-land-planning-and-infrastructure"
+    },
+    {
+      "title": "Riverland Mallee Coorong Local Health Network (RMCLHN)",
+      "description": "Riverland Mallee Coorong Local Health Network (RMCLHN) provides a wide range of public acute, residential aged care, community health, mental health and Aboriginal health services supporting people in",
+      "update_frequency": "annual",
+      "publisher": "SA Health",
+      "landing_page": "/data/dataset/27d6dc64-1583-4ef4-9580-f64486cfc4fc",
+      "keywords": "Annual Report, Government, Riverland Mallee Coorong Local Health Network, SA Health",
+      "groups": NaN
+    },
+    {
+      "title": "Torrens River Water Quality - Upstream and Downstream from Lake",
+      "description": "This dataset contains water quality measurements from various locations upstream from Gorge Weir to Hackney Road Bridge and downstream of the Torrens lake from City Weir to West Beach Outlet.  Used to",
+      "update_frequency": "other",
+      "publisher": "City of Adelaide",
+      "landing_page": "/data/dataset/2f40aae2-e434-4d85-a8c5-78211e0a44aa",
+      "keywords": "adelaide, river torrens, water quality",
+      "groups": "water-energy-resources-environment-and-science"
+    },
+    {
+      "title": "State Maintained Structures",
+      "description": "Structures contains all State Maintained Structures residing on the PostgreSQL, Combined Bridge Information System (CBIS). CBIS records bridges and culverts which may have design drawings residing in ",
+      "update_frequency": "weekly",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/5e3310bb-b963-4079-aaef-5a8e345266e7",
+      "keywords": "bridge, infrastructure, state maintained, state maintained structures",
+      "groups": "government-reporting-and-policy"
+    },
+    {
+      "title": "Torrens Lake Meterological Data",
+      "description": "ACC have 3 monitoring stations in the Torrens Lake located at the Weir, beneath the Adelaide University footbridge and beneath the Adelaide Zoo footbridge.\r\nInformation recorded includes water tempera",
+      "update_frequency": "daily",
+      "publisher": "City of Adelaide",
+      "landing_page": "/data/dataset/62a683f6-b38b-48da-87c9-63ac9cde0384",
+      "keywords": "adelaide, meteorlogical, torrens lake, water quality",
+      "groups": "water-energy-resources-environment-and-science"
+    },
+    {
+      "title": "Torrens Lake Water Quality",
+      "description": "This dataset contains a variety of water quality measurements from various locations in the Torrens Lake between the Hackney Road bridge and the Torrens Weir.  In particular it captures blue green alg",
+      "update_frequency": "other",
+      "publisher": "City of Adelaide",
+      "landing_page": "/data/dataset/73b42e49-41f8-4994-925e-1745c04ccf6a",
+      "keywords": "adelaide, blue green algae, torrens lake, water quality",
+      "groups": "water-energy-resources-environment-and-science"
+    },
+    {
+      "title": "Annual Report",
+      "description": "Data providing a comparison of operations.  Includes key metrics relating to the statewide use of water and wastewater services, assets, consumption rates and costs.",
+      "update_frequency": "annual",
+      "publisher": "SA Water",
+      "landing_page": "/data/dataset/4064c160-5b62-451b-bbd6-46073cadfa2a",
+      "keywords": "Annual report data, major pipelines, wastewater, water, water assets, water consumption rates, water sources, water supply",
+      "groups": "water-energy-resources-environment-and-science"
+    },
+    {
+      "title": "Budget 2015-16 Tables and Data",
+      "description": "The 2015-16 Budget is now available. \r\n\r\nThis dataset is a collection of data sources from the 2015-16 State Budget, specifically Budget Statements.\r\n\r\nThe Budget Statements consists of financial repo",
+      "update_frequency": "never",
+      "publisher": "Department of Treasury and Finance",
+      "landing_page": "/data/dataset/c0f9edd0-eb72-4e49-9e33-02c1124afa23",
+      "keywords": "budget, economy, finance",
+      "groups": "finance-and-employment, government-reporting-and-policy"
+    },
+    {
+      "title": "Bushfire Management Area Plan (BMAP) Assets",
+      "description": "BMAP Assets are assets at risk of bushfire, as identified in South Australia's nine Bushfire Management Area Plans (BMAPs). Each BMAP asset is assigned a risk rating of either low, medium, high, very ",
+      "update_frequency": "as required",
+      "publisher": "SA Country Fire Service",
+      "landing_page": "/data/dataset/1897bf91-5221-4719-bce2-341721a85d51",
+      "keywords": "assets, BMAP, bushfire, risk",
+      "groups": "emergency-and-safety"
+    },
+    {
+      "title": "Disability Support Services",
+      "description": "Summary of people who used disability support services under the National disability Agreement (NDA) in 2013-14. This report includes several datasets including:\r\n\r\n- The average age and sex of servic",
+      "update_frequency": "annually",
+      "publisher": "Department of Human Services",
+      "landing_page": "/data/dataset/b62af13e-e93c-468b-ac05-0659994180f7",
+      "keywords": "Disability, Minimum, NDA, Service",
+      "groups": "government-reporting-and-policy"
+    },
+    {
+      "title": "Financial Services - FINFAAB01 NUMBER OF ASSETS (WITH A UNIQUE ASSET NUMBER) IN THE REGISTER",
+      "description": "Financial Services - FINFAAB01 NUMBER OF ASSETS (WITH A UNIQUE ASSET NUMBER) IN THE REGISTER",
+      "update_frequency": "annually",
+      "publisher": "Department of the Premier and Cabinet",
+      "landing_page": "/data/dataset/85329cbf-6145-49e6-8559-5f22175d1a2f",
+      "keywords": "Financial Services",
+      "groups": "government-reporting-and-policy"
+    },
+    {
+      "title": "Financial Services - FINFAAB02 NUMBER OF ASSET MOVEMENTS (EXCLUDING DEPRECIATION) - ADDITIONS",
+      "description": "Financial Services - FINFAAB02 NUMBER OF ASSET MOVEMENTS (EXCLUDING DEPRECIATION) - ADDITIONS",
+      "update_frequency": "annually",
+      "publisher": "Department of the Premier and Cabinet",
+      "landing_page": "/data/dataset/dff2a932-1422-4aa6-91f3-aeeeb2d5c7da",
+      "keywords": "Financial Services",
+      "groups": "government-reporting-and-policy"
+    },
+    {
+      "title": "Financial Services - FINFAAB03 NUMBER OF ASSET MOVEMENTS (EXCLUDING DEPRECIATION) - REVALUATIONS",
+      "description": "Financial Services - FINFAAB03 NUMBER OF ASSET MOVEMENTS (EXCLUDING DEPRECIATION) - REVALUATIONS",
+      "update_frequency": "annually",
+      "publisher": "Department of the Premier and Cabinet",
+      "landing_page": "/data/dataset/663ced88-4c8d-4785-90fa-be4836b3f3a7",
+      "keywords": "Financial Services",
+      "groups": "government-reporting-and-policy"
+    },
+    {
+      "title": "Financial Services - FINFAAB04 NUMBER OF ASSET MOVEMENTS (EXCLUDING DEPRECIATION) - DISPOSALS",
+      "description": "Financial Services - FINFAAB04 NUMBER OF ASSET MOVEMENTS (EXCLUDING DEPRECIATION) - DISPOSALS",
+      "update_frequency": "annually",
+      "publisher": "Department of the Premier and Cabinet",
+      "landing_page": "/data/dataset/4be3acf7-56ba-47a1-99fa-17ee428205b5",
+      "keywords": "Financial Services",
+      "groups": "government-reporting-and-policy"
+    },
+    {
+      "title": "Financial Services - Number of assets in the register reconciled to the general ledger",
+      "description": "Financial Services - Number of assets (with a unique asset number) in the register that is reconciled to the general ledger (by agency) \u00e2\u0080\u0093 projection for 2015/16 financial year.",
+      "update_frequency": "annually",
+      "publisher": "Department of the Premier and Cabinet",
+      "landing_page": "/data/dataset/653b61d7-13a3-4e39-aea2-c8f9b1a88c19",
+      "keywords": "assets, government assets, reconciled",
+      "groups": "government-reporting-and-policy"
+    },
+    {
+      "title": "Footpath Network",
+      "description": "Provides geographic location and attribute data for all footpath assets within the Adelaide City Council area",
+      "update_frequency": "daily",
+      "publisher": "City of Adelaide",
+      "landing_page": "/data/dataset/2f12ea3f-55a7-4ad7-9802-822ea88f9df2",
+      "keywords": "Footpath",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Footpaths in the City of Port Adelaide Enfield",
+      "description": "Footpaths in the City of Port Adelaide Enfield.\r\nPolygon spatial layer. Attributed with asset id and structural material.\r\nThe spatial extent of each footpath is a schematic representation only and in",
+      "update_frequency": "annually",
+      "publisher": "Port Adelaide Enfield Council",
+      "landing_page": "/data/dataset/7a286883-a9bd-4619-99ed-42f5807df2cb",
+      "keywords": "council, footpaths, infrastructure, port adelaide enfield",
+      "groups": "housing-land-planning-and-infrastructure"
+    },
+    {
+      "title": "Kerb and Water Table Network",
+      "description": "Provides geographic location and attribute data for all Kerb and Water Table assets within the Adelaide City Council area",
+      "update_frequency": "daily",
+      "publisher": "City of Adelaide",
+      "landing_page": "/data/dataset/5fc2fe0e-c228-4611-9747-9dc04460af2f",
+      "keywords": "Kerb, Water Table",
+      "groups": "housing-land-planning-and-infrastructure"
+    },
+    {
+      "title": "Office of the Director of Public Prosecutions Criminal Assets Confiscations",
+      "description": "A report of the criminal asset confiscations for the Office of the Director of Public Prosecutions. ",
+      "update_frequency": "annual",
+      "publisher": "Attorney-General's Department",
+      "landing_page": "/data/dataset/3e564b5c-c751-4f4a-b36c-03bfbc88cb58",
+      "keywords": "Confiscations, Director of Public Prosecutions, DPP, ODPP",
+      "groups": "crime-justice-and-law, government-reporting-and-policy"
+    },
+    {
+      "title": "Public Trustee SIS Asset Allocations",
+      "description": "Public Trustee Standard Investment Strategies Asset Allocations",
+      "update_frequency": "annual",
+      "publisher": "Attorney-General's Department",
+      "landing_page": "/data/dataset/b383ae1a-b07e-470e-b383-b9ca843994b4",
+      "keywords": "Investment, Public Trustee",
+      "groups": "government-reporting-and-policy"
+    },
+    {
+      "title": "Regulatory Signs on State Maintained Roads",
+      "description": "The Road Signs data set is derived from Department for Infrastructure and Transport, Asset Management, Ancillary Assets dataset. This data set is for either roads Maintained by the State or Federal Go",
+      "update_frequency": "as required",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/dfb0e89b-1dc8-47e4-a9a6-eaf6fb199cb5",
+      "keywords": "control, roads, signs, stop",
+      "groups": NaN
+    },
+    {
+      "title": "SAFA Five-Year Financial Summary",
+      "description": "Five year summary for SAFA shows total for assets, liabilities, retained earnings, profit before tax and full time equivalents over a 5 year period.",
+      "update_frequency": "annual",
+      "publisher": "South Australian Government Financing Authority (SAFA)",
+      "landing_page": "/data/dataset/77b42fef-ce88-40ac-b557-2d5a4db99fd7",
+      "keywords": "annual report, financial, government",
+      "groups": "finance-and-employment"
+    },
+    {
+      "title": "State Maintained Roads",
+      "description": " The State Maintained Roads dataset is derived from the TopoRoad dataset that is jointly maintained by DEWNR & DPTI. The Common Road Referencing System (CRRS) assigns a unique number to all roads of i",
+      "update_frequency": "weekly",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/23633a1b-27c6-41fc-84cc-e43afc24996f",
+      "keywords": "roads",
+      "groups": "government-reporting-and-policy"
+    },
+    {
+      "title": "Conservation Reserve Boundaries",
+      "description": "These are the boundaries of land dedicated to conservation within South Australia. These areas protect both the fauna and flora species and are a major 'biological reservoir' for the maintenance of sp",
+      "update_frequency": "annually",
+      "publisher": "Department for Environment and Water",
+      "landing_page": "/data/dataset/7002bf38-6f74-4b6f-a01a-620dd065511a",
+      "keywords": "Biological, Conservation, nature, Protected, Reserves",
+      "groups": "water-energy-resources-environment-and-science"
+    },
+    {
+      "title": "Conservation Reserve Parcels",
+      "description": "These are the DCDB Parcels dedicated to conservation within South Australia. These areas protect both the fauna and flora species and are a major 'biological reservoir' for the maintenance of species ",
+      "update_frequency": "annually",
+      "publisher": "Department for Environment and Water",
+      "landing_page": "/data/dataset/f846a33e-f4b7-4c77-90b9-2697e54fd2a6",
+      "keywords": "Biological, Conservation, nature, Protected, Reserves",
+      "groups": "water-energy-resources-environment-and-science"
+    },
+    {
+      "title": "Minor Capital Works Projects Completed 2015-16",
+      "description": "Minor works are all new works such as alterations, upgrades, modifications, additions, deletions, and demolitions of existing departmental facilities, but are not general maintenance, Housing SA or IC",
+      "update_frequency": "quarterly",
+      "publisher": "Department of Human Services",
+      "landing_page": "/data/dataset/d980da80-ac14-46a9-bcc0-25952b8754d0",
+      "keywords": "Assets, Facilities, Minor Works",
+      "groups": "government-reporting-and-policy"
+    },
+    {
+      "title": "Payroll Services - Position Maintenance Transactions Received and Completed",
+      "description": "Payroll Services - Position Maintenance Transactions Received and Completed",
+      "update_frequency": "annually",
+      "publisher": "Department of the Premier and Cabinet",
+      "landing_page": "/data/dataset/cd05f57e-eacb-4a64-be76-2b0cd2033fd2",
+      "keywords": "Payroll Services",
+      "groups": "government-reporting-and-policy"
+    },
+    {
+      "title": "Road Maintenance Markers",
+      "description": "DPTI Road Maintenance Marker locations are physical markers along the road corridor to allow field personal to locate features along a road. Physical features are a star dropper with a number plate wh",
+      "update_frequency": "weekly",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/781a1a63-604f-4e40-aefc-a56699e849ec",
+      "keywords": "Road Assets, Road maintenance",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "SA Government Schools Workforce Composition",
+      "description": "The number of staff employed and full-time equivalents (FTE) at SA Government Schools in teaching and non-teaching roles, collected as part of the annual Term 3 data collection.\r\n\r\nTeaching staff spen",
+      "update_frequency": "annual",
+      "publisher": "Department for Education",
+      "landing_page": "/data/dataset/78cf15c3-6a7f-4645-8666-9d28a215b19f",
+      "keywords": "education, school, staff, workforce",
+      "groups": NaN
+    },
+    {
+      "title": "SASP Target 13 Work-Life Balance",
+      "description": "Improve the quality of life of all South Australians through maintenance of a healthy work-life balance.",
+      "update_frequency": "biennially",
+      "publisher": "Department of the Premier and Cabinet",
+      "landing_page": "/data/dataset/f8ef7050-c407-4464-a08a-aa4e2c6ea01c",
+      "keywords": "balance, life, sasp, work",
+      "groups": "health-and-wellbeing"
+    },
+    {
+      "title": "South Australian Housing Trust Annual Report - Community Housing Contributions",
+      "description": "Community Housing contributions are received and receivable from associations and co-operatives. Contributions are paid to the South Australian Housing Trust once allowances for necessary expenses suc",
+      "update_frequency": "annually",
+      "publisher": "South Australian Housing Trust",
+      "landing_page": "/data/dataset/fff40bab-3dc7-46d3-b8a4-e41556763118",
+      "keywords": "associations, co-operatives, debenture, dwellings",
+      "groups": "government-reporting-and-policy, housing-land-planning-and-infrastructure"
+    },
+    {
+      "title": "Disability Parking Permits by Postcode",
+      "description": "The number of disability parking permits issued by postcode\r\n\r\nWhen communicating with the Department about this dataset, please reference TRLB06.",
+      "update_frequency": "other",
+      "publisher": "Department for Infrastructure and Transport",
+      "landing_page": "/data/dataset/a993b8a0-e6d1-4149-8f37-02c9089668b5",
+      "keywords": "Disability, parking, permits",
+      "groups": "transport-travel-and-motoring"
+    },
+    {
+      "title": "Movie and TV Series Filming Locations",
+      "description": "Locations of filming of movies and TV series in the City of Port Adelaide Enfield.\r\nDataset compiled from past records of filming permits.  Includes feature films and TV series dating back to the 1970",
+      "update_frequency": "infrequently",
+      "publisher": "Port Adelaide Enfield Council",
+      "landing_page": "/data/dataset/4b4fe571-04f1-44d9-9ee4-249cfbd879df",
+      "keywords": "Film, Movie, Movies",
+      "groups": "arts-culture-history"
+    },
+    {
+      "title": "Outdoor Dining Permits",
+      "description": "Lists all businesses in Adelaide CBD & North Adelaide with permits to offer outdoor dining.",
+      "update_frequency": "daily",
+      "publisher": "City of Adelaide",
+      "landing_page": "/data/dataset/f642b13c-bbe3-4e17-b6dd-f91cf273e4d0",
+      "keywords": "business, business name, dining, food, license, Outdoors, permits",
+      "groups": "business-industry-and-trade"
+    }
+  ]
+}
