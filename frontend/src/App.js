@@ -21,13 +21,17 @@ export const useAuth = () => {
 };
 
 function AppContent() {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  
   // Initialize user state from localStorage with better error handling
+  // Using lazy initialization to prevent re-reading on every render
   const [user, setUser] = useState(() => {
     try {
       const token = localStorage.getItem('token');
       const userData = localStorage.getItem('user');
       
-      console.log('=== INITIAL AUTH STATE ===');
+      console.log('=== INITIAL AUTH STATE (Mount) ===');
       console.log('Token exists:', !!token);
       console.log('User data exists:', !!userData);
       
@@ -44,14 +48,27 @@ function AppContent() {
     return null;
   });
   
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
+  // Track if we've already persisted to avoid double-writes in StrictMode
+  const persistedRef = React.useRef(false);
+  
   // Persist auth state changes to localStorage
+  // Use ref to prevent double-persistence in React.StrictMode
   useEffect(() => {
+    // Skip the first effect call in StrictMode (cleanup phase)
+    if (!persistedRef.current) {
+      persistedRef.current = true;
+      return;
+    }
+    
     if (user) {
       console.log('User state updated, persisting to localStorage:', user.email);
-      localStorage.setItem('user', JSON.stringify(user));
+      const currentUser = localStorage.getItem('user');
+      const newUser = JSON.stringify(user);
+      
+      // Only update if changed to prevent unnecessary writes
+      if (currentUser !== newUser) {
+        localStorage.setItem('user', newUser);
+      }
     } else {
       console.log('User state cleared');
       localStorage.removeItem('user');
