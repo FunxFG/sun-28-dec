@@ -401,6 +401,101 @@ async def fetch_location_history(lat: float, lng: float, address: str) -> Dict[s
         return location_history
 
 
+async def fetch_current_roadworks(lat: float, lng: float, address: str) -> Dict[str, Any]:
+    """
+    Fetch current and planned roadworks from Traffic SA dataset
+    Source: data.sa.gov.au - Traffic SA Roadworks, Incidents and Planned Events
+    """
+    roadworks_data = {
+        'current_roadworks': [],
+        'planned_roadworks': [],
+        'nearby_closures': [],
+        'traffic_incidents': [],
+        'conflict_detected': False,
+        'data_source': 'Traffic SA - SA Government'
+    }
+    
+    try:
+        # Try to access Traffic SA GeoJSON API
+        async with httpx.AsyncClient(timeout=20.0) as client:
+            # Traffic SA roadworks endpoint (GeoJSON format)
+            traffic_sa_url = "https://data.sa.gov.au/data/api/3/action/datastore_search"
+            
+            # Alternative: Try the harmonised national API
+            national_api_url = "https://api.freightaustralia.gov.au/roadworks"
+            
+            try:
+                # First try SA Government data portal
+                response = await client.get(traffic_sa_url, params={
+                    'resource_id': '21386a53-56a1-4edf-bd0b-61ed15f10acf',
+                    'limit': 100
+                }, timeout=15.0)
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    
+                    if data.get('success') and data.get('result', {}).get('records'):
+                        records = data['result']['records']
+                        
+                        # Process roadworks within radius (5km)
+                        for record in records:
+                            try:
+                                # Extract coordinates (format may vary)
+                                work_lat = record.get('latitude') or record.get('lat')
+                                work_lng = record.get('longitude') or record.get('lng') or record.get('lon')
+                                
+                                if work_lat and work_lng:
+                                    work_lat = float(work_lat)
+                                    work_lng = float(work_lng)
+                                    
+                                    distance = calculate_distance(lat, lng, work_lat, work_lng)
+                                    
+                                    if distance <= 5.0:  # Within 5km
+                                        work_info = {
+                                            'location': record.get('location') or record.get('road_name') or 'Unknown',
+                                            'description': record.get('description') or record.get('work_type') or 'Roadworks',
+                                            'start_date': record.get('start_date') or record.get('start_time'),
+                                            'end_date': record.get('end_date') or record.get('end_time'),
+                                            'status': record.get('status') or 'Active',
+                                            'impact': record.get('impact') or record.get('traffic_impact') or 'Unknown',
+                                            'distance': f"{distance:.1f}km from location"
+                                        }
+                                        
+                                        # Categorize by status
+                                        status = record.get('status', '').lower()
+                                        if 'planned' in status or 'future' in status:
+                                            roadworks_data['planned_roadworks'].append(work_info)
+                                        else:
+                                            roadworks_data['current_roadworks'].append(work_info)
+                                        
+                                        # Check for closures
+                                        if 'closure' in str(record.get('impact', '')).lower() or \
+                                           'closed' in str(record.get('description', '')).lower():
+                                            roadworks_data['nearby_closures'].append(work_info)
+                                        
+                                        # Check for conflicts (works on same road)
+                                        if address.lower() in record.get('location', '').lower():
+                                            roadworks_data['conflict_detected'] = True
+                                            
+                            except (ValueError, TypeError) as e:
+                                logger.debug(f"Error processing roadworks record: {str(e)}")
+                                continue
+                
+            except Exception as e:
+                logger.warning(f"Error fetching from Traffic SA API: {str(e)}")
+        
+        # If we found conflicts, add warning
+        if roadworks_data['conflict_detected']:
+            roadworks_data['conflict_warning'] = 'Existing roadworks detected on or near this location. Coordination required.'
+        
+        return roadworks_data
+        
+    except Exception as e:
+        logger.error(f"Error fetching current roadworks: {str(e)}")
+        return roadworks_data
+
+
+
 def calculate_distance(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
     """Calculate distance between two coordinates in kilometers using Haversine formula"""
     from math import radians, sin, cos, sqrt, atan2
