@@ -20,7 +20,7 @@ import {
   FileText
 } from 'lucide-react';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://trafficease-3.preview.emergentagent.com';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://trafficplan-ai.preview.emergentagent.com';
 const API = `${BACKEND_URL}/api`;
 
 const categoryIcons = {
