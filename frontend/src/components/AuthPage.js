@@ -19,7 +19,10 @@ export default function AuthPage({ onLogin, onGuestLogin }) {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (isLogin) => {
-    console.log('Form submission started:', { isLogin, formData });
+    console.log('=== FORM SUBMISSION STARTED ===');
+    console.log('Is Login:', isLogin);
+    console.log('Form Data:', { email: formData.email, company: formData.company_name });
+    
     setLoading(true);
     
     try {
@@ -28,11 +31,11 @@ export default function AuthPage({ onLogin, onGuestLogin }) {
         { email: formData.email, password: formData.password } :
         formData;
 
-      console.log('Submitting to:', `${API}${endpoint}`);
-      console.log('Form data:', formData);
-      console.log('Payload:', payload);
+      const url = `${API}${endpoint}`;
+      console.log('Submitting to:', url);
+      console.log('Payload:', { ...payload, password: '***' }); // Hide password in logs
 
-      const response = await fetch(`${API}${endpoint}`, {
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,33 +44,48 @@ export default function AuthPage({ onLogin, onGuestLogin }) {
       });
 
       console.log('Response status:', response.status);
-      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+      console.log('Response ok:', response.ok);
       
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error('API Error:', errorData);
-        throw new Error(errorData.detail || 'Authentication failed');
+        const errorData = await response.json().catch(() => ({ detail: 'Network error' }));
+        console.error('API Error Response:', errorData);
+        throw new Error(errorData.detail || `Server error: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('API Success - Full response:', data);
-      console.log('Token:', data.token);
-      console.log('User:', data.user);
+      console.log('✅ API Success - Response received');
+      console.log('Has token:', !!data.token);
+      console.log('Has user:', !!data.user);
+      console.log('User data:', data.user);
       
-      // Call onLogin with token and user data
-      if (data.token && data.user) {
-        console.log('Calling onLogin with:', { token: data.token, user: data.user });
-        onLogin(data.token, data.user);
-        toast.success(isLogin ? 'Welcome back!' : 'Account created successfully!');
-      } else {
-        console.error('Missing token or user in response:', data);
-        throw new Error('Invalid response format from server');
+      // Validate response structure
+      if (!data.token || !data.user) {
+        console.error('❌ Invalid response structure:', data);
+        throw new Error('Invalid response format from server - missing token or user data');
       }
+      
+      // Show success message first
+      const successMessage = isLogin ? 'Welcome back!' : 'Account created successfully!';
+      toast.success(successMessage);
+      
+      console.log('Calling onLogin...');
+      
+      // Call onLogin with proper data
+      onLogin(data.token, data.user);
+      
+      console.log('✅ onLogin called successfully');
+      
     } catch (error) {
-      console.error('Authentication error:', error);
-      toast.error(error.message || 'Authentication failed');
+      console.error('❌ Authentication error:', error);
+      console.error('Error type:', error.constructor.name);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      
+      const errorMessage = error.message || 'Authentication failed. Please try again.';
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
+      console.log('=== FORM SUBMISSION COMPLETE ===');
     }
   };
 
