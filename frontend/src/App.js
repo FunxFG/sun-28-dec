@@ -10,11 +10,24 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://trafficease-3.
 const API = `${BACKEND_URL}/api`;
 
 function App() {
-  const [user, setUser] = useState(null);
+  // Initialize user state from localStorage immediately to prevent flash
+  const [user, setUser] = useState(() => {
+    try {
+      const token = localStorage.getItem('token');
+      const userData = localStorage.getItem('user');
+      if (token && userData) {
+        return JSON.parse(userData);
+      }
+    } catch (e) {
+      console.error('Error initializing user state:', e);
+    }
+    return null;
+  });
+  
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in
+    // Check if user is logged in (only runs once on mount)
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
     
@@ -31,10 +44,13 @@ function App() {
         console.error('Error parsing user data:', e);
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        setUser(null);
       }
+    } else {
+      setUser(null);
     }
     setLoading(false);
-  }, []);
+  }, []); // Empty dependency array - only run once
 
   const login = (token, userData) => {
     console.log('App.js login() called');
