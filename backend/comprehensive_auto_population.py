@@ -1240,6 +1240,8 @@ async def get_comprehensive_auto_population(lat: float, lng: float, start_addres
     
     result = {
         'road_data': {},
+        'location_metadata_system': {},  # NEW: Official LMS data from DIT/DEW
+        'dit_infrastructure_assets': {},  # NEW: DIT asset management data
         'traffic_assessment': {},
         'site_assessment': {},
         'side_streets': [],
