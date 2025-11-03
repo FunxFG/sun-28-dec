@@ -1,0 +1,42 @@
+[
+  {
+    "dataset_name": "SA Signalised Intersections and Crossings",
+    "status": "FAILED",
+    "resources_found": 24,
+    "data": null,
+    "error": "HTTP 404",
+    "timestamp": "2025-11-03T19:11:55.252128"
+  },
+  {
+    "dataset_name": "Pedestrian Crossings",
+    "status": "FAILED",
+    "resources_found": 100,
+    "data": null,
+    "error": "HTTP 404",
+    "timestamp": "2025-11-03T19:11:57.437004"
+  },
+  {
+    "dataset_name": "Traffic Signals",
+    "status": "FAILED",
+    "resources_found": 99,
+    "data": null,
+    "error": "HTTP 404",
+    "timestamp": "2025-11-03T19:11:59.539269"
+  },
+  {
+    "dataset_name": "Bike and Pedestrian Paths",
+    "status": "FAILED",
+    "resources_found": 76,
+    "data": null,
+    "error": "HTTP 404",
+    "timestamp": "2025-11-03T19:12:01.816642"
+  },
+  {
+    "dataset_name": "Traffic Lane Counts at Signals",
+    "status": "FAILED",
+    "resources_found": 11,
+    "data": null,
+    "error": "HTTP 404",
+    "timestamp": "2025-11-03T19:12:04.050904"
+  }
+]
