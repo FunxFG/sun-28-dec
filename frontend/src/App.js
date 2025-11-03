@@ -64,9 +64,27 @@ function App() {
       
       console.log('Auth data saved to localStorage');
       console.log('User state updated:', userData);
+      
+      // Force a small delay to ensure state is set before navigation
+      setTimeout(() => {
+        window.location.href = '/dashboard';
+      }, 100);
     } catch (e) {
       console.error('Error saving auth data:', e);
     }
+  };
+
+  // Guest mode for testing/demo purposes
+  const loginAsGuest = () => {
+    const guestUser = {
+      id: 'guest-user',
+      email: 'guest@demo.com',
+      company_name: 'Demo User',
+      role: 'guest'
+    };
+    const guestToken = 'guest-demo-token';
+    
+    login(guestToken, guestUser);
   };
 
   const logout = () => {
