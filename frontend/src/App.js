@@ -128,6 +128,21 @@ function App() {
               user ? <PlanEditor user={user} onLogout={logout} /> : <Navigate to="/auth" replace />
             } 
           />
+          {/* Demo/Testing Route - Direct Access without Auth */}
+          <Route 
+            path="/demo" 
+            element={
+              <PlanEditor 
+                user={{ 
+                  id: 'demo-user', 
+                  email: 'demo@trafficease.com', 
+                  company_name: 'Demo User',
+                  role: 'demo'
+                }} 
+                onLogout={logout} 
+              />
+            } 
+          />
           <Route 
             path="/" 
             element={<Navigate to={user ? "/dashboard" : "/auth"} replace />} 
