@@ -886,7 +886,8 @@ export default function PlanEditor({ user, onLogout }) {
           staging_recommendations: comprehensiveDataResponse.staging_recommendations || null,
           crash_statistics: comprehensiveDataResponse.crash_statistics || null,  // NEW
           historical_traffic: comprehensiveDataResponse.historical_traffic || null,  // NEW
-          location_history: comprehensiveDataResponse.location_history || null  // NEW
+          location_history: comprehensiveDataResponse.location_history || null,  // NEW
+          current_roadworks: comprehensiveDataResponse.current_roadworks || null  // NEW - Traffic SA
         });
       } catch (error) {
         console.log('Comprehensive auto-populate not available, continuing with basic data');
