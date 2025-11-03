@@ -4,7 +4,7 @@ import './App.css';
 import AuthPage from './components/AuthPage';
 import Dashboard from './components/Dashboard';
 import PlanEditor from './components/PlanEditor';
-import { Toaster } from './components/ui/sonner';
+import { Toaster, toast } from './components/ui/sonner';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://trafficease-3.preview.emergentagent.com';
 const API = `${BACKEND_URL}/api`;
