@@ -2351,6 +2351,12 @@ def main():
         ("Comprehensive Auto-Population Highway", tester.test_comprehensive_auto_populate_highway),
         ("Comprehensive Auto-Population Road Closure", tester.test_comprehensive_auto_populate_road_closure),
         
+        # 10. NEW SA Government Datasets Integration Tests
+        ("Location Metadata System Adelaide CBD", tester.test_location_metadata_system_adelaide_cbd),
+        ("DIT Infrastructure Assets Adelaide CBD", tester.test_dit_infrastructure_assets_adelaide_cbd),
+        ("Location Metadata System Highway", tester.test_location_metadata_system_highway),
+        ("Location Metadata System Residential", tester.test_location_metadata_system_residential),
+        
         # Clean up
         ("Delete Plan", tester.test_delete_plan),
     ]
