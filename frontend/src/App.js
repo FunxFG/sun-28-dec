@@ -20,91 +20,92 @@ export const useAuth = () => {
   return context;
 };
 
-function App() {
-  // Initialize user state from localStorage immediately to prevent flash
+function AppContent() {
+  // Initialize user state from localStorage with better error handling
   const [user, setUser] = useState(() => {
     try {
       const token = localStorage.getItem('token');
       const userData = localStorage.getItem('user');
+      
+      console.log('=== INITIAL AUTH STATE ===');
+      console.log('Token exists:', !!token);
+      console.log('User data exists:', !!userData);
+      
       if (token && userData) {
-        return JSON.parse(userData);
+        const parsed = JSON.parse(userData);
+        console.log('Loaded user from localStorage:', parsed.email);
+        return parsed;
       }
     } catch (e) {
-      console.error('Error initializing user state:', e);
+      console.error('Error loading auth state:', e);
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
     }
     return null;
   });
   
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
+  // Persist auth state changes to localStorage
   useEffect(() => {
-    // Check if user is logged in (only runs once on mount)
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
-    
-    console.log('App.js useEffect - Checking auth state');
-    console.log('Token from localStorage:', token ? 'EXISTS' : 'MISSING');
-    console.log('User data from localStorage:', userData ? 'EXISTS' : 'MISSING');
-    
-    if (token && userData) {
-      try {
-        const parsedUser = JSON.parse(userData);
-        console.log('Setting user state:', parsedUser);
-        setUser(parsedUser);
-      } catch (e) {
-        console.error('Error parsing user data:', e);
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        setUser(null);
-      }
+    if (user) {
+      console.log('User state updated, persisting to localStorage:', user.email);
+      localStorage.setItem('user', JSON.stringify(user));
     } else {
-      setUser(null);
+      console.log('User state cleared');
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
     }
-    setLoading(false);
-  }, []); // Empty dependency array - only run once
+  }, [user]);
 
   const login = (token, userData) => {
-    console.log('App.js login() called');
-    console.log('Token:', token);
+    console.log('=== LOGIN FUNCTION CALLED ===');
+    console.log('Token received:', token?.substring(0, 20) + '...');
     console.log('User data:', userData);
     
     try {
-      // Save to localStorage first
+      // Save to localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
       
-      console.log('Auth data saved to localStorage');
-      
       // Update state
       setUser(userData);
-      console.log('User state updated:', userData);
       
-      // Force immediate redirect without delay
-      window.location.href = '/dashboard';
+      console.log('✅ Auth data saved successfully');
+      console.log('Navigating to dashboard...');
+      
+      // Use React Router navigate instead of window.location
+      setTimeout(() => {
+        navigate('/dashboard', { replace: true });
+      }, 100);
+      
     } catch (e) {
-      console.error('Error saving auth data:', e);
-      alert('Failed to save login session. Please try again.');
+      console.error('❌ Error in login function:', e);
+      alert('Failed to save login session');
     }
   };
 
-  // Guest mode for testing/demo purposes
+  // Guest mode for demo/testing
   const loginAsGuest = () => {
+    console.log('=== GUEST LOGIN ===');
     const guestUser = {
       id: 'guest-user',
       email: 'guest@demo.com',
       company_name: 'Demo User',
       role: 'guest'
     };
-    const guestToken = 'guest-demo-token';
+    const guestToken = 'guest-demo-token-' + Date.now();
     
     login(guestToken, guestUser);
   };
 
   const logout = () => {
-    console.log('App.js logout() called');
+    console.log('=== LOGOUT ===');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setUser(null);
+    navigate('/auth', { replace: true });
   };
 
   if (loading) {
