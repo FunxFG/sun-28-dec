@@ -2183,93 +2183,170 @@ export default function PlanEditor({ user, onLogout }) {
             )}
 
 
-            {comprehensiveData.crash_statistics && comprehensiveData.crash_statistics.total_crashes_5yr > 0 && (
+            {/* NEW: Enhanced Crash Statistics with Risk Assessment */}
+            {comprehensiveData.crash_statistics && (comprehensiveData.crash_statistics.total_crashes > 0 || comprehensiveData.crash_statistics.total_crashes_5yr > 0) && (
               <Card className="border-l-4 border-l-red-600">
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
-                      <CardTitle className="text-red-700">⚠️ Crash Statistics (5-Year History)</CardTitle>
-                      <CardDescription>Government accident data within 500m radius</CardDescription>
+                      <CardTitle className="text-red-700">⚠️ Road Crash Statistics</CardTitle>
+                      <CardDescription>
+                        SA Government crash data within 1km radius ({comprehensiveData.crash_statistics.years_analyzed || 5} years)
+                      </CardDescription>
                     </div>
-                    {comprehensiveData.crash_statistics.blackspot_status && (
-                      <span className="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold">
-                        BLACKSPOT
+                    {comprehensiveData.crash_statistics.risk_assessment && (
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                        comprehensiveData.crash_statistics.risk_assessment.risk_level === 'HIGH' ? 'bg-red-600 text-white' :
+                        comprehensiveData.crash_statistics.risk_assessment.risk_level === 'MEDIUM' ? 'bg-orange-600 text-white' :
+                        comprehensiveData.crash_statistics.risk_assessment.risk_level === 'LOW-MEDIUM' ? 'bg-yellow-600 text-white' :
+                        'bg-green-600 text-white'
+                      }`}>
+                        RISK: {comprehensiveData.crash_statistics.risk_assessment.risk_level}
                       </span>
                     )}
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  {/* Risk Assessment Banner */}
+                  {comprehensiveData.crash_statistics.risk_assessment && (
+                    <div className={`border-2 p-3 rounded-lg ${
+                      comprehensiveData.crash_statistics.risk_assessment.risk_level === 'HIGH' ? 'bg-red-50 border-red-500' :
+                      comprehensiveData.crash_statistics.risk_assessment.risk_level === 'MEDIUM' ? 'bg-orange-50 border-orange-500' :
+                      comprehensiveData.crash_statistics.risk_assessment.risk_level === 'LOW-MEDIUM' ? 'bg-yellow-50 border-yellow-500' :
+                      'bg-green-50 border-green-500'
+                    }`}>
+                      <div className="font-bold text-sm mb-1">
+                        {comprehensiveData.crash_statistics.risk_assessment.risk_description}
+                      </div>
+                      <div className="text-xs">
+                        Annual crash rate: <strong>{comprehensiveData.crash_statistics.risk_assessment.annual_crash_rate}</strong> crashes/year
+                      </div>
+                      {comprehensiveData.crash_statistics.risk_assessment.fatal_crash_risk === 'YES' && (
+                        <div className="text-xs text-red-700 font-bold mt-1">
+                          ⚠️ FATAL CRASH HISTORY DETECTED
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   {/* Summary Stats */}
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-red-50 p-3 rounded">
-                      <div className="text-2xl font-bold text-red-700">{comprehensiveData.crash_statistics.total_crashes_5yr}</div>
+                      <div className="text-2xl font-bold text-red-700">
+                        {comprehensiveData.crash_statistics.total_crashes || comprehensiveData.crash_statistics.total_crashes_5yr || 0}
+                      </div>
                       <div className="text-xs text-gray-600">Total Crashes</div>
                     </div>
                     <div className="bg-orange-50 p-3 rounded">
-                      <div className="text-2xl font-bold text-orange-700">{comprehensiveData.crash_statistics.fatal_crashes}</div>
+                      <div className="text-2xl font-bold text-orange-700">
+                        {comprehensiveData.crash_statistics.fatal_crashes || 0}
+                      </div>
                       <div className="text-xs text-gray-600">Fatal</div>
                     </div>
                     <div className="bg-yellow-50 p-3 rounded">
-                      <div className="text-2xl font-bold text-yellow-700">{comprehensiveData.crash_statistics.serious_injury_crashes}</div>
+                      <div className="text-2xl font-bold text-yellow-700">
+                        {comprehensiveData.crash_statistics.serious_injury || comprehensiveData.crash_statistics.serious_injury_crashes || 0}
+                      </div>
                       <div className="text-xs text-gray-600">Serious Injury</div>
                     </div>
                     <div className="bg-blue-50 p-3 rounded">
-                      <div className="text-2xl font-bold text-blue-700">{comprehensiveData.crash_statistics.minor_injury_crashes}</div>
+                      <div className="text-2xl font-bold text-blue-700">
+                        {comprehensiveData.crash_statistics.minor_injury || comprehensiveData.crash_statistics.minor_injury_crashes || 0}
+                      </div>
                       <div className="text-xs text-gray-600">Minor Injury</div>
                     </div>
                   </div>
 
-                  {/* Recent Crashes */}
-                  {comprehensiveData.crash_statistics.recent_crashes && comprehensiveData.crash_statistics.recent_crashes.length > 0 && (
+                  {/* Crashes by Year */}
+                  {comprehensiveData.crash_statistics.crashes_by_year && Object.keys(comprehensiveData.crash_statistics.crashes_by_year).length > 0 && (
                     <div>
-                      <h4 className="font-semibold mb-2 text-sm">Recent Crashes</h4>
-                      <div className="space-y-2">
-                        {comprehensiveData.crash_statistics.recent_crashes.map((crash, idx) => (
-                          <div key={idx} className="bg-red-50 p-2 rounded text-xs border-l-2 border-red-400">
-                            <div className="font-medium">{crash.date} - {crash.severity}</div>
-                            <div className="text-gray-600">{crash.type} ({crash.distance})</div>
+                      <h4 className="font-semibold mb-2 text-sm">📈 Crashes by Year</h4>
+                      <div className="bg-gray-50 p-3 rounded">
+                        {Object.entries(comprehensiveData.crash_statistics.crashes_by_year).map(([year, count]) => (
+                          <div key={year} className="flex justify-between text-xs mb-1">
+                            <span className="text-gray-700">{year}</span>
+                            <span className="font-medium">{count} crashes</span>
                           </div>
                         ))}
                       </div>
                     </div>
                   )}
 
-                  {/* High Risk Periods */}
-                  {comprehensiveData.crash_statistics.high_risk_periods && comprehensiveData.crash_statistics.high_risk_periods.length > 0 && (
+                  {/* Recent Crashes */}
+                  {comprehensiveData.crash_statistics.recent_crashes && comprehensiveData.crash_statistics.recent_crashes.length > 0 && (
                     <div>
-                      <h4 className="font-semibold mb-2 text-sm">⏰ High Risk Periods</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {comprehensiveData.crash_statistics.high_risk_periods.map((period, idx) => (
-                          <span key={idx} className="bg-orange-100 text-orange-800 px-2 py-1 rounded text-xs">
-                            {period}
-                          </span>
+                      <h4 className="font-semibold mb-2 text-sm">Recent Crashes ({comprehensiveData.crash_statistics.recent_crashes.length})</h4>
+                      <div className="space-y-2 max-h-40 overflow-y-auto">
+                        {comprehensiveData.crash_statistics.recent_crashes.map((crash, idx) => (
+                          <div key={idx} className="bg-red-50 p-2 rounded text-xs border-l-2 border-red-400">
+                            <div className="font-medium">{crash.date} - {crash.severity}</div>
+                            <div className="text-gray-600">
+                              {crash.type && `${crash.type} • `}
+                              {crash.distance_km ? `${crash.distance_km}km away` : crash.distance}
+                            </div>
+                          </div>
                         ))}
                       </div>
                     </div>
                   )}
 
-                  {/* Common Crash Types */}
-                  {comprehensiveData.crash_statistics.common_crash_types && comprehensiveData.crash_statistics.common_crash_types.length > 0 && (
+                  {/* Peak Times */}
+                  {comprehensiveData.crash_statistics.peak_times && comprehensiveData.crash_statistics.peak_times.length > 0 && (
                     <div>
-                      <h4 className="font-semibold mb-2 text-sm">📊 Common Crash Types</h4>
+                      <h4 className="font-semibold mb-2 text-sm">⏰ Crash Peak Times</h4>
+                      <div className="space-y-1">
+                        {comprehensiveData.crash_statistics.peak_times.map((period, idx) => (
+                          <div key={idx} className="bg-orange-50 p-2 rounded text-xs flex justify-between">
+                            <span><strong>{period.period}:</strong> {period.time}</span>
+                            <span className="font-bold">{period.percentage}%</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Common Factors */}
+                  {comprehensiveData.crash_statistics.common_factors && comprehensiveData.crash_statistics.common_factors.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">📊 Common Contributing Factors</h4>
                       <ul className="text-xs space-y-1 ml-4">
-                        {comprehensiveData.crash_statistics.common_crash_types.map((type, idx) => (
-                          <li key={idx} className="text-gray-700">• {type}</li>
+                        {comprehensiveData.crash_statistics.common_factors.map((factor, idx) => (
+                          <li key={idx} className="text-gray-700">• {factor}</li>
                         ))}
                       </ul>
                     </div>
                   )}
 
-                  {/* Safety Considerations */}
-                  <div className="bg-yellow-50 border border-yellow-200 p-3 rounded">
-                    <div className="text-xs font-semibold text-yellow-900 mb-1">⚠️ Safety Considerations for TMP</div>
-                    <div className="text-xs text-gray-700">
-                      High crash area - Enhanced signage, traffic control, and monitoring recommended. 
-                      Consider police presence during peak hours.
+                  {/* Safety Recommendations */}
+                  {comprehensiveData.crash_statistics.risk_assessment?.recommendations && (
+                    <div className="bg-yellow-50 border-2 border-yellow-400 p-3 rounded-lg">
+                      <div className="text-xs font-semibold text-yellow-900 mb-2">⚠️ TMP Safety Recommendations</div>
+                      <ul className="text-xs space-y-1">
+                        {comprehensiveData.crash_statistics.risk_assessment.recommendations.map((rec, idx) => (
+                          <li key={idx} className="text-gray-700">• {rec}</li>
+                        ))}
+                      </ul>
                     </div>
-                  </div>
+                  )}
 
-                  <div className="text-xs text-gray-500 italic">
+                  {/* Warning Message */}
+                  {comprehensiveData.crash_statistics.warning && (
+                    <div className="bg-blue-50 border border-blue-200 p-2 rounded text-xs text-blue-800">
+                      ℹ️ {comprehensiveData.crash_statistics.warning}
+                    </div>
+                  )}
+
+                  <Button
+                    onClick={() => downloadJSON(comprehensiveData.crash_statistics, 'crash_statistics.json')}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Crash Data
+                  </Button>
+
+                  <div className="text-xs text-gray-500 italic pt-2 border-t">
                     Data source: {comprehensiveData.crash_statistics.data_source}
                   </div>
                 </CardContent>
