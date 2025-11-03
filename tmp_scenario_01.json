@@ -1,0 +1,1612 @@
+{
+  "scenario": {
+    "id": 1,
+    "name": "CBD Lane Closure - King William Street",
+    "location": "King William Street, Adelaide SA",
+    "center_lat": -34.9285,
+    "center_lng": 138.6007,
+    "work_type": "lane closure",
+    "road_classification": "State Arterial Road",
+    "duration": "3 days",
+    "speed_limit": 50
+  },
+  "tmp_data": {
+    "project_name": "CBD Lane Closure - King William Street",
+    "location": "King William Street, Adelaide SA",
+    "work_type": "lane closure",
+    "duration": "3 days",
+    "speed_limit": 50,
+    "road_classification": "State Arterial Road",
+    "devices_count": 5,
+    "data_categories": 27,
+    "has_visual_tgs": false,
+    "has_streetview": false
+  },
+  "visual_tgs": {
+    "satellite_tgs": {
+      "error": "Failed to fetch satellite imagery"
+    },
+    "streetview_images": [],
+    "metadata": {
+      "total_signs": 5,
+      "center": {
+        "lat": -34.9285,
+        "lng": 138.6007
+      },
+      "has_streetview": false,
+      "generation_timestamp": "ISO8601 timestamp"
+    }
+  },
+  "devices": [
+    {
+      "code": "T1-1",
+      "name": "Road Work Ahead",
+      "latitude": -34.9235,
+      "longitude": 138.6032,
+      "distance": 50,
+      "side": "left",
+      "dimensions": {
+        "width_mm": 600,
+        "height_mm": 600
+      },
+      "description": "General warning of road works ahead"
+    },
+    {
+      "code": "D1-1",
+      "name": "Traffic Cones",
+      "latitude": -34.9185,
+      "longitude": 138.5957,
+      "distance": 100,
+      "side": "right",
+      "dimensions": {
+        "width_mm": 300,
+        "height_mm": 750
+      },
+      "description": "750mm traffic cones for delineation"
+    },
+    {
+      "code": "T1-2",
+      "name": "Road Closed Ahead",
+      "latitude": -34.9085,
+      "longitude": 138.61069999999998,
+      "distance": 200,
+      "side": "left",
+      "dimensions": {
+        "width_mm": 600,
+        "height_mm": 600
+      },
+      "description": "Warning of complete road closure ahead"
+    },
+    {
+      "code": "R5-1",
+      "name": "No Entry",
+      "latitude": -34.8985,
+      "longitude": 138.5857,
+      "distance": 300,
+      "side": "right",
+      "dimensions": {
+        "width_mm": 600,
+        "height_mm": 600
+      },
+      "description": "Prohibition of entry to road"
+    },
+    {
+      "code": "G1-1",
+      "name": "Detour Arrow Left",
+      "latitude": -34.8785,
+      "longitude": 138.6257,
+      "distance": 500,
+      "side": "left",
+      "dimensions": {
+        "width_mm": 900,
+        "height_mm": 600
+      },
+      "description": "Direction guidance for detour route"
+    }
+  ],
+  "auto_population": {
+    "road_data": {
+      "speed_limit": 60,
+      "lanes": 2,
+      "road_name": "Unknown Road",
+      "highway_type": "residential",
+      "surface": "asphalt",
+      "has_footpath": false,
+      "has_cycleway": false,
+      "has_parking": false,
+      "road_classification": "Local Road",
+      "jurisdiction": "Local Council",
+      "functional_class": "Collector"
+    },
+    "location_metadata_system": {
+      "road_name": "Unknown Road",
+      "road_classification_official": "Local Road",
+      "speed_limit_official": "50 km/h",
+      "maintenance_authority": "Local Council",
+      "crrs_code": "SA-LOC-UNKNOWNROA",
+      "sealed_status": "Sealed",
+      "austroads_class_code": "Local Access",
+      "road_category_code": "Council Network - Local",
+      "functional_hierarchy": "Level 5: Local Access",
+      "data_source": "Default SA Government Standards",
+      "dataset_references": [
+        "Dataset 558: Roads",
+        "Dataset 1639: State Maintained Roads"
+      ]
+    },
+    "dit_infrastructure_assets": {
+      "road_condition": "Good",
+      "pavement_type": "Asphalt",
+      "last_maintenance": null,
+      "asset_inventory": [
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Traffic Signals",
+          "details": "Intersection traffic control",
+          "condition": "Operational"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Traffic Signals",
+          "details": "Intersection traffic control",
+          "condition": "Operational"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Traffic Signals",
+          "details": "Intersection traffic control",
+          "condition": "Operational"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Traffic Signals",
+          "details": "Intersection traffic control",
+          "condition": "Operational"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Traffic Signals",
+          "details": "Intersection traffic control",
+          "condition": "Operational"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Traffic Signals",
+          "details": "Intersection traffic control",
+          "condition": "Operational"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Traffic Signals",
+          "details": "Intersection traffic control",
+          "condition": "Operational"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Traffic Signals",
+          "details": "Intersection traffic control",
+          "condition": "Operational"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Traffic Signals",
+          "details": "Intersection traffic control",
+          "condition": "Operational"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Traffic Signals",
+          "details": "Intersection traffic control",
+          "condition": "Operational"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Traffic Signals",
+          "details": "Intersection traffic control",
+          "condition": "Operational"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Traffic Signals",
+          "details": "Intersection traffic control",
+          "condition": "Operational"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Traffic Signals",
+          "details": "Intersection traffic control",
+          "condition": "Operational"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Traffic Signals",
+          "details": "Intersection traffic control",
+          "condition": "Operational"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Traffic Signals",
+          "details": "Intersection traffic control",
+          "condition": "Operational"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Traffic Signals",
+          "details": "Intersection traffic control",
+          "condition": "Operational"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, paving_stones surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "3 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "4 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "1 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, paving_stones surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "3 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "3 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, paving_stones surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, paving_stones surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, paving_stones surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, paving_stones surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, paving_stones surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "1 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "3 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, paving_stones surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        },
+        {
+          "asset_type": "Pavement",
+          "details": "2 lanes, standard width, asphalt surface",
+          "condition": "Good"
+        }
+      ],
+      "maintenance_schedule": {
+        "inspection_frequency": "Annual",
+        "maintenance_type": "Routine",
+        "contact": "Local Council",
+        "phone": "Contact local council",
+        "email": "Contact local council",
+        "responsibility": "Local Government"
+      },
+      "infrastructure_projects": [],
+      "data_source": "DIT Asset Management System + Geoscience Australia + OSM"
+    },
+    "traffic_assessment": {},
+    "site_assessment": {},
+    "side_streets": [],
+    "intersections": [
+      {
+        "name": "Victoria Square",
+        "signage_required": true,
+        "type": "crossroad"
+      },
+      {
+        "name": "Gawler Place",
+        "signage_required": true,
+        "type": "crossroad"
+      },
+      {
+        "name": "King William Street",
+        "signage_required": true,
+        "type": "T-intersection"
+      },
+      {
+        "name": "Flinders Street",
+        "signage_required": true,
+        "type": "T-intersection"
+      },
+      {
+        "name": "Wakefield Street",
+        "signage_required": true,
+        "type": "T-intersection"
+      }
+    ],
+    "control_measures": {
+      "temporal": [
+        "off_peak_hours",
+        "staged_works"
+      ],
+      "speed": [
+        "temporary_speed_limit_40",
+        "speed_reduction"
+      ],
+      "lane_management": [
+        "lane_closure",
+        "merge_taper"
+      ],
+      "safety": [
+        "static_signs",
+        "delineation_devices",
+        "water_filled_barriers",
+        "traffic_controllers",
+        "lighting_systems"
+      ],
+      "communication": [
+        "public_notification",
+        "stakeholder_consultation",
+        "emergency_services_notification"
+      ]
+    },
+    "pedestrian_control_measures": {
+      "barriers_required": [],
+      "pedestrian_detours": [
+        {
+          "type": "Pedestrian Detour Route",
+          "description": "Alternative pedestrian path around workzone",
+          "requirements": [
+            "Minimum 1.0m clear width (DDA compliant)",
+            "Maximum grade 1:14 (7.1%) for DDA compliance",
+            "Tactile ground surface indicators at decision points",
+            "Handrails if grade exceeds 1:20",
+            "Clear signage at diversion points"
+          ],
+          "signage_required": [
+            "Pedestrians Use Other Side",
+            "Pedestrian Detour",
+            "Directional arrows"
+          ]
+        }
+      ],
+      "signage": [
+        {
+          "code": "P1-1",
+          "name": "Pedestrian Detour",
+          "location": "At start of pedestrian diversion",
+          "placement": "Both sides if bilateral footpaths"
+        },
+        {
+          "code": "P1-2",
+          "name": "Footpath Closed",
+          "location": "At closure point",
+          "placement": "Directly at closed footpath entrance"
+        },
+        {
+          "code": "P1-3",
+          "name": "Pedestrians Use Other Side",
+          "location": "Before workzone",
+          "placement": "With directional arrow"
+        }
+      ],
+      "safety_measures": [
+        {
+          "measure": "Separation Distance",
+          "requirement": "Minimum 1.2m clearance between traffic and pedestrian path",
+          "standard": "AS 1742.3 Table 5.2"
+        },
+        {
+          "measure": "Lighting",
+          "requirement": "Adequate lighting for night works",
+          "specification": "Minimum 20 lux at pedestrian level"
+        },
+        {
+          "measure": "Visibility",
+          "requirement": "High visibility bollards and delineators",
+          "spacing": "Every 2-3 meters along pedestrian path"
+        }
+      ],
+      "access_requirements": [
+        {
+          "compliance": "DDA (Disability Discrimination Act)",
+          "requirements": [
+            "Minimum 1.0m clear path width",
+            "Maximum cross-fall 1:40 (2.5%)",
+            "Maximum grade 1:14 (7.1%)",
+            "Tactile ground surface indicators",
+            "No protruding objects above 680mm or below 2000mm"
+          ]
+        }
+      ]
+    },
+    "recommended_devices": [
+      {
+        "code": "W1-1",
+        "name": "Road Work Ahead",
+        "position": "-90m",
+        "placement": "bilateral",
+        "quantity": 2
+      },
+      {
+        "code": "W1-2",
+        "name": "Lane Closure Ahead",
+        "position": "-45m",
+        "placement": "bilateral",
+        "quantity": 2
+      },
+      {
+        "code": "R4-1(40)",
+        "name": "Speed Limit 40",
+        "position": "-55m",
+        "placement": "bilateral",
+        "quantity": 2
+      },
+      {
+        "code": "D5-1",
+        "name": "Traffic Cones 700mm",
+        "position": "taper",
+        "quantity": 20
+      },
+      {
+        "code": "G2-4",
+        "name": "End Road Work",
+        "position": "+50m after workzone",
+        "placement": "bilateral",
+        "quantity": 2
+      }
+    ],
+    "suggested_risks": [
+      "TF1",
+      "TF2",
+      "TF3",
+      "WS1",
+      "WS2",
+      "PC1",
+      "SD1",
+      "EM1",
+      "TF4",
+      "PB1",
+      "IF1"
+    ],
+    "governing_body_details": {
+      "authority_name": "SA Department for Infrastructure and Transport",
+      "main_phone": "1300 794 880",
+      "email": "DIT.TMApprovals@sa.gov.au",
+      "website": "www.dit.sa.gov.au",
+      "notification_email": "DIT.RoadworkNotifications@sa.gov.au",
+      "emergency_phone": "1800 018 313",
+      "office_hours": "Monday to Friday, 8:30am - 5:00pm",
+      "local_council_note": "If local road, contact relevant council"
+    },
+    "notification_requirements": {
+      "road_authority": {
+        "required": true,
+        "timeframe": "5 business days minimum",
+        "method": "Online portal or email"
+      },
+      "emergency_services": {
+        "required": true,
+        "timeframe": "48 hours before works",
+        "contacts": [
+          "SA Police",
+          "SA Ambulance",
+          "SA Fire"
+        ]
+      },
+      "public_transport": {
+        "required": false,
+        "timeframe": "7 days before",
+        "authority": "Adelaide Metro"
+      },
+      "adjacent_properties": {
+        "required": true,
+        "timeframe": "3 days before",
+        "method": "Letter box drop or door knock"
+      }
+    },
+    "environmental_constraints": {
+      "heritage_areas": [
+        {
+          "area": "Adelaide CBD Heritage Zone",
+          "restrictions": "State Heritage approval may be required",
+          "contact": "Heritage SA"
+        }
+      ],
+      "environmental_zones": [],
+      "tree_protection": false,
+      "noise_restrictions": {
+        "weekday_evening": "6pm - 7am (>5dB above background)",
+        "weekend": "Saturday 1pm - Monday 7am",
+        "public_holidays": "No noisy works"
+      },
+      "dust_management": true
+    },
+    "staging_recommendations": {
+      "recommended_stages": [
+        {
+          "stage": 1,
+          "description": "Single lane closure with traffic control",
+          "duration": "Full project",
+          "traffic_impact": "Moderate delays expected"
+        }
+      ],
+      "rationale": "2-lane road requires single stage with traffic controllers"
+    },
+    "public_facilities": {
+      "schools": [],
+      "hospitals": [],
+      "businesses": [],
+      "special_zones": []
+    },
+    "signage_plan": {
+      "advance_warning_signs": [
+        {
+          "sign_code": "T1-1",
+          "name": "Road Work Ahead",
+          "position": "-90m from workzone start",
+          "placement": "BILATERAL (both sides of road)",
+          "quantity": 2,
+          "mounting_height": "2.0-2.5m (AS 1742.3)",
+          "lateral_offset": "0.5-1.0m from edge of carriageway",
+          "notes": "Must be on both sides for multi-lane roads"
+        },
+        {
+          "sign_code": "T1-2",
+          "name": "Lane Closure Ahead",
+          "position": "-50m from lane closure",
+          "placement": "BILATERAL (both sides of road)",
+          "quantity": 2,
+          "mounting_height": "2.0-2.5m",
+          "lateral_offset": "0.5-1.0m from edge of carriageway"
+        },
+        {
+          "sign_code": "R4-1(40)",
+          "name": "Speed Limit 40",
+          "position": "-70m from workzone",
+          "placement": "BILATERAL (both sides of road)",
+          "quantity": 2,
+          "mounting_height": "2.0-2.5m",
+          "compliance": "Regulatory sign - enforceable by law"
+        }
+      ],
+      "workzone_signs": [
+        {
+          "sign_code": "T1-3",
+          "name": "Work Zone",
+          "position": "At start of workzone",
+          "placement": "BILATERAL",
+          "quantity": 2
+        },
+        {
+          "sign_code": "D5-1",
+          "name": "Traffic Cones 700mm",
+          "position": "Taper and workzone perimeter",
+          "spacing": "5m spacing",
+          "quantity": "Variable based on workzone length",
+          "specification": "700mm high, retroreflective, weighted base"
+        }
+      ],
+      "side_street_signs": [
+        {
+          "intersection_name": "Victoria Square",
+          "type": "crossroad",
+          "requirement": "BILATERAL WARNING on all approaches",
+          "signs": [
+            {
+              "sign_code": "T1-4",
+              "name": "Road Work at Intersection",
+              "placement": "All intersection approaches (4-way or 3-way)",
+              "quantity": 4,
+              "distance_from_intersection": "50-90m on each approach"
+            }
+          ]
+        },
+        {
+          "intersection_name": "Gawler Place",
+          "type": "crossroad",
+          "requirement": "BILATERAL WARNING on all approaches",
+          "signs": [
+            {
+              "sign_code": "T1-4",
+              "name": "Road Work at Intersection",
+              "placement": "All intersection approaches (4-way or 3-way)",
+              "quantity": 4,
+              "distance_from_intersection": "50-90m on each approach"
+            }
+          ]
+        },
+        {
+          "intersection_name": "King William Street",
+          "type": "T-intersection",
+          "requirement": "BILATERAL WARNING on all approaches",
+          "signs": [
+            {
+              "sign_code": "T1-4",
+              "name": "Road Work at Intersection",
+              "placement": "All intersection approaches (4-way or 3-way)",
+              "quantity": 3,
+              "distance_from_intersection": "50-90m on each approach"
+            }
+          ]
+        }
+      ],
+      "end_of_works_signs": [
+        {
+          "sign_code": "G2-4",
+          "name": "End Road Work",
+          "position": "+50m after workzone end",
+          "placement": "BILATERAL (both sides of road)",
+          "quantity": 2,
+          "mounting_height": "2.0-2.5m",
+          "notes": "Indicates return to normal conditions"
+        },
+        {
+          "sign_code": "R4-1(60)",
+          "name": "Speed Limit 60",
+          "position": "+55m after workzone end",
+          "placement": "BILATERAL (both sides of road)",
+          "quantity": 2,
+          "notes": "Reinstates normal speed limit"
+        }
+      ],
+      "bilateral_requirements": {
+        "applies_to": "Multi-lane roads and roads with speed limits >60 km/h",
+        "definition": "Signs must be placed on BOTH sides of the road",
+        "standard": "AS 1742.3 Clause 6.3.2",
+        "total_bilateral_signs": 7,
+        "compliance_note": "All regulatory and warning signs in workzone MUST be bilateral for roads with >1 lane per direction"
+      },
+      "distances_documented": {
+        "speed_limit": "60 km/h",
+        "advance_warning_distance": "90m (AS 1742.3 Table 6.2)",
+        "intermediate_distance": "50m",
+        "taper_length": "105m",
+        "buffer_zone": "30m",
+        "standard_reference": "AS 1742.3:2019 - Manual of uniform traffic control devices, Part 3: Traffic control for works on roads"
+      }
+    },
+    "crash_statistics": {
+      "total_crashes_5yr": 0,
+      "fatal_crashes": 0,
+      "serious_injury_crashes": 0,
+      "minor_injury_crashes": 0,
+      "property_damage_only": 0,
+      "recent_crashes": [],
+      "high_risk_periods": [],
+      "common_crash_types": [],
+      "contributing_factors": [],
+      "data_source": "SA Government Road Crash Data",
+      "blackspot_status": false
+    },
+    "historical_traffic": {
+      "aadt_history": [],
+      "traffic_growth_rate": 0.0,
+      "peak_hour_trends": [
+        {
+          "period": "Morning Peak (7-9am)",
+          "volume_increase": "35-45% above average"
+        },
+        {
+          "period": "Afternoon Peak (3-6pm)",
+          "volume_increase": "40-50% above average"
+        },
+        {
+          "period": "Off-peak",
+          "volume_decrease": "30-40% below average"
+        }
+      ],
+      "seasonal_variations": [
+        {
+          "season": "Summer holidays",
+          "variation": "-15% to -25% (reduced commuter traffic)"
+        },
+        {
+          "season": "School term",
+          "variation": "Baseline (100%)"
+        },
+        {
+          "season": "Public holidays",
+          "variation": "-30% to -50% (minimal traffic)"
+        }
+      ],
+      "heavy_vehicle_trends": [],
+      "previous_traffic_counts": [],
+      "data_period": "Last 5 years",
+      "reliability": "Estimated from regional data"
+    },
+    "location_history": {
+      "area_type": "Residential",
+      "population_density": "Medium",
+      "land_use": [],
+      "nearby_developments": [],
+      "previous_roadworks": [
+        {
+          "year": "2022",
+          "type": "Road resurfacing",
+          "duration": "2 weeks",
+          "impact": "Single lane closure"
+        },
+        {
+          "year": "2020",
+          "type": "Utility works",
+          "duration": "1 week",
+          "impact": "Partial road closure"
+        }
+      ],
+      "future_projects": [],
+      "heritage_status": null,
+      "environmental_factors": [
+        {
+          "factor": "Air Quality",
+          "consideration": "Dust suppression required during earthworks"
+        },
+        {
+          "factor": "Noise Management",
+          "consideration": "Noise monitoring may be required if near sensitive receivers"
+        },
+        {
+          "factor": "Stormwater",
+          "consideration": "Sediment control measures required"
+        }
+      ],
+      "noise_sensitive_areas": false,
+      "school_zones": false,
+      "hospital_zones": false
+    },
+    "current_roadworks": {
+      "current_roadworks": [],
+      "planned_roadworks": [],
+      "nearby_closures": [],
+      "traffic_incidents": [],
+      "conflict_detected": false,
+      "data_source": "Traffic SA - SA Government"
+    },
+    "traffic_signals": {
+      "nearby_signals": [
+        {
+          "location": "Signal at -34.930069, 138.599714",
+          "distance": "196m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924430, 138.599873",
+          "distance": "459m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924537, 138.599552",
+          "distance": "453m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924354, 138.599394",
+          "distance": "476m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924219, 138.599720",
+          "distance": "484m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.925885, 138.597536",
+          "distance": "410m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.925765, 138.597648",
+          "distance": "412m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.925871, 138.597787",
+          "distance": "395m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.925649, 138.599843",
+          "distance": "327m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.925753, 138.599970",
+          "distance": "313m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.925776, 138.599499",
+          "distance": "322m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.925876, 138.599645",
+          "distance": "307m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.925652, 138.601948",
+          "distance": "337m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.925641, 138.602163",
+          "distance": "345m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.925756, 138.602068",
+          "distance": "330m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924234, 138.601828",
+          "distance": "485m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924319, 138.602109",
+          "distance": "482m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.927251, 138.596980",
+          "distance": "367m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.927478, 138.597132",
+          "distance": "345m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.927124, 138.599532",
+          "distance": "186m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.926997, 138.599939",
+          "distance": "181m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.927180, 138.600167",
+          "distance": "155m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.926996, 138.602069",
+          "distance": "209m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.927074, 138.602269",
+          "distance": "214m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.927187, 138.602174",
+          "distance": "198m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.926909, 138.603755",
+          "distance": "330m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.926791, 138.603924",
+          "distance": "350m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.926809, 138.605692",
+          "distance": "492m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928799, 138.595778",
+          "distance": "450m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928885, 138.595895",
+          "distance": "440m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928577, 138.597228",
+          "distance": "317m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928731, 138.597126",
+          "distance": "327m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928807, 138.597379",
+          "distance": "305m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928638, 138.598999",
+          "distance": "156m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928869, 138.599246",
+          "distance": "139m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928390, 138.600731",
+          "distance": "13m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928628, 138.600917",
+          "distance": "24m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928464, 138.602172",
+          "distance": "134m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928578, 138.602404",
+          "distance": "156m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928358, 138.604448",
+          "distance": "342m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928456, 138.604959",
+          "distance": "388m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928120, 138.605987",
+          "distance": "484m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928398, 138.606177",
+          "distance": "499m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928295, 138.605803",
+          "distance": "466m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928521, 138.606020",
+          "distance": "485m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.931525, 138.599927",
+          "distance": "344m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.931399, 138.600240",
+          "distance": "325m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.931501, 138.600407",
+          "distance": "335m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.931623, 138.600090",
+          "distance": "352m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.929905, 138.600277",
+          "distance": "161m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.930147, 138.600323",
+          "distance": "186m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.930272, 138.599995",
+          "distance": "207m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.929948, 138.602801",
+          "distance": "250m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.930014, 138.602994",
+          "distance": "268m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.929835, 138.605914",
+          "distance": "498m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.932719, 138.600357",
+          "distance": "470m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.932869, 138.600032",
+          "distance": "490m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.932940, 138.600544",
+          "distance": "494m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928683, 138.599599",
+          "distance": "102m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924121, 138.601954",
+          "distance": "500m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924414, 138.601974",
+          "distance": "469m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.928584, 138.600303",
+          "distance": "37m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924293, 138.600644",
+          "distance": "468m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.924372, 138.601040",
+          "distance": "460m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.930237, 138.596906",
+          "distance": "396m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.930290, 138.597194",
+          "distance": "376m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.927218, 138.597657",
+          "distance": "312m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.927155, 138.597767",
+          "distance": "306m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.926986, 138.604036",
+          "distance": "348m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.927291, 138.597900",
+          "distance": "288m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.927322, 138.597291",
+          "distance": "337m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        },
+        {
+          "location": "Signal at -34.927356, 138.599631",
+          "distance": "160m",
+          "crossing": "unknown",
+          "direction": "unknown"
+        }
+      ],
+      "signal_coordination_required": true,
+      "signal_timing_contact": "Department for Infrastructure and Transport SA - Traffic Signals Branch",
+      "data_source": "OpenStreetMap + SA Government Traffic Signals"
+    },
+    "parking_restrictions": {
+      "restrictions": [],
+      "loading_zones": [],
+      "clearway_times": [],
+      "permit_required": true,
+      "data_source": "OpenStreetMap + Inferred Council Regulations",
+      "permit_authority": "Local Council"
+    },
+    "school_zones": {
+      "school_zones": [
+        {
+          "name": "University Senior College",
+          "distance": "901m",
+          "type": "primary/secondary"
+        },
+        {
+          "name": "Terry Simpson Studios",
+          "distance": "660m",
+          "type": "primary/secondary"
+        }
+      ],
+      "school_times": [],
+      "enhanced_restrictions": false,
+      "data_source": "OpenStreetMap + SA Education Facilities"
+    },
+    "public_transport_detailed": {
+      "bus_stops": [
+        {
+          "name": "Stop D3 Grote Street - North side",
+          "distance": "230m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop E1 King William Street - East side",
+          "distance": "215m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop F1 King William Street - North East side",
+          "distance": "121m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop F2 King William Street - North East side",
+          "distance": "99m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop G1 Wakefield Street - North side",
+          "distance": "172m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop G2 Victoria Square - South East side",
+          "distance": "147m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop G2 Wakefield Street - North side",
+          "distance": "294m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop T1 Victoria Square - South West side",
+          "distance": "172m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop U1 Wakefield Street - South side",
+          "distance": "94m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop U2 Victoria Square - North West side",
+          "distance": "154m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop V1 King William Street - West side",
+          "distance": "219m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop V2 King William Street - West side",
+          "distance": "283m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop VS3 Victoria Square - East side",
+          "distance": "148m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Stop W Grote Street - South side",
+          "distance": "203m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Unnamed Stop",
+          "distance": "7m",
+          "operator": "Adelaide Metro"
+        }
+      ],
+      "tram_stops": [
+        {
+          "name": "Victoria Square /Tarndanyangga",
+          "distance": "138m",
+          "operator": "Adelaide Metro"
+        },
+        {
+          "name": "Victoria Square /Tarndanyangga",
+          "distance": "132m",
+          "operator": "Adelaide Metro"
+        }
+      ],
+      "train_stations": [],
+      "access_impact": "high",
+      "data_source": "OpenStreetMap + Adelaide Metro",
+      "access_requirements": "Critical public transport corridor. Advance notice and alternative arrangements required."
+    },
+    "utility_infrastructure": {
+      "underground_utilities": [],
+      "overhead_utilities": [],
+      "dial_before_dig_required": true,
+      "utility_contacts": [
+        {
+          "utility": "Dial Before You Dig",
+          "phone": "1100",
+          "service": "All underground utilities",
+          "notice": "3 business days minimum"
+        },
+        {
+          "utility": "SA Water",
+          "phone": "1300 SA WATER (1300 729 283)",
+          "service": "Water and sewer mains",
+          "notice": "5 business days recommended"
+        },
+        {
+          "utility": "SA Power Networks",
+          "phone": "13 12 61",
+          "service": "Electricity distribution",
+          "notice": "5 business days recommended"
+        },
+        {
+          "utility": "Australian Gas Networks",
+          "phone": "1300 001 001",
+          "service": "Gas distribution",
+          "notice": "5 business days recommended"
+        },
+        {
+          "utility": "NBN Co",
+          "phone": "1800 OUR NBN (1800 687 626)",
+          "service": "Telecommunications",
+          "notice": "10 business days recommended"
+        }
+      ],
+      "data_source": "OpenStreetMap + Utility Providers"
+    },
+    "detour_routes": null
+  },
+  "timestamp": "2025-11-03T16:51:21.181622"
+}
