@@ -516,13 +516,14 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Pedestrian Control Checkbox & Comprehensive Auto-Population Integration"
-    - "Signage compliance with bilateral and side street requirements"
+    - "Location Metadata System & DIT Infrastructure Assets Integration" 
+    - "SA Government Datasets (LMS 558 & 1639) Testing"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
   test_all: false
   test_priority: "high_first"
   backend_testing_complete: true
+  sa_datasets_testing_complete: true
 
 agent_communication:
   - agent: "main"
