@@ -9,7 +9,10 @@ from typing import Dict, List, Any
 logger = logging.getLogger(__name__)
 
 async def fetch_osm_road_data(lat: float, lng: float) -> Dict[str, Any]:
-    """Fetch road data from OpenStreetMap Overpass API"""
+    """
+    Fetch road data from OpenStreetMap Overpass API
+    Enhanced with SA Government Roads dataset for better accuracy
+    """
     try:
         overpass_url = "https://overpass-api.de/api/interpreter"
         
@@ -36,7 +39,10 @@ async def fetch_osm_road_data(lat: float, lng: float) -> Dict[str, Any]:
             'surface': 'asphalt',
             'has_footpath': False,
             'has_cycleway': False,
-            'has_parking': False
+            'has_parking': False,
+            'road_classification': 'Local Road',
+            'jurisdiction': 'Local Council',
+            'functional_class': 'Collector'
         }
         
         for element in data.get('elements', []):
@@ -47,7 +53,41 @@ async def fetch_osm_road_data(lat: float, lng: float) -> Dict[str, Any]:
                     road_info['road_name'] = tags['name']
                 
                 if 'highway' in tags:
-                    road_info['highway_type'] = tags['highway']
+                    highway_type = tags['highway']
+                    road_info['highway_type'] = highway_type
+                    
+                    # Enhanced road classification from highway type
+                    if highway_type in ['motorway', 'trunk']:
+                        road_info['road_classification'] = 'National Highway'
+                        road_info['jurisdiction'] = 'Department for Infrastructure and Transport SA'
+                        road_info['functional_class'] = 'Arterial - Principal'
+                        road_info['speed_limit'] = 100
+                        road_info['lanes'] = 4
+                    elif highway_type in ['primary', 'primary_link']:
+                        road_info['road_classification'] = 'State Arterial Road'
+                        road_info['jurisdiction'] = 'Department for Infrastructure and Transport SA'
+                        road_info['functional_class'] = 'Arterial - Major'
+                        road_info['speed_limit'] = 80
+                        road_info['lanes'] = 2
+                    elif highway_type in ['secondary', 'secondary_link']:
+                        road_info['road_classification'] = 'Regional Road'
+                        road_info['jurisdiction'] = 'Department for Infrastructure and Transport SA'
+                        road_info['functional_class'] = 'Arterial - Minor'
+                        road_info['speed_limit'] = 80
+                    elif highway_type in ['tertiary', 'tertiary_link']:
+                        road_info['road_classification'] = 'Urban Arterial'
+                        road_info['jurisdiction'] = 'Local Council'
+                        road_info['functional_class'] = 'Collector'
+                        road_info['speed_limit'] = 60
+                    elif highway_type == 'residential':
+                        road_info['road_classification'] = 'Local Road'
+                        road_info['jurisdiction'] = 'Local Council'
+                        road_info['functional_class'] = 'Local Access'
+                        road_info['speed_limit'] = 50
+                    elif highway_type in ['service', 'track']:
+                        road_info['road_classification'] = 'Service Road'
+                        road_info['functional_class'] = 'Local Access'
+                        road_info['speed_limit'] = 40
                 
                 if 'maxspeed' in tags:
                     try:
@@ -75,6 +115,12 @@ async def fetch_osm_road_data(lat: float, lng: float) -> Dict[str, Any]:
                 
                 break  # Use first matching way
         
+        # Try to enhance with SA Government Roads dataset
+        try:
+            road_info = await enhance_with_sa_roads_data(lat, lng, road_info)
+        except Exception as e:
+            logger.debug(f"Could not enhance with SA Roads dataset: {str(e)}")
+        
         return road_info
         
     except Exception as e:
@@ -87,8 +133,92 @@ async def fetch_osm_road_data(lat: float, lng: float) -> Dict[str, Any]:
             'surface': 'asphalt',
             'has_footpath': False,
             'has_cycleway': False,
-            'has_parking': False
+            'has_parking': False,
+            'road_classification': 'Local Road',
+            'jurisdiction': 'Local Council',
+            'functional_class': 'Collector'
         }
+
+
+async def enhance_with_sa_roads_data(lat: float, lng: float, road_info: Dict) -> Dict[str, Any]:
+    """
+    Enhance road data with SA Government Roads dataset
+    Dataset: data.sa.gov.au - Roads (d7e1aa7b-bb3a-49cb-bab7-5e955e773cc7)
+    Contains: Official road classifications, jurisdictions, functional classes
+    """
+    try:
+        async with httpx.AsyncClient(timeout=20.0) as client:
+            # Try to fetch from SA Government Roads API
+            sa_roads_url = "https://data.sa.gov.au/data/api/3/action/datastore_search"
+            
+            params = {
+                'resource_id': 'd7e1aa7b-bb3a-49cb-bab7-5e955e773cc7',
+                'limit': 50
+            }
+            
+            response = await client.get(sa_roads_url, params=params, timeout=15.0)
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                if data.get('success') and data.get('result', {}).get('records'):
+                    records = data['result']['records']
+                    
+                    # Find nearest road
+                    nearest_road = None
+                    min_distance = float('inf')
+                    
+                    for record in records:
+                        try:
+                            # Try to extract coordinates (format varies)
+                            rec_lat = record.get('latitude') or record.get('lat')
+                            rec_lng = record.get('longitude') or record.get('lng') or record.get('lon')
+                            
+                            if rec_lat and rec_lng:
+                                rec_lat = float(rec_lat)
+                                rec_lng = float(rec_lng)
+                                
+                                distance = calculate_distance(lat, lng, rec_lat, rec_lng)
+                                
+                                if distance < min_distance and distance <= 0.5:  # Within 500m
+                                    min_distance = distance
+                                    nearest_road = record
+                        except (ValueError, TypeError):
+                            continue
+                    
+                    # Enhance road info with SA Government data
+                    if nearest_road:
+                        logger.info(f"Enhanced road data with SA Roads dataset ({min_distance*1000:.0f}m away)")
+                        
+                        # Update with official data
+                        if nearest_road.get('road_name'):
+                            road_info['road_name'] = nearest_road['road_name']
+                        
+                        if nearest_road.get('road_type') or nearest_road.get('classification'):
+                            road_info['road_classification'] = nearest_road.get('road_type') or nearest_road.get('classification')
+                        
+                        if nearest_road.get('jurisdiction') or nearest_road.get('authority'):
+                            road_info['jurisdiction'] = nearest_road.get('jurisdiction') or nearest_road.get('authority')
+                        
+                        if nearest_road.get('functional_class') or nearest_road.get('hierarchy'):
+                            road_info['functional_class'] = nearest_road.get('functional_class') or nearest_road.get('hierarchy')
+                        
+                        if nearest_road.get('speed_limit') or nearest_road.get('maxspeed'):
+                            try:
+                                speed = nearest_road.get('speed_limit') or nearest_road.get('maxspeed')
+                                road_info['speed_limit'] = int(speed)
+                            except:
+                                pass
+                        
+                        # Add data source attribution
+                        road_info['data_source'] = 'SA Government Roads Dataset (Official)'
+                        road_info['data_accuracy'] = f'±{min_distance*1000:.0f}m'
+        
+        return road_info
+        
+    except Exception as e:
+        logger.debug(f"SA Roads dataset enhancement failed: {str(e)}")
+        return road_info
 
 
 
