@@ -2044,6 +2044,107 @@ async def recommend_sa_signs_for_tmp(request: dict):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# ============================================
+# VISUAL TGS WITH SIGN OVERLAYS (NEW)
+# ============================================
+
+from visual_tgs_with_signs import (
+    generate_complete_visual_tgs,
+    tgs_generator
+)
+
+
+@api_router.post("/tgs/generate-visual")
+async def generate_visual_tgs_with_signs(request: dict):
+    """
+    Generate visual TGS with sign images overlaid on satellite imagery
+    Request body:
+    {
+        "center_lat": -34.9285,
+        "center_lng": 138.6007,
+        "placed_devices": [
+            {
+                "code": "T1-1",
+                "name": "Road Work Ahead",
+                "latitude": -34.9285,
+                "longitude": 138.6007,
+                "distance": 100,
+                "side": "left"
+            }
+        ],
+        "include_streetview": true
+    }
+    """
+    try:
+        center_lat = request.get('center_lat')
+        center_lng = request.get('center_lng')
+        placed_devices = request.get('placed_devices', [])
+        include_streetview = request.get('include_streetview', True)
+        
+        if not center_lat or not center_lng:
+            raise HTTPException(status_code=400, detail="center_lat and center_lng are required")
+        
+        # Generate complete visual TGS
+        result = await generate_complete_visual_tgs(
+            center_lat,
+            center_lng,
+            placed_devices,
+            include_streetview
+        )
+        
+        if "error" in result:
+            raise HTTPException(status_code=500, detail=result["error"])
+        
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/tgs/streetview")
+async def get_streetview_for_sign(
+    lat: float,
+    lng: float,
+    heading: int = 0,
+    pitch: int = 0,
+    fov: int = 90
+):
+    """
+    Get Street View image for a specific sign location
+    Query params:
+    - lat: Latitude
+    - lng: Longitude
+    - heading: Camera heading (0-360)
+    - pitch: Camera pitch (-90 to 90)
+    - fov: Field of view (1-120)
+    """
+    try:
+        sign_positions = [{
+            'latitude': lat,
+            'longitude': lng,
+            'device_code': 'SIGN',
+            'device_name': 'Traffic Sign',
+            'heading': heading
+        }]
+        
+        result = await tgs_generator.generate_streetview_with_signs(
+            sign_positions,
+            heading=heading,
+            pitch=pitch,
+            fov=fov
+        )
+        
+        if "error" in result:
+            raise HTTPException(status_code=500, detail=result["error"])
+        
+        return result
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
     """
     Get recommended devices based on work scenario
     Request body example:
