@@ -1,0 +1,18 @@
+[
+  {
+    "dataset_name": "Adelaide Public Transport Stop Data",
+    "status": "FAILED",
+    "resources_found": 195,
+    "data": null,
+    "error": "HTTP 404",
+    "timestamp": "2025-11-03T19:12:20.770203"
+  },
+  {
+    "dataset_name": "Adelaide Metro Real-Time",
+    "status": "FAILED",
+    "resources_found": 70,
+    "data": null,
+    "error": "HTTP 404",
+    "timestamp": "2025-11-03T19:12:23.154656"
+  }
+]
