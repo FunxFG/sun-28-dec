@@ -2442,6 +2442,104 @@ export default function PlanEditor({ user, onLogout }) {
 
 
 
+
+
+            {comprehensiveData.current_roadworks && (comprehensiveData.current_roadworks.current_roadworks?.length > 0 || comprehensiveData.current_roadworks.planned_roadworks?.length > 0) && (
+              <Card className="border-l-4 border-l-amber-500">
+                <CardHeader>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle className="text-amber-700">🚧 Current & Planned Roadworks (Traffic SA)</CardTitle>
+                      <CardDescription>Existing roadworks within 5km radius</CardDescription>
+                    </div>
+                    {comprehensiveData.current_roadworks.conflict_detected && (
+                      <span className="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold animate-pulse">
+                        ⚠️ CONFLICT
+                      </span>
+                    )}
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Conflict Warning */}
+                  {comprehensiveData.current_roadworks.conflict_detected && (
+                    <div className="bg-red-50 border-2 border-red-500 p-3 rounded-lg">
+                      <div className="font-bold text-red-900 mb-1">⚠️ COORDINATION REQUIRED</div>
+                      <div className="text-sm text-red-800">{comprehensiveData.current_roadworks.conflict_warning}</div>
+                    </div>
+                  )}
+
+                  {/* Current Roadworks */}
+                  {comprehensiveData.current_roadworks.current_roadworks?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm flex items-center gap-2">
+                        <span className="bg-orange-500 text-white px-2 py-1 rounded text-xs">ACTIVE</span>
+                        Current Roadworks
+                      </h4>
+                      <div className="space-y-2">
+                        {comprehensiveData.current_roadworks.current_roadworks.map((work, idx) => (
+                          <div key={idx} className="bg-orange-50 border border-orange-200 p-3 rounded">
+                            <div className="flex justify-between items-start mb-2">
+                              <div className="font-medium text-orange-900">{work.location}</div>
+                              <span className="text-xs text-gray-600">{work.distance}</span>
+                            </div>
+                            <div className="text-sm text-gray-700">{work.description}</div>
+                            <div className="flex gap-4 mt-2 text-xs text-gray-600">
+                              {work.start_date && <div>Start: {work.start_date}</div>}
+                              {work.end_date && <div>End: {work.end_date}</div>}
+                            </div>
+                            {work.impact && (
+                              <div className="mt-2 text-xs">
+                                <span className="font-semibold">Impact:</span> {work.impact}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Planned Roadworks */}
+                  {comprehensiveData.current_roadworks.planned_roadworks?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm flex items-center gap-2">
+                        <span className="bg-blue-500 text-white px-2 py-1 rounded text-xs">PLANNED</span>
+                        Future Roadworks
+                      </h4>
+                      <div className="space-y-2">
+                        {comprehensiveData.current_roadworks.planned_roadworks.map((work, idx) => (
+                          <div key={idx} className="bg-blue-50 border border-blue-200 p-3 rounded">
+                            <div className="flex justify-between items-start mb-2">
+                              <div className="font-medium text-blue-900">{work.location}</div>
+                              <span className="text-xs text-gray-600">{work.distance}</span>
+                            </div>
+                            <div className="text-sm text-gray-700">{work.description}</div>
+                            <div className="flex gap-4 mt-2 text-xs text-gray-600">
+                              {work.start_date && <div>Planned: {work.start_date}</div>}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Nearby Closures */}
+                  {comprehensiveData.current_roadworks.nearby_closures?.length > 0 && (
+                    <div className="bg-red-50 border border-red-300 p-3 rounded">
+                      <h4 className="font-semibold mb-2 text-sm text-red-900">🚫 Road Closures Nearby</h4>
+                      <div className="text-xs text-red-800">
+                        {comprehensiveData.current_roadworks.nearby_closures.length} closure(s) detected within 5km.
+                        Detour routes may be affected.
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="text-xs text-gray-500 italic pt-2 border-t">
+                    Data source: {comprehensiveData.current_roadworks.data_source}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
           {/* Right Panel - Map and Devices */}
           <div className="space-y-6">
             {/* Map */}
