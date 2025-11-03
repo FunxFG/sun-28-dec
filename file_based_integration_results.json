@@ -1,0 +1,30 @@
+{
+  "signalised_intersections": {
+    "dataset": "SA Signalised Intersections and Crossings",
+    "status": "FAILED",
+    "records": "[0 records - not saved]",
+    "total_records": 0,
+    "error": "HTTP 404"
+  },
+  "pedestrian_crossings": {
+    "dataset": "Pedestrian Crossings",
+    "status": "FAILED",
+    "records": "[0 records - not saved]",
+    "total_records": 0,
+    "error": "HTTP 404"
+  },
+  "parking_zones": {
+    "dataset": "On Street Parking Zones",
+    "status": "FAILED",
+    "records": "[0 records - not saved]",
+    "total_records": 0,
+    "error": "HTTP 404"
+  },
+  "bike_paths": {
+    "dataset": "Bike and Pedestrian Paths",
+    "status": "FAILED",
+    "records": "[0 records - not saved]",
+    "total_records": 0,
+    "error": "HTTP 404"
+  }
+}
