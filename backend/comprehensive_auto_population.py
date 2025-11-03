@@ -537,7 +537,8 @@ async def get_comprehensive_auto_population(lat: float, lng: float, start_addres
         'signage_plan': {},  # NEW: Detailed signage plan with distances
         'crash_statistics': {},  # NEW: Accident data
         'historical_traffic': {},  # NEW: Historical traffic patterns
-        'location_history': {}  # NEW: Location demographics and history
+        'location_history': {},  # NEW: Location demographics and history
+        'current_roadworks': {}  # NEW: Traffic SA current & planned roadworks
     }
     
     try:
