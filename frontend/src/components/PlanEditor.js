@@ -884,10 +884,15 @@ export default function PlanEditor({ user, onLogout }) {
           public_facilities: comprehensiveDataResponse.public_facilities || null,
           governing_body_details: comprehensiveDataResponse.governing_body_details || null,
           staging_recommendations: comprehensiveDataResponse.staging_recommendations || null,
-          crash_statistics: comprehensiveDataResponse.crash_statistics || null,  // NEW
-          historical_traffic: comprehensiveDataResponse.historical_traffic || null,  // NEW
-          location_history: comprehensiveDataResponse.location_history || null,  // NEW
-          current_roadworks: comprehensiveDataResponse.current_roadworks || null  // NEW - Traffic SA
+          crash_statistics: comprehensiveDataResponse.crash_statistics || null,
+          historical_traffic: comprehensiveDataResponse.historical_traffic || null,
+          location_history: comprehensiveDataResponse.location_history || null,
+          current_roadworks: comprehensiveDataResponse.current_roadworks || null,
+          traffic_signals: comprehensiveDataResponse.traffic_signals || null,  // NEW
+          parking_restrictions: comprehensiveDataResponse.parking_restrictions || null,  // NEW
+          school_zones: comprehensiveDataResponse.school_zones || null,  // NEW
+          public_transport_detailed: comprehensiveDataResponse.public_transport_detailed || null,  // NEW
+          utility_infrastructure: comprehensiveDataResponse.utility_infrastructure || null  // NEW
         });
       } catch (error) {
         console.log('Comprehensive auto-populate not available, continuing with basic data');
