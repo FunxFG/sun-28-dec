@@ -133,7 +133,8 @@ export default function PlanEditor({ user, onLogout }) {
     staging_recommendations: null,
     crash_statistics: null,  // NEW
     historical_traffic: null,  // NEW
-    location_history: null  // NEW
+    location_history: null,  // NEW
+    current_roadworks: null  // NEW - Traffic SA data
   });
 
   const [formData, setFormData] = useState({
