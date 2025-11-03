@@ -2874,6 +2874,145 @@ export default function PlanEditor({ user, onLogout }) {
               </Card>
             )}
 
+            {/* NEW: Location Metadata System Card */}
+            {comprehensiveData.location_metadata_system && comprehensiveData.location_metadata_system.road_classification_official && (
+              <Card className="border-l-4 border-l-blue-600">
+                <CardHeader>
+                  <CardTitle className="text-blue-700">📍 Location Metadata System (LMS)</CardTitle>
+                  <CardDescription>Official SA Government Road Classification</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="bg-blue-50 border border-blue-300 p-3 rounded-lg">
+                    <div className="font-bold text-blue-900 mb-2">Official Road Data - DIT/DEW</div>
+                    <div className="text-sm space-y-1">
+                      <div><span className="font-semibold">Road Name:</span> {comprehensiveData.location_metadata_system.road_name}</div>
+                      <div><span className="font-semibold">Official Classification:</span> {comprehensiveData.location_metadata_system.road_classification_official}</div>
+                      <div><span className="font-semibold">Functional Hierarchy:</span> {comprehensiveData.location_metadata_system.functional_hierarchy}</div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-white border border-gray-200 p-3 rounded">
+                      <div className="text-xs text-gray-600 mb-1">Maintenance Authority</div>
+                      <div className="font-semibold text-sm">{comprehensiveData.location_metadata_system.maintenance_authority}</div>
+                    </div>
+                    <div className="bg-white border border-gray-200 p-3 rounded">
+                      <div className="text-xs text-gray-600 mb-1">Speed Limit (Official)</div>
+                      <div className="font-semibold text-sm">{comprehensiveData.location_metadata_system.speed_limit_official}</div>
+                    </div>
+                    <div className="bg-white border border-gray-200 p-3 rounded">
+                      <div className="text-xs text-gray-600 mb-1">CRRS Code</div>
+                      <div className="font-semibold text-sm">{comprehensiveData.location_metadata_system.crrs_code}</div>
+                    </div>
+                    <div className="bg-white border border-gray-200 p-3 rounded">
+                      <div className="text-xs text-gray-600 mb-1">Road Status</div>
+                      <div className="font-semibold text-sm">{comprehensiveData.location_metadata_system.sealed_status}</div>
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 border border-gray-200 p-3 rounded">
+                    <div className="text-xs font-semibold mb-2">Austroads Classification</div>
+                    <div className="space-y-1 text-sm">
+                      <div><span className="text-gray-600">Class Code:</span> {comprehensiveData.location_metadata_system.austroads_class_code}</div>
+                      <div><span className="text-gray-600">Category:</span> {comprehensiveData.location_metadata_system.road_category_code}</div>
+                    </div>
+                  </div>
+
+                  <div className="bg-indigo-50 border border-indigo-200 p-2 rounded text-xs">
+                    <div className="font-semibold mb-1">LMS Dataset References:</div>
+                    {comprehensiveData.location_metadata_system.dataset_references?.map((ref, idx) => (
+                      <div key={idx} className="text-gray-700">• {ref}</div>
+                    ))}
+                  </div>
+
+                  <Button
+                    onClick={() => downloadJSON(comprehensiveData.location_metadata_system, 'location_metadata_system.json')}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download LMS Data
+                  </Button>
+
+                  <div className="text-xs text-gray-500 italic pt-2 border-t">
+                    Data source: {comprehensiveData.location_metadata_system.data_source}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* NEW: DIT Infrastructure Assets Card */}
+            {comprehensiveData.dit_infrastructure_assets && (
+              <Card className="border-l-4 border-l-teal-500">
+                <CardHeader>
+                  <CardTitle className="text-teal-700">🛣️ DIT Infrastructure Assets</CardTitle>
+                  <CardDescription>Road condition and asset management</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {comprehensiveData.dit_infrastructure_assets.road_condition && (
+                    <div className={`border p-3 rounded ${
+                      comprehensiveData.dit_infrastructure_assets.road_condition === 'Good' 
+                        ? 'bg-green-50 border-green-300' 
+                        : comprehensiveData.dit_infrastructure_assets.road_condition === 'Fair'
+                        ? 'bg-yellow-50 border-yellow-300'
+                        : 'bg-orange-50 border-orange-300'
+                    }`}>
+                      <div className="font-semibold mb-1">Road Condition Assessment</div>
+                      <div className="text-sm">
+                        Condition: <span className="font-bold">{comprehensiveData.dit_infrastructure_assets.road_condition}</span>
+                      </div>
+                      {comprehensiveData.dit_infrastructure_assets.pavement_type && (
+                        <div className="text-sm">
+                          Pavement: {comprehensiveData.dit_infrastructure_assets.pavement_type}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {comprehensiveData.dit_infrastructure_assets.asset_inventory?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">Asset Inventory</h4>
+                      <div className="space-y-2">
+                        {comprehensiveData.dit_infrastructure_assets.asset_inventory.map((asset, idx) => (
+                          <div key={idx} className="bg-gray-50 border border-gray-200 p-2 rounded">
+                            <div className="font-medium text-sm">{asset.asset_type}</div>
+                            <div className="text-xs text-gray-600">{asset.details}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {comprehensiveData.dit_infrastructure_assets.maintenance_schedule && (
+                    <div className="bg-teal-50 border border-teal-200 p-3 rounded">
+                      <div className="font-semibold mb-2 text-sm">Maintenance Schedule</div>
+                      <div className="space-y-1 text-xs">
+                        <div><span className="text-gray-600">Frequency:</span> {comprehensiveData.dit_infrastructure_assets.maintenance_schedule.inspection_frequency}</div>
+                        <div><span className="text-gray-600">Type:</span> {comprehensiveData.dit_infrastructure_assets.maintenance_schedule.maintenance_type}</div>
+                        <div><span className="text-gray-600">Contact:</span> {comprehensiveData.dit_infrastructure_assets.maintenance_schedule.contact}</div>
+                        <div><span className="text-gray-600">Phone:</span> {comprehensiveData.dit_infrastructure_assets.maintenance_schedule.phone}</div>
+                      </div>
+                    </div>
+                  )}
+
+                  <Button
+                    onClick={() => downloadJSON(comprehensiveData.dit_infrastructure_assets, 'dit_infrastructure_assets.json')}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download DIT Assets Data
+                  </Button>
+
+                  <div className="text-xs text-gray-500 italic pt-2 border-t">
+                    Data source: {comprehensiveData.dit_infrastructure_assets.data_source}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
           {/* Right Panel - Map and Devices */}
           <div className="space-y-6">
             {/* Map */}
