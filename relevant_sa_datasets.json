@@ -1,0 +1,527 @@
+[
+  {
+    "keyword": "road",
+    "title": "Adelaide City Council Greenhouse Gas Inventory",
+    "description": "The compilation of Australia\u00e2\u0080\u0099s emissions data \u00e2\u0080\u0094 called the National Greenhouse Gas Inventory \u00e2\u0080\u0094 is undertaken centrally by the Department of the ",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "road",
+    "title": "AdelaideFree Wi-Fi Access Point Locations",
+    "description": "Latitude and longitude of access points broadcasting the AdelaideFree SSID (service set identifier). This includes a BSSID (basic service set identifi",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "road",
+    "title": "Agriculture Residues",
+    "description": "ABS released data contains final estimates for data items collected in the 2014\u00e2\u0080\u009315 Rural Environment and Agricultural Commodities Survey (REACS). Th",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "traffic",
+    "title": "Bluetooth Detection Sites",
+    "description": "This dataset defines the location of all Bluetooth traffic detection sites.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "traffic",
+    "title": "Mount Barker District Council Roads",
+    "description": "Displays the centreline of all State and Local Government trafficable roads within Mount Barker District Council. Includes numerous attributes.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "traffic",
+    "title": "Traffic volumes on top 40 road sections in SA",
+    "description": "A ranking of the top 40 road sections based on the average daily two way traffic count.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "transport",
+    "title": "2019-20 Council Enforcement Actions - Food Transporters",
+    "description": "This dataset provides information on the number and types of food transport businesses, and the numbers of inspections and enforcement actions of food",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "transport",
+    "title": "2020-21 Enforcement Actions - Councils - Food Transporter Sector",
+    "description": "Number of enforcement actions undertaken by councils' environmental health officers  for food businesses in the food transport sector e.g. food distri",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "transport",
+    "title": "2022-23 Enforcement Actions - Council - Food Transporter Sector",
+    "description": "2022-23 Enforcement Actions - Council - Food Transporter Sector",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "infrastructure",
+    "title": "Bike Cordon Counts - Super Tuesday",
+    "description": "The Super Tuesday Bike Count is Australia's biggest visual bike count and originated in Melbourne in 2007. The count takes place from 7am to 9am on th",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "infrastructure",
+    "title": "Building Height Limits",
+    "description": "__IMPORTANT NOTE:__ This dataset is based on the _Development Act 1993_ zones and is now superseded by the Building Height datasets (found in [Plannin",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "infrastructure",
+    "title": "Bushfire Protection Areas",
+    "description": "__IMPORTANT NOTE:__ The Bushfire Protection Areas falls under the _Development Act 1993_ and has been superseded by the Bushfire Overlays (found in [P",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "crash",
+    "title": "Road Crash Data",
+    "description": "Details of reported road crashes and casualties in South Australia.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "crash",
+    "title": "Road Crash Locations in SA",
+    "description": "Sites of Road Crashes in South Australia.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "accident",
+    "title": "Social Health Atlas of Australia: Compensable Injury in South Australia",
+    "description": "A Social Health Atlas of Compensable Injury in South Australia was commissioned by TRACsa with funding from the Motor Accident Commission and WorkCove",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "parking",
+    "title": "City of Adelaide Census of Land Use and Employment",
+    "description": "Provides a statistical snapshot of the City\u00e2\u0080\u0099s employment by industry and location.\r\n\r\nThe census also captures parking and venue capacities however ",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "parking",
+    "title": "Bluebays Accessible Car Parks",
+    "description": "The State Government has developed a free mobile phone app to help people with disability share and locate accessible parking spaces around South Aust",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "parking",
+    "title": "Customer Interaction Volumes",
+    "description": "The Interaction Volumes are determined from our Contact Centre Telephony application - Customer Interaction Centre (CIC). CIC handles and routes all c",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "speed",
+    "title": "Torrens Lake Meterological Data",
+    "description": "ACC have 3 monitoring stations in the Torrens Lake located at the Weir, beneath the Adelaide University footbridge and beneath the Adelaide Zoo footbr",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "speed",
+    "title": "Travel Speed in Metropolitan Adelaide",
+    "description": "Travel time surveys are conducted annually on ten metropolitan Adelaide arterial road routes using the \u00e2\u0080\u0098floating car\u00e2\u0080\u0099 technique. They are conducte",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "speed",
+    "title": "Travel time performance indicators",
+    "description": "Travel time surveys are conducted annually on ten metropolitan Adelaide arterial road routes using the \u00e2\u0080\u0098floating car\u00e2\u0080\u0099 technique. They are conducte",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "signal",
+    "title": "Luminaires by Tariff",
+    "description": "Number of luminaires by tariff at signalised intersections",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "signal",
+    "title": "Regional South Australia 4G Signal Strengths",
+    "description": "List of mobile signal strengths in select Regional South Australian locations, measured by TAFE SA during field tests in October and November 2015.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "signal",
+    "title": "South Australian Signalised Intersections and Crossings",
+    "description": "Number of Individual Lamps at Signalised Intersections and Crossings",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "pedestrian",
+    "title": "Bike and Pedestrian Paths",
+    "description": "Displays the bicycle and pedestrian paths located throughout the Adelaide Park Lands surrounding the city.\r\n\r\nInformation provided includes the path t",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "pedestrian",
+    "title": "Bollards",
+    "description": "Provides locations of all the bollards that exist within the Adelaide City Council area.\r\n\r\nBollards are the posts in the ground that stop cars from d",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "pedestrian",
+    "title": "Bridges in the City of Port Adelaide Enfield",
+    "description": "Bridges in the City of Port Adelaide Enfield that the Council is responsible for the maintenance of.  The majority of these bridges are structures for",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "cycling",
+    "title": "Cycling",
+    "description": "South Australian residents riding a bicycle in a typical week. ",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "cycling",
+    "title": "Our Environment",
+    "description": "Statistical information about waste and recycling, water consumption and solar installations in Onkaparinga",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "cycling",
+    "title": "Recycling Collection Areas",
+    "description": "Recycling Collection areas in the City of Port Adelaide Enfield containing polygons that define each area of recycling collection, sorted into day of ",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "safety",
+    "title": "2019-20 Council Enforcement Actions - for businesses with Food Safety Programs",
+    "description": "This dataset provides information on the types of non-compliances and number of associated enforcement actions undertaken in the 2019-20 financial yea",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "safety",
+    "title": "2019-20 Enquiries Actioned by the Food & Controlled Drugs Branch, SA Health",
+    "description": "This dataset states the types of enquiries, complaints, referrals, incident management and food safety resources requests that were actioned by the Fo",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "safety",
+    "title": "2019-20 Number of councils charging food business audit fees",
+    "description": "This dataset states the number of councils charging fees for conducting food safety audits.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "construction",
+    "title": "Bushfire Protection Areas",
+    "description": "__IMPORTANT NOTE:__ The Bushfire Protection Areas falls under the _Development Act 1993_ and has been superseded by the Bushfire Overlays (found in [P",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "construction",
+    "title": "Development Applications with Planning Zones",
+    "description": "The Development Act requires that any construction, alteration, addition to or demolition of a building or structure, a change in that current use of ",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "construction",
+    "title": "Regional profile Adelaide Hills",
+    "description": "Regional profile tables containing gross regional product and output, employment, household income and expenditure, and trade.\r\nThe tables are estimat",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "permit",
+    "title": "Bluebays Accessible Car Parks",
+    "description": "The State Government has developed a free mobile phone app to help people with disability share and locate accessible parking spaces around South Aust",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "permit",
+    "title": "Building Height Limits",
+    "description": "__IMPORTANT NOTE:__ This dataset is based on the _Development Act 1993_ zones and is now superseded by the Building Height datasets (found in [Plannin",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "permit",
+    "title": "Disability Parking Permits by Postcode",
+    "description": "The number of disability parking permits issued by postcode\r\n\r\nWhen communicating with the Department about this dataset, please reference TRLB06.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "closure",
+    "title": "2022-2023 SA Ambulance Service - Public Interest Disclosure",
+    "description": "Data from SA Ambulance Service on Public Interest Disclosure information during 2022-2023 financial year.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "closure",
+    "title": "Annual Report 2014-15",
+    "description": "Annual Report including: Consultants disclosure, Contractors disclosure, Risk management, Fraud Detected, Whistle-blowers disclosure, Public Complains",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "closure",
+    "title": "Annual Report 2015-16",
+    "description": "Annual Report including: Consultants disclosure, Contractors disclosure, Risk management, Fraud Detected, Whistle-blowers disclosure, Public Complains",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "detour",
+    "title": "Roadworks, Incidents, Road Closures and Detours Real-time Information",
+    "description": "This web service provides information about road works and incidents that are currently active in the metropolitan Adelaide area. It describes the loc",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "bus",
+    "title": "2019-20 Council Enforcement Actions - Food Retailers",
+    "description": "This dataset provides information on the number and types of food retailers, and the numbers of inspections and enforcement actions of food those reta",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "bus",
+    "title": "2019-20 Council Enforcement Actions - Food Service",
+    "description": "This dataset provides information on the number and types of food service businesses, and the numbers of inspections and enforcement actions of food t",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "bus",
+    "title": "2019-20 Council Enforcement Actions - Food Transporters",
+    "description": "This dataset provides information on the number and types of food transport businesses, and the numbers of inspections and enforcement actions of food",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "tram",
+    "title": "Adelaide Metro Bus, Train and Tram Complaints per 100k boardings",
+    "description": "The number of bus, train and tram specific complaints received each quarter per 100,000 boardings.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "tram",
+    "title": "Adelaide Metro Real-Time Passenger Information",
+    "description": "\u00e2\u0080\u0098This link contains Stop Specific Real-Time information for buses, trains and trams for the Adelaide metro network. Real-Time is a free, convenient ",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "tram",
+    "title": "Adelaide Public Transport Stop Data",
+    "description": "The dataset contains public transport stop data for buses, trains and trams in shapefile, geojson and kml format.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "train",
+    "title": "Adelaide Metro Bus, Train and Tram Complaints per 100k boardings",
+    "description": "The number of bus, train and tram specific complaints received each quarter per 100,000 boardings.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "train",
+    "title": "Adelaide Metro Real-Time Passenger Information",
+    "description": "\u00e2\u0080\u0098This link contains Stop Specific Real-Time information for buses, trains and trams for the Adelaide metro network. Real-Time is a free, convenient ",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "train",
+    "title": "Adelaide Public Transport Stop Data",
+    "description": "The dataset contains public transport stop data for buses, trains and trams in shapefile, geojson and kml format.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "highway",
+    "title": "Road Route Numbers (Trail Blazer)",
+    "description": "Location of selected metropolitan and rural roads and highways identified to provide information to tourists and other visitors to assist lead them to",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "street",
+    "title": "Adelaide plan 40 feet to 1 inch, fire insurance maps, 1911-1914",
+    "description": "Set of detailed fire insurance maps from the State Library of South Australia\u00e2\u0080\u0099s map collections. The map set covers part of the City of Adelaide, So",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "street",
+    "title": "Burnside Street Trees",
+    "description": "The details and locations of the 38,000 street trees in the City of Burnside council.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "street",
+    "title": "City of Prospect Street Tree Species",
+    "description": "List of the street tree species in City of Prospect, containing detail about location.\r\n",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "intersection",
+    "title": "Emergency Location Markers",
+    "description": "Data layer includes emergency location markers (point locations) within DEW parks. Each emergency location marker (ELM) carries an alpha numeric code ",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "intersection",
+    "title": "Luminaires by Tariff",
+    "description": "Number of luminaires by tariff at signalised intersections",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "intersection",
+    "title": "Pedestrian Crossings",
+    "description": "South Australian intersections pedestrian crossing locations and information.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "bridge",
+    "title": "Bridges and Culverts",
+    "description": "Provides geographic location and attribute data for all Bridges and Culverts assets within the Adelaide City Council area\r\n",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "bridge",
+    "title": "Bridges in the City of Port Adelaide Enfield",
+    "description": "Bridges in the City of Port Adelaide Enfield that the Council is responsible for the maintenance of.  The majority of these bridges are structures for",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "bridge",
+    "title": "Murray Bridge Photographs",
+    "description": "Selected images (54) from the State Library of South Australia collections of Murray Bridge.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "maintenance",
+    "title": "Bridges in the City of Port Adelaide Enfield",
+    "description": "Bridges in the City of Port Adelaide Enfield that the Council is responsible for the maintenance of.  The majority of these bridges are structures for",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "maintenance",
+    "title": "Conservation Reserve Boundaries",
+    "description": "These are the boundaries of land dedicated to conservation within South Australia. These areas protect both the fauna and flora species and are a majo",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "maintenance",
+    "title": "Conservation Reserve Parcels",
+    "description": "These are the DCDB Parcels dedicated to conservation within South Australia. These areas protect both the fauna and flora species and are a major 'bio",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "asset",
+    "title": "Annual Report",
+    "description": "Data providing a comparison of operations.  Includes key metrics relating to the statewide use of water and wastewater services, assets, consumption r",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "asset",
+    "title": "Bridges and Culverts",
+    "description": "Provides geographic location and attribute data for all Bridges and Culverts assets within the Adelaide City Council area\r\n",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "asset",
+    "title": "Budget 2015-16 Tables and Data",
+    "description": "The 2015-16 Budget is now available. \r\n\r\nThis dataset is a collection of data sources from the 2015-16 State Budget, specifically Budget Statements.\r\n",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "pavement",
+    "title": "Streets in City of Port Adelaide Enfield",
+    "description": "Polygon dataset representing the street pavement in the City of Port Adelaide Enfield.  Streets are divided into segments of street blocks.\r\nData avai",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "location",
+    "title": "City of Adelaide Census of Land Use and Employment",
+    "description": "Provides a statistical snapshot of the City\u00e2\u0080\u0099s employment by industry and location.\r\n\r\nThe census also captures parking and venue capacities however ",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "location",
+    "title": "Adelaide City Living Market Research",
+    "description": "With population growth in the Adelaide city centre a priority for both the Government of South Australia and the City of Adelaide, a joint research st",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "location",
+    "title": "AdelaideFree Wi-Fi Access Point Locations",
+    "description": "Latitude and longitude of access points broadcasting the AdelaideFree SSID (service set identifier). This includes a BSSID (basic service set identifi",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "coordinates",
+    "title": "Marine Park Network Coordinates",
+    "description": "This dataset identifies the longitude and latitude of the South Australian Marine Park outer boundaries at different locations within the state.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "coordinates",
+    "title": "Marine Park Zoning Coordinates",
+    "description": "This dataset identifies the coordinates in Degrees Decimal Minutes (DDM) of the South Australian Marine Park zoning boundaries.",
+    "organization": "N/A",
+    "tags": "N/A"
+  },
+  {
+    "keyword": "coordinates",
+    "title": "National Address Locator Web Service  (Pilot GovHack 2017) (Archived Oct 2017)",
+    "description": "The service validates addresses and returns the standardised address, their locations (X,Y coordinates) and match score.  These coordinates can be use",
+    "organization": "N/A",
+    "tags": "N/A"
+  }
+]
