@@ -125,28 +125,7 @@
       "road_condition": "Good",
       "pavement_type": "Asphalt",
       "last_maintenance": null,
-      "asset_inventory": [
-        {
-          "asset_type": "Pavement",
-          "details": "2 lanes, standard width, asphalt surface",
-          "condition": "Good"
-        },
-        {
-          "asset_type": "Pavement",
-          "details": "2 lanes, standard width, asphalt surface",
-          "condition": "Good"
-        },
-        {
-          "asset_type": "Pavement",
-          "details": "2 lanes, standard width, asphalt surface",
-          "condition": "Good"
-        },
-        {
-          "asset_type": "Pavement",
-          "details": "2 lanes, standard width, asphalt surface",
-          "condition": "Good"
-        }
-      ],
+      "asset_inventory": [],
       "maintenance_schedule": {
         "inspection_frequency": "Annual",
         "maintenance_type": "Routine",
@@ -229,6 +208,12 @@
         }
       ],
       "access_requirements": [
+        {
+          "facility": "Schools",
+          "requirement": "Maintain safe pedestrian access during school hours",
+          "peak_times": "8:00-9:00am, 3:00-4:00pm",
+          "special_consideration": "Additional supervision may be required during peak times"
+        },
         {
           "compliance": "DDA (Disability Discrimination Act)",
           "requirements": [
@@ -346,10 +331,27 @@
       "rationale": "2-lane road requires single stage with traffic controllers"
     },
     "public_facilities": {
-      "schools": [],
+      "schools": [
+        {
+          "name": "Our Lady of the Visitation Catholic School",
+          "notification_required": true,
+          "peak_times": "8:00-9:00am, 3:00-4:00pm"
+        },
+        {
+          "name": "Ocean View College",
+          "notification_required": true,
+          "peak_times": "8:00-9:00am, 3:00-4:00pm"
+        }
+      ],
       "hospitals": [],
       "businesses": [],
-      "special_zones": []
+      "special_zones": [
+        {
+          "type": "School Zone",
+          "restrictions": "Avoid peak drop-off/pick-up times",
+          "additional_signage": "Children Crossing signs may be required"
+        }
+      ]
     },
     "signage_plan": {
       "advance_warning_signs": [
@@ -487,7 +489,10 @@
     "location_history": {
       "area_type": "Residential",
       "population_density": "Medium",
-      "land_use": [],
+      "land_use": [
+        "grass",
+        "residential"
+      ],
       "nearby_developments": [],
       "previous_roadworks": [
         {
@@ -546,13 +551,7 @@
       "permit_authority": "Local Council"
     },
     "school_zones": {
-      "school_zones": [
-        {
-          "name": "Adelaide West Special Education Centre",
-          "distance": "538m",
-          "type": "primary/secondary"
-        }
-      ],
+      "school_zones": [],
       "school_times": [],
       "enhanced_restrictions": false,
       "data_source": "OpenStreetMap + SA Education Facilities"
@@ -593,61 +592,8 @@
       "access_requirements": "Critical public transport corridor. Advance notice and alternative arrangements required."
     },
     "utility_infrastructure": {
-      "underground_utilities": [
-        {
-          "type": "Water Mains",
-          "provider": "SA Water",
-          "depth": "Typically 1.0m - 2.0m",
-          "protection_required": "Yes"
-        },
-        {
-          "type": "Sewer Mains",
-          "provider": "SA Water",
-          "depth": "Typically 1.5m - 3.0m",
-          "protection_required": "Yes"
-        },
-        {
-          "type": "Gas Mains",
-          "provider": "Australian Gas Networks",
-          "depth": "Typically 0.6m - 1.2m",
-          "protection_required": "Critical"
-        },
-        {
-          "type": "Electricity Cables",
-          "provider": "SA Power Networks",
-          "depth": "Typically 0.6m - 1.0m",
-          "protection_required": "Critical"
-        },
-        {
-          "type": "Telecommunications",
-          "provider": "Multiple (NBN, Telstra, etc.)",
-          "depth": "Typically 0.5m - 1.0m",
-          "protection_required": "Yes"
-        }
-      ],
-      "overhead_utilities": [
-        {
-          "type": "Power Pole",
-          "operator": "SA Power Networks",
-          "clearance_required": "1.0m minimum"
-        },
-        {
-          "type": "Power Pole",
-          "operator": "SA Power Networks",
-          "clearance_required": "1.0m minimum"
-        },
-        {
-          "type": "Power Pole",
-          "operator": "SA Power Networks",
-          "clearance_required": "1.0m minimum"
-        },
-        {
-          "type": "Power Line",
-          "voltage": "66000",
-          "operator": "SA Power Networks",
-          "clearance_required": true
-        }
-      ],
+      "underground_utilities": [],
+      "overhead_utilities": [],
       "dial_before_dig_required": true,
       "utility_contacts": [
         {
@@ -684,5 +630,5 @@
       "data_source": "OpenStreetMap + Utility Providers"
     }
   },
-  "timestamp": "2025-11-03T16:52:12.557872"
+  "timestamp": "2025-11-03T16:54:06.559834"
 }
