@@ -345,7 +345,7 @@ async def enhance_with_sa_roads_data(lat: float, lng: float, road_info: Dict) ->
     """
     Enhance road data with SA Government Roads dataset
     Dataset: data.sa.gov.au - Roads (d7e1aa7b-bb3a-49cb-bab7-5e955e773cc7)
-    Contains: Official road classifications, jurisdictions, functional classes
+    Now includes Location Metadata System integration
     """
     try:
         async with httpx.AsyncClient(timeout=20.0) as client:
