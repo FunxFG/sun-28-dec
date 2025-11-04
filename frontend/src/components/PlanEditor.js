@@ -3092,6 +3092,126 @@ export default function PlanEditor({ user, onLogout }) {
               </Card>
             )}
 
+            {/* NEW: SA Traffic Intelligence Card (Top 40 Roads, Intersections, Travel Speeds) */}
+            {comprehensiveData.sa_traffic_intelligence && (
+              <Card className="border-l-4 border-l-red-500">
+                <CardHeader>
+                  <CardTitle className="text-red-700">🚦 SA Traffic Intelligence</CardTitle>
+                  <CardDescription>Top 40 Roads, Intersections & Travel Speeds</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Top 40 Road Analysis */}
+                  {comprehensiveData.sa_traffic_intelligence.top_40_road_analysis && (
+                    <div className={`border p-3 rounded ${
+                      comprehensiveData.sa_traffic_intelligence.top_40_road_analysis.is_top_40_road 
+                        ? 'bg-red-50 border-red-300' 
+                        : 'bg-gray-50 border-gray-300'
+                    }`}>
+                      <div className="font-semibold mb-2 text-sm">Top 40 Road Analysis</div>
+                      {comprehensiveData.sa_traffic_intelligence.top_40_road_analysis.is_top_40_road ? (
+                        <div>
+                          <div className="text-xs mb-2">
+                            <span className="font-bold text-red-700">⚠️ HIGH TRAFFIC LOCATION</span>
+                          </div>
+                          <div className="text-xs space-y-1">
+                            <div><span className="text-gray-600">Rank:</span> <span className="font-bold">#{comprehensiveData.sa_traffic_intelligence.top_40_road_analysis.rank}</span> busiest in SA</div>
+                            <div><span className="text-gray-600">AADT:</span> <span className="font-bold">{comprehensiveData.sa_traffic_intelligence.top_40_road_analysis.traffic_volume?.toLocaleString()}</span></div>
+                            <div><span className="text-gray-600">Road:</span> {comprehensiveData.sa_traffic_intelligence.top_40_road_analysis.road_match?.road_name}</div>
+                          </div>
+                          <div className="mt-2 p-2 bg-yellow-100 border border-yellow-300 rounded text-xs">
+                            {comprehensiveData.sa_traffic_intelligence.top_40_road_analysis.message}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-xs text-gray-600">
+                          {comprehensiveData.sa_traffic_intelligence.top_40_road_analysis.message}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Top 40 Intersection Analysis */}
+                  {comprehensiveData.sa_traffic_intelligence.top_40_intersection_analysis && (
+                    <div className={`border p-3 rounded ${
+                      comprehensiveData.sa_traffic_intelligence.top_40_intersection_analysis.is_top_40_intersection 
+                        ? 'bg-orange-50 border-orange-300' 
+                        : 'bg-gray-50 border-gray-300'
+                    }`}>
+                      <div className="font-semibold mb-2 text-sm">Top 40 Intersection Analysis</div>
+                      {comprehensiveData.sa_traffic_intelligence.top_40_intersection_analysis.is_top_40_intersection ? (
+                        <div>
+                          <div className="text-xs mb-2">
+                            <span className="font-bold text-orange-700">⚠️ MAJOR INTERSECTION</span>
+                          </div>
+                          <div className="text-xs space-y-1">
+                            <div><span className="text-gray-600">Rank:</span> <span className="font-bold">#{comprehensiveData.sa_traffic_intelligence.top_40_intersection_analysis.rank}</span> busiest intersection</div>
+                            <div><span className="text-gray-600">Location:</span> {comprehensiveData.sa_traffic_intelligence.top_40_intersection_analysis.intersection_match?.location}</div>
+                            <div><span className="text-gray-600">Vehicle Exposure:</span> {comprehensiveData.sa_traffic_intelligence.top_40_intersection_analysis.vehicle_exposure?.toLocaleString()}</div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-xs text-gray-600">
+                          {comprehensiveData.sa_traffic_intelligence.top_40_intersection_analysis.message}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Overall Traffic Level & Recommendations */}
+                  {comprehensiveData.sa_traffic_intelligence.overall_traffic_level && (
+                    <div className={`border p-3 rounded ${
+                      comprehensiveData.sa_traffic_intelligence.overall_traffic_level === 'VERY HIGH' ? 'bg-red-50 border-red-400' :
+                      comprehensiveData.sa_traffic_intelligence.overall_traffic_level === 'HIGH' ? 'bg-orange-50 border-orange-400' :
+                      comprehensiveData.sa_traffic_intelligence.overall_traffic_level === 'MEDIUM-HIGH' ? 'bg-yellow-50 border-yellow-400' :
+                      'bg-green-50 border-green-400'
+                    }`}>
+                      <div className="font-semibold mb-2 text-sm">
+                        Overall Traffic Level: <span className={
+                          comprehensiveData.sa_traffic_intelligence.overall_traffic_level === 'VERY HIGH' ? 'text-red-700' :
+                          comprehensiveData.sa_traffic_intelligence.overall_traffic_level === 'HIGH' ? 'text-orange-700' :
+                          comprehensiveData.sa_traffic_intelligence.overall_traffic_level === 'MEDIUM-HIGH' ? 'text-yellow-700' :
+                          'text-green-700'
+                        }>{comprehensiveData.sa_traffic_intelligence.overall_traffic_level}</span>
+                      </div>
+                      {comprehensiveData.sa_traffic_intelligence.recommendations?.length > 0 && (
+                        <div className="space-y-1 mt-2">
+                          {comprehensiveData.sa_traffic_intelligence.recommendations.map((rec, idx) => (
+                            <div key={idx} className="text-xs bg-white border border-gray-200 p-2 rounded">
+                              {rec}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Travel Speed Data Summary */}
+                  {comprehensiveData.sa_traffic_intelligence.travel_speed_data?.success && (
+                    <div className="bg-blue-50 border border-blue-200 p-3 rounded">
+                      <div className="font-semibold mb-1 text-sm">Travel Speed Data Available</div>
+                      <div className="text-xs text-gray-600">
+                        {comprehensiveData.sa_traffic_intelligence.travel_speed_data.total_records} Metropolitan Adelaide speed records retrieved
+                      </div>
+                    </div>
+                  )}
+
+                  <Button
+                    onClick={() => downloadJSON(comprehensiveData.sa_traffic_intelligence, 'sa_traffic_intelligence.json')}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Traffic Intelligence
+                  </Button>
+
+                  <div className="text-xs text-gray-500 italic pt-2 border-t">
+                    Data source: DIT SA - Top 40 Roads, Intersections & Travel Speeds
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
           {/* Right Panel - Map and Devices */}
           <div className="space-y-6">
             {/* Map */}
