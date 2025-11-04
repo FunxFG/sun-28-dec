@@ -3117,6 +3117,13 @@ def main():
         ("SA Signs Non-existent Code (404)", tester.test_sa_signs_get_nonexistent_code),
         ("SA Signs Recommend for TMP", tester.test_sa_signs_recommend_for_tmp),
         
+        # 12. NEW SA Traffic Intelligence Integration Tests
+        ("SA Traffic Intelligence - King William Street (Top 40 Road)", tester.test_sa_traffic_intelligence_king_william_street),
+        ("SA Traffic Intelligence - Residential Street (Non-Top 40)", tester.test_sa_traffic_intelligence_residential_street),
+        ("SA Traffic Intelligence - Major Intersection", tester.test_sa_traffic_intelligence_major_intersection),
+        ("SA Traffic Intelligence - Comprehensive Fields", tester.test_sa_traffic_intelligence_comprehensive_fields),
+        ("SA Traffic Intelligence - Performance Test", tester.test_sa_traffic_intelligence_performance),
+        
         # Clean up
         ("Delete Plan", tester.test_delete_plan),
     ]
