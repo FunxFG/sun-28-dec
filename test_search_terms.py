@@ -5,7 +5,7 @@ Test different search terms to find one that works
 import requests
 
 def test_search_terms():
-    base_url = "https://trafficplan-ai.preview.emergentagent.com"
+    base_url = "https://traffic-plan-mapper.preview.emergentagent.com"
     api_url = f"{base_url}/api"
     
     search_terms = ["stop", "speed", "parking", "railway", "TES", "W5"]

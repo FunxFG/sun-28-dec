@@ -6,7 +6,7 @@ import requests
 import json
 
 def test_sa_signs_debug():
-    base_url = "https://trafficplan-ai.preview.emergentagent.com"
+    base_url = "https://traffic-plan-mapper.preview.emergentagent.com"
     api_url = f"{base_url}/api"
     
     # Get first few signs to see what codes are available
