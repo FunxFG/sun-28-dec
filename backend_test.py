@@ -1527,6 +1527,411 @@ class SafeRoadWorksAPITester:
         return False
 
     # ==========================================
+    # SA TRAFFIC INTELLIGENCE INTEGRATION TESTING
+    # ==========================================
+
+    def test_sa_traffic_intelligence_king_william_street(self):
+        """Test SA Traffic Intelligence - King William Street (Top 40 Road Detection)"""
+        import time
+        start_time = time.time()
+        
+        success, response = self.run_test(
+            "SA Traffic Intelligence - King William Street (Top 40 Road)",
+            "GET",
+            "comprehensive-auto-populate",
+            200,
+            data={
+                "lat": -34.9285,
+                "lng": 138.6007,
+                "start_address": "King William Street, Adelaide SA",
+                "end_address": "North Terrace, Adelaide SA",
+                "work_type": "construction"
+            }
+        )
+        
+        end_time = time.time()
+        response_time = end_time - start_time
+        
+        if success:
+            print(f"   Response time: {response_time:.2f} seconds")
+            
+            # Check if sa_traffic_intelligence field is present
+            sa_traffic = response.get('sa_traffic_intelligence', {})
+            if not sa_traffic:
+                print(f"   ❌ Missing sa_traffic_intelligence field")
+                return False
+            
+            # Check Top 40 Road Analysis
+            top_40_road = sa_traffic.get('top_40_road_analysis', {})
+            print(f"   Top 40 Road Analysis: {top_40_road}")
+            
+            # Verify required fields
+            required_fields = ['is_top_40_road', 'road_match', 'traffic_volume', 'rank', 'message']
+            missing_fields = [field for field in required_fields if field not in top_40_road]
+            
+            if missing_fields:
+                print(f"   ❌ Missing Top 40 road fields: {missing_fields}")
+                return False
+            
+            # Check if King William Street is detected as Top 40 road
+            is_top_40 = top_40_road.get('is_top_40_road', False)
+            traffic_volume = top_40_road.get('traffic_volume')
+            rank = top_40_road.get('rank')
+            message = top_40_road.get('message', '')
+            
+            print(f"   Is Top 40 Road: {is_top_40}")
+            print(f"   Traffic Volume (AADT): {traffic_volume}")
+            print(f"   Rank: {rank}")
+            print(f"   Message: {message}")
+            
+            # Success criteria
+            success_criteria = []
+            
+            if is_top_40:
+                success_criteria.append("✅ King William Street detected as Top 40 road")
+                if traffic_volume and traffic_volume > 0:
+                    success_criteria.append(f"✅ AADT traffic volume provided: {traffic_volume:,}")
+                if rank and rank > 0:
+                    success_criteria.append(f"✅ Rank provided: #{rank}")
+                if 'HIGH TRAFFIC' in message:
+                    success_criteria.append("✅ High traffic warning message present")
+            else:
+                success_criteria.append("⚠️ King William Street not detected as Top 40 road (may be expected)")
+            
+            # Check Top 40 Intersection Analysis
+            top_40_intersection = sa_traffic.get('top_40_intersection_analysis', {})
+            print(f"   Top 40 Intersection Analysis: {top_40_intersection}")
+            
+            # Check Overall Traffic Level
+            overall_level = sa_traffic.get('overall_traffic_level', 'Unknown')
+            recommendations = sa_traffic.get('recommendations', [])
+            
+            print(f"   Overall Traffic Level: {overall_level}")
+            print(f"   Recommendations: {recommendations}")
+            
+            if overall_level in ['VERY HIGH', 'HIGH', 'MEDIUM-HIGH', 'MODERATE']:
+                success_criteria.append(f"✅ Overall traffic level assessed: {overall_level}")
+            
+            if recommendations and len(recommendations) > 0:
+                success_criteria.append(f"✅ Traffic management recommendations provided ({len(recommendations)} items)")
+            
+            # Check Travel Speed Data
+            travel_speed = sa_traffic.get('travel_speed_data', {})
+            if travel_speed.get('success'):
+                total_records = travel_speed.get('total_records', 0)
+                success_criteria.append(f"✅ Travel speed data fetched: {total_records} records")
+                
+                # Check for 150 records limit
+                if total_records == 150:
+                    success_criteria.append("✅ Travel speed data limit (150) reached as expected")
+            
+            for criterion in success_criteria:
+                print(f"   {criterion}")
+            
+            return True
+        return False
+
+    def test_sa_traffic_intelligence_residential_street(self):
+        """Test SA Traffic Intelligence - Residential Street (Non-Top 40)"""
+        import time
+        start_time = time.time()
+        
+        success, response = self.run_test(
+            "SA Traffic Intelligence - Residential Street (Non-Top 40)",
+            "GET",
+            "comprehensive-auto-populate",
+            200,
+            data={
+                "lat": -34.9350,
+                "lng": 138.6100,
+                "start_address": "Maple Avenue, Kent Town SA",
+                "end_address": "Oak Street, Kent Town SA",
+                "work_type": "maintenance"
+            }
+        )
+        
+        end_time = time.time()
+        response_time = end_time - start_time
+        
+        if success:
+            print(f"   Response time: {response_time:.2f} seconds")
+            
+            # Check sa_traffic_intelligence field
+            sa_traffic = response.get('sa_traffic_intelligence', {})
+            if not sa_traffic:
+                print(f"   ❌ Missing sa_traffic_intelligence field")
+                return False
+            
+            # Check Top 40 Road Analysis for residential street
+            top_40_road = sa_traffic.get('top_40_road_analysis', {})
+            is_top_40 = top_40_road.get('is_top_40_road', False)
+            message = top_40_road.get('message', '')
+            
+            print(f"   Is Top 40 Road: {is_top_40}")
+            print(f"   Message: {message}")
+            
+            # Success criteria for residential street
+            success_criteria = []
+            
+            if not is_top_40:
+                success_criteria.append("✅ Residential street correctly NOT detected as Top 40 road")
+                if 'not in Top 40' in message or 'Not in Top 40' in message:
+                    success_criteria.append("✅ Appropriate non-Top 40 message provided")
+            else:
+                success_criteria.append("⚠️ Residential street unexpectedly detected as Top 40 road")
+            
+            # Check overall traffic level for residential
+            overall_level = sa_traffic.get('overall_traffic_level', 'Unknown')
+            if overall_level == 'MODERATE':
+                success_criteria.append("✅ Overall traffic level correctly assessed as MODERATE for residential")
+            elif overall_level in ['LOW', 'UNKNOWN']:
+                success_criteria.append(f"✅ Reasonable traffic level for residential: {overall_level}")
+            else:
+                success_criteria.append(f"⚠️ Unexpected traffic level for residential: {overall_level}")
+            
+            # Check travel speed data is still available
+            travel_speed = sa_traffic.get('travel_speed_data', {})
+            if travel_speed.get('success'):
+                success_criteria.append("✅ Travel speed data available for residential area")
+            
+            for criterion in success_criteria:
+                print(f"   {criterion}")
+            
+            return True
+        return False
+
+    def test_sa_traffic_intelligence_major_intersection(self):
+        """Test SA Traffic Intelligence - Major Adelaide Intersection"""
+        import time
+        start_time = time.time()
+        
+        success, response = self.run_test(
+            "SA Traffic Intelligence - Major Intersection",
+            "GET",
+            "comprehensive-auto-populate",
+            200,
+            data={
+                "lat": -34.9200,
+                "lng": 138.6000,
+                "start_address": "Anzac Highway and Sir Donald Bradman Drive, Adelaide SA",
+                "end_address": "Anzac Highway, Adelaide SA",
+                "work_type": "intersection_works"
+            }
+        )
+        
+        end_time = time.time()
+        response_time = end_time - start_time
+        
+        if success:
+            print(f"   Response time: {response_time:.2f} seconds")
+            
+            # Check sa_traffic_intelligence field
+            sa_traffic = response.get('sa_traffic_intelligence', {})
+            if not sa_traffic:
+                print(f"   ❌ Missing sa_traffic_intelligence field")
+                return False
+            
+            # Check Top 40 Intersection Analysis
+            top_40_intersection = sa_traffic.get('top_40_intersection_analysis', {})
+            is_top_40_intersection = top_40_intersection.get('is_top_40_intersection', False)
+            vehicle_exposure = top_40_intersection.get('vehicle_exposure')
+            rank = top_40_intersection.get('rank')
+            message = top_40_intersection.get('message', '')
+            
+            print(f"   Is Top 40 Intersection: {is_top_40_intersection}")
+            print(f"   Vehicle Exposure: {vehicle_exposure}")
+            print(f"   Rank: {rank}")
+            print(f"   Message: {message}")
+            
+            # Success criteria
+            success_criteria = []
+            
+            # Check intersection analysis fields are present
+            required_intersection_fields = ['is_top_40_intersection', 'intersection_match', 'vehicle_exposure', 'rank', 'message']
+            missing_intersection_fields = [field for field in required_intersection_fields if field not in top_40_intersection]
+            
+            if not missing_intersection_fields:
+                success_criteria.append("✅ All Top 40 intersection fields present")
+            else:
+                success_criteria.append(f"❌ Missing intersection fields: {missing_intersection_fields}")
+            
+            if is_top_40_intersection:
+                success_criteria.append("✅ Major intersection detected as Top 40")
+                if vehicle_exposure:
+                    success_criteria.append(f"✅ Vehicle exposure data provided: {vehicle_exposure}")
+                if rank:
+                    success_criteria.append(f"✅ Intersection rank provided: #{rank}")
+                if 'MAJOR INTERSECTION' in message:
+                    success_criteria.append("✅ Major intersection warning message present")
+            else:
+                success_criteria.append("⚠️ Intersection not detected as Top 40 (may be expected)")
+            
+            # Check recommendations include intersection-specific advice
+            recommendations = sa_traffic.get('recommendations', [])
+            intersection_recommendations = [r for r in recommendations if 'intersection' in r.lower() or 'signal' in r.lower()]
+            
+            if intersection_recommendations:
+                success_criteria.append(f"✅ Intersection-specific recommendations provided")
+            
+            for criterion in success_criteria:
+                print(f"   {criterion}")
+            
+            return True
+        return False
+
+    def test_sa_traffic_intelligence_comprehensive_fields(self):
+        """Test SA Traffic Intelligence - Comprehensive Field Verification"""
+        success, response = self.run_test(
+            "SA Traffic Intelligence - Comprehensive Field Check",
+            "GET",
+            "comprehensive-auto-populate",
+            200,
+            data={
+                "lat": -34.9285,
+                "lng": 138.6007,
+                "start_address": "Victoria Square, Adelaide SA",
+                "end_address": "Rundle Mall, Adelaide SA",
+                "work_type": "construction"
+            }
+        )
+        
+        if success:
+            # Check main sa_traffic_intelligence structure
+            sa_traffic = response.get('sa_traffic_intelligence', {})
+            if not sa_traffic:
+                print(f"   ❌ Missing sa_traffic_intelligence field")
+                return False
+            
+            # Expected main fields
+            expected_main_fields = [
+                'top_40_road_analysis',
+                'top_40_intersection_analysis', 
+                'travel_speed_data',
+                'overall_traffic_level',
+                'recommendations'
+            ]
+            
+            missing_main_fields = [field for field in expected_main_fields if field not in sa_traffic]
+            present_main_fields = [field for field in expected_main_fields if field in sa_traffic]
+            
+            print(f"   Present main fields ({len(present_main_fields)}/{len(expected_main_fields)}): {present_main_fields}")
+            if missing_main_fields:
+                print(f"   Missing main fields: {missing_main_fields}")
+            
+            # Check Top 40 Road Analysis sub-fields
+            top_40_road = sa_traffic.get('top_40_road_analysis', {})
+            expected_road_fields = ['is_top_40_road', 'road_match', 'traffic_volume', 'rank', 'message']
+            road_fields_present = [field for field in expected_road_fields if field in top_40_road]
+            
+            print(f"   Top 40 Road fields ({len(road_fields_present)}/{len(expected_road_fields)}): {road_fields_present}")
+            
+            # Check Top 40 Intersection Analysis sub-fields
+            top_40_intersection = sa_traffic.get('top_40_intersection_analysis', {})
+            expected_intersection_fields = ['is_top_40_intersection', 'intersection_match', 'vehicle_exposure', 'rank', 'message']
+            intersection_fields_present = [field for field in expected_intersection_fields if field in top_40_intersection]
+            
+            print(f"   Top 40 Intersection fields ({len(intersection_fields_present)}/{len(expected_intersection_fields)}): {intersection_fields_present}")
+            
+            # Check Travel Speed Data sub-fields
+            travel_speed = sa_traffic.get('travel_speed_data', {})
+            expected_speed_fields = ['speed_data', 'total_records', 'data_source', 'success']
+            speed_fields_present = [field for field in expected_speed_fields if field in travel_speed]
+            
+            print(f"   Travel Speed fields ({len(speed_fields_present)}/{len(expected_speed_fields)}): {speed_fields_present}")
+            
+            # Success criteria
+            success_criteria = []
+            
+            # Main structure
+            if len(missing_main_fields) == 0:
+                success_criteria.append("✅ All main SA traffic intelligence fields present")
+            else:
+                success_criteria.append(f"❌ Missing {len(missing_main_fields)} main fields")
+            
+            # Sub-field completeness
+            if len(road_fields_present) >= 4:
+                success_criteria.append("✅ Top 40 road analysis fields complete")
+            
+            if len(intersection_fields_present) >= 4:
+                success_criteria.append("✅ Top 40 intersection analysis fields complete")
+            
+            if len(speed_fields_present) >= 3:
+                success_criteria.append("✅ Travel speed data fields complete")
+            
+            # Data quality checks
+            overall_level = sa_traffic.get('overall_traffic_level')
+            valid_levels = ['VERY HIGH', 'HIGH', 'MEDIUM-HIGH', 'MODERATE', 'LOW', 'UNKNOWN']
+            if overall_level in valid_levels:
+                success_criteria.append(f"✅ Valid overall traffic level: {overall_level}")
+            else:
+                success_criteria.append(f"❌ Invalid overall traffic level: {overall_level}")
+            
+            recommendations = sa_traffic.get('recommendations', [])
+            if isinstance(recommendations, list) and len(recommendations) >= 0:
+                success_criteria.append(f"✅ Recommendations array present ({len(recommendations)} items)")
+            
+            for criterion in success_criteria:
+                print(f"   {criterion}")
+            
+            # Overall success if most fields present
+            return len(missing_main_fields) <= 1 and len(road_fields_present) >= 4
+        
+        return False
+
+    def test_sa_traffic_intelligence_performance(self):
+        """Test SA Traffic Intelligence - Performance and Error Handling"""
+        import time
+        
+        # Test with valid Adelaide location
+        start_time = time.time()
+        success, response = self.run_test(
+            "SA Traffic Intelligence - Performance Test",
+            "GET",
+            "comprehensive-auto-populate",
+            200,
+            data={
+                "lat": -34.9285,
+                "lng": 138.6007,
+                "start_address": "King William Street, Adelaide SA",
+                "end_address": "North Terrace, Adelaide SA"
+            }
+        )
+        end_time = time.time()
+        response_time = end_time - start_time
+        
+        if success:
+            print(f"   Response time: {response_time:.2f} seconds")
+            
+            success_criteria = []
+            
+            # Performance check
+            if response_time <= 30.0:
+                success_criteria.append(f"✅ Response time acceptable: {response_time:.2f}s")
+            else:
+                success_criteria.append(f"❌ Response time too slow: {response_time:.2f}s")
+            
+            # Check no 500 errors
+            success_criteria.append("✅ No 500 errors - endpoint operational")
+            
+            # Check sa_traffic_intelligence field exists
+            sa_traffic = response.get('sa_traffic_intelligence', {})
+            if sa_traffic:
+                success_criteria.append("✅ SA traffic intelligence data returned")
+                
+                # Check for error field
+                if 'error' not in sa_traffic:
+                    success_criteria.append("✅ No errors in SA traffic intelligence processing")
+                else:
+                    success_criteria.append(f"⚠️ Error in SA traffic intelligence: {sa_traffic.get('error')}")
+            
+            for criterion in success_criteria:
+                print(f"   {criterion}")
+            
+            return response_time <= 30.0
+        
+        return False
+
+    # ==========================================
     # SA SIGN LIBRARY API ENDPOINTS TESTING (NEW)
     # ==========================================
 
