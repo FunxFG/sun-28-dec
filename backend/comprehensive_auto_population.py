@@ -1591,6 +1591,9 @@ async def get_comprehensive_auto_population(lat: float, lng: float, start_addres
         # 0b. FETCH DIT INFRASTRUCTURE ASSETS
         result['dit_infrastructure_assets'] = await fetch_dit_infrastructure_assets(lat, lng, start_address)
         
+        # 0c. FETCH SA TRAFFIC INTELLIGENCE (Top 40 Roads, Intersections, Travel Speeds)
+        result['sa_traffic_intelligence'] = await get_traffic_intelligence_for_location(start_address, lat, lng)
+        
         # 1. SIDE STREETS AND INTERSECTIONS (OSM)
         result['side_streets'] = await fetch_side_streets(lat, lng)
         result['intersections'] = await fetch_intersections(lat, lng)
