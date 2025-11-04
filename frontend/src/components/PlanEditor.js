@@ -902,7 +902,8 @@ export default function PlanEditor({ user, onLogout }) {
           public_transport_detailed: comprehensiveDataResponse.public_transport_detailed || null,  // NEW
           utility_infrastructure: comprehensiveDataResponse.utility_infrastructure || null,  // NEW
           location_metadata_system: comprehensiveDataResponse.location_metadata_system || null,  // NEW: LMS
-          dit_infrastructure_assets: comprehensiveDataResponse.dit_infrastructure_assets || null  // NEW: DIT Assets
+          dit_infrastructure_assets: comprehensiveDataResponse.dit_infrastructure_assets || null,  // NEW: DIT Assets
+          sa_traffic_intelligence: comprehensiveDataResponse.sa_traffic_intelligence || null  // NEW: Top 40 Roads/Intersections/Travel Speeds
         });
       } catch (error) {
         console.log('Comprehensive auto-populate not available, continuing with basic data');
