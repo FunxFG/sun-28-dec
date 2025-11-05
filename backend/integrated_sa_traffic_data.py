@@ -96,14 +96,18 @@ async def match_location_to_top_roads(address: str, lat: float, lng: float) -> D
                     match_result['road_match'] = road
                     match_result['traffic_volume'] = road.get('aadt')
                     match_result['rank'] = road.get('rank')
-                    match_result['message'] = f"⚠️ HIGH TRAFFIC LOCATION: Ranked #{road.get('rank')} busiest road in SA with {road.get('aadt'):,} AADT"
+                    aadt = road.get('aadt')
+                    aadt_str = f"{aadt:,}" if aadt else "N/A"
+                    match_result['message'] = f"⚠️ HIGH TRAFFIC LOCATION: Ranked #{road.get('rank')} busiest road in SA with {aadt_str} AADT"
                     break
                 elif road_no and road_no in address_lower:
                     match_result['is_top_40_road'] = True
                     match_result['road_match'] = road
                     match_result['traffic_volume'] = road.get('aadt')
                     match_result['rank'] = road.get('rank')
-                    match_result['message'] = f"⚠️ HIGH TRAFFIC LOCATION: Ranked #{road.get('rank')} busiest road in SA with {road.get('aadt'):,} AADT"
+                    aadt = road.get('aadt')
+                    aadt_str = f"{aadt:,}" if aadt else "N/A"
+                    match_result['message'] = f"⚠️ HIGH TRAFFIC LOCATION: Ranked #{road.get('rank')} busiest road in SA with {aadt_str} AADT"
                     break
             
             if not match_result['is_top_40_road']:
