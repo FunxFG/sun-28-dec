@@ -271,12 +271,17 @@ async def get_traffic_intelligence_for_location(address: str, lat: float, lng: f
         # Determine overall traffic level
         if road_match['is_top_40_road']:
             rank = road_match['rank']
-            if rank <= 10:
+            try:
+                rank_int = int(rank) if rank else 999
+            except (ValueError, TypeError):
+                rank_int = 999
+                
+            if rank_int <= 10:
                 result['overall_traffic_level'] = 'VERY HIGH'
                 result['recommendations'].append('⚠️ Top 10 busiest road - Maximum traffic control required')
                 result['recommendations'].append('Consider night/weekend works to minimize disruption')
                 result['recommendations'].append('Multiple advance warning signs essential')
-            elif rank <= 20:
+            elif rank_int <= 20:
                 result['overall_traffic_level'] = 'HIGH'
                 result['recommendations'].append('⚠️ Major traffic route - Enhanced traffic management required')
                 result['recommendations'].append('Traffic management personnel recommended')
