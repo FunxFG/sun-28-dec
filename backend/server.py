@@ -2110,6 +2110,7 @@ async def generate_visual_tgs_with_signs(request: dict):
         center_lng = request.get('center_lng')
         placed_devices = request.get('placed_devices', [])
         include_streetview = request.get('include_streetview', True)
+        plan_name = request.get('plan_name', 'tgs')
         
         if not center_lat or not center_lng:
             raise HTTPException(status_code=400, detail="center_lat and center_lng are required")
@@ -2119,7 +2120,8 @@ async def generate_visual_tgs_with_signs(request: dict):
             center_lat,
             center_lng,
             placed_devices,
-            include_streetview
+            include_streetview,
+            plan_name
         )
         
         if "error" in result:
