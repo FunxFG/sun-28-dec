@@ -852,8 +852,29 @@ export default function PlanEditor({ user, onLogout }) {
       }
       
     } catch (error) {
-      console.error('Auto-placement error:', error);
-      toast.error(`Failed to auto-place devices: ${error.message}`);
+      console.error('❌ Auto-placement error:', error);
+      console.error('Error stack:', error.stack);
+      
+      // Provide helpful error messages based on error type
+      let errorMessage = 'Failed to auto-place devices';
+      if (error.message.includes('geocode')) {
+        errorMessage = 'Failed to geocode addresses. Please check your addresses and try again.';
+      } else if (error.message.includes('coordinates')) {
+        errorMessage = 'Invalid location coordinates. Please enter valid addresses.';
+      } else if (error.message.includes('road')) {
+        errorMessage = 'Could not retrieve road data. The location might not have sufficient mapping data.';
+      } else {
+        errorMessage = `Auto-placement failed: ${error.message}`;
+      }
+      
+      toast.error(errorMessage);
+      
+      // Show detailed error in console for debugging
+      console.log('📋 Debug Info:');
+      console.log('- Start Address:', formData.work_details.start_address);
+      console.log('- End Address:', formData.work_details.end_address);
+      console.log('- Work Type:', formData.work_type);
+      console.log('- Error:', error);
     }
   };
 
