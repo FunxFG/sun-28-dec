@@ -123,6 +123,11 @@ export default function PlanEditor({ user, onLogout }) {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   
+  // State for auto-population tracking
+  const [autoPopulationComplete, setAutoPopulationComplete] = useState(false);
+  const [showAutoPopulatedData, setShowAutoPopulatedData] = useState(false);
+  const [autoPopulationWarnings, setAutoPopulationWarnings] = useState([]);
+  
   // State for comprehensive auto-population data
   const [comprehensiveData, setComprehensiveData] = useState({
     side_streets: [],
