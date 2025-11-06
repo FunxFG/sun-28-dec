@@ -674,6 +674,12 @@ export default function PlanEditor({ user, onLogout }) {
       console.log('Auto-placement complete. Devices returned:', autoDevices);
       console.log('Device count:', autoDevices?.length || 0);
 
+      // Check if auto-placement returned devices
+      if (!autoDevices || autoDevices.length === 0) {
+        console.warn('⚠️ Auto-placement returned no devices');
+        toast.warning('Auto-placement completed but no devices were generated. This might be due to insufficient road data. Try manual placement or a different location.');
+      }
+
       // Add detour signs if road closure
       let allDevices = autoDevices || [];
       if (detourData && detourData.detour_signs) {
