@@ -28,7 +28,8 @@ import {
   Cloud,
   AlertTriangle,
   CheckCircle,
-  FileText
+  FileText,
+  Eye
 } from 'lucide-react';
 import austroadsRules from '../utils/austroadsRules';
 import tgsDrawingGenerator from '../utils/tgsDrawingGenerator';
