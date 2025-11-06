@@ -1665,10 +1665,31 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
     doc.build(story)
     buffer.seek(0)
     
+    # Save PDF to disk for audit trail and re-download capability
+    from pathlib import Path
+    from datetime import datetime
+    
+    output_dir = Path("/app/tmp_outputs")
+    output_dir.mkdir(exist_ok=True)
+    
+    # Create filename with plan name and timestamp
+    plan_name = plan.get('plan_name', 'tmp').replace(' ', '_').replace('/', '_')
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    filename = f"{plan_name}_{timestamp}_TMP.pdf"
+    file_path = output_dir / filename
+    
+    # Save to disk
+    with open(file_path, 'wb') as f:
+        f.write(buffer.getvalue())
+    
+    logger.info(f"TMP PDF saved to: {file_path}")
+    
+    # Also return as streaming response for immediate download
+    buffer.seek(0)
     return StreamingResponse(
         io.BytesIO(buffer.getvalue()),
         media_type="application/pdf",
-        headers={"Content-Disposition": f"attachment; filename=TMP_{professional_tmp['metadata']['tmp_number']}.pdf"}
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
     )
 
 # ==========================================
