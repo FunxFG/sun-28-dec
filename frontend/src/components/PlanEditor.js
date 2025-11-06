@@ -2247,6 +2247,28 @@ export default function PlanEditor({ user, onLogout }) {
               </Card>
             )}
 
+            {/* AUTO-POPULATED DATA SECTION - Hidden by default, shown after review button clicked */}
+            {showAutoPopulatedData && (
+              <Card className="border-4 border-blue-500 bg-blue-50 mb-6">
+                <CardHeader className="bg-blue-100 border-b-2 border-blue-300">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <CardTitle className="text-blue-900 text-xl">📊 Auto-Populated Data Review</CardTitle>
+                      <CardDescription className="text-blue-700 font-medium">
+                        26 datasets automatically fetched - Review before generating TMP
+                      </CardDescription>
+                    </div>
+                    <Button
+                      onClick={() => setShowAutoPopulatedData(false)}
+                      variant="outline"
+                      size="sm"
+                      className="border-blue-600 text-blue-700 hover:bg-blue-200"
+                    >
+                      Hide Data
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-6 p-6">
 
             {/* NEW: Enhanced Crash Statistics with Risk Assessment */}
             {comprehensiveData.crash_statistics && (comprehensiveData.crash_statistics.total_crashes > 0 || comprehensiveData.crash_statistics.total_crashes_5yr > 0) && (
