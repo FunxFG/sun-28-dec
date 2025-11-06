@@ -426,7 +426,8 @@ async def generate_complete_visual_tgs(
     center_lat: float,
     center_lng: float,
     placed_devices: List[Dict],
-    include_streetview: bool = True
+    include_streetview: bool = True,
+    plan_name: str = "tgs"
 ) -> Dict[str, Any]:
     """
     Generate complete visual TGS with both satellite overlay and Street View
@@ -436,14 +437,18 @@ async def generate_complete_visual_tgs(
         center_lng: Work zone center longitude
         placed_devices: List of placed traffic control devices
         include_streetview: Whether to include Street View images
+        plan_name: Name of the plan (for file naming)
         
     Returns:
         Complete TGS package with satellite map and Street View images
     """
+    from datetime import datetime
+    
     result = {
         "satellite_tgs": {},
         "streetview_images": [],
-        "metadata": {}
+        "metadata": {},
+        "saved_files": []
     }
     
     try:
@@ -453,19 +458,97 @@ async def generate_complete_visual_tgs(
         )
         result["satellite_tgs"] = satellite_result
         
+        # Save satellite TGS image to disk
+        output_dir = Path("/app/tmp_outputs")
+        output_dir.mkdir(exist_ok=True)
+        
+        clean_plan_name = plan_name.replace(' ', '_').replace('/', '_')
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        
+        if satellite_result.get('image_base64'):
+            # Save PNG
+            png_filename = f"{clean_plan_name}_{timestamp}_TGS_Drawing.png"
+            png_path = output_dir / png_filename
+            
+            # Decode base64 and save
+            image_data = base64.b64decode(satellite_result['image_base64'])
+            with open(png_path, 'wb') as f:
+                f.write(image_data)
+            
+            result["saved_files"].append({
+                "type": "satellite_png",
+                "filename": png_filename,
+                "path": str(png_path),
+                "size": len(image_data)
+            })
+            logger.info(f"Visual TGS PNG saved to: {png_path}")
+            
+            # Also save as PDF
+            from reportlab.lib.pagesizes import A4, landscape
+            from reportlab.pdfgen import canvas
+            from reportlab.lib.utils import ImageReader
+            
+            pdf_filename = f"{clean_plan_name}_{timestamp}_TGS_Drawing.pdf"
+            pdf_path = output_dir / pdf_filename
+            
+            # Create PDF with image
+            c = canvas.Canvas(str(pdf_path), pagesize=landscape(A4))
+            img = ImageReader(io.BytesIO(image_data))
+            
+            # Scale image to fit A4 landscape
+            page_width, page_height = landscape(A4)
+            c.drawImage(img, 50, 50, width=page_width-100, height=page_height-100, preserveAspectRatio=True)
+            
+            # Add title
+            c.setFont("Helvetica-Bold", 16)
+            c.drawString(50, page_height - 30, f"Traffic Guidance Scheme - {plan_name}")
+            c.setFont("Helvetica", 10)
+            c.drawString(50, page_height - 45, f"Generated: {datetime.now().strftime('%d %B %Y at %I:%M %p')}")
+            
+            c.save()
+            
+            result["saved_files"].append({
+                "type": "satellite_pdf",
+                "filename": pdf_filename,
+                "path": str(pdf_path),
+                "size": pdf_path.stat().st_size
+            })
+            logger.info(f"Visual TGS PDF saved to: {pdf_path}")
+        
         # Generate Street View images if requested
         if include_streetview and satellite_result.get('sign_positions'):
             streetview_result = await tgs_generator.generate_streetview_with_signs(
                 satellite_result['sign_positions']
             )
             result["streetview_images"] = streetview_result.get('streetview_images', [])
+            
+            # Save individual Street View images
+            for idx, sv_img in enumerate(result["streetview_images"]):
+                sv_filename = f"{clean_plan_name}_{timestamp}_StreetView_{idx+1}_{sv_img['sign_code']}.png"
+                sv_path = output_dir / sv_filename
+                
+                # Decode and save
+                sv_data = base64.b64decode(sv_img['image_base64'])
+                with open(sv_path, 'wb') as f:
+                    f.write(sv_data)
+                
+                result["saved_files"].append({
+                    "type": "streetview",
+                    "filename": sv_filename,
+                    "path": str(sv_path),
+                    "sign_code": sv_img['sign_code'],
+                    "size": len(sv_data)
+                })
+                logger.info(f"Street View image saved to: {sv_path}")
         
         # Add metadata
         result["metadata"] = {
             "total_signs": len(placed_devices),
             "center": {"lat": center_lat, "lng": center_lng},
             "has_streetview": include_streetview and len(result["streetview_images"]) > 0,
-            "generation_timestamp": "ISO8601 timestamp"
+            "generation_timestamp": datetime.now().isoformat(),
+            "files_saved": len(result["saved_files"]),
+            "output_directory": str(output_dir)
         }
         
         return result
