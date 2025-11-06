@@ -189,6 +189,14 @@ export class AGTTMCompliantPlacement {
         distance_tolerance: 5,      // ±5m longitudinal distance tolerance
         angle_tolerance: 5,         // ±5° sign angle tolerance
         height_tolerance: 0.1       // ±0.1m mounting height tolerance
+      },
+      
+      // Bilateral requirements for paired signage
+      bilateral_requirements: {
+        symmetry_tolerance: 0.5,    // ±0.5m symmetry tolerance for bilateral pairs
+        longitudinal_alignment: 2,   // ±2m longitudinal alignment tolerance
+        required_for_closures: true, // Always required for lane closures
+        required_for_warnings: true  // Always required for advance warnings
       }
     };
 
