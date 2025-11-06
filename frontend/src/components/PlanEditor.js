@@ -1819,17 +1819,50 @@ export default function PlanEditor({ user, onLogout }) {
               </CardContent>
             </Card>
 
-            {/* Section 4: Traffic Assessment */}
-            <TrafficAssessmentSection 
-              formData={formData} 
-              handleInputChange={handleInputChange} 
-            />
+            {/* Section 4: Traffic Assessment - HIDDEN (Auto-populated) */}
+            {/* Only show if auto-population failed or user explicitly wants to see it */}
+            {(!autoPopulationComplete || showAutoPopulatedData) && (
+              <TrafficAssessmentSection 
+                formData={formData} 
+                handleInputChange={handleInputChange} 
+              />
+            )}
 
-            {/* Section 5: Site Assessment */}
-            <SiteAssessmentSection 
-              formData={formData} 
-              handleInputChange={handleInputChange} 
-            />
+            {/* Section 5: Site Assessment - HIDDEN (Auto-populated) */}
+            {/* Only show if auto-population failed or user explicitly wants to see it */}
+            {(!autoPopulationComplete || showAutoPopulatedData) && (
+              <SiteAssessmentSection 
+                formData={formData} 
+                handleInputChange={handleInputChange} 
+              />
+            )}
+            
+            {/* Review Auto-Populated Data Button */}
+            {autoPopulationComplete && !showAutoPopulatedData && (
+              <Card className="border-2 border-blue-500 bg-blue-50">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-blue-900 mb-1">✅ Auto-Population Complete</h3>
+                      <p className="text-sm text-blue-700">
+                        {autoPopulationWarnings.length === 0 
+                          ? '26 datasets successfully retrieved. Click to review before generating TMP.'
+                          : `${autoPopulationWarnings.length} warnings detected. Click to review and add manual inputs if needed.`
+                        }
+                      </p>
+                    </div>
+                    <Button
+                      onClick={() => setShowAutoPopulatedData(true)}
+                      variant="default"
+                      className="bg-blue-600 hover:bg-blue-700"
+                    >
+                      <Eye className="w-4 h-4 mr-2" />
+                      Review Auto-Populated Data
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Road Occupancy */}
             <Card>
