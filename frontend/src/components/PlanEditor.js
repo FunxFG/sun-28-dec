@@ -960,10 +960,34 @@ export default function PlanEditor({ user, onLogout }) {
         }
       }));
       
+      // Check for auto-population warnings (zero/missing data)
+      const warnings = [];
+      if (!trafficData.aadt || trafficData.aadt === 0) {
+        warnings.push('⚠️ Traffic Assessment: No AADT data - manual input may be required');
+      }
+      if (!siteData.road_geometry || !siteData.road_geometry.includes('lane')) {
+        warnings.push('⚠️ Site Assessment: Limited road geometry data - manual input may be required');
+      }
+      if (!comprehensiveDataResponse?.sa_traffic_intelligence?.top_40_road_analysis?.is_top_40_road 
+          && !comprehensiveDataResponse?.sa_traffic_intelligence?.top_40_intersection_analysis?.is_top_40_intersection) {
+        // This is informational, not a warning
+      }
+      
+      setAutoPopulationWarnings(warnings);
+      setAutoPopulationComplete(true);
+      
+      // Show warnings if any
+      if (warnings.length > 0) {
+        warnings.forEach(warning => toast.warning(warning, { duration: 6000 }));
+      }
+      
       // Show comprehensive success message
-      let message = 'Road and site data updated';
+      let message = '✅ Auto-population complete! Review data before generating TMP.';
       if (trafficData.data_source.includes('SA Government')) {
         message = '✅ Complete assessment: SA Gov traffic data + OSM site facilities!';
+      }
+      if (comprehensiveDataResponse?.sa_traffic_intelligence?.top_40_road_analysis?.is_top_40_road) {
+        message += ' Top 40 Road detected!';
       }
       if (comprehensiveDataResponse?.pedestrian_control_measures?.barriers_required?.length > 0) {
         message += ' Pedestrian control measures detected!';
@@ -976,6 +1000,7 @@ export default function PlanEditor({ user, onLogout }) {
     } catch (error) {
       console.error('Error fetching road/traffic/site data:', error);
       toast.error('Failed to fetch complete assessment data');
+      setAutoPopulationComplete(false);
     }
   };
 
