@@ -2132,6 +2132,42 @@ async def generate_visual_tgs_with_signs(request: dict):
         if "error" in result:
             raise HTTPException(status_code=500, detail=result["error"])
         
+        # Generate additional documentation files
+        try:
+            work_zone_details = request.get('work_zone_details', {})
+            comprehensive_data = request.get('comprehensive_data', {})
+            
+            # Generate signage schedule
+            schedule_path = generate_signage_schedule(placed_devices, plan_name)
+            result["saved_files"].append({
+                "type": "signage_schedule",
+                "filename": Path(schedule_path).name,
+                "path": schedule_path
+            })
+            
+            # Generate TGS specifications
+            specs_path = generate_tgs_specifications(placed_devices, plan_name, work_zone_details)
+            result["saved_files"].append({
+                "type": "tgs_specifications",
+                "filename": Path(specs_path).name,
+                "path": specs_path
+            })
+            
+            # Generate master summary if comprehensive data available
+            if comprehensive_data:
+                summary_path = generate_master_summary(plan_name, comprehensive_data, placed_devices)
+                result["saved_files"].append({
+                    "type": "master_summary",
+                    "filename": Path(summary_path).name,
+                    "path": summary_path
+                })
+            
+            logger.info(f"Generated {len(result['saved_files'])} TGS documentation files")
+            
+        except Exception as doc_error:
+            logger.error(f"Error generating documentation files: {str(doc_error)}")
+            # Don't fail the entire request if documentation generation fails
+        
         return result
         
     except HTTPException:
