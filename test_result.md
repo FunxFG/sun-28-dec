@@ -606,6 +606,7 @@ test_plan:
   backend_testing_complete: true
   sa_datasets_testing_complete: true
   professional_tmp_analysis_complete: true
+  auto_placement_error_fix_verified: true
 
 agent_communication:
   - agent: "main"
