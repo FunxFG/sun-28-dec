@@ -2082,6 +2082,11 @@ from visual_tgs_with_signs import (
     generate_complete_visual_tgs,
     tgs_generator
 )
+from tgs_documentation_generator import (
+    generate_signage_schedule,
+    generate_tgs_specifications,
+    generate_master_summary
+)
 
 
 @api_router.post("/tgs/generate-visual")
