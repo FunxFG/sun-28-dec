@@ -13,6 +13,7 @@ from PIL import Image, ImageDraw, ImageFont
 from pathlib import Path
 import logging
 import math
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
