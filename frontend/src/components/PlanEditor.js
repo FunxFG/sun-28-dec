@@ -665,6 +665,22 @@ export default function PlanEditor({ user, onLogout }) {
       console.log('Work zone data:', workZoneData);
       console.log('Road geometry:', roadGeometry);
       
+      // Validate required data before attempting placement
+      if (!workZoneData.start_lat || !workZoneData.end_lat) {
+        throw new Error('Invalid coordinates for auto-placement');
+      }
+      
+      // Ensure road geometry has minimum required data
+      if (!roadGeometry || !roadGeometry.road_name) {
+        console.warn('Limited road geometry data, using defaults');
+        roadGeometry = {
+          ...roadGeometry,
+          road_name: formData.work_details.start_address || 'Unknown Road',
+          lanes: roadGeometry?.lanes || 2,
+          speed_limit: workZoneData.speed_limit || 60
+        };
+      }
+      
       const autoDevices = await agttmRules.default.calculateAGTTMCompliantPlacement(
         workZoneData,
         roadGeometry,
