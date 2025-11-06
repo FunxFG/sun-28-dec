@@ -1309,13 +1309,19 @@ export default function PlanEditor({ user, onLogout }) {
     try {
       const token = localStorage.getItem('token');
       
+      // Include comprehensive data (hidden from form but needed for PDF generation)
+      const planDataWithComprehensive = {
+        ...formData,
+        comprehensive_data: comprehensiveData  // Add all 26 auto-populated datasets
+      };
+      
       if (planId) {
-        await axios.put(`${API}/plans/${planId}`, formData, {
+        await axios.put(`${API}/plans/${planId}`, planDataWithComprehensive, {
           headers: { Authorization: `Bearer ${token}` }
         });
         toast.success('Plan updated successfully');
       } else {
-        const response = await axios.post(`${API}/plans`, formData, {
+        const response = await axios.post(`${API}/plans`, planDataWithComprehensive, {
           headers: { Authorization: `Bearer ${token}` }
         });
         navigate(`/plan/${response.data.id}`);
