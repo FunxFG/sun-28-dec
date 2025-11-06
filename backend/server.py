@@ -1418,11 +1418,18 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
     if not plan:
         raise HTTPException(status_code=404, detail="Plan not found")
     
-    # Import the TMP generator
+    # Import the TMP generator and comprehensive data enhancer
     from tmp_generator import tmp_generator
+    from comprehensive_tmp_generator import enhance_tmp_with_comprehensive_data
     
     # Generate professional TMP structure
     professional_tmp = tmp_generator.generate_professional_tmp(plan, 'works')
+    
+    # Enhance TMP with all 26 comprehensive auto-populated datasets
+    # This includes data that is hidden from the form but included in PDF
+    comprehensive_data = plan.get('comprehensive_data', {})
+    if comprehensive_data:
+        professional_tmp = enhance_tmp_with_comprehensive_data(professional_tmp, comprehensive_data)
     
     # Create PDF with professional TMP content
     buffer = io.BytesIO()
