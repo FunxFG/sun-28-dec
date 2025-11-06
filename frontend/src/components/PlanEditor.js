@@ -3298,6 +3298,11 @@ export default function PlanEditor({ user, onLogout }) {
               </Card>
             )}
 
+                </CardContent>
+              </Card>
+            )}
+            {/* END AUTO-POPULATED DATA SECTION */}
+
           {/* Right Panel - Map and Devices */}
           <div className="space-y-6">
             {/* Map */}
