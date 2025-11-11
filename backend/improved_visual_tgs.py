@@ -12,6 +12,7 @@ from PIL import Image, ImageDraw, ImageFont
 from typing import List, Dict, Any
 import math
 import logging
+from sign_image_generator import create_sign_image
 
 logger = logging.getLogger(__name__)
 
