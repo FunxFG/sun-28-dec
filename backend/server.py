@@ -2090,6 +2090,40 @@ from tgs_documentation_generator import (
 from improved_visual_tgs import generate_improved_visual_tgs
 
 
+@api_router.post("/tgs/generate-improved")
+async def generate_improved_tgs_endpoint(request: dict):
+    """
+    Generate improved visual TGS with clear satellite imagery and device overlays
+    """
+    try:
+        center_lat = request.get('center_lat')
+        center_lng = request.get('center_lng')
+        placed_devices = request.get('placed_devices', [])
+        plan_name = request.get('plan_name', 'TGS')
+        
+        if not center_lat or not center_lng:
+            raise HTTPException(status_code=400, detail="center_lat and center_lng are required")
+        
+        # Generate improved visual TGS
+        result = await generate_improved_visual_tgs(
+            center_lat,
+            center_lng,
+            placed_devices,
+            plan_name
+        )
+        
+        if "error" in result:
+            raise HTTPException(status_code=500, detail=result["error"])
+        
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in improved TGS endpoint: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @api_router.post("/tgs/generate-visual")
 async def generate_visual_tgs_with_signs(request: dict):
     """
