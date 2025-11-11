@@ -1,0 +1,24 @@
+================================================================================
+SIGNAGE SCHEDULE - King_William_Street_Road_Closure_Visual_TGS
+Generated: 11 November 2025 at 02:46 PM
+================================================================================
+
+Total Signs: 7
+
+#    Sign Code       Sign Name                                Distance (m) Side    
+--------------------------------------------------------------------------------
+1    BARRIER         Road Closed                              0.0          Center  
+2    G9-4            Detour Left                              50.0         Left    
+3    G9-4            Detour Right                             50.0         Right   
+4    T1-7            Road Closed Ahead                        100.0        Left    
+5    T1-7            Road Closed Ahead                        100.0        Right   
+6    T1-1            Road Work Ahead                          150.0        Left    
+7    T1-1            Road Work Ahead                          150.0        Right   
+
+================================================================================
+NOTES:
+- All distances measured from work zone start point
+- Signs must be installed according to AS 1742.3 specifications
+- Bilateral signage required where indicated
+- All signs must be maintained in clean, reflective condition
+================================================================================
