@@ -2087,6 +2087,7 @@ from tgs_documentation_generator import (
     generate_tgs_specifications,
     generate_master_summary
 )
+from improved_visual_tgs import generate_improved_visual_tgs
 
 
 @api_router.post("/tgs/generate-visual")
