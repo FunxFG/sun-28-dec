@@ -234,53 +234,57 @@ def create_device_overlays(
         if not (0 <= pixel_x < width and 0 <= pixel_y < height):
             continue
         
-        # Determine device type and color
+        # Get device info
         device_code = device.get('device_code', '')
         device_name = device.get('device_name', 'Sign')
         
-        if 'T1-1' in device_code or 'Road Work' in device_name:
-            color = (255, 200, 0, 255)  # Yellow for warning
-            label = "⚠️"
-        elif 'T1-7' in device_code or 'Closed' in device_name:
-            color = (255, 50, 50, 255)  # Red for closure
-            label = "🚫"
-        elif 'G9' in device_code or 'Detour' in device_name:
-            color = (50, 150, 255, 255)  # Blue for guidance
-            label = "➡️"
-        elif 'BARRIER' in device_code:
-            color = (255, 100, 0, 255)  # Orange for barrier
-            label = "🚧"
-        else:
-            color = (255, 150, 50, 255)  # Orange default
-            label = "⚠️"
+        # Generate actual sign image (80x80 pixels)
+        sign_image = create_sign_image(device_code, device_name, size=80)
         
-        # Draw large visible marker
-        marker_size = 40
+        # Calculate position to center the sign image
+        sign_x = pixel_x - 40  # Half of sign width
+        sign_y = pixel_y - 80  # Full height above the point
+        
+        # Ensure sign is within bounds
+        if sign_x < 0 or sign_y < 0 or sign_x + 80 > width or sign_y + 80 > height:
+            # If out of bounds, draw at edge
+            sign_x = max(0, min(sign_x, width - 80))
+            sign_y = max(0, min(sign_y, height - 80))
         
         # Draw shadow for visibility
-        draw.ellipse(
-            [(pixel_x - marker_size//2 + 2, pixel_y - marker_size//2 + 2),
-             (pixel_x + marker_size//2 + 2, pixel_y + marker_size//2 + 2)],
-            fill=(0, 0, 0, 150)
-        )
+        shadow = Image.new('RGBA', (84, 84), (0, 0, 0, 100))
+        overlay.paste(shadow, (sign_x + 2, sign_y + 2), shadow)
         
-        # Draw marker circle
+        # Paste actual sign image
+        overlay.paste(sign_image, (sign_x, sign_y), sign_image)
+        
+        # Draw white circle with number below the sign
+        marker_size = 30
+        number_y = pixel_y + 15
+        
         draw.ellipse(
-            [(pixel_x - marker_size//2, pixel_y - marker_size//2),
-             (pixel_x + marker_size//2, pixel_y + marker_size//2)],
-            fill=color,
-            outline=(255, 255, 255, 255),
+            [(pixel_x - marker_size//2, number_y - marker_size//2),
+             (pixel_x + marker_size//2, number_y + marker_size//2)],
+            fill=(255, 255, 255, 255),
+            outline=(0, 0, 0, 255),
             width=3
         )
         
-        # Draw number in circle
+        # Draw number
         number_text = str(i + 1)
         draw.text(
-            (pixel_x, pixel_y),
+            (pixel_x, number_y),
             number_text,
             fill=(0, 0, 0, 255),
             font=font,
             anchor="mm"
+        )
+        
+        # Draw connecting line from sign to number
+        draw.line(
+            [(pixel_x, pixel_y), (pixel_x, number_y - marker_size//2)],
+            fill=(255, 255, 255, 200),
+            width=2
         )
         
         # Draw label box below marker
