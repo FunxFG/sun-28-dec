@@ -1,0 +1,26 @@
+================================================================================
+SIGNAGE SCHEDULE - King_William_Street_Road_Closure
+Generated: 11 November 2025 at 02:35 PM
+================================================================================
+
+Total Signs: 9
+
+#    Sign Code       Sign Name                                Distance (m) Side    
+--------------------------------------------------------------------------------
+1    T1-1            Road Work Ahead                          0.0          Both    
+2    T1-1            Road Work Ahead                          0.0          Both    
+3    T1-7            Road Closed Ahead                        0.0          Both    
+4    T1-7            Road Closed Ahead                        0.0          Both    
+5    G9-4            Detour (Left Arrow)                      0.0          Both    
+6    G9-4            Detour (Right Arrow)                     0.0          Both    
+7    BARRIER         Road Closed Barricade                    0.0          Both    
+8    BARRIER         Road Closed Barricade                    0.0          Both    
+9    PED-1           Pedestrian Detour                        0.0          Both    
+
+================================================================================
+NOTES:
+- All distances measured from work zone start point
+- Signs must be installed according to AS 1742.3 specifications
+- Bilateral signage required where indicated
+- All signs must be maintained in clean, reflective condition
+================================================================================
