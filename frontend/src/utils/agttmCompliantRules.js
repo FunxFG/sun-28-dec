@@ -197,6 +197,126 @@ export class AGTTMCompliantPlacement {
         longitudinal_alignment: 2,   // ±2m longitudinal alignment tolerance
         required_for_closures: true, // Always required for lane closures
         required_for_warnings: true  // Always required for advance warnings
+      },
+      
+      // SA DIT Field Guide Version 9.1 2021 - Zone Definitions
+      fieldGuideZones: {
+        bufferZone: {
+          length: 20, // BZ - Buffer before advance warning (meters)
+          code: 'BZ',
+          description: 'Safety buffer before advance warning area'
+        },
+        advanceWarningArea: {
+          // AW - Speed-dependent warning zone (Field Guide Table)
+          '40kmh': 5,
+          '60kmh': 50,
+          '80kmh': 90,
+          '100kmh': 150,
+          code: 'AW',
+          description: 'Zone where drivers are alerted to upcoming work'
+        },
+        taperArea: {
+          // TA - AS 1742.3 Table 5.7 Taper Lengths
+          control_taper: {
+            '≤45kmh': 15,
+            '46-55kmh': 15,
+            '56-65kmh': 30
+          },
+          lateral_shift: {
+            '≤45kmh': 5,
+            '46-55kmh': 15,
+            '56-65kmh': 30,
+            '66-75kmh': 70,
+            '76-85kmh': 80,
+            '86-95kmh': 90,
+            '96-105kmh': 100,
+            '≥106kmh': 110
+          },
+          merge_taper: {
+            '≤45kmh': 15,
+            '46-55kmh': 30,
+            '56-65kmh': 60,
+            '66-75kmh': 115,
+            '76-85kmh': 130,
+            '86-95kmh': 145,
+            '96-105kmh': 160,
+            '≥106kmh': 180
+          },
+          code: 'TA',
+          description: 'Gradual lane shift/closure taper'
+        },
+        safetyBuffer: {
+          // SB - Between taper and work area (Field Guide)
+          '40kmh': { min: 20, max: 30 },
+          '60kmh': { min: 30, max: 50 },
+          '80kmh': { min: 50, max: 75 },
+          '100kmh': { min: 75, max: 100 },
+          code: 'SB',
+          description: 'Safety buffer between taper and work area'
+        },
+        workArea: {
+          // WA - Actual work zone
+          code: 'WA',
+          minimumLength: 10,
+          description: 'Area where work is conducted'
+        },
+        terminationArea: {
+          // ML - End of work zone
+          code: 'ML',
+          length: { min: 5, max: 15 },
+          description: 'End road work signage zone'
+        }
+      },
+      
+      // SA DIT Field Guide - Device Spacing by Speed
+      fieldGuideConeSpacing: {
+        '40kmh': 6,   // 6m spacing for low speed zones
+        '50kmh': 9,   // Interpolated
+        '60kmh': 12,  // 12m spacing for medium speed
+        '70kmh': 15,  // Interpolated
+        '80kmh': 18,  // 18m spacing for high speed
+        '90kmh': 21,  // Interpolated
+        '100kmh': 24, // 24m spacing for very high speed
+        '110kmh': 24,
+        description: 'Field Guide cone/delineator spacing'
+      },
+      
+      // SA DIT Field Guide - Clearance Requirements
+      clearanceRequirements: {
+        minimumClearance: 3.0, // meters from traffic to work area (Field Guide)
+        containmentFencing: {
+          required: true,
+          trigger: 'clearance < 3m',
+          type: 'Chain mesh or similar physical barrier',
+          description: 'Required when workers within 3m of live traffic'
+        },
+        workerProtection: {
+          highVisClothing: 'MANDATORY - Cotton drill with reflective tape',
+          barriers: 'Physical separation required',
+          minSeparation: 3.0
+        },
+        speedLimits: {
+          default: 40,     // Default work zone speed (km/h)
+          highHazard: 25,  // High hazard areas (km/h)
+          description: 'Field Guide default speed limits'
+        }
+      },
+      
+      // SA DIT Field Guide - Traffic Controller Requirements
+      trafficControllerRequirements: {
+        oneLayneOperation: {
+          required: true,
+          minControllers: 2, // Both ends for one-lane operations
+          sightDistance: 150, // Minimum sight distance (meters)
+          communicationMethod: ['UHF radio', 'Visual sight'],
+          stopSlowBatons: 'MANDATORY'
+        },
+        positioning: {
+          clearanceFromLive: 1.5, // Minimum 1.5m from live lane
+          escapeRoute: 'REQUIRED',
+          highVisClothing: 'MANDATORY',
+          breaks: 'Regular breaks required'
+        }
       }
     };
 
