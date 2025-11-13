@@ -1439,9 +1439,51 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
     # Add safety compliance and daily checklist (SA DIT Field Guide + Industry Standards 2025)
     safety_compliance = generate_safety_compliance_section()
     daily_checklist = generate_daily_checklist()
-    
     professional_tmp['sections']['12_safety_compliance'] = safety_compliance
     professional_tmp['appendices']['I_daily_checklist'] = daily_checklist
+    
+    # Add dilapidation report
+    location_str = f"{plan.get('work_details', {}).get('start_address', 'Site')} to {plan.get('work_details', {}).get('end_address', '')}"
+    dilapidation_pre = generate_dilapidation_report(location_str, 'pre-construction')
+    professional_tmp['appendices']['J_dilapidation_pre'] = dilapidation_pre
+    
+    # Add traffic volume analysis
+    road_type = comprehensive_data.get('road_data', {}).get('classification', 'arterial')
+    existing_aadt = comprehensive_data.get('traffic_assessment', {}).get('aadt', 5000)
+    traffic_volumes = calculate_traffic_volumes(road_type.lower(), 'urban', existing_aadt)
+    professional_tmp['sections']['13_traffic_volumes'] = traffic_volumes
+    
+    # Add risk assessment
+    speed_limit = plan.get('road_data', {}).get('speed_limit', 60)
+    clearance = 3.0  # Default clearance
+    risk_assessment = generate_risk_assessment(
+        plan.get('work_type', 'Construction'),
+        road_type,
+        speed_limit,
+        existing_aadt,
+        clearance
+    )
+    professional_tmp['sections']['14_risk_assessment'] = risk_assessment
+    
+    # Add permit application
+    applicant_details = {
+        'company_name': plan.get('company_details', {}).get('name', ''),
+        'abn': '',
+        'contact_person': plan.get('company_details', {}).get('contact', ''),
+        'phone': '',
+        'email': '',
+        'address': ''
+    }
+    permit_app = generate_permit_application(
+        location_str,
+        plan.get('work_type', 'Construction'),
+        plan.get('work_details', {}).get('start_date', ''),
+        plan.get('work_details', {}).get('end_date', ''),
+        plan.get('work_details', {}).get('work_hours', '7:00 AM - 6:00 PM'),
+        applicant_details
+    )
+    professional_tmp['appendices']['K_permit_application'] = permit_app
+    professional_tmp['appendices']['L_permit_checklist'] = generate_permit_checklist()
     
     # Create PDF with professional TMP content
     buffer = io.BytesIO()
