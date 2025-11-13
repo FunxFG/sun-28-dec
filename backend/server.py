@@ -1422,6 +1422,10 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
     from tmp_generator import tmp_generator
     from comprehensive_tmp_generator import enhance_tmp_with_comprehensive_data
     from safety_compliance_module import generate_safety_compliance_section, generate_daily_checklist
+    from dilapidation_report_generator import generate_dilapidation_report
+    from traffic_volume_calculator import calculate_traffic_volumes, estimate_construction_traffic, assess_traffic_impact
+    from risk_assessment_module import generate_risk_assessment
+    from permit_management_system import generate_permit_application, generate_permit_checklist
     
     # Generate professional TMP structure
     professional_tmp = tmp_generator.generate_professional_tmp(plan, 'works')
