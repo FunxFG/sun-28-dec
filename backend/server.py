@@ -1432,6 +1432,13 @@ from safety_compliance_module import generate_safety_compliance_section, generat
     if comprehensive_data:
         professional_tmp = enhance_tmp_with_comprehensive_data(professional_tmp, comprehensive_data)
     
+    # Add safety compliance and daily checklist (SA DIT Field Guide + Industry Standards 2025)
+    safety_compliance = generate_safety_compliance_section()
+    daily_checklist = generate_daily_checklist()
+    
+    professional_tmp['sections']['12_safety_compliance'] = safety_compliance
+    professional_tmp['appendices']['I_daily_checklist'] = daily_checklist
+    
     # Create PDF with professional TMP content
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4, 
