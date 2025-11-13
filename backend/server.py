@@ -1421,7 +1421,7 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
     # Import the TMP generator and comprehensive data enhancer
     from tmp_generator import tmp_generator
     from comprehensive_tmp_generator import enhance_tmp_with_comprehensive_data
-from safety_compliance_module import generate_safety_compliance_section, generate_daily_checklist
+    from safety_compliance_module import generate_safety_compliance_section, generate_daily_checklist
     
     # Generate professional TMP structure
     professional_tmp = tmp_generator.generate_professional_tmp(plan, 'works')
