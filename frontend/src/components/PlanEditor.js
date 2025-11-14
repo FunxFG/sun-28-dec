@@ -148,7 +148,12 @@ export default function PlanEditor({ user, onLogout }) {
     public_transport_detailed: null,  // NEW
     utility_infrastructure: null,  // NEW
     location_metadata_system: null,  // NEW: LMS
-    dit_infrastructure_assets: null  // NEW: DIT Assets
+    dit_infrastructure_assets: null,  // NEW: DIT Assets
+    dilapidation_report: null,  // NEW: Professional TMP
+    traffic_volumes: null,  // NEW: Professional TMP
+    comprehensive_risk_assessment: null,  // NEW: Professional TMP
+    permit_application: null,  // NEW: Professional TMP
+    field_guide_zones: null  // NEW: Professional TMP
   });
 
   const [formData, setFormData] = useState({
