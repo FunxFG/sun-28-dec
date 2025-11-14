@@ -2698,6 +2698,153 @@ async def calculate_zones(request: Dict):
         raise HTTPException(status_code=500, detail=str(e))
 
 # ===================================================
+# FOOTPATH CLOSURE TMP ENDPOINTS
+# ===================================================
+
+@api_router.post("/tmp/footpath-closure")
+async def create_footpath_closure_plan(request: Dict):
+    """Generate footpath closure and pedestrian management plan"""
+    try:
+        location = request.get('location', '')
+        work_type = request.get('work_type', 'Footpath Works')
+        closure_type = request.get('closure_type', 'full')  # full or partial
+        detour_width = request.get('detour_width', 1.2)
+        dda_compliant = request.get('dda_compliant', True)
+        duration_days = request.get('duration_days', 1)
+        work_hours = request.get('work_hours', '7am-5pm')
+        traffic_controllers = request.get('traffic_controllers', 2)
+        
+        plan = generate_footpath_closure_plan(
+            location=location,
+            work_type=work_type,
+            closure_type=closure_type,
+            detour_width=detour_width,
+            dda_compliant=dda_compliant,
+            duration_days=duration_days,
+            work_hours=work_hours,
+            traffic_controllers_required=traffic_controllers
+        )
+        
+        return {
+            "status": "success",
+            "plan": plan,
+            "message": f"Footpath closure plan generated for {location}"
+        }
+    except Exception as e:
+        logger.error(f"Error generating footpath closure plan: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/tmp/pedestrian-detour-diagram")
+async def create_pedestrian_detour_diagram(request: Dict):
+    """Generate pedestrian detour diagram data"""
+    try:
+        location = request.get('location', '')
+        detour_length = request.get('detour_length', 50.0)
+        detour_width = request.get('detour_width', 1.2)
+        road_name = request.get('road_name', 'Main Road')
+        intersecting_street = request.get('intersecting_street')
+        
+        diagram_data = generate_pedestrian_detour_diagram_data(
+            location=location,
+            detour_length=detour_length,
+            detour_width=detour_width,
+            road_name=road_name,
+            intersecting_street=intersecting_street
+        )
+        
+        return {
+            "status": "success",
+            "diagram_data": diagram_data,
+            "message": "Pedestrian detour diagram data generated"
+        }
+    except Exception as e:
+        logger.error(f"Error generating pedestrian detour diagram: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ===================================================
+# EMERGENCY TMP ENDPOINTS
+# ===================================================
+
+@api_router.post("/tmp/emergency")
+async def create_emergency_tmp(request: Dict):
+    """Generate emergency traffic management plan"""
+    try:
+        emergency_type = request.get('emergency_type', 'incident')
+        location = request.get('location', '')
+        tier = request.get('initial_tier', 'TIER_1')
+        affected_roads = request.get('affected_roads', [])
+        control_agency = request.get('control_agency', 'TBC')
+        incident_controller = request.get('incident_controller', 'TBC')
+        
+        # Convert tier string to EmergencyTier enum
+        tier_map = {
+            'TIER_1': EmergencyTier.TIER_1,
+            'TIER_2': EmergencyTier.TIER_2,
+            'TIER_3': EmergencyTier.TIER_3,
+            'TIER_4': EmergencyTier.TIER_4,
+            'TIER_5': EmergencyTier.TIER_5
+        }
+        initial_tier = tier_map.get(tier, EmergencyTier.TIER_1)
+        
+        plan = generate_emergency_tmp(
+            emergency_type=emergency_type,
+            location=location,
+            initial_tier=initial_tier,
+            affected_roads=affected_roads,
+            control_agency=control_agency,
+            incident_controller=incident_controller
+        )
+        
+        return {
+            "status": "success",
+            "plan": plan,
+            "message": f"Emergency TMP generated for {emergency_type} at {location}"
+        }
+    except Exception as e:
+        logger.error(f"Error generating emergency TMP: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/tmp/emergency-tiers")
+async def get_emergency_tiers():
+    """Get information about emergency access tiers"""
+    try:
+        tiers = {
+            "TIER_1": {
+                "name": "Emergency Services Only",
+                "risk_level": "Extreme",
+                "description": "Road closed due to extreme safety risk"
+            },
+            "TIER_2": {
+                "name": "Essential Services, Media with Escort",
+                "risk_level": "High",
+                "description": "High risk - Essential services and escorted media only"
+            },
+            "TIER_3": {
+                "name": "Residents, Relief/Recovery, Media",
+                "risk_level": "Medium",
+                "description": "Medium risk - Residents can return with authorization"
+            },
+            "TIER_4": {
+                "name": "Residents, Relief/Recovery, Media",
+                "risk_level": "Low",
+                "description": "Low risk - Road open to residents and support services"
+            },
+            "TIER_5": {
+                "name": "Road Open with Caution",
+                "risk_level": "Very Low",
+                "description": "Road open to all with caution advised"
+            }
+        }
+        
+        return {
+            "status": "success",
+            "tiers": tiers
+        }
+    except Exception as e:
+        logger.error(f"Error getting emergency tiers: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ===================================================
 # FILE DOWNLOAD ENDPOINTS FOR TMP OUTPUTS
 # ===================================================
 
