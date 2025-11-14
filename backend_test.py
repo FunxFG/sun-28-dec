@@ -3551,16 +3551,234 @@ class SafeRoadWorksAPITester:
             return True
         return False
 
+    def test_worksite_tmp_generation(self):
+        """Test worksite TMP generation endpoint"""
+        test_data = {
+            "location": "South Road, Adelaide",
+            "work_type": "Road Resurfacing",
+            "posted_speed": 80,
+            "reduced_speed": 60,
+            "lane_closure": True,
+            "lane_closure_type": "merge",
+            "work_duration_days": 5,
+            "work_hours": "7am-5pm",
+            "workers_present": True,
+            "traffic_control_required": True,
+            "night_works": False
+        }
+        
+        success, response = self.run_test(
+            "Worksite TMP Generation",
+            "POST",
+            "tmp/worksite",
+            200,
+            data=test_data
+        )
+        
+        if success and 'plan' in response:
+            plan = response['plan']
+            print(f"   Plan ID: {plan.get('plan_id', 'Unknown')}")
+            
+            # Check required sections
+            required_sections = [
+                'speed_management', 'sign_spacing_and_tapers', 'worksite_signage',
+                'lane_management', 'traffic_control', 'delineation_and_barriers',
+                'worker_safety', 'setup_and_removal', 'compliance'
+            ]
+            
+            missing_sections = [section for section in required_sections if section not in plan]
+            if missing_sections:
+                print(f"   ❌ Missing required sections: {missing_sections}")
+                return False
+            
+            # Verify speed management
+            speed_mgmt = plan.get('speed_management', {})
+            if speed_mgmt.get('posted_speed') == 80 and speed_mgmt.get('reduced_speed') == 60:
+                print(f"   ✅ Speed management: {speed_mgmt['posted_speed']} → {speed_mgmt['reduced_speed']} km/h")
+            else:
+                print(f"   ❌ Speed management incorrect: {speed_mgmt}")
+                return False
+            
+            # Verify sign spacing and tapers
+            sign_spacing = plan.get('sign_spacing_and_tapers', {})
+            advance_signs = sign_spacing.get('advance_warning_signs', {})
+            
+            required_signs = ['roadwork_ahead', 'speed_limit_ahead', 'prepare_to_stop']
+            missing_signs = [sign for sign in required_signs if sign not in advance_signs]
+            if missing_signs:
+                print(f"   ❌ Missing advance warning signs: {missing_signs}")
+                return False
+            
+            # Check taper specifications
+            taper_specs = sign_spacing.get('taper_specifications', {})
+            merge_taper = taper_specs.get('merge_taper', {})
+            if merge_taper and 'length_meters' in merge_taper:
+                print(f"   ✅ Merge taper length: {merge_taper['length_meters']}m")
+            else:
+                print(f"   ❌ Missing merge taper specifications")
+                return False
+            
+            # Verify worksite signage
+            worksite_signage = plan.get('worksite_signage', {})
+            required_worksite_signs = ['reduced_speed_limit', 'symbolic_workers', 'symbolic_traffic_controller']
+            missing_worksite_signs = [sign for sign in required_worksite_signs if sign not in worksite_signage]
+            if missing_worksite_signs:
+                print(f"   ❌ Missing worksite signage: {missing_worksite_signs}")
+                return False
+            
+            # Verify lane management
+            lane_mgmt = plan.get('lane_management', {})
+            if lane_mgmt.get('closure_type') == 'merge':
+                print(f"   ✅ Lane management: {lane_mgmt['closure_type']} closure")
+            else:
+                print(f"   ❌ Lane management incorrect: {lane_mgmt}")
+                return False
+            
+            # Verify traffic control
+            traffic_control = plan.get('traffic_control', {})
+            controller_positions = traffic_control.get('controller_positions', [])
+            if traffic_control.get('controllers_required') and controller_positions:
+                print(f"   ✅ Traffic control positions: {len(controller_positions)} positions")
+            else:
+                print(f"   ❌ Traffic control setup incorrect")
+                return False
+            
+            # Verify worker safety
+            worker_safety = plan.get('worker_safety', {})
+            proximity_req = worker_safety.get('proximity_to_traffic', {})
+            if proximity_req and 'maximum_proximity' in proximity_req:
+                print(f"   ✅ Worker safety proximity requirements: {proximity_req['maximum_proximity']}")
+            else:
+                print(f"   ❌ Worker safety requirements missing")
+                return False
+            
+            # Verify compliance
+            compliance = plan.get('compliance', {})
+            standards = compliance.get('standards', [])
+            if any('AS 1742.3:2019' in std for std in standards) and any('VicRoads Traffic Management Note No. 33' in std for std in standards):
+                print(f"   ✅ Compliance standards include AS 1742.3:2019 and VicRoads Note 33")
+            else:
+                print(f"   ❌ Missing required compliance standards")
+                return False
+            
+            print(f"   ✅ All worksite TMP requirements verified")
+            return True
+        return False
+
+    def test_sign_spacing_calculator(self):
+        """Test sign spacing calculator endpoint"""
+        test_data = {
+            "posted_speed": 100,
+            "reduced_speed": 60,
+            "road_type": "freeway",
+            "lane_closure": True,
+            "workers_present": True,
+            "traffic_control_required": True
+        }
+        
+        success, response = self.run_test(
+            "Sign Spacing Calculator",
+            "POST",
+            "tmp/sign-spacing",
+            200,
+            data=test_data
+        )
+        
+        if success and 'calculations' in response:
+            calculations = response['calculations']
+            print(f"   Calculation ID: {calculations.get('calculation_id', 'Unknown')}")
+            
+            # Check advance warning signs
+            advance_signs = calculations.get('advance_warning_signs', {})
+            required_signs = ['roadwork_ahead', 'speed_limit_ahead', 'prepare_to_stop']
+            
+            for sign in required_signs:
+                if sign in advance_signs:
+                    sign_data = advance_signs[sign]
+                    distance = sign_data.get('distance_to_worksite')
+                    if distance:
+                        print(f"   ✅ {sign.replace('_', ' ').title()}: {distance}m")
+                    else:
+                        print(f"   ❌ Missing distance for {sign}")
+                        return False
+                else:
+                    print(f"   ❌ Missing {sign} in advance warning signs")
+                    return False
+            
+            # Check taper specifications
+            taper_specs = calculations.get('taper_specifications', {})
+            merge_taper = taper_specs.get('merge_taper', {})
+            lateral_shift_taper = taper_specs.get('lateral_shift_taper', {})
+            
+            if merge_taper and 'length_meters' in merge_taper:
+                print(f"   ✅ Merge taper length: {merge_taper['length_meters']}m")
+            else:
+                print(f"   ❌ Missing merge taper specifications")
+                return False
+            
+            if lateral_shift_taper and 'length_meters' in lateral_shift_taper:
+                print(f"   ✅ Lateral shift taper length: {lateral_shift_taper['length_meters']}m")
+            else:
+                print(f"   ❌ Missing lateral shift taper specifications")
+                return False
+            
+            # Check safety buffer
+            safety_buffer = calculations.get('safety_buffer', {})
+            buffer_distance = safety_buffer.get('distance')
+            if buffer_distance:
+                print(f"   ✅ Safety buffer distance: {buffer_distance}m")
+            else:
+                print(f"   ❌ Missing safety buffer distance")
+                return False
+            
+            # Check worker safety requirements
+            worker_safety = calculations.get('worker_safety_requirements', {})
+            high_vis = worker_safety.get('high_visibility_clothing', {})
+            proximity = worker_safety.get('proximity_to_traffic', {})
+            
+            if high_vis.get('required') and proximity.get('maximum_proximity'):
+                print(f"   ✅ Worker safety requirements: High-vis required, proximity {proximity['maximum_proximity']}")
+            else:
+                print(f"   ❌ Incomplete worker safety requirements")
+                return False
+            
+            # Verify distance calculations are appropriate for speed zones
+            roadwork_distance = advance_signs['roadwork_ahead']['distance_to_worksite']
+            speed_limit_distance = advance_signs['speed_limit_ahead']['distance_to_worksite']
+            prepare_stop_distance = advance_signs['prepare_to_stop']['distance_to_worksite']
+            
+            # For 100 km/h posted speed, expect reasonable distances
+            if 300 <= roadwork_distance <= 500:
+                print(f"   ✅ Roadwork ahead distance appropriate for 100 km/h: {roadwork_distance}m")
+            else:
+                print(f"   ⚠️ Roadwork ahead distance may be inappropriate: {roadwork_distance}m")
+            
+            if 200 <= speed_limit_distance <= 300:
+                print(f"   ✅ Speed limit ahead distance appropriate: {speed_limit_distance}m")
+            else:
+                print(f"   ⚠️ Speed limit ahead distance may be inappropriate: {speed_limit_distance}m")
+            
+            if 100 <= prepare_stop_distance <= 200:
+                print(f"   ✅ Prepare to stop distance appropriate: {prepare_stop_distance}m")
+            else:
+                print(f"   ⚠️ Prepare to stop distance may be inappropriate: {prepare_stop_distance}m")
+            
+            print(f"   ✅ All sign spacing calculations verified")
+            return True
+        return False
+
     def test_specialized_tmp_endpoints_comprehensive(self):
         """Comprehensive test of all specialized TMP endpoints"""
         print(f"\n🎯 Testing Specialized TMP Generation Endpoints...")
         
-        # Test all 4 endpoints
+        # Test all 6 endpoints (including new worksite TMP endpoints)
         tests = [
             ("Footpath Closure TMP", self.test_footpath_closure_tmp),
             ("Pedestrian Detour Diagram", self.test_pedestrian_detour_diagram),
             ("Emergency TMP", self.test_emergency_tmp),
-            ("Emergency Tiers Information", self.test_emergency_tiers_info)
+            ("Emergency Tiers Information", self.test_emergency_tiers_info),
+            ("Worksite TMP Generation", self.test_worksite_tmp_generation),
+            ("Sign Spacing Calculator", self.test_sign_spacing_calculator)
         ]
         
         passed_tests = 0
