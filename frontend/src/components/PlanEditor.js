@@ -895,9 +895,9 @@ export default function PlanEditor({ user, onLogout }) {
       // Fetch Dilapidation Report
       try {
         const dilapidationResponse = await axios.post(`${API}/dilapidation/generate`, {
-          location: formData.work_details.start_address,
+          location: formData?.work_details?.start_address || 'TBC',
           report_type: 'pre-construction',
-          inspector_name: formData.company_details?.name || 'TBC'
+          inspector_name: formData?.company_details?.name || 'TBC'
         });
         setComprehensiveData(prev => ({
           ...prev,
@@ -910,9 +910,9 @@ export default function PlanEditor({ user, onLogout }) {
       // Fetch Traffic Volumes
       try {
         const volumesResponse = await axios.post(`${API}/traffic-volume/calculate`, {
-          road_type: roadData.road_classification?.toLowerCase() || 'arterial',
+          road_type: roadData?.road_classification?.toLowerCase() || 'arterial',
           location_type: 'urban',
-          existing_aadt: trafficData.aadt || 10000
+          existing_aadt: trafficData?.aadt || 10000
         });
         setComprehensiveData(prev => ({
           ...prev,
@@ -925,10 +925,10 @@ export default function PlanEditor({ user, onLogout }) {
       // Fetch Comprehensive Risk Assessment
       try {
         const riskResponse = await axios.post(`${API}/risk-assessment/generate`, {
-          work_type: formData.work_details.work_type || 'construction',
-          road_classification: roadData.road_classification || 'arterial',
-          speed_limit: roadData.speed_limit || 60,
-          traffic_volume: trafficData.aadt || 10000,
+          work_type: formData?.work_details?.work_type || 'construction',
+          road_classification: roadData?.road_classification || 'arterial',
+          speed_limit: roadData?.speed_limit || 60,
+          traffic_volume: trafficData?.aadt || 10000,
           clearance: 3.0,
           weather_conditions: 'normal'
         });
@@ -943,17 +943,17 @@ export default function PlanEditor({ user, onLogout }) {
       // Fetch Permit Application
       try {
         const permitResponse = await axios.post(`${API}/permit/application`, {
-          location: formData.work_details.start_address,
-          work_type: formData.work_details.work_type || 'Lane Closure',
-          start_date: formData.work_details.start_date || '01/01/2025',
-          end_date: formData.work_details.end_date || '31/12/2025',
+          location: formData?.work_details?.start_address || 'TBC',
+          work_type: formData?.work_details?.work_type || 'Lane Closure',
+          start_date: formData?.work_details?.start_date || '01/01/2025',
+          end_date: formData?.work_details?.end_date || '31/12/2025',
           work_hours: '7am-5pm',
           applicant_details: {
-            company_name: formData.company_details?.name || 'TBC',
-            abn: formData.company_details?.abn || 'TBC',
-            contact_person: formData.company_details?.liaison_name || 'TBC',
-            phone: formData.company_details?.phone || 'TBC',
-            email: formData.company_details?.liaison_email || 'TBC'
+            company_name: formData?.company_details?.name || 'TBC',
+            abn: formData?.company_details?.abn || 'TBC',
+            contact_person: formData?.company_details?.liaison_name || 'TBC',
+            phone: formData?.company_details?.phone || 'TBC',
+            email: formData?.company_details?.liaison_email || 'TBC'
           }
         });
         setComprehensiveData(prev => ({
@@ -967,9 +967,9 @@ export default function PlanEditor({ user, onLogout }) {
       // Fetch Field Guide Zones
       try {
         const zonesResponse = await axios.post(`${API}/field-guide/calculate-zones`, {
-          speed_limit: roadData.speed_limit || 60,
-          work_length: roadData.workzone_size || 100,
-          lane_closure: formData.road_occupancy?.lane_closure === true
+          speed_limit: roadData?.speed_limit || 60,
+          work_length: roadData?.workzone_size || 100,
+          lane_closure: formData?.road_occupancy?.lane_closure === true
         });
         setComprehensiveData(prev => ({
           ...prev,
