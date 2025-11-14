@@ -3355,6 +3355,256 @@ export default function PlanEditor({ user, onLogout }) {
                 </CardContent>
               </Card>
             )}
+            {/* NEW: Dilapidation Report Card */}
+            {comprehensiveData.dilapidation_report && (
+              <Card className="border-l-4 border-l-purple-500">
+                <CardHeader>
+                  <CardTitle className="text-purple-700">📋 Dilapidation Report</CardTitle>
+                  <CardDescription>Pre/Post-construction road condition assessment</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="bg-purple-50 border border-purple-200 p-3 rounded">
+                    <div className="font-semibold mb-2">Report Details</div>
+                    <div className="space-y-1 text-sm">
+                      <div><span className="text-gray-600">Type:</span> {comprehensiveData.dilapidation_report.report_type}</div>
+                      <div><span className="text-gray-600">Location:</span> {comprehensiveData.dilapidation_report.location}</div>
+                      <div><span className="text-gray-600">Inspector:</span> {comprehensiveData.dilapidation_report.inspector || 'TBC'}</div>
+                    </div>
+                  </div>
+
+                  {comprehensiveData.dilapidation_report.defect_categories?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">Defect Categories</h4>
+                      <div className="space-y-2">
+                        {comprehensiveData.dilapidation_report.defect_categories.slice(0, 3).map((category, idx) => (
+                          <div key={idx} className="bg-white border border-gray-200 p-2 rounded">
+                            <div className="font-medium text-sm">{category.category}</div>
+                            <div className="text-xs text-gray-600">
+                              {category.types?.length || 0} defect types tracked
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <Button
+                    onClick={() => downloadJSON(comprehensiveData.dilapidation_report, 'dilapidation_report.json')}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Dilapidation Report
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* NEW: Traffic Volumes Card */}
+            {comprehensiveData.traffic_volumes && (
+              <Card className="border-l-4 border-l-blue-500">
+                <CardHeader>
+                  <CardTitle className="text-blue-700">🚗 Traffic Volume Analysis</CardTitle>
+                  <CardDescription>AADT and construction traffic calculations</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {comprehensiveData.traffic_volumes.existing_traffic && (
+                    <div className="bg-blue-50 border border-blue-200 p-3 rounded">
+                      <div className="font-semibold mb-2">Existing Traffic</div>
+                      <div className="space-y-1 text-sm">
+                        <div><span className="text-gray-600">AADT:</span> <span className="font-bold">{comprehensiveData.traffic_volumes.existing_traffic.aadt?.toLocaleString()}</span> vehicles/day</div>
+                        <div><span className="text-gray-600">Peak Hour:</span> {comprehensiveData.traffic_volumes.existing_traffic.peak_hour_volume?.toLocaleString()} vehicles</div>
+                        <div><span className="text-gray-600">Commercial:</span> {comprehensiveData.traffic_volumes.existing_traffic.commercial_percentage}%</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {comprehensiveData.traffic_volumes.construction_phase && (
+                    <div className="bg-orange-50 border border-orange-200 p-3 rounded">
+                      <div className="font-semibold mb-2">Construction Traffic</div>
+                      <div className="space-y-1 text-sm">
+                        <div><span className="text-gray-600">Daily Vehicles:</span> {comprehensiveData.traffic_volumes.construction_phase.daily_total}</div>
+                        <div><span className="text-gray-600">Heavy Vehicles:</span> {comprehensiveData.traffic_volumes.construction_phase.heavy_percentage}%</div>
+                      </div>
+                    </div>
+                  )}
+
+                  <Button
+                    onClick={() => downloadJSON(comprehensiveData.traffic_volumes, 'traffic_volumes.json')}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Traffic Volume Data
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* NEW: Comprehensive Risk Assessment Card */}
+            {comprehensiveData.comprehensive_risk_assessment && (
+              <Card className="border-l-4 border-l-red-500">
+                <CardHeader>
+                  <CardTitle className="text-red-700">⚠️ Comprehensive Risk Assessment</CardTitle>
+                  <CardDescription>SA DIT Field Guide compliant hazard analysis</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {comprehensiveData.comprehensive_risk_assessment.overall_risk_level && (
+                    <div className={`border p-3 rounded ${
+                      comprehensiveData.comprehensive_risk_assessment.overall_risk_level.includes('Extreme')
+                        ? 'bg-red-50 border-red-300'
+                        : comprehensiveData.comprehensive_risk_assessment.overall_risk_level.includes('High')
+                        ? 'bg-orange-50 border-orange-300'
+                        : 'bg-yellow-50 border-yellow-300'
+                    }`}>
+                      <div className="font-semibold mb-1">Overall Risk Level</div>
+                      <div className="text-sm">{comprehensiveData.comprehensive_risk_assessment.overall_risk_level}</div>
+                    </div>
+                  )}
+
+                  {comprehensiveData.comprehensive_risk_assessment.identified_hazards?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">Identified Hazards ({comprehensiveData.comprehensive_risk_assessment.identified_hazards.length})</h4>
+                      <div className="space-y-2">
+                        {comprehensiveData.comprehensive_risk_assessment.identified_hazards.slice(0, 3).map((hazard, idx) => (
+                          <div key={idx} className={`border p-2 rounded ${
+                            hazard.risk_rating === 'Extreme' ? 'bg-red-50 border-red-300' :
+                            hazard.risk_rating === 'High' ? 'bg-orange-50 border-orange-300' :
+                            hazard.risk_rating === 'Medium' ? 'bg-yellow-50 border-yellow-300' :
+                            'bg-green-50 border-green-300'
+                          }`}>
+                            <div className="font-medium text-sm">{hazard.hazard}</div>
+                            <div className="text-xs text-gray-600">{hazard.description}</div>
+                            <div className="text-xs mt-1">
+                              <span className="font-medium">Risk:</span> {hazard.risk_rating} (L:{hazard.likelihood} × C:{hazard.consequence})
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <Button
+                    onClick={() => downloadJSON(comprehensiveData.comprehensive_risk_assessment, 'risk_assessment.json')}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Risk Assessment
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* NEW: DIT TMC Permit Application Card */}
+            {comprehensiveData.permit_application && (
+              <Card className="border-l-4 border-l-green-500">
+                <CardHeader>
+                  <CardTitle className="text-green-700">📋 DIT TMC Permit Application</CardTitle>
+                  <CardDescription>Traffic Management Centre permit details</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {comprehensiveData.permit_application.permit_application && (
+                    <div className="bg-green-50 border border-green-200 p-3 rounded">
+                      <div className="font-semibold mb-2">Application Details</div>
+                      <div className="space-y-1 text-sm">
+                        <div><span className="text-gray-600">Application ID:</span> {comprehensiveData.permit_application.permit_application.application_id}</div>
+                        <div><span className="text-gray-600">Status:</span> {comprehensiveData.permit_application.permit_application.status}</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {comprehensiveData.permit_application.authority_information && (
+                    <div className="bg-blue-50 border border-blue-200 p-3 rounded">
+                      <div className="font-semibold mb-2">DIT TMC Contact</div>
+                      <div className="space-y-1 text-sm">
+                        <div>📞 {comprehensiveData.permit_application.authority_information.traffic_management_centre?.phone}</div>
+                        <div>📧 {comprehensiveData.permit_application.authority_information.traffic_management_centre?.email}</div>
+                        <div className="text-xs text-gray-600 mt-2">
+                          Processing time: {comprehensiveData.permit_application.authority_information.processing_time}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {comprehensiveData.permit_application.critical_dit_requirements && (
+                    <div className="bg-red-50 border-2 border-red-300 p-3 rounded">
+                      <div className="font-bold text-red-900 mb-1">⚠️ CRITICAL REQUIREMENTS</div>
+                      <div className="text-xs text-red-800 space-y-1">
+                        <div>• Continuous traffic flow MUST be maintained</div>
+                        <div>• All controllers must be accredited</div>
+                        <div>• Roadworks App logging MANDATORY</div>
+                      </div>
+                    </div>
+                  )}
+
+                  <Button
+                    onClick={() => downloadJSON(comprehensiveData.permit_application, 'permit_application.json')}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Permit Application
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* NEW: Field Guide Zones Card */}
+            {comprehensiveData.field_guide_zones && (
+              <Card className="border-l-4 border-l-indigo-500">
+                <CardHeader>
+                  <CardTitle className="text-indigo-700">📏 SA DIT Field Guide Zones</CardTitle>
+                  <CardDescription>Austroads-compliant zone layout calculations</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="bg-indigo-50 border border-indigo-200 p-3 rounded">
+                    <div className="font-semibold mb-2">Zone Layout Summary</div>
+                    <div className="space-y-1 text-sm">
+                      <div><span className="text-gray-600">Speed Limit:</span> {comprehensiveData.field_guide_zones.speed_limit} km/h</div>
+                      <div><span className="text-gray-600">Work Length:</span> {comprehensiveData.field_guide_zones.work_length}m</div>
+                      <div><span className="text-gray-600">Total Setup:</span> {comprehensiveData.field_guide_zones.total_setup_length}m</div>
+                    </div>
+                  </div>
+
+                  {comprehensiveData.field_guide_zones.zones && (
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">Zone Breakdown</h4>
+                      <div className="space-y-2">
+                        {Object.entries(comprehensiveData.field_guide_zones.zones).slice(0, 5).map(([key, zone], idx) => (
+                          <div key={idx} className="bg-white border border-gray-200 p-2 rounded">
+                            <div className="font-medium text-sm">{zone.name} ({zone.code})</div>
+                            <div className="text-xs text-gray-600">Length: {zone.length}m</div>
+                            <div className="text-xs text-gray-500">{zone.description}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {comprehensiveData.field_guide_zones.compliance && (
+                    <div className="bg-green-50 border border-green-200 p-2 rounded text-xs">
+                      <span className="text-gray-600">Compliance:</span> {comprehensiveData.field_guide_zones.compliance}
+                    </div>
+                  )}
+
+                  <Button
+                    onClick={() => downloadJSON(comprehensiveData.field_guide_zones, 'field_guide_zones.json')}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Zone Data
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+
             {/* END AUTO-POPULATED DATA SECTION */}
 
           {/* Right Panel - Map and Devices */}
