@@ -3403,6 +3403,17 @@ def main():
         ("SA Traffic Intelligence - Comprehensive Fields", tester.test_sa_traffic_intelligence_comprehensive_fields),
         ("SA Traffic Intelligence - Performance Test", tester.test_sa_traffic_intelligence_performance),
         
+        # 13. NEW TMP PROFESSIONAL ENDPOINTS TESTS (Review Request)
+        ("Dilapidation Report Generation", tester.test_dilapidation_generate),
+        ("Dilapidation Severity Calculation", tester.test_dilapidation_severity),
+        ("Traffic Volume Calculation", tester.test_traffic_volume_calculate),
+        ("Construction Traffic Estimation", tester.test_traffic_volume_construction),
+        ("Traffic Impact Assessment", tester.test_traffic_volume_impact),
+        ("Comprehensive Risk Assessment", tester.test_comprehensive_risk_assessment),
+        ("Permit Application Generation", tester.test_permit_application),
+        ("Permit Checklist", tester.test_permit_checklist),
+        ("Field Guide Zone Calculation", tester.test_field_guide_calculate_zones),
+        
         # Clean up
         ("Delete Plan", tester.test_delete_plan),
     ]
