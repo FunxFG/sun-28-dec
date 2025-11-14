@@ -3712,6 +3712,80 @@ export default function PlanEditor({ user, onLogout }) {
 
             {/* END AUTO-POPULATED DATA SECTION */}
 
+            {/* Final Create TMP Button */}
+            {autoPopulationComplete && (
+              <Card className="border-4 border-green-500 bg-gradient-to-r from-green-50 to-emerald-50">
+                <CardContent className="p-6">
+                  <div className="text-center space-y-4">
+                    <div className="flex justify-center">
+                      <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
+                        <FileText className="w-8 h-8 text-white" />
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-green-900 mb-2">
+                        Ready to Generate Your Professional TMP
+                      </h3>
+                      <p className="text-gray-700 mb-1">
+                        All data has been auto-populated and is ready for final generation
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        This will create a comprehensive PDF including all professional sections:
+                        Dilapidation Reports, Risk Assessment, Permit Application, and Field Guide Zones
+                      </p>
+                    </div>
+                    
+                    <div className="flex gap-4 justify-center pt-2">
+                      <Button
+                        onClick={handleSave}
+                        disabled={saving}
+                        className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white text-lg px-8 py-6 h-auto"
+                      >
+                        {saving ? (
+                          <>
+                            <RefreshCw className="w-5 h-5 mr-2 animate-spin" />
+                            Generating TMP...
+                          </>
+                        ) : (
+                          <>
+                            <FileText className="w-5 h-5 mr-2" />
+                            Create Professional TMP
+                          </>
+                        )}
+                      </Button>
+                      
+                      <Button
+                        variant="outline"
+                        onClick={() => setShowAutoPopulatedData(!showAutoPopulatedData)}
+                        className="text-lg px-6 py-6 h-auto"
+                      >
+                        <Eye className="w-5 h-5 mr-2" />
+                        {showAutoPopulatedData ? 'Hide' : 'Review'} All Data
+                      </Button>
+                    </div>
+
+                    <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg text-sm text-left">
+                      <div className="font-semibold mb-2 text-blue-900">📋 Your TMP will include:</div>
+                      <div className="grid grid-cols-2 gap-2 text-xs text-blue-800">
+                        <div>✓ Company & Project Details</div>
+                        <div>✓ Traffic Volume Analysis</div>
+                        <div>✓ Road & Site Assessment</div>
+                        <div>✓ Comprehensive Risk Assessment</div>
+                        <div>✓ Dilapidation Report</div>
+                        <div>✓ DIT TMC Permit Application</div>
+                        <div>✓ Field Guide Zone Layout</div>
+                        <div>✓ Traffic Control Devices</div>
+                        <div>✓ Pedestrian Controls</div>
+                        <div>✓ Emergency Procedures</div>
+                        <div>✓ SA Government Datasets</div>
+                        <div>✓ Austroads Compliance</div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
           {/* Right Panel - Map and Devices */}
           <div className="space-y-6">
             {/* Map */}
