@@ -656,17 +656,20 @@ metadata:
 
 test_plan:
   current_focus:
-    - "SA Traffic Intelligence UI Display (Frontend Testing)"
-    - "Comprehensive End-to-End Testing with Professional TMP Standards"
-    - "Visual TGS with Sign Overlays Testing"
+    - "Dilapidation Report API Endpoints"
+    - "Traffic Volume Calculator API Endpoints"
+    - "Comprehensive Risk Assessment API Endpoint"
+    - "Permit Management API Endpoints"
+    - "Field Guide Placement Engine API Endpoint"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
   test_all: false
   test_priority: "high_first"
-  backend_testing_complete: true
+  backend_testing_complete: false
   sa_datasets_testing_complete: true
   professional_tmp_analysis_complete: true
   auto_placement_error_fix_verified: true
+  new_modules_integration_phase: true
 
 agent_communication:
   - agent: "main"
