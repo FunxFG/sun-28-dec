@@ -165,7 +165,7 @@ print("Generating Visual TGS with detour routes...")
 print("-" * 80)
 
 response = requests.post(
-    "https://traffic-plan-mapper.preview.emergentagent.com/api/tgs/generate-improved",
+    "https://tmp-generator.preview.emergentagent.com/api/tgs/generate-improved",
     json={
         "center_lat": center_lat,
         "center_lng": center_lng,
@@ -182,10 +182,10 @@ if response.status_code == 200:
     print("📥 Download Links:")
     print()
     print("PNG:")
-    print(f"https://traffic-plan-mapper.preview.emergentagent.com/api/downloads/file/{result['png_filename']}")
+    print(f"https://tmp-generator.preview.emergentagent.com/api/downloads/file/{result['png_filename']}")
     print()
     print("PDF:")
-    print(f"https://traffic-plan-mapper.preview.emergentagent.com/api/downloads/file/{result['pdf_filename']}")
+    print(f"https://tmp-generator.preview.emergentagent.com/api/downloads/file/{result['pdf_filename']}")
     print()
     print("🗺️ This TGS shows:")
     print("  - Actual King William Street satellite imagery")

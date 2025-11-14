@@ -46,7 +46,7 @@ import {
 } from './TMPFormSections';
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://traffic-plan-mapper.preview.emergentagent.com';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://tmp-generator.preview.emergentagent.com';
 const API = `${BACKEND_URL}/api`;
 
 // Download helper functions

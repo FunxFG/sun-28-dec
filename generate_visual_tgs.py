@@ -8,7 +8,7 @@ import json
 import base64
 from pathlib import Path
 
-BASE_URL = "https://traffic-plan-mapper.preview.emergentagent.com"
+BASE_URL = "https://tmp-generator.preview.emergentagent.com"
 API_URL = f"{BASE_URL}/api"
 
 def generate_visual_tgs():
@@ -151,10 +151,10 @@ if __name__ == "__main__":
         print("📥 DOWNLOAD YOUR VISUAL TGS:")
         print()
         print("   PNG (Satellite Image):")
-        print("   https://traffic-plan-mapper.preview.emergentagent.com/api/downloads/file/King_William_Street_Road_Closure_Visual_TGS_XXXXXX_TGS_Drawing.png")
+        print("   https://tmp-generator.preview.emergentagent.com/api/downloads/file/King_William_Street_Road_Closure_Visual_TGS_XXXXXX_TGS_Drawing.png")
         print()
         print("   PDF (Professional Format):")
-        print("   https://traffic-plan-mapper.preview.emergentagent.com/api/downloads/file/King_William_Street_Road_Closure_Visual_TGS_XXXXXX_TGS_Drawing.pdf")
+        print("   https://tmp-generator.preview.emergentagent.com/api/downloads/file/King_William_Street_Road_Closure_Visual_TGS_XXXXXX_TGS_Drawing.pdf")
         print()
         print("   (Replace XXXXXX with actual timestamp from filenames above)")
         print()

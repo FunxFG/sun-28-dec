@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { toast } from 'sonner';
 import { Shield, MapPin, Users, CheckCircle } from 'lucide-react';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://traffic-plan-mapper.preview.emergentagent.com';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://tmp-generator.preview.emergentagent.com';
 const API = `${BACKEND_URL}/api`;
 
 export default function AuthPage({ onLogin, onGuestLogin }) {
