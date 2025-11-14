@@ -2465,6 +2465,231 @@ async def proxy_weather_forecast(lat: float, lon: float):
         raise HTTPException(status_code=500, detail=str(e))
 
 # ===================================================
+# DILAPIDATION REPORT ENDPOINTS
+# ===================================================
+
+@api_router.post("/dilapidation/generate")
+async def create_dilapidation_report(request: Dict):
+    """
+    Generate dilapidation report (pre or post-construction)
+    """
+    try:
+        location = request.get('location', '')
+        report_type = request.get('report_type', 'pre-construction')
+        inspector_name = request.get('inspector_name', '')
+        photos = request.get('photos', [])
+        
+        report = generate_dilapidation_report(
+            location=location,
+            report_type=report_type,
+            inspector_name=inspector_name,
+            photos=photos
+        )
+        
+        return {
+            "status": "success",
+            "report": report,
+            "message": f"{report_type} dilapidation report generated successfully"
+        }
+    except Exception as e:
+        logger.error(f"Error generating dilapidation report: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/dilapidation/severity")
+async def calculate_severity(request: Dict):
+    """Calculate defect severity score"""
+    try:
+        defects = request.get('defects', [])
+        severity_data = calculate_defect_severity_score(defects)
+        return {
+            "status": "success",
+            "severity": severity_data
+        }
+    except Exception as e:
+        logger.error(f"Error calculating severity: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ===================================================
+# TRAFFIC VOLUME CALCULATOR ENDPOINTS
+# ===================================================
+
+@api_router.post("/traffic-volume/calculate")
+async def calculate_volumes(request: Dict):
+    """Calculate traffic volumes for TMP"""
+    try:
+        road_type = request.get('road_type', 'arterial')
+        location_type = request.get('location_type', 'urban')
+        existing_aadt = request.get('existing_aadt')
+        commercial_percentage = request.get('commercial_percentage')
+        
+        volumes = calculate_traffic_volumes(
+            road_type=road_type,
+            location_type=location_type,
+            existing_aadt=existing_aadt,
+            commercial_percentage=commercial_percentage
+        )
+        
+        return {
+            "status": "success",
+            "traffic_volumes": volumes
+        }
+    except Exception as e:
+        logger.error(f"Error calculating traffic volumes: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/traffic-volume/construction")
+async def estimate_construction(request: Dict):
+    """Estimate construction traffic generation"""
+    try:
+        project_duration_months = request.get('project_duration_months', 12)
+        construction_type = request.get('construction_type', 'infrastructure')
+        project_size = request.get('project_size', 'medium')
+        
+        construction_traffic = estimate_construction_traffic(
+            project_duration_months=project_duration_months,
+            construction_type=construction_type,
+            project_size=project_size
+        )
+        
+        return {
+            "status": "success",
+            "construction_traffic": construction_traffic
+        }
+    except Exception as e:
+        logger.error(f"Error estimating construction traffic: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/traffic-volume/impact")
+async def assess_impact(request: Dict):
+    """Assess traffic impact of construction"""
+    try:
+        existing_aadt = request.get('existing_aadt', 5000)
+        construction_vehicles_daily = request.get('construction_vehicles_daily', 100)
+        road_type = request.get('road_type', 'arterial')
+        
+        impact = assess_traffic_impact(
+            existing_aadt=existing_aadt,
+            construction_vehicles_daily=construction_vehicles_daily,
+            road_type=road_type
+        )
+        
+        return {
+            "status": "success",
+            "traffic_impact": impact
+        }
+    except Exception as e:
+        logger.error(f"Error assessing traffic impact: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ===================================================
+# COMPREHENSIVE RISK ASSESSMENT ENDPOINTS
+# ===================================================
+
+@api_router.post("/risk-assessment/generate")
+async def generate_comprehensive_risk(request: Dict):
+    """Generate comprehensive risk assessment"""
+    try:
+        work_type = request.get('work_type', 'construction')
+        road_classification = request.get('road_classification', 'arterial')
+        speed_limit = request.get('speed_limit', 60)
+        traffic_volume = request.get('traffic_volume', 10000)
+        clearance = request.get('clearance', 3.0)
+        weather_conditions = request.get('weather_conditions', 'normal')
+        
+        assessment = generate_comprehensive_risk_assessment(
+            work_type=work_type,
+            road_classification=road_classification,
+            speed_limit=speed_limit,
+            traffic_volume=traffic_volume,
+            clearance=clearance,
+            weather_conditions=weather_conditions
+        )
+        
+        return {
+            "status": "success",
+            "risk_assessment": assessment,
+            "message": "Comprehensive risk assessment generated"
+        }
+    except Exception as e:
+        logger.error(f"Error generating risk assessment: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ===================================================
+# PERMIT MANAGEMENT ENDPOINTS
+# ===================================================
+
+@api_router.post("/permit/application")
+async def create_permit_application(request: Dict):
+    """Generate DIT TMC permit application"""
+    try:
+        location = request.get('location', '')
+        work_type = request.get('work_type', '')
+        start_date = request.get('start_date', '')
+        end_date = request.get('end_date', '')
+        work_hours = request.get('work_hours', '7am-5pm')
+        applicant_details = request.get('applicant_details', {})
+        
+        permit_app = generate_permit_application(
+            location=location,
+            work_type=work_type,
+            start_date=start_date,
+            end_date=end_date,
+            work_hours=work_hours,
+            applicant_details=applicant_details
+        )
+        
+        return {
+            "status": "success",
+            "permit_application": permit_app,
+            "message": "DIT TMC permit application generated"
+        }
+    except Exception as e:
+        logger.error(f"Error generating permit application: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/permit/checklist")
+async def get_permit_checklist():
+    """Get DIT TMC permit application checklist"""
+    try:
+        checklist = generate_permit_checklist()
+        return {
+            "status": "success",
+            "checklist": checklist
+        }
+    except Exception as e:
+        logger.error(f"Error generating permit checklist: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ===================================================
+# FIELD GUIDE PLACEMENT ENGINE ENDPOINTS
+# ===================================================
+
+@api_router.post("/field-guide/calculate-zones")
+async def calculate_zones(request: Dict):
+    """Calculate SA DIT Field Guide compliant zones"""
+    try:
+        from field_guide_placement_engine import calculate_field_guide_zones
+        
+        speed_limit = request.get('speed_limit', 60)
+        work_length = request.get('work_length', 50)
+        lane_closure = request.get('lane_closure', False)
+        
+        zones = calculate_field_guide_zones(
+            speed_limit=speed_limit,
+            work_length=work_length,
+            lane_closure=lane_closure
+        )
+        
+        return {
+            "status": "success",
+            "zones": zones,
+            "message": "Field Guide zones calculated successfully"
+        }
+    except Exception as e:
+        logger.error(f"Error calculating Field Guide zones: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ===================================================
 # FILE DOWNLOAD ENDPOINTS FOR TMP OUTPUTS
 # ===================================================
 
