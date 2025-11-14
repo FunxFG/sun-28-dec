@@ -1442,12 +1442,12 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
     from traffic_volume_calculator import calculate_traffic_volumes, estimate_construction_traffic, assess_traffic_impact
     from risk_assessment_module import generate_risk_assessment
     from permit_management_system import generate_permit_application, generate_permit_checklist
-from field_guide_placement_engine import (
-    calculate_field_guide_zones, 
-    generate_device_schedule,
-    calculate_clearance_requirements,
-    calculate_traffic_controller_positions
-)
+    from field_guide_placement_engine import (
+        calculate_field_guide_zones, 
+        generate_device_schedule,
+        calculate_clearance_requirements,
+        calculate_traffic_controller_positions
+    )
     
     # Generate professional TMP structure
     professional_tmp = tmp_generator.generate_professional_tmp(plan, 'works')
