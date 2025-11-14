@@ -3906,7 +3906,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Primary Emergency Contact Name</Label>
                     <Input
-                      value={formData.emergency_contacts.primary_contact_name}
+                      value={formData?.emergency_contacts?.primary_contact_name || ''}
                       onChange={(e) => handleInputChange('emergency_contacts', 'primary_contact_name', e.target.value)}
                       placeholder="24/7 contact person"
                     />
