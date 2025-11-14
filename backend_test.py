@@ -3373,10 +3373,16 @@ class SafeRoadWorksAPITester:
             
             # Verify signage requirements include footpath closure signs
             signage = plan.get('signage_requirements', {})
-            signs = signage.get('required_signs', [])
+            if isinstance(signage, dict):
+                signs = signage.get('required_signs', [])
+            else:
+                signs = signage if isinstance(signage, list) else []
+            
             footpath_signs = [s for s in signs if 'FOOTPATH CLOSED' in str(s) or 'USE OTHER FOOTPATH' in str(s)]
             if footpath_signs:
                 print(f"   ✅ Footpath closure signage included: {len(footpath_signs)} signs")
+            else:
+                print(f"   ⚠️ Footpath closure signage not found in {len(signs)} signs")
             
             # Verify traffic control positions
             traffic_control = plan.get('traffic_control', {})
