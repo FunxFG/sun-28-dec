@@ -3496,10 +3496,13 @@ class SafeRoadWorksAPITester:
             
             # Verify compliance standards
             compliance = plan.get('compliance_standards', [])
-            if any('AS 1742.3:2019' in str(std) for std in compliance):
-                print(f"   ✅ AS 1742.3:2019 compliance included")
-            if any('SA DIT Field Guide' in str(std) for std in compliance):
-                print(f"   ✅ SA DIT Field Guide compliance included")
+            if isinstance(compliance, list) and compliance:
+                if any('AS 1742.3:2019' in str(std) for std in compliance):
+                    print(f"   ✅ AS 1742.3:2019 compliance included")
+                if any('SA DIT Field Guide' in str(std) for std in compliance):
+                    print(f"   ✅ SA DIT Field Guide compliance included")
+            else:
+                print(f"   ⚠️ Compliance standards not found or empty")
             
             return True
         return False
