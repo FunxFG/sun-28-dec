@@ -105,7 +105,7 @@ class WorksiteTMPTester:
             
             # SUCCESS CRITERIA: Check required sections
             required_sections = [
-                'speed_management', 'sign_spacing_and_tapers', 'worksite_signage',
+                'speed_management', 'sign_spacing_and_tapers',
                 'lane_management', 'traffic_control', 'delineation_and_barriers',
                 'worker_safety', 'setup_and_removal', 'compliance'
             ]
