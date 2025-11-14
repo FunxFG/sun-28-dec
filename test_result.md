@@ -587,6 +587,66 @@ frontend:
         agent: "testing"
         comment: "❌ CRITICAL ISSUE: SA Traffic Intelligence UI card NOT DISPLAYING in frontend despite backend integration working perfectly. Backend API testing confirms comprehensive auto-populate endpoint returns complete SA traffic data: King William St/North Terrace intersection is Top 40 intersection (#1 rank, 95,400 vehicle exposure), 137 travel speed records fetched, recommendations provided. However, frontend form submission in Plan Editor does not trigger comprehensive auto-populate API call. Issue appears to be in frontend form handling - the 'Fetch Road Data' button click does not properly call the comprehensive auto-populate endpoint with correct parameters. Frontend uses custom dropdown components instead of standard HTML selects, causing form interaction issues. Authentication session persistence also problematic (401 errors in console). Backend integration fully functional, frontend UI integration broken."
 
+  - task: "Dilapidation Report API Endpoints"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py, backend/dilapidation_report_generator.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added dilapidation report endpoints: POST /api/dilapidation/generate for pre/post-construction reports with defect categories, inspection methodology, and photo requirements. POST /api/dilapidation/severity for calculating defect severity scores. Ready for backend testing."
+
+  - task: "Traffic Volume Calculator API Endpoints"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py, backend/traffic_volume_calculator.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added traffic volume endpoints: POST /api/traffic-volume/calculate for AADT calculations, POST /api/traffic-volume/construction for construction traffic estimates, POST /api/traffic-volume/impact for traffic impact assessment. Ready for backend testing."
+
+  - task: "Comprehensive Risk Assessment API Endpoint"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py, backend/risk_assessment_module.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added POST /api/risk-assessment/generate endpoint for automated hazard identification and risk matrix generation based on SA DIT Field Guide and WHS Regulations. Ready for backend testing."
+
+  - task: "Permit Management API Endpoints"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py, backend/permit_management_system.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added permit management endpoints: POST /api/permit/application for DIT TMC permit generation with all required documentation and approval process, GET /api/permit/checklist for permit application checklist. Ready for backend testing."
+
+  - task: "Field Guide Placement Engine API Endpoint"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py, backend/field_guide_placement_engine.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added POST /api/field-guide/calculate-zones endpoint for SA DIT Field Guide compliant zone calculations with advance warning, taper, safety buffer, and work area distances. Ready for backend testing."
+
 
 metadata:
   created_by: "main_agent"
