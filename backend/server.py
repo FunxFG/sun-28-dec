@@ -2849,6 +2849,78 @@ async def get_emergency_tiers():
         raise HTTPException(status_code=500, detail=str(e))
 
 # ===================================================
+# WORKSITE TMP ENDPOINTS  
+# ===================================================
+
+@api_router.post("/tmp/worksite")
+async def create_worksite_tmp(request: Dict):
+    """Generate worksite traffic management plan with sign spacing and tapers"""
+    try:
+        location = request.get('location', '')
+        work_type = request.get('work_type', 'Road Works')
+        posted_speed = request.get('posted_speed', 60)
+        reduced_speed = request.get('reduced_speed')
+        lane_closure = request.get('lane_closure', False)
+        lane_closure_type = request.get('lane_closure_type', 'merge')
+        work_duration_days = request.get('work_duration_days', 1)
+        work_hours = request.get('work_hours', '7am-5pm')
+        workers_present = request.get('workers_present', True)
+        traffic_control_required = request.get('traffic_control_required', False)
+        night_works = request.get('night_works', False)
+        
+        plan = generate_worksite_tmp(
+            location=location,
+            work_type=work_type,
+            posted_speed=posted_speed,
+            reduced_speed=reduced_speed,
+            lane_closure=lane_closure,
+            lane_closure_type=lane_closure_type,
+            work_duration_days=work_duration_days,
+            work_hours=work_hours,
+            workers_present=workers_present,
+            traffic_control_required=traffic_control_required,
+            night_works=night_works
+        )
+        
+        return {
+            "status": "success",
+            "plan": plan,
+            "message": f"Worksite TMP generated for {location}"
+        }
+    except Exception as e:
+        logger.error(f"Error generating worksite TMP: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/tmp/sign-spacing")
+async def calculate_sign_spacing(request: Dict):
+    """Calculate sign spacing and taper lengths only"""
+    try:
+        posted_speed = request.get('posted_speed', 60)
+        reduced_speed = request.get('reduced_speed')
+        road_type = request.get('road_type', 'arterial')
+        lane_closure = request.get('lane_closure', False)
+        workers_present = request.get('workers_present', True)
+        traffic_control_required = request.get('traffic_control_required', False)
+        
+        calculations = calculate_sign_spacing_and_tapers(
+            posted_speed=posted_speed,
+            reduced_speed=reduced_speed,
+            road_type=road_type,
+            lane_closure=lane_closure,
+            workers_present=workers_present,
+            traffic_control_required=traffic_control_required
+        )
+        
+        return {
+            "status": "success",
+            "calculations": calculations,
+            "message": "Sign spacing and taper calculations complete"
+        }
+    except Exception as e:
+        logger.error(f"Error calculating sign spacing: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ===================================================
 # FILE DOWNLOAD ENDPOINTS FOR TMP OUTPUTS
 # ===================================================
 
