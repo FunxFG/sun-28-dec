@@ -3914,7 +3914,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Primary Emergency Contact Phone</Label>
                     <Input
-                      value={formData.emergency_contacts.primary_contact_phone}
+                      value={formData?.emergency_contacts?.primary_contact_phone || ''}
                       onChange={(e) => handleInputChange('emergency_contacts', 'primary_contact_phone', e.target.value)}
                       placeholder="Mobile number"
                     />
@@ -3924,7 +3924,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Secondary Emergency Contact Name</Label>
                     <Input
-                      value={formData.emergency_contacts.secondary_contact_name}
+                      value={formData?.emergency_contacts?.secondary_contact_name || ''}
                       onChange={(e) => handleInputChange('emergency_contacts', 'secondary_contact_name', e.target.value)}
                       placeholder="Backup contact"
                     />
@@ -3932,7 +3932,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Secondary Emergency Contact Phone</Label>
                     <Input
-                      value={formData.emergency_contacts.secondary_contact_phone}
+                      value={formData?.emergency_contacts?.secondary_contact_phone || ''}
                       onChange={(e) => handleInputChange('emergency_contacts', 'secondary_contact_phone', e.target.value)}
                       placeholder="Mobile number"
                     />
@@ -3942,7 +3942,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Local Police Station</Label>
                     <Input
-                      value={formData.emergency_contacts.police_station}
+                      value={formData?.emergency_contacts?.police_station || ''}
                       onChange={(e) => handleInputChange('emergency_contacts', 'police_station', e.target.value)}
                       placeholder="Station name and phone"
                     />
@@ -3950,7 +3950,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Ambulance Service</Label>
                     <Input
-                      value={formData.emergency_contacts.ambulance_service}
+                      value={formData?.emergency_contacts?.ambulance_service || ''}
                       onChange={(e) => handleInputChange('emergency_contacts', 'ambulance_service', e.target.value)}
                       placeholder="Nearest ambulance station"
                     />
@@ -3959,7 +3959,7 @@ export default function PlanEditor({ user, onLogout }) {
                 <div>
                   <Label>Incident Response Procedure</Label>
                   <Textarea
-                    value={formData.emergency_contacts.incident_response_plan}
+                    value={formData?.emergency_contacts?.incident_response_plan || ''}
                     onChange={(e) => handleInputChange('emergency_contacts', 'incident_response_plan', e.target.value)}
                     placeholder="Step-by-step incident response procedure"
                     rows={3}
@@ -3969,7 +3969,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <input
                     type="checkbox"
                     id="emergency_services_notified"
-                    checked={formData.emergency_contacts.emergency_services_notified}
+                    checked={formData?.emergency_contacts?.emergency_services_notified || false}
                     onChange={(e) => handleInputChange('emergency_contacts', 'emergency_services_notified', e.target.checked)}
                     className="w-4 h-4"
                   />
