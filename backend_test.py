@@ -3326,6 +3326,255 @@ class SafeRoadWorksAPITester:
             return True
         return False
 
+    # ==========================================
+    # SPECIALIZED TMP GENERATION ENDPOINTS TESTING (NEW)
+    # ==========================================
+
+    def test_footpath_closure_tmp(self):
+        """Test Footpath Closure TMP endpoint"""
+        test_data = {
+            "location": "King William Street, Adelaide",
+            "work_type": "Footpath Repair",
+            "closure_type": "full",
+            "detour_width": 1.5,
+            "dda_compliant": True,
+            "duration_days": 3,
+            "work_hours": "7am-5pm",
+            "traffic_controllers": 2
+        }
+        
+        success, response = self.run_test(
+            "Footpath Closure TMP",
+            "POST",
+            "tmp/footpath-closure",
+            200,
+            data=test_data
+        )
+        
+        if success and 'plan' in response:
+            plan = response['plan']
+            print(f"   Plan generated for: {test_data['location']}")
+            
+            # Check required plan components
+            required_components = [
+                'pedestrian_management', 'signage_requirements', 
+                'safety_measures', 'traffic_control'
+            ]
+            
+            missing_components = [comp for comp in required_components if comp not in plan]
+            if missing_components:
+                print(f"   ⚠️ Missing plan components: {missing_components}")
+                return False
+            
+            # Verify pedestrian management includes DDA compliance
+            pedestrian_mgmt = plan.get('pedestrian_management', {})
+            if pedestrian_mgmt.get('dda_compliant'):
+                print(f"   ✅ DDA compliance included")
+            
+            # Verify signage requirements include footpath closure signs
+            signage = plan.get('signage_requirements', {})
+            signs = signage.get('required_signs', [])
+            footpath_signs = [s for s in signs if 'FOOTPATH CLOSED' in str(s) or 'USE OTHER FOOTPATH' in str(s)]
+            if footpath_signs:
+                print(f"   ✅ Footpath closure signage included: {len(footpath_signs)} signs")
+            
+            # Verify traffic control positions
+            traffic_control = plan.get('traffic_control', {})
+            if traffic_control.get('positions'):
+                print(f"   ✅ Traffic control positions specified")
+            
+            return True
+        return False
+
+    def test_pedestrian_detour_diagram(self):
+        """Test Pedestrian Detour Diagram endpoint"""
+        test_data = {
+            "location": "North Terrace, Adelaide",
+            "detour_length": 75.0,
+            "detour_width": 1.5,
+            "road_name": "North Terrace",
+            "intersecting_street": "King William Street"
+        }
+        
+        success, response = self.run_test(
+            "Pedestrian Detour Diagram",
+            "POST",
+            "tmp/pedestrian-detour-diagram",
+            200,
+            data=test_data
+        )
+        
+        if success and 'diagram_data' in response:
+            diagram = response['diagram_data']
+            print(f"   Diagram generated for: {test_data['location']}")
+            
+            # Check required diagram components
+            required_components = [
+                'diagram_type', 'detour_specifications', 
+                'elements', 'legend'
+            ]
+            
+            missing_components = [comp for comp in required_components if comp not in diagram]
+            if missing_components:
+                print(f"   ⚠️ Missing diagram components: {missing_components}")
+                return False
+            
+            # Verify detour specifications include minimum width
+            detour_specs = diagram.get('detour_specifications', {})
+            detour_width = detour_specs.get('width', 0)
+            if detour_width >= 1.2:
+                print(f"   ✅ Detour width meets minimum 1.2m requirement: {detour_width}m")
+            
+            # Verify elements include work zone and detour route
+            elements = diagram.get('elements', {})
+            if 'work_zone' in elements and 'detour_route' in elements:
+                print(f"   ✅ Work zone and detour route elements included")
+            
+            # Verify DDA ramps are included
+            if 'dda_ramps' in elements:
+                print(f"   ✅ DDA ramps included in diagram")
+            
+            return True
+        return False
+
+    def test_emergency_tmp(self):
+        """Test Emergency TMP endpoint"""
+        test_data = {
+            "emergency_type": "bushfire",
+            "location": "Adelaide Hills",
+            "initial_tier": "TIER_1",
+            "affected_roads": ["Mount Barker Road", "Summit Road"],
+            "control_agency": "CFS",
+            "incident_controller": "John Smith"
+        }
+        
+        success, response = self.run_test(
+            "Emergency TMP",
+            "POST",
+            "tmp/emergency",
+            200,
+            data=test_data
+        )
+        
+        if success and 'plan' in response:
+            plan = response['plan']
+            print(f"   Emergency plan generated for: {test_data['emergency_type']} at {test_data['location']}")
+            
+            # Check required emergency plan components
+            required_components = [
+                'access_tier_system', 'road_closure_management', 
+                'controlled_access_management', 'risk_assessment_framework',
+                'reopening_procedures', 'responsibilities'
+            ]
+            
+            missing_components = [comp for comp in required_components if comp not in plan]
+            if missing_components:
+                print(f"   ⚠️ Missing plan components: {missing_components}")
+                return False
+            
+            # Verify access tier system includes 5 tiers
+            tier_system = plan.get('access_tier_system', {})
+            if 'tiers' in tier_system:
+                tier_count = len(tier_system['tiers'])
+                if tier_count == 5:
+                    print(f"   ✅ All 5 emergency tiers included")
+                else:
+                    print(f"   ⚠️ Expected 5 tiers, got {tier_count}")
+            
+            # Verify responsibilities include required agencies
+            responsibilities = plan.get('responsibilities', {})
+            required_agencies = ['Control Agency', 'SAPOL', 'TMC', 'Councils']
+            present_agencies = [agency for agency in required_agencies if agency.lower().replace(' ', '_') in str(responsibilities)]
+            if len(present_agencies) >= 3:
+                print(f"   ✅ Key agency responsibilities included: {present_agencies}")
+            
+            # Verify compliance standards
+            compliance = plan.get('compliance_standards', [])
+            if any('AS 1742.3:2019' in str(std) for std in compliance):
+                print(f"   ✅ AS 1742.3:2019 compliance included")
+            if any('SA DIT Field Guide' in str(std) for std in compliance):
+                print(f"   ✅ SA DIT Field Guide compliance included")
+            
+            return True
+        return False
+
+    def test_emergency_tiers_info(self):
+        """Test Emergency Tiers Information endpoint"""
+        success, response = self.run_test(
+            "Emergency Tiers Information",
+            "GET",
+            "tmp/emergency-tiers",
+            200
+        )
+        
+        if success and 'tiers' in response:
+            tiers = response['tiers']
+            print(f"   Retrieved emergency tiers information")
+            
+            # Verify all 5 tiers are present
+            expected_tiers = ['TIER_1', 'TIER_2', 'TIER_3', 'TIER_4', 'TIER_5']
+            missing_tiers = [tier for tier in expected_tiers if tier not in tiers]
+            
+            if not missing_tiers:
+                print(f"   ✅ All 5 emergency tiers present")
+            else:
+                print(f"   ❌ Missing tiers: {missing_tiers}")
+                return False
+            
+            # Verify each tier has required fields
+            for tier_name, tier_info in tiers.items():
+                required_fields = ['name', 'risk_level', 'description']
+                missing_fields = [field for field in required_fields if field not in tier_info]
+                
+                if missing_fields:
+                    print(f"   ❌ {tier_name} missing fields: {missing_fields}")
+                    return False
+            
+            # Verify risk levels are appropriate
+            tier_1 = tiers.get('TIER_1', {})
+            if tier_1.get('risk_level') == 'Extreme':
+                print(f"   ✅ TIER_1 has correct 'Extreme' risk level")
+            
+            tier_5 = tiers.get('TIER_5', {})
+            if tier_5.get('risk_level') == 'Very Low':
+                print(f"   ✅ TIER_5 has correct 'Very Low' risk level")
+            
+            return True
+        return False
+
+    def test_specialized_tmp_endpoints_comprehensive(self):
+        """Comprehensive test of all specialized TMP endpoints"""
+        print(f"\n🎯 Testing Specialized TMP Generation Endpoints...")
+        
+        # Test all 4 endpoints
+        tests = [
+            ("Footpath Closure TMP", self.test_footpath_closure_tmp),
+            ("Pedestrian Detour Diagram", self.test_pedestrian_detour_diagram),
+            ("Emergency TMP", self.test_emergency_tmp),
+            ("Emergency Tiers Information", self.test_emergency_tiers_info)
+        ]
+        
+        passed_tests = 0
+        for test_name, test_func in tests:
+            print(f"\n🔍 Running {test_name}...")
+            if test_func():
+                passed_tests += 1
+                print(f"✅ {test_name} PASSED")
+            else:
+                print(f"❌ {test_name} FAILED")
+        
+        print(f"\n📊 Specialized TMP Endpoints Results:")
+        print(f"   Endpoints Tested: {len(tests)}")
+        print(f"   Endpoints Passed: {passed_tests}")
+        print(f"   Success Rate: {(passed_tests/len(tests))*100:.1f}%")
+        
+        if passed_tests == len(tests):
+            print("🎉 All specialized TMP endpoints working correctly!")
+            return True
+        else:
+            print("⚠️ Some specialized TMP endpoints failed")
+            return False
+
 def main():
     print("🚦 Comprehensive Austroads TMP Backend API Testing Suite")
     print("=" * 80)
