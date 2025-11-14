@@ -153,7 +153,8 @@ class WorksiteTMPTester:
                 return False
             
             # SUCCESS CRITERIA: Verify worksite signage (reduced_speed_limit, symbolic_workers, symbolic_traffic_controller)
-            worksite_signage = plan.get('worksite_signage', {})
+            # Note: worksite_signage is nested inside sign_spacing_and_tapers
+            worksite_signage = sign_spacing.get('worksite_signage', {})
             required_worksite_signs = ['reduced_speed_limit', 'symbolic_workers', 'symbolic_traffic_controller']
             missing_worksite_signs = [sign for sign in required_worksite_signs if sign not in worksite_signage]
             if missing_worksite_signs:
