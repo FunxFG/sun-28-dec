@@ -957,8 +957,17 @@ export default function PlanEditor({ user, onLogout }) {
           utility_infrastructure: comprehensiveDataResponse.utility_infrastructure || null,  // NEW
           location_metadata_system: comprehensiveDataResponse.location_metadata_system || null,  // NEW: LMS
           dit_infrastructure_assets: comprehensiveDataResponse.dit_infrastructure_assets || null,  // NEW: DIT Assets
-          sa_traffic_intelligence: comprehensiveDataResponse.sa_traffic_intelligence || null  // NEW: Top 40 Roads/Intersections/Travel Speeds
+          sa_traffic_intelligence: comprehensiveDataResponse.sa_traffic_intelligence || null,  // NEW: Top 40 Roads/Intersections/Travel Speeds
+          dilapidation_report: null,  // Will be fetched separately
+          traffic_volumes: null,  // Will be fetched separately
+          comprehensive_risk_assessment: null,  // Will be fetched separately
+          permit_application: null,  // Will be fetched separately
+          field_guide_zones: null  // Will be fetched separately
         });
+        
+        // Fetch professional TMP data (NEW modules)
+        await fetchProfessionalTMPData(roadData, trafficData);
+        
       } catch (error) {
         console.log('Comprehensive auto-populate not available, continuing with basic data');
       }
