@@ -47,6 +47,22 @@ from enhanced_device_library import (
     SA_SIGNS,
     CORE_DEVICE_LIBRARY
 )
+from dilapidation_report_generator import (
+    generate_dilapidation_report,
+    calculate_defect_severity_score
+)
+from traffic_volume_calculator import (
+    calculate_traffic_volumes,
+    estimate_construction_traffic,
+    assess_traffic_impact
+)
+from risk_assessment_module import (
+    generate_risk_assessment as generate_comprehensive_risk_assessment
+)
+from permit_management_system import (
+    generate_permit_application,
+    generate_permit_checklist
+)
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
