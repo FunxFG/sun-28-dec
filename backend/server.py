@@ -407,7 +407,20 @@ async def get_plan(plan_id: str, current_user: Dict = Depends(get_current_user))
     if isinstance(plan.get("updated_at"), str):
         plan["updated_at"] = datetime.fromisoformat(plan["updated_at"])
     
-    return TrafficManagementPlan(**plan)
+    # Remove MongoDB _id field if present
+    if "_id" in plan:
+        del plan["_id"]
+    
+    # Provide defaults for missing fields to support old plans
+    plan.setdefault("devices", [])
+    plan.setdefault("map_zoom", 15)
+    
+    try:
+        return TrafficManagementPlan(**plan)
+    except Exception as e:
+        logger.error(f"Error loading plan {plan_id}: {str(e)}")
+        logger.error(f"Plan data: {plan}")
+        raise HTTPException(status_code=500, detail=f"Error loading plan: {str(e)}")
 
 @api_router.put("/plans/{plan_id}", response_model=TrafficManagementPlan)
 async def update_plan(plan_id: str, plan_data: TrafficManagementPlanCreate, current_user: Dict = Depends(get_current_user)):
