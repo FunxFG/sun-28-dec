@@ -387,12 +387,27 @@ async def get_user_plans(current_user: Dict = Depends(get_current_user)):
     plans = await db.plans.find({"user_id": current_user["user_id"]}).to_list(1000)
     result = []
     for plan in plans:
-        # Parse dates back from MongoDB
-        if isinstance(plan.get("created_at"), str):
-            plan["created_at"] = datetime.fromisoformat(plan["created_at"])
-        if isinstance(plan.get("updated_at"), str):
-            plan["updated_at"] = datetime.fromisoformat(plan["updated_at"])
-        result.append(TrafficManagementPlan(**plan))
+        try:
+            # Parse dates back from MongoDB
+            if isinstance(plan.get("created_at"), str):
+                plan["created_at"] = datetime.fromisoformat(plan["created_at"])
+            if isinstance(plan.get("updated_at"), str):
+                plan["updated_at"] = datetime.fromisoformat(plan["updated_at"])
+            
+            # Remove MongoDB _id field if present
+            if "_id" in plan:
+                del plan["_id"]
+            
+            # Provide defaults for missing fields to support old plans
+            plan.setdefault("devices", [])
+            plan.setdefault("map_zoom", 15)
+            
+            result.append(TrafficManagementPlan(**plan))
+        except Exception as e:
+            logger.warning(f"Skipping plan {plan.get('id', 'unknown')} due to error: {str(e)}")
+            # Skip plans that can't be loaded instead of failing entire request
+            continue
+    
     return result
 
 @api_router.get("/plans/{plan_id}", response_model=TrafficManagementPlan)
