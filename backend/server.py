@@ -1787,7 +1787,9 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
         story.append(Paragraph(f"• {standard}", styles['Normal']))
     
     story.append(Spacer(1, 20))
-    story.append(Paragraph(f"Generated: {datetime.now().strftime('%d %B %Y at %I:%M %p')}", styles['Normal']))
+    # Use datetime module explicitly to avoid variable shadowing
+    from datetime import datetime as dt_module
+    story.append(Paragraph(f"Generated: {dt_module.now().strftime('%d %B %Y at %I:%M %p')}", styles['Normal']))
     story.append(Paragraph(f"Template Version: {professional_tmp['metadata']['template_version']}", styles['Normal']))
     
     doc.build(story)
