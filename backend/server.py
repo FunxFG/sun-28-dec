@@ -384,31 +384,40 @@ async def create_plan(plan_data: TrafficManagementPlanCreate, current_user: Dict
 
 @api_router.get("/plans", response_model=List[TrafficManagementPlan])
 async def get_user_plans(current_user: Dict = Depends(get_current_user)):
-    plans = await db.plans.find({"user_id": current_user["user_id"]}).to_list(1000)
-    result = []
-    for plan in plans:
-        try:
-            # Parse dates back from MongoDB
-            if isinstance(plan.get("created_at"), str):
-                plan["created_at"] = datetime.fromisoformat(plan["created_at"])
-            if isinstance(plan.get("updated_at"), str):
-                plan["updated_at"] = datetime.fromisoformat(plan["updated_at"])
-            
-            # Remove MongoDB _id field if present
-            if "_id" in plan:
-                del plan["_id"]
-            
-            # Provide defaults for missing fields to support old plans
-            plan.setdefault("devices", [])
-            plan.setdefault("map_zoom", 15)
-            
-            result.append(TrafficManagementPlan(**plan))
-        except Exception as e:
-            logger.warning(f"Skipping plan {plan.get('id', 'unknown')} due to error: {str(e)}")
-            # Skip plans that can't be loaded instead of failing entire request
-            continue
-    
-    return result
+    try:
+        plans = await db.plans.find({"user_id": current_user["user_id"]}).to_list(1000)
+        logger.info(f"Found {len(plans)} plans for user {current_user['user_id']}")
+        
+        result = []
+        for plan in plans:
+            try:
+                # Parse dates back from MongoDB
+                if isinstance(plan.get("created_at"), str):
+                    plan["created_at"] = datetime.fromisoformat(plan["created_at"])
+                if isinstance(plan.get("updated_at"), str):
+                    plan["updated_at"] = datetime.fromisoformat(plan["updated_at"])
+                
+                # Remove MongoDB _id field if present
+                if "_id" in plan:
+                    del plan["_id"]
+                
+                # Provide defaults for missing fields to support old plans
+                plan.setdefault("devices", [])
+                plan.setdefault("map_zoom", 15)
+                
+                result.append(TrafficManagementPlan(**plan))
+                logger.debug(f"Successfully loaded plan {plan.get('id')}")
+            except Exception as e:
+                logger.error(f"Error loading plan {plan.get('id', 'unknown')}: {str(e)}")
+                logger.error(f"Plan keys: {list(plan.keys())}")
+                # Skip plans that can't be loaded instead of failing entire request
+                continue
+        
+        logger.info(f"Successfully loaded {len(result)} plans for user")
+        return result
+    except Exception as e:
+        logger.error(f"Critical error in get_user_plans: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to fetch plans: {str(e)}")
 
 @api_router.get("/plans/{plan_id}", response_model=TrafficManagementPlan)
 async def get_plan(plan_id: str, current_user: Dict = Depends(get_current_user)):
