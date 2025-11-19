@@ -1843,38 +1843,11 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
 async def get_risks():
     """
     Get comprehensive risk registry for roadwork traffic management
-    Returns all 106 identified risks from expanded Austroads register
+    Returns all identified risks with controls from risk_registry module
     """
     try:
-        import csv
-        import os
-        
-        risks = []
-        csv_path = os.path.join(os.path.dirname(__file__), 'risk_data.csv')
-        
-        if os.path.exists(csv_path):
-            with open(csv_path, 'r', encoding='utf-8') as f:
-                reader = csv.DictReader(f)
-                for row in reader:
-                    risks.append({
-                        'risk_id': row['ID'],
-                        'category': row['Category'],
-                        'subcategory': row['Subcategory'] if row['Subcategory'] else None,
-                        'hazard': row['Hazard'],
-                        'trigger': row['Trigger/Context'] if row['Trigger/Context'] else None,
-                        'consequence': row['Potential Consequence'],
-                        'likelihood': row['Likelihood'],
-                        'risk_level': row['Risk Rating'],
-                        'control_measures': row['Controls / Mitigation'],
-                        'controls_hierarchy': row['Controls Hierarchy'],
-                        'monitoring': row['Monitoring / Verification'],
-                        'responsible': row['Responsible Role'],
-                        'reference': row['Reference'],
-                        'residual_risk': row['Residual Risk']
-                    })
-        else:
-            logger.warning(f"Risk data CSV not found at {csv_path}")
-        
+        from risk_registry import get_risk_registry
+        risks = get_risk_registry()
         return risks
     except Exception as e:
         logger.error(f"Error loading risks: {str(e)}")
