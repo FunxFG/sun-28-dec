@@ -3992,7 +3992,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Site Supervisor Name</Label>
                     <Input
-                      value={formData.personnel.site_supervisor_name}
+                      value={formData?.personnel?.site_supervisor_name || ''}
                       onChange={(e) => handleInputChange('personnel', 'site_supervisor_name', e.target.value)}
                       placeholder="Supervisor name"
                     />
@@ -4000,7 +4000,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Supervisor Phone</Label>
                     <Input
-                      value={formData.personnel.site_supervisor_phone}
+                      value={formData?.personnel?.site_supervisor_phone || ''}
                       onChange={(e) => handleInputChange('personnel', 'site_supervisor_phone', e.target.value)}
                       placeholder="Contact number"
                     />
@@ -4008,7 +4008,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Qualifications / Cert Numbers</Label>
                     <Input
-                      value={formData.personnel.site_supervisor_qualifications}
+                      value={formData?.personnel?.site_supervisor_qualifications || ''}
                       onChange={(e) => handleInputChange('personnel', 'site_supervisor_qualifications', e.target.value)}
                       placeholder="e.g., RIIWHS205D"
                     />
@@ -4018,7 +4018,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Traffic Controller 1 Name</Label>
                     <Input
-                      value={formData.personnel.traffic_controller_1_name}
+                      value={formData?.personnel?.traffic_controller_1_name || ''}
                       onChange={(e) => handleInputChange('personnel', 'traffic_controller_1_name', e.target.value)}
                       placeholder="Controller name"
                     />
@@ -4026,7 +4026,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Certification Number</Label>
                     <Input
-                      value={formData.personnel.traffic_controller_1_cert}
+                      value={formData?.personnel?.traffic_controller_1_cert || ''}
                       onChange={(e) => handleInputChange('personnel', 'traffic_controller_1_cert', e.target.value)}
                       placeholder="Cert number"
                     />
@@ -4036,7 +4036,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Traffic Controller 2 Name</Label>
                     <Input
-                      value={formData.personnel.traffic_controller_2_name}
+                      value={formData?.personnel?.traffic_controller_2_name || ''}
                       onChange={(e) => handleInputChange('personnel', 'traffic_controller_2_name', e.target.value)}
                       placeholder="Controller name"
                     />
@@ -4044,7 +4044,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Certification Number</Label>
                     <Input
-                      value={formData.personnel.traffic_controller_2_cert}
+                      value={formData?.personnel?.traffic_controller_2_cert || ''}
                       onChange={(e) => handleInputChange('personnel', 'traffic_controller_2_cert', e.target.value)}
                       placeholder="Cert number"
                     />
@@ -4055,7 +4055,7 @@ export default function PlanEditor({ user, onLogout }) {
                     <Label>Total Number of Workers on Site</Label>
                     <Input
                       type="number"
-                      value={formData.personnel.number_of_workers}
+                      value={formData?.personnel?.number_of_workers || ''}
                       onChange={(e) => handleInputChange('personnel', 'number_of_workers', e.target.value)}
                       placeholder="Number"
                     />
@@ -4064,7 +4064,7 @@ export default function PlanEditor({ user, onLogout }) {
                     <input
                       type="checkbox"
                       id="all_inducted"
-                      checked={formData.personnel.all_personnel_inducted}
+                      checked={formData?.personnel?.all_personnel_inducted || false}
                       onChange={(e) => handleInputChange('personnel', 'all_personnel_inducted', e.target.checked)}
                       className="w-4 h-4"
                     />
