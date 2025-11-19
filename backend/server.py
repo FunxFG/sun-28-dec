@@ -464,10 +464,20 @@ async def update_plan(plan_id: str, plan_data: TrafficManagementPlanCreate, curr
     )
     
     updated_plan = await db.plans.find_one({"id": plan_id})
+    
+    # Remove MongoDB _id field to avoid serialization error
+    if "_id" in updated_plan:
+        del updated_plan["_id"]
+    
+    # Parse dates back from MongoDB
     if isinstance(updated_plan.get("created_at"), str):
         updated_plan["created_at"] = datetime.fromisoformat(updated_plan["created_at"])
     if isinstance(updated_plan.get("updated_at"), str):
         updated_plan["updated_at"] = datetime.fromisoformat(updated_plan["updated_at"])
+    
+    # Provide defaults for missing fields
+    updated_plan.setdefault("devices", [])
+    updated_plan.setdefault("map_zoom", 15)
     
     return TrafficManagementPlan(**updated_plan)
 
