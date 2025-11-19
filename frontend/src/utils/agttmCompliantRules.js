@@ -1074,7 +1074,7 @@ export class AGTTMCompliantPlacement {
     measurements.push(`Lateral offset: ${lateralOffset}m (Required: ≥${minRequired}m)`);
     
     // Check height compliance
-    const mountingHeight = device.properties.mounting_height_exact || 0;
+    const mountingHeight = device?.properties?.mounting_height_exact || 0;
     if (mountingHeight < 2.1) {
       warnings.push(`Mounting height ${mountingHeight}m below AS 1742.3 minimum 2.1m`);
       complianceScore -= 20;
