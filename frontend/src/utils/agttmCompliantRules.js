@@ -1063,8 +1063,8 @@ export class AGTTMCompliantPlacement {
     let complianceScore = 100;
     
     // Check exact clearance compliance
-    const lateralOffset = device.properties.lateral_offset_exact || 0;
-    const minRequired = device.properties.placement_type === 'verge' ? 2.0 : 0.5;
+    const lateralOffset = device?.properties?.lateral_offset_exact || 0;
+    const minRequired = device?.properties?.placement_type === 'verge' ? 2.0 : 0.5;
     
     if (lateralOffset < minRequired) {
       warnings.push(`Lateral clearance ${lateralOffset}m below AGTTM minimum ${minRequired}m`);
@@ -1086,8 +1086,8 @@ export class AGTTMCompliantPlacement {
       compliance_score: complianceScore,
       warnings: warnings,
       exact_measurements: measurements,
-      agttm_rules_applied: [device.properties.agttm_rule],
-      as1742_references: [device.properties.as1742_reference],
+      agttm_rules_applied: [device?.properties?.agttm_rule || 'unknown'],
+      as1742_references: [device?.properties?.as1742_reference || 'N/A'],
       validation_timestamp: new Date().toISOString()
     };
   }
