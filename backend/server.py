@@ -297,16 +297,19 @@ class TrafficManagementPlan(BaseModel):
 
 class TrafficManagementPlanCreate(BaseModel):
     plan_name: str
-    company_details: CompanyDetails
-    traffic_company: TrafficManagementCompany
-    work_details: WorkDetails
-    road_occupancy: RoadOccupancy
-    control_measures: ControlMeasures
-    road_data: RoadData
+    company_details: Optional[CompanyDetails] = None
+    traffic_company: Optional[TrafficManagementCompany] = None
+    work_details: Optional[WorkDetails] = None
+    road_occupancy: Optional[RoadOccupancy] = None
+    control_measures: Optional[ControlMeasures] = None
+    road_data: Optional[RoadData] = None
     devices: List[TrafficDevice] = []
-    map_center_lat: float
-    map_center_lng: float
+    map_center_lat: Optional[float] = None
+    map_center_lng: Optional[float] = None
     map_zoom: int = 15
+    
+    class Config:
+        extra = "allow"  # Allow extra fields from frontend
 
 # Utility functions
 def hash_password(password: str) -> str:
