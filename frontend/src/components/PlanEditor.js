@@ -397,7 +397,15 @@ export default function PlanEditor({ user, onLogout }) {
       const response = await axios.get(`${API}/plans/${planId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setFormData(response.data);
+      // Merge loaded plan with default formData structure to handle old plans with missing fields
+      setFormData(prev => ({
+        ...prev,
+        ...response.data,
+        // Ensure nested objects exist with defaults
+        personnel: { ...prev.personnel, ...(response.data.personnel || {}) },
+        permits_insurance: { ...prev.permits_insurance, ...(response.data.permits_insurance || {}) },
+        emergency_contacts: { ...prev.emergency_contacts, ...(response.data.emergency_contacts || {}) }
+      }));
     } catch (error) {
       toast.error('Failed to load plan');
       navigate('/dashboard');
