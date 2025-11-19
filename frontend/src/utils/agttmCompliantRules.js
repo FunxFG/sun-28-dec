@@ -1578,15 +1578,15 @@ export class AGTTMCompliantPlacement {
     
     // Check lateral clearance compliance
     const minClearance = device.device_type === 'cone' ? 0.5 : 2.0;
-    if (device.properties.lateral_offset < minClearance) {
+    if (device?.properties?.lateral_offset && device.properties.lateral_offset < minClearance) {
       warnings.push(`Lateral clearance below AGTTM minimum (${minClearance}m)`);
       complianceScore -= 20;
       quality = 'warning';
     }
     
     // Check bilateral pairing compliance
-    if (device.properties.bilateral_pair && analysis.bilateral_required) {
-      if (!device.properties.bilateral_pair_id) {
+    if (device?.properties?.bilateral_pair && analysis.bilateral_required) {
+      if (!device?.properties?.bilateral_pair_id) {
         warnings.push('Bilateral pair ID missing');
         complianceScore -= 10;
       }
@@ -1594,14 +1594,14 @@ export class AGTTMCompliantPlacement {
     
     // Check category compliance
     const categoryRules = this.agttmRules.work_zone_categories[category];
-    if (categoryRules.bilateral_required && !device.properties.bilateral_pair) {
+    if (categoryRules.bilateral_required && !device?.properties?.bilateral_pair) {
       warnings.push(`${category} requires bilateral placement`);
       complianceScore -= 25;
       quality = 'non-compliant';
     }
     
     // Check sight distance
-    if (device.properties.sight_distance_adequate === false) {
+    if (device?.properties?.sight_distance_adequate === false) {
       warnings.push('Insufficient sight distance for placement');
       complianceScore -= 15;
       quality = quality === 'excellent' ? 'warning' : quality;
