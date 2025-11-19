@@ -4088,7 +4088,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Road Occupation Permit Number</Label>
                     <Input
-                      value={formData.permits_insurance.road_occupation_permit_number}
+                      value={formData?.permits_insurance?.road_occupation_permit_number || ''}
                       onChange={(e) => handleInputChange('permits_insurance', 'road_occupation_permit_number', e.target.value)}
                       placeholder="Permit number"
                     />
@@ -4096,7 +4096,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Permit Issuing Authority</Label>
                     <Input
-                      value={formData.permits_insurance.permit_issuing_authority}
+                      value={formData?.permits_insurance?.permit_issuing_authority || ''}
                       onChange={(e) => handleInputChange('permits_insurance', 'permit_issuing_authority', e.target.value)}
                       placeholder="e.g., Main Roads, Local Council"
                     />
@@ -4107,7 +4107,7 @@ export default function PlanEditor({ user, onLogout }) {
                     <Label>Permit Issue Date</Label>
                     <Input
                       type="date"
-                      value={formData.permits_insurance.permit_issue_date}
+                      value={formData?.permits_insurance?.permit_issue_date || ''}
                       onChange={(e) => handleInputChange('permits_insurance', 'permit_issue_date', e.target.value)}
                     />
                   </div>
@@ -4115,7 +4115,7 @@ export default function PlanEditor({ user, onLogout }) {
                     <Label>Permit Expiry Date</Label>
                     <Input
                       type="date"
-                      value={formData.permits_insurance.permit_expiry_date}
+                      value={formData?.permits_insurance?.permit_expiry_date || ''}
                       onChange={(e) => handleInputChange('permits_insurance', 'permit_expiry_date', e.target.value)}
                     />
                   </div>
@@ -4124,7 +4124,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Public Liability Insurance Policy Number</Label>
                     <Input
-                      value={formData.permits_insurance.public_liability_insurance}
+                      value={formData?.permits_insurance?.public_liability_insurance || ''}
                       onChange={(e) => handleInputChange('permits_insurance', 'public_liability_insurance', e.target.value)}
                       placeholder="Policy number"
                     />
@@ -4132,7 +4132,7 @@ export default function PlanEditor({ user, onLogout }) {
                   <div>
                     <Label>Coverage Amount</Label>
                     <Input
-                      value={formData.permits_insurance.insurance_amount}
+                      value={formData?.permits_insurance?.insurance_amount || ''}
                       onChange={(e) => handleInputChange('permits_insurance', 'insurance_amount', e.target.value)}
                       placeholder="e.g., $20,000,000"
                     />
@@ -4141,7 +4141,7 @@ export default function PlanEditor({ user, onLogout }) {
                     <Label>Insurance Expiry</Label>
                     <Input
                       type="date"
-                      value={formData.permits_insurance.insurance_expiry}
+                      value={formData?.permits_insurance?.insurance_expiry || ''}
                       onChange={(e) => handleInputChange('permits_insurance', 'insurance_expiry', e.target.value)}
                     />
                   </div>
@@ -4149,7 +4149,7 @@ export default function PlanEditor({ user, onLogout }) {
                 <div>
                   <Label>Workers Compensation Policy Number</Label>
                   <Input
-                    value={formData.permits_insurance.workers_compensation_policy}
+                    value={formData?.permits_insurance?.workers_compensation_policy || ''}
                     onChange={(e) => handleInputChange('permits_insurance', 'workers_compensation_policy', e.target.value)}
                     placeholder="Policy number"
                   />
