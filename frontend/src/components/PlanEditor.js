@@ -3901,6 +3901,13 @@ export default function PlanEditor({ user, onLogout }) {
               handleInputChange={handleInputChange} 
             />
 
+            {/* Section 6A: Risk Assessment */}
+            <RiskAssessmentSection 
+              formData={formData} 
+              handleInputChange={handleInputChange}
+              BACKEND_URL={BACKEND_URL}
+            />
+
             {/* Emergency Contacts */}
             <Card>
               <CardHeader>
