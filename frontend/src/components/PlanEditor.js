@@ -758,7 +758,7 @@ export default function PlanEditor({ user, onLogout }) {
           mounting_height: scheduleItem.mounting_height,
           clearance_from_carriageway: scheduleItem.clearance_from_edge
         }
-      })) || allDevices;
+      })) || safeDevices;
 
       // Update form data with automatically placed devices
       setFormData(prev => ({
