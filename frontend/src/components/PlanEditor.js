@@ -735,9 +735,15 @@ export default function PlanEditor({ user, onLogout }) {
       const tgsData = tgsGenerator.default.generateTGSPackage(formData, allDevices, mapDataForTGS);
       console.log('TGS Package generated:', tgsData);
       
+      // Ensure all devices have properties object initialized
+      const safeDevices = allDevices.map(device => ({
+        ...device,
+        properties: device.properties || {}
+      }));
+
       // Use devices with precise measurements
       const devicesWithMeasurements = tgsData.detailed_schedule?.devices?.map((scheduleItem, idx) => ({
-        ...allDevices[idx],
+        ...safeDevices[idx],
         measurements: {
           gps_coordinates: {
             latitude: scheduleItem.gps_lat,
