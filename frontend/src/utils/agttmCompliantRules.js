@@ -781,7 +781,7 @@ export class AGTTMCompliantPlacement {
             // Exact AS 1742.3 sign specifications
             mounting_height_exact: heightSpec.minimum_mounting_height, // Exact 2.1m
             maximum_height_limit: heightSpec.maximum_mounting_height,  // Exact 2.5m
-            sign_size: this.as1742Specs.sign_specifications.warning_signs.size,
+            sign_size: this.as1742Specs?.sign_specifications?.warning_signs?.size || '600mm',
             visibility_distance: this.as1742Specs.sign_specifications.warning_signs.visibility_distance,
             
             // Exact bilateral compliance
@@ -829,7 +829,7 @@ export class AGTTMCompliantPlacement {
             
             mounting_height_exact: heightSpec.minimum_mounting_height,
             maximum_height_limit: heightSpec.maximum_mounting_height,
-            sign_size: this.as1742Specs.sign_specifications.warning_signs.size,
+            sign_size: this.as1742Specs?.sign_specifications?.warning_signs?.size || '600mm',
             visibility_distance: this.as1742Specs.sign_specifications.warning_signs.visibility_distance,
             
             bilateral_pair: true,
