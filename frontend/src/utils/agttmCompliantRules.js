@@ -896,9 +896,9 @@ export class AGTTMCompliantPlacement {
           as1742_reference: 'AS 1742.3 Section 5.2.5',
           
           // Exact specifications
-          mounting_height_exact: this.agttmRules.arrow_board_specs.mounting_height, // Exact 1.5m
-          compliance_standard: this.agttmRules.arrow_board_specs.compliance_standard, // AS 4192
-          visibility_distance_exact: this.agttmRules.arrow_board_specs.minimum_visibility, // 100m
+          mounting_height_exact: this.agttmRules?.arrow_board_specs?.mounting_height || 1.5, // Exact 1.5m
+          compliance_standard: this.agttmRules?.arrow_board_specs?.compliance_standard || 'AS 4192',
+          visibility_distance_exact: this.agttmRules?.arrow_board_specs?.minimum_visibility || 100, // 100m
           
           // Arrow direction based on lane occupancy
           arrow_direction: workZoneData.road_occupancy.left_lane ? 'RIGHT' : 'LEFT',
