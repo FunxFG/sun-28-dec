@@ -1,22 +1,27 @@
 """
-Road Geometry Processor
-Extracts precise road edge coordinates from OpenStreetMap data
-Ensures traffic control devices are placed at exact road edges
+Road Geometry Processor - Multi-Tiered Approach
+Uses all available APIs for maximum accuracy:
+1. Google Roads API (most accurate, requires API key)
+2. OpenStreetMap Overpass API (good accuracy, free)
+3. Fallback calculations (basic but reliable)
 """
 
 import requests
 import math
 from typing import Dict, List, Tuple, Optional
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
 
 class RoadGeometryProcessor:
-    """Process road geometry to calculate precise edge positions"""
+    """Process road geometry to calculate precise edge positions using multiple APIs"""
     
     def __init__(self):
         self.overpass_url = "https://overpass-api.de/api/interpreter"
+        self.google_maps_key = os.getenv('GOOGLE_MAPS_API_KEY', '')
+        self.cache = {}  # Cache results to avoid redundant API calls
     
     def get_road_geometry(self, lat: float, lng: float, radius: int = 50) -> Optional[Dict]:
         """
