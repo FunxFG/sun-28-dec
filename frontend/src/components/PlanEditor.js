@@ -4471,12 +4471,6 @@ export default function PlanEditor({ user, onLogout }) {
               handleInputChange={handleInputChange} 
             />
 
-            {/* Section 10: Management Review */}
-            <ManagementReviewSection 
-              formData={formData} 
-              handleInputChange={handleInputChange} 
-            />
-
             {/* Placed Devices */}
             <Card>
               <CardHeader>
