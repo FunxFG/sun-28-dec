@@ -1422,9 +1422,9 @@ export class AGTTMCompliantPlacement {
               side: side,
               speed_limit: 40,
               
-              sign_height: this.agttmRules.sign_heights.minimum_mounting_height,
-              sign_size: this.as1742Specs.sign_specifications.regulatory_signs.size,
-              mounting_height: this.as1742Specs.sign_specifications.regulatory_signs.mounting_height,
+              sign_height: this.agttmRules?.sign_heights?.minimum_mounting_height || 2.1,
+              sign_size: this.as1742Specs?.sign_specifications?.regulatory_signs?.size || '600mm',
+              mounting_height: this.as1742Specs?.sign_specifications?.regulatory_signs?.mounting_height || 2.1,
               
               bilateral_pair: true,
               bilateral_pair_id: 'speed_limit_pair',
