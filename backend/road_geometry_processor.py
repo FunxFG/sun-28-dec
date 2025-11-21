@@ -232,12 +232,45 @@ class RoadGeometryProcessor:
                         'bearing': self._calculate_bearing(centerline[0], centerline[-1]) if len(centerline) >= 2 else 0
                     }
             
-            logger.warning(f"No road geometry found at {lat}, {lng}")
+            logger.warning(f"No OSM road geometry found at {lat}, {lng}")
             return None
             
         except Exception as e:
-            logger.error(f"Error fetching road geometry: {str(e)}")
+            logger.error(f"OSM error: {str(e)}")
             return None
+    
+    def _get_geometry_fallback(self, lat: float, lng: float) -> Dict:
+        """
+        OPTION 3: Fallback calculation
+        Always works - uses standard assumptions
+        """
+        logger.info("Using fallback geometry calculation")
+        
+        # Standard assumptions for unknown roads
+        road_width = 7.0  # Standard 2-lane road
+        lanes = 2
+        bearing = 0  # Assume north-south
+        
+        # Create a simple centerline (single point)
+        centerline = [(lat, lng)]
+        
+        # Calculate edges with standard offset
+        edges = self._calculate_road_edges(centerline, road_width)
+        
+        return {
+            'source': 'Fallback calculation',
+            'accuracy': 'estimated',
+            'road_name': 'Unknown Road',
+            'highway_type': 'road',
+            'lanes': lanes,
+            'width': road_width,
+            'surface': 'asphalt',
+            'maxspeed': '50',
+            'centerline': centerline,
+            'left_edge': edges['left'],
+            'right_edge': edges['right'],
+            'bearing': bearing
+        }
     
     def _calculate_road_width(self, tags: Dict) -> float:
         """
