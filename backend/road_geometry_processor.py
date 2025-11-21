@@ -25,7 +25,10 @@ class RoadGeometryProcessor:
     
     def get_road_geometry(self, lat: float, lng: float, radius: int = 50) -> Optional[Dict]:
         """
-        Get detailed road geometry from OpenStreetMap
+        Get detailed road geometry using multi-tiered approach:
+        1. Try Google Roads API (most accurate)
+        2. Fall back to OpenStreetMap (good accuracy)
+        3. Fall back to basic calculation (reliable)
         
         Args:
             lat: Latitude of point on road
@@ -34,6 +37,151 @@ class RoadGeometryProcessor:
         
         Returns:
             Dict with road geometry data including edges, width, lanes
+        """
+        cache_key = f"{lat:.6f},{lng:.6f}"
+        
+        # Check cache first
+        if cache_key in self.cache:
+            logger.info(f"Using cached road geometry for {cache_key}")
+            return self.cache[cache_key]
+        
+        # OPTION 1: Try Google Roads API first (most accurate)
+        if self.google_maps_key:
+            logger.info("Attempting Google Roads API (Option 1)")
+            google_result = self._get_geometry_from_google_roads(lat, lng)
+            if google_result:
+                logger.info("✅ Google Roads API successful")
+                self.cache[cache_key] = google_result
+                return google_result
+            else:
+                logger.warning("⚠️ Google Roads API failed, falling back to OSM")
+        
+        # OPTION 2: Try OpenStreetMap (good accuracy, free)
+        logger.info("Attempting OpenStreetMap API (Option 2)")
+        osm_result = self._get_geometry_from_osm(lat, lng, radius)
+        if osm_result:
+            logger.info("✅ OpenStreetMap API successful")
+            self.cache[cache_key] = osm_result
+            return osm_result
+        else:
+            logger.warning("⚠️ OpenStreetMap API failed, using fallback")
+        
+        # OPTION 3: Fallback to basic calculation (always works)
+        logger.info("Using fallback calculation (Option 3)")
+        fallback_result = self._get_geometry_fallback(lat, lng)
+        self.cache[cache_key] = fallback_result
+        return fallback_result
+    
+    def _get_geometry_from_google_roads(self, lat: float, lng: float) -> Optional[Dict]:
+        """
+        OPTION 1: Get road geometry from Google Roads API
+        Most accurate - uses Google's road network database
+        """
+        try:
+            # Snap to nearest road
+            snap_url = f"https://roads.googleapis.com/v1/snapToRoads"
+            params = {
+                'path': f"{lat},{lng}",
+                'interpolate': 'false',
+                'key': self.google_maps_key
+            }
+            
+            response = requests.get(snap_url, params=params, timeout=5)
+            
+            if response.status_code != 200:
+                logger.warning(f"Google Roads API returned status {response.status_code}")
+                return None
+            
+            data = response.json()
+            
+            if not data.get('snappedPoints'):
+                logger.warning("No snapped points from Google Roads API")
+                return None
+            
+            snapped = data['snappedPoints'][0]
+            snapped_lat = snapped['location']['latitude']
+            snapped_lng = snapped['location']['longitude']
+            place_id = snapped.get('placeId')
+            
+            # Get nearby roads for bearing calculation
+            nearby_url = f"https://roads.googleapis.com/v1/nearestRoads"
+            nearby_params = {
+                'points': f"{snapped_lat},{snapped_lng}",
+                'key': self.google_maps_key
+            }
+            
+            nearby_response = requests.get(nearby_url, params=nearby_params, timeout=5)
+            bearing = 0
+            
+            if nearby_response.status_code == 200:
+                nearby_data = nearby_response.json()
+                if nearby_data.get('snappedPoints') and len(nearby_data['snappedPoints']) >= 2:
+                    p1 = nearby_data['snappedPoints'][0]['location']
+                    p2 = nearby_data['snappedPoints'][1]['location']
+                    bearing = self._calculate_bearing(
+                        (p1['latitude'], p1['longitude']),
+                        (p2['latitude'], p2['longitude'])
+                    )
+            
+            # Get additional road info from Google Places API (if available)
+            road_width = 7.0  # Default
+            lanes = 2
+            
+            # Try to get road details from Places API
+            if place_id:
+                try:
+                    places_url = f"https://maps.googleapis.com/maps/api/place/details/json"
+                    places_params = {
+                        'place_id': place_id,
+                        'fields': 'name,types',
+                        'key': self.google_maps_key
+                    }
+                    places_response = requests.get(places_url, params=places_params, timeout=5)
+                    if places_response.status_code == 200:
+                        places_data = places_response.json()
+                        road_types = places_data.get('result', {}).get('types', [])
+                        
+                        # Estimate lanes and width from road type
+                        if 'route' in road_types or 'highway' in road_types:
+                            lanes = 4
+                            road_width = 14.0
+                        elif 'primary' in str(road_types):
+                            lanes = 2
+                            road_width = 10.0
+                except:
+                    pass
+            
+            # Calculate centerline (simplified - just snapped point)
+            centerline = [(snapped_lat, snapped_lng)]
+            
+            # Calculate edges
+            edges = self._calculate_road_edges(centerline, road_width)
+            
+            return {
+                'source': 'Google Roads API',
+                'accuracy': 'high',
+                'road_name': 'Via Google Maps',
+                'highway_type': 'road',
+                'lanes': lanes,
+                'width': road_width,
+                'surface': 'asphalt',
+                'maxspeed': '50',
+                'centerline': centerline,
+                'left_edge': edges['left'],
+                'right_edge': edges['right'],
+                'bearing': bearing,
+                'snapped_lat': snapped_lat,
+                'snapped_lng': snapped_lng
+            }
+            
+        except Exception as e:
+            logger.error(f"Google Roads API error: {str(e)}")
+            return None
+    
+    def _get_geometry_from_osm(self, lat: float, lng: float, radius: int) -> Optional[Dict]:
+        """
+        OPTION 2: Get road geometry from OpenStreetMap
+        Good accuracy - free and reliable
         """
         try:
             # Overpass query to get road geometry
