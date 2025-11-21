@@ -2950,6 +2950,72 @@ async def calculate_sign_spacing(request: Dict):
         raise HTTPException(status_code=500, detail=str(e))
 
 # ===================================================
+# ROAD EDGE GEOMETRY ENDPOINTS
+# ===================================================
+
+@api_router.get("/road-edge-geometry")
+async def get_road_edge_geometry(lat: float, lng: float, radius: int = 50):
+    """
+    Get precise road edge geometry from OpenStreetMap
+    Returns left and right edge coordinates for device placement
+    """
+    try:
+        geometry = road_geometry_processor.get_road_geometry(lat, lng, radius)
+        
+        if not geometry:
+            raise HTTPException(status_code=404, detail="No road geometry found at location")
+        
+        return {
+            "status": "success",
+            "geometry": geometry
+        }
+    except Exception as e:
+        logger.error(f"Error fetching road edge geometry: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/calculate-device-edge-position")
+async def calculate_device_edge_position(request: Dict):
+    """
+    Calculate precise device position on road edge
+    """
+    try:
+        lat = request.get('lat')
+        lng = request.get('lng')
+        distance_along_road = request.get('distance_along_road', 0)
+        side = request.get('side', 'left')
+        lateral_offset = request.get('lateral_offset', 2.0)
+        
+        # Get road geometry
+        geometry = road_geometry_processor.get_road_geometry(lat, lng)
+        
+        if not geometry:
+            raise HTTPException(status_code=404, detail="No road geometry found")
+        
+        # Calculate device position
+        device_lat, device_lng = road_geometry_processor.get_device_position_on_road_edge(
+            geometry,
+            distance_along_road,
+            side,
+            lateral_offset
+        )
+        
+        return {
+            "status": "success",
+            "position": {
+                "latitude": device_lat,
+                "longitude": device_lng
+            },
+            "road_geometry": {
+                "width": geometry['width'],
+                "lanes": geometry['lanes'],
+                "bearing": geometry['bearing']
+            }
+        }
+    except Exception as e:
+        logger.error(f"Error calculating device edge position: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ===================================================
 # FILE DOWNLOAD ENDPOINTS FOR TMP OUTPUTS
 # ===================================================
 
