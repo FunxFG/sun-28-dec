@@ -41,8 +41,7 @@ import {
   SiteAssessmentSection,
   SafetyPlanSection,
   ImplementationSection,
-  MonitoringSection,
-  ManagementReviewSection
+  MonitoringSection
 } from './TMPFormSections';
 import RiskAssessmentSection from './RiskAssessmentSection';
 import axios from 'axios';
