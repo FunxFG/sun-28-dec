@@ -172,6 +172,11 @@ class VisualTGSGenerator:
         """
         Convert GPS coordinates to pixel coordinates using Web Mercator projection
         """
+        # Validate coordinates
+        if None in (center_lat, center_lng, point_lat, point_lng):
+            logger.error(f"Invalid coordinates: center=({center_lat},{center_lng}), point=({point_lat},{point_lng})")
+            return 0, 0
+        
         # Calculate the scale at this zoom level
         scale = 2 ** zoom
         
