@@ -2404,9 +2404,10 @@ async def get_comprehensive_auto_populate(
     work_type: str = None
 ):
     """
-    MASTER AUTO-POPULATION ENDPOINT
+    MASTER AUTO-POPULATION ENDPOINT - ENHANCED WITH ROAD EDGE GEOMETRY
     Returns ALL possible auto-populated data to minimize user input
     Combines: road, traffic, site, side streets, risks, devices, contacts, etc.
+    NOW INCLUDES: Precise road edge geometry using multi-tiered API approach
     """
     try:
         from comprehensive_auto_population import get_comprehensive_auto_population
@@ -2414,6 +2415,32 @@ async def get_comprehensive_auto_populate(
         result = await get_comprehensive_auto_population(
             lat, lng, start_address, end_address, work_type
         )
+        
+        # ENHANCEMENT: Add precise road edge geometry using all 3 options
+        try:
+            logger.info("Fetching road edge geometry (multi-tiered approach)")
+            start_geometry = road_geometry_processor.get_road_geometry(lat, lng)
+            
+            if start_geometry:
+                result['road_edge_geometry'] = {
+                    'start': start_geometry,
+                    'source': start_geometry.get('source', 'unknown'),
+                    'accuracy': start_geometry.get('accuracy', 'unknown'),
+                    'message': f"Road edges calculated using {start_geometry.get('source', 'multiple APIs')}"
+                }
+                logger.info(f"✅ Road edge geometry added from {start_geometry.get('source')}")
+            else:
+                logger.warning("⚠️ Could not fetch road edge geometry")
+                result['road_edge_geometry'] = {
+                    'start': None,
+                    'message': 'Road edge geometry unavailable - using standard offsets'
+                }
+        except Exception as geo_error:
+            logger.error(f"Error adding road geometry: {str(geo_error)}")
+            result['road_edge_geometry'] = {
+                'error': str(geo_error),
+                'message': 'Road edge geometry failed - using standard offsets'
+            }
         
         return result
         
