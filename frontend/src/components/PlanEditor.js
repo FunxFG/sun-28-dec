@@ -579,6 +579,9 @@ export default function PlanEditor({ user, onLogout }) {
     try {
       toast.info('Auto-populating TMP and calculating device placement...');
       
+      // IMPORTANT: First call fetchRoadData which includes comprehensive auto-populate
+      await fetchRoadData();
+      
       // Get coordinates for start and end addresses
       const startCoords = await geocodeAddress(formData.work_details.start_address);
       const endCoords = await geocodeAddress(formData.work_details.end_address);
