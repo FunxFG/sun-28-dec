@@ -1328,9 +1328,9 @@ export class AGTTMCompliantPlacement {
             distance_advance: `${distance}m`,
             
             // Sign specifications
-            sign_height: this.agttmRules.sign_heights.minimum_mounting_height,
-            sign_size: this.as1742Specs.sign_specifications.warning_signs.size,
-            mounting_height: this.as1742Specs.sign_specifications.warning_signs.mounting_height,
+            sign_height: this.agttmRules?.sign_heights?.minimum_mounting_height || 2.1,
+            sign_size: this.as1742Specs?.sign_specifications?.warning_signs?.size || '600mm',
+            mounting_height: this.as1742Specs?.sign_specifications?.warning_signs?.mounting_height || 2.1,
             
             // Bilateral compliance
             bilateral_pair: true,
