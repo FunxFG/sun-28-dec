@@ -1535,9 +1535,9 @@ export class AGTTMCompliantPlacement {
               placement_type: sideAnalysis.placement_type,
               side: side,
               
-              sign_height: this.agttmRules.sign_heights.minimum_mounting_height,
-              sign_size: this.as1742Specs.sign_specifications.guide_signs.size,
-              mounting_height: this.as1742Specs.sign_specifications.guide_signs.mounting_height,
+              sign_height: this.agttmRules?.sign_heights?.minimum_mounting_height || 2.1,
+              sign_size: this.as1742Specs?.sign_specifications?.guide_signs?.size || '900mm',
+              mounting_height: this.as1742Specs?.sign_specifications?.guide_signs?.mounting_height || 2.3,
               
               bilateral_pair: true,
               bilateral_pair_id: 'end_work_pair',
