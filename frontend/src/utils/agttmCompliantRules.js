@@ -653,7 +653,7 @@ export class AGTTMCompliantPlacement {
   }
 
   checkServiceVehicleClearance(lateralOffset, totalWidth) {
-    const serviceVehicleWidth = this.as1742Specs.vehicle_accommodation.service_vehicle_length;
+    const serviceVehicleWidth = this.as1742Specs?.vehicle_accommodation?.service_vehicle_length;
     return totalWidth >= serviceVehicleWidth;
   }
 
@@ -733,7 +733,7 @@ export class AGTTMCompliantPlacement {
   }
 
   checkServiceVehicleClearance(lateralOffset, totalWidth) {
-    const serviceVehicleWidth = this.as1742Specs.vehicle_accommodation.service_vehicle_length;
+    const serviceVehicleWidth = this.as1742Specs?.vehicle_accommodation?.service_vehicle_length;
     return totalWidth >= (serviceVehicleWidth / 4); // Simplified check
   }
 
