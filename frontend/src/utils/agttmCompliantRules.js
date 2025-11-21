@@ -359,6 +359,23 @@ export class AGTTMCompliantPlacement {
   async calculateAGTTMCompliantPlacement(workZoneData, roadGeometry, googleMapsApiKey) {
     const devices = [];
     
+    try {
+      // Ensure all required data is present
+      if (!workZoneData || !roadGeometry) {
+        console.error('Missing required data for AGTTM placement');
+        return [];
+      }
+      
+      // Ensure specs are initialized
+      if (!this.as1742Specs || !this.agttmRules) {
+        console.error('Specifications not initialized');
+        return [];
+      }
+    } catch (error) {
+      console.error('Error in initial validation:', error);
+      return [];
+    }
+    
     // CRITICAL FIX: Snap start and end addresses to nearest road
     // This ensures devices are placed on the road/curb, NOT on private property
     console.log('Snapping start address to road...');
