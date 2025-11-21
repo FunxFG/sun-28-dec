@@ -75,6 +75,7 @@ from worksite_tmp_generator import (
     calculate_sign_spacing_and_tapers,
     generate_worksite_tmp
 )
+from road_geometry_processor import road_geometry_processor
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
