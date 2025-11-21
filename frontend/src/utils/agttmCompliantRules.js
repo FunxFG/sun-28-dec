@@ -582,8 +582,8 @@ export class AGTTMCompliantPlacement {
       device_spacing: this.getExactDeviceSpacing(roadGeometry.speed_limit || 60),
       
       // Compliance tolerances
-      position_tolerance: this.agttmRules.tolerances.offset_tolerance,
-      distance_tolerance: this.agttmRules.tolerances.distance_tolerance
+      position_tolerance: this.agttmRules?.tolerances?.offset_tolerance,
+      distance_tolerance: this.agttmRules?.tolerances?.distance_tolerance
     };
   }
 
@@ -748,7 +748,7 @@ export class AGTTMCompliantPlacement {
   }
 
   getExactDeviceSpacing(speedLimit) {
-    const spacing = this.agttmRules.device_spacing.cone_spacing;
+    const spacing = this.agttmRules?.device_spacing?.cone_spacing;
     
     if (speedLimit <= 50) return spacing['≤50kmh'];
     if (speedLimit <= 60) return spacing['60kmh'];
@@ -804,7 +804,7 @@ export class AGTTMCompliantPlacement {
             // Exact bilateral compliance
             bilateral_pair: true,
             bilateral_pair_id: `warning_pair_${level}_${distance}`,
-            bilateral_spacing_tolerance: this.agttmRules.bilateral_requirements.symmetry_tolerance,
+            bilateral_spacing_tolerance: this.agttmRules?.bilateral_requirements?.symmetry_tolerance,
             
             // Exact validation
             auto_placed: true,
@@ -851,7 +851,7 @@ export class AGTTMCompliantPlacement {
             
             bilateral_pair: true,
             bilateral_pair_id: `warning_pair_${level}_${distance}`,
-            bilateral_spacing_tolerance: this.agttmRules.bilateral_requirements.symmetry_tolerance,
+            bilateral_spacing_tolerance: this.agttmRules?.bilateral_requirements?.symmetry_tolerance,
             
             auto_placed: true,
             agttm_compliant: true,
@@ -984,7 +984,7 @@ export class AGTTMCompliantPlacement {
     
     // Place longitudinal cones along work zone edge
     const workzoneLength = analysis.workzone_size || 100;
-    const longitudinalSpacing = this.agttmRules.device_spacing.cone_spacing[speedKey];
+    const longitudinalSpacing = this.agttmRules?.device_spacing?.cone_spacing[speedKey];
     const numLongitudinalCones = Math.ceil(workzoneLength / longitudinalSpacing);
     
     console.log(`Placing ${numLongitudinalCones} longitudinal cones at ${longitudinalSpacing}m spacing`);
@@ -1259,7 +1259,7 @@ export class AGTTMCompliantPlacement {
   analyzeSideGeometry(side, roadGeometry) {
     const shoulderWidth = roadGeometry[`${side}_shoulder_width`] || 1.5;
     const vergeWidth = roadGeometry[`${side}_verge_width`] || 2.0;
-    const clearanceSpecs = this.agttmRules.sign_positioning.lateral_clearances;
+    const clearanceSpecs = this.agttmRules?.sign_positioning?.lateral_clearances;
     
     // Determine optimal placement type
     let placementType, offset, feasible;
@@ -1300,7 +1300,7 @@ export class AGTTMCompliantPlacement {
   }
 
   getDeviceSpacingForSpeed(speedLimit) {
-    const spacing = this.agttmRules.device_spacing.cone_spacing;
+    const spacing = this.agttmRules?.device_spacing?.cone_spacing;
     
     if (speedLimit <= 50) return spacing['≤50kmh'];
     if (speedLimit <= 60) return spacing['60kmh'];
