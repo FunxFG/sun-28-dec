@@ -743,24 +743,40 @@ export default function PlanEditor({ user, onLogout }) {
         properties: device.properties || {}
       }));
 
-      // Use devices with precise measurements
-      const devicesWithMeasurements = tgsData.detailed_schedule?.devices?.map((scheduleItem, idx) => ({
-        ...safeDevices[idx],
-        measurements: {
-          gps_coordinates: {
-            latitude: scheduleItem.gps_lat,
-            longitude: scheduleItem.gps_lng,
-            format: 'WGS84'
-          },
-          distance_from_workzone_start: scheduleItem.distance_from_start,
-          distance_from_workzone_end: 'Calculated',
-          lateral_offset_from_centerline: scheduleItem.lateral_offset,
-          side_of_road: scheduleItem.side,
-          position_description: scheduleItem.position_description,
-          mounting_height: scheduleItem.mounting_height,
-          clearance_from_carriageway: scheduleItem.clearance_from_edge
-        }
-      })) || safeDevices;
+      // Use devices with precise measurements where available
+      let devicesWithMeasurements;
+      const scheduleDevices = tgsData.detailed_schedule?.devices;
+
+      if (Array.isArray(scheduleDevices) && scheduleDevices.length && safeDevices.length) {
+        devicesWithMeasurements = safeDevices.map((device, idx) => {
+          const scheduleItem = scheduleDevices[idx];
+
+          // If we don't have a matching schedule item, keep the original device
+          if (!scheduleItem) {
+            return device;
+          }
+
+          return {
+            ...device,
+            measurements: {
+              gps_coordinates: {
+                latitude: scheduleItem.gps_lat,
+                longitude: scheduleItem.gps_lng,
+                format: 'WGS84'
+              },
+              distance_from_workzone_start: scheduleItem.distance_from_start,
+              distance_from_workzone_end: 'Calculated',
+              lateral_offset_from_centerline: scheduleItem.lateral_offset,
+              side_of_road: scheduleItem.side,
+              position_description: scheduleItem.position_description,
+              mounting_height: scheduleItem.mounting_height,
+              clearance_from_carriageway: scheduleItem.clearance_from_edge
+            }
+          };
+        });
+      } else {
+        devicesWithMeasurements = safeDevices;
+      }
 
       // Update form data with automatically placed devices
       setFormData(prev => ({
