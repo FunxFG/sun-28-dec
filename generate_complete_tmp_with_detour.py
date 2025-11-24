@@ -10,7 +10,7 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-BASE_URL = "https://tmp-generator.preview.emergentagent.com"
+BASE_URL = "https://roadworksai.preview.emergentagent.com"
 API_URL = f"{BASE_URL}/api"
 
 def generate_complete_tmp_with_detour():

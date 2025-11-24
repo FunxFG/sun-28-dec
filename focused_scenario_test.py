@@ -12,7 +12,7 @@ import re
 def test_scenario(name, params, validations):
     """Test a single scenario with specific validations"""
     
-    base_url = "https://tmp-generator.preview.emergentagent.com"
+    base_url = "https://roadworksai.preview.emergentagent.com"
     api_url = f"{base_url}/api"
     url = f"{api_url}/comprehensive-auto-populate"
     
