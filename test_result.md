@@ -191,9 +191,9 @@ backend:
 
   - task: "PDF generation endpoint"
     implemented: true
-    working: true
+    working: false
     file: "backend/server.py, backend/tmp_generator.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "medium"
     needs_retesting: false
     status_history:
@@ -206,6 +206,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ PDF GENERATION VERIFIED - Latest comprehensive testing confirms PDF generation endpoint working correctly. GET /api/plans/{plan_id}/pdf returns 200 OK status and generates professional TMP PDF successfully. tmp_generator.py integration operational for production use."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL REGRESSION: PDF generation failing after server.py restore. GET /api/plans/{plan_id}/pdf returns 500 Internal Server Error. Backend logs show AttributeError: 'NoneType' object has no attribute 'get' in tmp_generator.py line 74 when accessing plan_data.get('traffic_company', {}).get('name', 'TBC'). The issue occurs because traffic_company field is None and code tries to call .get() on None. This is a minor code issue in PDF generation logic that needs fixing - the core PDF generation infrastructure is intact but fails on null field handling."
 
   - task: "Risk Registry API endpoint"
     implemented: true
