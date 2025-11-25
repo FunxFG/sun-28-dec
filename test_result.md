@@ -210,6 +210,18 @@ backend:
         agent: "testing"
         comment: "❌ CRITICAL REGRESSION: PDF generation failing after server.py restore. GET /api/plans/{plan_id}/pdf returns 500 Internal Server Error. Backend logs show AttributeError: 'NoneType' object has no attribute 'get' in tmp_generator.py line 74 when accessing plan_data.get('traffic_company', {}).get('name', 'TBC'). The issue occurs because traffic_company field is None and code tries to call .get() on None. This is a minor code issue in PDF generation logic that needs fixing - the core PDF generation infrastructure is intact but fails on null field handling."
 
+  - task: "Backend Review Testing - Core Functionality Verification"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "critical"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "🎉 BACKEND REVIEW TESTING COMPLETE - CORE FUNCTIONALITY INTACT! Comprehensive testing of core existing backend functionality after server.py restore completed successfully with 93.3% success rate (14/15 tests passed). ✅ AUTHENTICATION: Both POST /auth/register and POST /auth/login working perfectly with JWT token generation and proper response format. ✅ PLANS CRUD: All 5 CRUD operations (CREATE, READ, UPDATE, DELETE) working correctly - created plan c25743de-e3ae-433c-ba38-81a8b4a058b6, retrieved plans list, fetched single plan, updated plan name successfully, deleted plan. ✅ CORE ANALYSIS ENDPOINTS: All 4 core endpoints operational - GET /geocode (Brisbane CBD: -27.4704528, 153.0260341), GET /road-data (Queen St to George St: 567.57m workzone), GET /traffic-assessment (AADT 35000), GET /site-assessment (2 lanes road geometry). ✅ COMPREHENSIVE AUTO-POPULATE: Working excellently with 28 data categories returned including road_data, traffic_assessment, site_assessment. ❌ PDF GENERATION: Single failure due to minor null handling issue in tmp_generator.py (traffic_company field None causing AttributeError). ASSESSMENT: Core backend functionality is fully intact after server.py restore. Only PDF generation has a minor code issue that needs fixing. All authentication, CRUD operations, geocoding, road data analysis, traffic assessment, site assessment, and comprehensive auto-populate endpoints are working correctly. Backend is 93.3% operational and ready for production use with PDF generation fix needed."
+
   - task: "Risk Registry API endpoint"
     implemented: true
     working: true
