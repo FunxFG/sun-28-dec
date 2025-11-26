@@ -17,6 +17,10 @@ class TrafficManagementPlanGenerator:
     def generate_professional_tmp(self, plan_data: Dict[str, Any], plan_type: str = 'works') -> Dict[str, Any]:
         """Generate a complete professional Traffic Management Plan"""
         
+        # Handle None plan_data
+        if plan_data is None:
+            plan_data = {}
+        
         # Get the appropriate template structure
         template = self.template_sections.get(plan_type, self.template_sections['works'])
         
