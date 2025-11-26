@@ -449,7 +449,8 @@ class TrafficManagementPlanGenerator:
     
     def _describe_speed_zones(self, plan_data: Dict) -> str:
         """Describe speed zones"""
-        if plan_data.get('control_measures', {}).get('speed_reduction'):
+        control_measures = plan_data.get('control_measures') or {}
+        if control_measures.get('speed_reduction'):
             return 'Temporary 40 km/h speed zone through work area'
         return 'No temporary speed zones'
     
