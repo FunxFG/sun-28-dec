@@ -71,7 +71,8 @@ class TrafficManagementPlanGenerator:
                 'suburb': self._extract_suburb(plan_data.get('work_details', {}).get('start_address', ''))
             },
             'traffic_management_company': {
-                'name': plan_data.get('traffic_company', {}).get('name', 'TBC'),
+                # Handle cases where traffic_company may be None
+                'name': (plan_data.get('traffic_company') or {}).get('name', 'TBC'),
                 'contract': 'TBC',
                 'date': 'March 2025 edition'
             },
