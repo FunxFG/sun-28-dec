@@ -422,7 +422,7 @@ class TrafficManagementPlanGenerator:
     
     def _describe_road_configuration(self, plan_data: Dict) -> str:
         """Describe existing road configuration"""
-        road_data = plan_data.get('road_data', {})
+        road_data = plan_data.get('road_data') or {}
         return f"{road_data.get('road_type', 'Arterial')} road with {road_data.get('speed_limit', 60)} km/h speed limit"
     
     def _generate_ttm_description(self, plan_data: Dict) -> str:
