@@ -535,6 +535,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "✅ PASSED - Dashboard loads correctly with proper navigation. Shows stats cards (Total Plans, Active Projects, This Month), displays 'No plans yet' state correctly, and 'New Plan' button works. Navigation to plan editor successful."
+      - working: true
+        agent: "testing"
+        comment: "✅ VERIFIED WORKING - Dashboard accessible via demo mode. Successfully redirects from auth page, displays 4 dashboard cards, shows 'No plans yet' state correctly, and 'New Plan' button navigates to plan editor successfully. Despite React error in other components, dashboard core functionality is operational."
 
   - task: "Plan Editor with Google Maps"
     implemented: true
