@@ -81,8 +81,8 @@ const RiskAssessmentSection = ({ formData, handleInputChange, BACKEND_URL }) => 
   };
 
   const filteredRisks = filterCategory === 'all' 
-    ? riskRegistry 
-    : riskRegistry.filter(r => r.category === filterCategory);
+    ? (riskRegistry || [])
+    : (riskRegistry || []).filter(r => r.category === filterCategory);
 
   const categories = {
     'all': 'All Categories',
