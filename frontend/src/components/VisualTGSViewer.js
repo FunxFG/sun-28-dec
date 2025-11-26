@@ -223,14 +223,32 @@ const VisualTGSViewer = ({ planData, placedDevices, planId }) => {
                     </div>
                   )}
 
-                  <Button
-                    onClick={downloadTGSImage}
-                    variant="outline"
-                    className="w-full"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Download TGS Image (PNG)
-                  </Button>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <Button
+                      onClick={downloadTGSImage}
+                      variant="outline"
+                      className="w-full"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Download TGS Image (PNG)
+                    </Button>
+
+                    <Button
+                      onClick={downloadCombinedTmpWithTgs}
+                      variant="default"
+                      disabled={!planId || downloadingCombined}
+                      className="w-full bg-green-600 hover:bg-green-700"
+                    >
+                      {downloadingCombined ? (
+                        <>Preparing TMP + TGS PDF...</>
+                      ) : (
+                        <>
+                          <Download className="w-4 h-4 mr-2" />
+                          Download TMP + TGS (PDF)
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </div>
               )}
 
