@@ -393,7 +393,7 @@ class TrafficManagementPlanGenerator:
         if control_measures.get('signage'):
             strategies.append('Deploy appropriate warning and regulatory signage')
         
-        if plan_data.get('control_measures', {}).get('detour'):
+        if control_measures.get('detour'):
             strategies.append('Provide alternative route guidance')
         
         strategies.extend([
