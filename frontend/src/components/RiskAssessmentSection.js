@@ -13,11 +13,21 @@ const RiskAssessmentSection = ({ formData, handleInputChange, BACKEND_URL }) => 
   
   const API = `${BACKEND_URL}/api`;
 
+  const fetchRiskRegistry = async () => {
+    try {
+      const response = await axios.get(`${API}/risks`);
+      setRiskRegistry(response.data);
+    } catch (error) {
+      console.error('Error fetching risk registry:', error);
+    }
+  };
+
   useEffect(() => {
     fetchRiskRegistry();
+    // We intentionally omit fetchRiskRegistry from deps to avoid re-creating function
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const fetchRiskRegistry = async () => {
     try {
       const response = await axios.get(`${API}/risks`);
       setRiskRegistry(response.data);
