@@ -161,7 +161,7 @@ const RiskAssessmentSection = ({ formData, handleInputChange, BACKEND_URL }) => 
         {/* List View */}
         {viewMode === 'list' && (
           <div className="space-y-3">
-            {filteredRisks.map((risk) => {
+            {(filteredRisks || []).map((risk) => {
               const isSelected = selectedRisks.some(r => r.id === risk.id);
               const isExpanded = expandedRisks.has(risk.id);
               const riskScore = risk.risk_score?.score || 0;
