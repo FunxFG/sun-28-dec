@@ -4575,6 +4575,7 @@ export default function PlanEditor({ user, onLogout }) {
                 distance: d.properties?.distance || 0,
                 side: d.properties?.side || 'left'
               }))}
+              planId={planId}
             />
 
           </div>
