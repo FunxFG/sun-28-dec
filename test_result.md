@@ -517,6 +517,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "❌ PERSISTENT CRITICAL ISSUE: Authentication session persistence broken during comprehensive 12-scenario testing. Manual token bypass allows initial access to dashboard and plan editor, but sessions frequently expire/reset causing page redirects back to auth page. This prevents sustained testing of complete TMP workflows. Backend authentication functional, but frontend session management and response handling requires fix. Authentication bypass method: localStorage.setItem('token', 'jwt_token'); localStorage.setItem('user', JSON.stringify(user_data)); works temporarily but not persistent for extended testing sessions."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL REACT ERROR BLOCKING AUTHENTICATION: React runtime error 'Objects are not valid as a React child (found: object with keys {score, rating, color, action})' is preventing proper UI rendering. Fixed two instances in RiskMatrixInteractive.js and PlanEditor.js where objects were being rendered directly, but error persists. Demo mode works and redirects to dashboard successfully, but authentication forms are not accessible due to React error overlay. The error appears to be in a component that renders an object with score/rating/color/action keys directly in JSX. Authentication backend is functional, but frontend UI is blocked by this React rendering error."
 
   - task: "Dashboard and navigation"
     implemented: true
