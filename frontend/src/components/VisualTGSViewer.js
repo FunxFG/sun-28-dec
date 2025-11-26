@@ -153,7 +153,7 @@ const VisualTGSViewer = ({ planData, placedDevices, planId }) => {
               </Button>
               {(!placedDevices || placedDevices.length === 0) && (
                 <p className="text-sm text-orange-600 mt-2">
-                  ⚠️ Place devices on the map first using "Auto-Place Devices" button
+                  ⚠️ Place devices on the map first using &quot;Auto-Place Devices&quot; button
                 </p>
               )}
             </div>
