@@ -113,6 +113,13 @@ class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
+
+
+class ResetPasswordRequest(BaseModel):
+    email: EmailStr
+    new_password: str
+
+
 class CompanyDetails(BaseModel):
     name: str
     address: str
