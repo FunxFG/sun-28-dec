@@ -1880,11 +1880,9 @@ async def save_risk_assessment(plan_id: str, assessment: dict, current_user: Dic
     Save risk assessment for a specific traffic management plan
     """
     try:
-        user_data = verify_token(credentials.credentials)
-        
         # Update plan with risk assessment
         result = await db.plans.update_one(
-            {"id": plan_id, "user_id": user_data["user_id"]},
+            {"id": plan_id, "user_id": current_user["user_id"]},
             {"$set": {
                 "risk_assessment": assessment,
                 "updated_at": datetime.now(timezone.utc).isoformat()
