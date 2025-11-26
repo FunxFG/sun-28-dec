@@ -17,6 +17,51 @@ export default function AuthPage({ onLogin, onGuestLogin }) {
     company_name: ''
   });
   const [loading, setLoading] = useState(false);
+  const [showReset, setShowReset] = useState(false);
+
+  const [resetData, setResetData] = useState({
+    email: '',
+    new_password: ''
+  });
+
+  const handleResetChange = (e) => {
+    setResetData({ ...resetData, [e.target.name]: e.target.value });
+  };
+
+  const handlePasswordReset = async () => {
+    if (!resetData.email || !resetData.new_password) {
+      toast.error('Please enter both email and new password');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API}/auth/reset-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: resetData.email,
+          new_password: resetData.new_password,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ detail: 'Network error' }));
+        throw new Error(errorData.detail || `Server error: ${response.status}`);
+      }
+
+      toast.success('Password reset successfully. You can now sign in with your new password.');
+      setShowReset(false);
+      setFormData((prev) => ({ ...prev, email: resetData.email, password: '' }));
+      setResetData({ email: '', new_password: '' });
+    } catch (error) {
+      console.error('Password reset error:', error);
+      toast.error(error.message || 'Failed to reset password. Please try again.');
+    }
+  };
+
+
 
   const handleSubmit = async (isLogin) => {
     console.log('=== FORM SUBMISSION STARTED ===');
