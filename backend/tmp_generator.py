@@ -390,7 +390,7 @@ class TrafficManagementPlanGenerator:
         if control_measures.get('speed_reduction'):
             strategies.append('Implement temporary speed reduction')
         
-        if plan_data.get('control_measures', {}).get('signage'):
+        if control_measures.get('signage'):
             strategies.append('Deploy appropriate warning and regulatory signage')
         
         if plan_data.get('control_measures', {}).get('detour'):
