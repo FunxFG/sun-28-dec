@@ -187,6 +187,57 @@ export default function AuthPage({ onLogin, onGuestLogin }) {
           <div className="text-center p-8 bg-white rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
             <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4">
               <Shield className="w-8 h-8 text-white" />
+              {showReset && (
+                <div className="mb-6 p-4 border border-orange-200 rounded-lg bg-orange-50">
+                  <h3 className="text-sm font-semibold text-slate-800 mb-2">Reset your password</h3>
+                  <div className="space-y-3">
+                    <div className="space-y-1">
+                      <Label htmlFor="reset_email">Email</Label>
+                      <Input
+                        id="reset_email"
+                        name="email"
+                        type="email"
+                        placeholder="Enter your email"
+                        value={resetData.email}
+                        onChange={handleResetChange}
+                        className="h-10"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="reset_password">New Password</Label>
+                      <Input
+                        id="reset_password"
+                        name="new_password"
+                        type="password"
+                        placeholder="Enter new password"
+                        value={resetData.new_password}
+                        onChange={handleResetChange}
+                        className="h-10"
+                      />
+                    </div>
+                    <div className="flex items-center justify-end gap-2 pt-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowReset(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        className="bg-orange-500 hover:bg-orange-600 text-white"
+                        onClick={handlePasswordReset}
+                      >
+                        Save New Password
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+
             </div>
             <h3 className="text-xl font-semibold text-slate-800 mb-3">Compliance Ready</h3>
             <p className="text-slate-600">Generate professional PDF reports that meet all Austroads and DTMR requirements</p>
