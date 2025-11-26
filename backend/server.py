@@ -378,6 +378,24 @@ async def login_user(login_data: UserLogin):
     token = create_jwt_token(user["id"], user["email"])
     return {"token": token, "user": {"id": user["id"], "email": user["email"], "company_name": user["company_name"]}}
 
+
+@api_router.post("/auth/reset-password")
+async def reset_password(payload: ResetPasswordRequest):
+    """Reset a user's password given their email and new password.
+
+    This is a simplified flow for the current environment: the user
+    provides their email and a new password, and we update the stored
+    hash if the account exists.
+    """
+    user = await db.users.find_one({"email": payload.email})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    new_hash = hash_password(payload.new_password)
+    await db.users.update_one({"email": payload.email}, {"$set": {"password": new_hash}})
+
+    return {"message": "Password updated successfully"}
+
 # Traffic Management Plan routes
 @api_router.post("/plans", response_model=TrafficManagementPlan)
 async def create_plan(plan_data: TrafficManagementPlanCreate, current_user: Dict = Depends(get_current_user)):
