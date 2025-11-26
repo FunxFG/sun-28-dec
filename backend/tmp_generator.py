@@ -94,7 +94,7 @@ class TrafficManagementPlanGenerator:
                 'signature_date': datetime.now().strftime('%d/%m/%Y')
             },
             'design_review_details': {
-                'tmp_designed_by': plan_data.get('traffic_company', {}).get('liaison_name', 'TBC'),
+                'tmp_designed_by': (plan_data.get('traffic_company') or {}).get('liaison_name', 'TBC'),
                 'tmp_reviewed_by': 'TBC',
                 'rtm_reviewed_by': 'TBC',
                 'compliance_audit_by': 'TBC'
