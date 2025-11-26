@@ -381,10 +381,7 @@ class TrafficManagementPlanGenerator:
         
         # Handle None plan_data
         if plan_data is None:
-            print(f"DEBUG: plan_data is None in _generate_strategies")
             plan_data = {}
-        
-        print(f"DEBUG: plan_data type: {type(plan_data)}, value: {plan_data}")
         
         control_measures = plan_data.get('control_measures') or {}
         if control_measures.get('speed_reduction'):
