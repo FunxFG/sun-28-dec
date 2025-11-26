@@ -2364,28 +2364,6 @@ async def get_streetview_for_sign(
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    """
-    Get recommended devices based on work scenario
-    Request body example:
-    {
-        "work_type": "static",
-        "speed_limit": 80,
-        "lanes": 2,
-        "duration": "medium",
-        "time_of_day": "day"
-    }
-    """
-    try:
-        required_codes = get_required_devices_for_scenario(scenario)
-        devices = [get_device_by_code(code) for code in required_codes]
-        
-        return {
-            "scenario": scenario,
-            "recommended_devices": [dev for dev in devices if dev],
-            "device_codes": required_codes
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
 # ===================================================
 # COMPREHENSIVE AUTO-POPULATION ENDPOINT
