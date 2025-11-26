@@ -544,22 +544,67 @@ class SafeRoadWorksAPITester:
         return False
 
     def test_pdf_generation(self):
-        """Test PDF generation"""
+        """Test PDF generation with detailed verification"""
         if not self.created_plan_id:
             print("❌ No plan ID available for PDF test")
             return False
             
-        success, response = self.run_test(
-            "Generate PDF",
-            "GET",
-            f"plans/{self.created_plan_id}/pdf",
-            200
-        )
+        # Custom test for PDF endpoint with proper headers check
+        url = f"{self.api_url}/plans/{self.created_plan_id}/pdf"
+        test_headers = {'Authorization': f'Bearer {self.token}'}
         
-        if success:
-            print(f"   PDF generated successfully")
+        print(f"\n🔍 Testing PDF Generation (Post-Fix Verification)...")
+        print(f"   URL: {url}")
+        print(f"   Plan ID: {self.created_plan_id}")
+        
+        try:
+            response = requests.get(url, headers=test_headers)
+            
+            print(f"   Status Code: {response.status_code}")
+            print(f"   Content-Type: {response.headers.get('Content-Type', 'Not specified')}")
+            print(f"   Content-Length: {len(response.content)} bytes")
+            
+            # Check for 200 status
+            if response.status_code != 200:
+                print(f"❌ Failed - Expected 200, got {response.status_code}")
+                print(f"   Response: {response.text[:500]}")
+                return False
+            
+            # Check Content-Type
+            content_type = response.headers.get('Content-Type', '')
+            if 'application/pdf' not in content_type:
+                print(f"❌ Failed - Expected Content-Type: application/pdf, got: {content_type}")
+                return False
+            
+            # Check response body is non-trivial PDF
+            content = response.content
+            if len(content) < 1000:  # PDF should be at least 1KB
+                print(f"❌ Failed - PDF too small ({len(content)} bytes), likely error response")
+                return False
+            
+            # Check PDF magic bytes
+            if not content.startswith(b'%PDF-'):
+                print(f"❌ Failed - Response doesn't start with PDF magic bytes")
+                print(f"   First 50 bytes: {content[:50]}")
+                return False
+            
+            # Check for PDF end marker
+            if b'%%EOF' not in content:
+                print(f"❌ Failed - PDF doesn't contain end marker")
+                return False
+            
+            print(f"✅ PDF Generation Successful!")
+            print(f"   ✅ HTTP 200 status")
+            print(f"   ✅ Content-Type: application/pdf")
+            print(f"   ✅ Non-trivial PDF size: {len(content):,} bytes")
+            print(f"   ✅ Valid PDF format (magic bytes and end marker present)")
+            
+            self.tests_passed += 1
             return True
-        return False
+            
+        except Exception as e:
+            print(f"❌ Failed - Error: {str(e)}")
+            return False
 
     def test_delete_plan(self):
         """Test deleting a plan"""
