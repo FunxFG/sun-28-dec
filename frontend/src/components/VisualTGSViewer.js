@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/
 import { Button } from './ui/button';
 import { Download, Map, Eye, Camera } from 'lucide-react';
 
-const VisualTGSViewer = ({ planData, placedDevices }) => {
+const VisualTGSViewer = ({ planData, placedDevices, planId }) => {
   const [visualTGS, setVisualTGS] = useState(null);
   const [loading, setLoading] = useState(false);
   const [activeView, setActiveView] = useState('satellite'); // 'satellite' or 'streetview'
