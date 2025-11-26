@@ -393,7 +393,7 @@ export default function RiskMatrixInteractive({ formData, setFormData, onNext })
                             <div className="flex gap-4 mt-2 text-sm">
                               <span>Likelihood: <strong>{risk.likelihood}</strong></span>
                               <span>Consequence: <strong>{risk.consequence_level}</strong></span>
-                              <span>Score: <strong>{risk.risk_score}</strong></span>
+                              <span>Score: <strong>{risk.risk_score?.score || risk.risk_score}</strong></span>
                             </div>
                           </div>
 
