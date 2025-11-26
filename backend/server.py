@@ -1875,7 +1875,7 @@ async def calculate_risk(request: dict):
         raise HTTPException(status_code=500, detail=str(e))
 
 @api_router.post("/plans/{plan_id}/risk-assessment")
-async def save_risk_assessment(plan_id: str, assessment: dict, credentials: HTTPAuthorizationCredentials = Depends(security)):
+async def save_risk_assessment(plan_id: str, assessment: dict, current_user: Dict = Depends(get_current_user)):
     """
     Save risk assessment for a specific traffic management plan
     """
