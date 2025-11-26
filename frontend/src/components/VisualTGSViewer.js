@@ -47,6 +47,53 @@ const VisualTGSViewer = ({ planData, placedDevices, planId }) => {
     } finally {
       setLoading(false);
     }
+  const downloadCombinedTmpWithTgs = async () => {
+    if (!visualTGS?.satellite_tgs?.image_base64 || !planId) {
+      alert('Save the plan and generate Visual TGS before downloading combined TMP + TGS PDF.');
+      return;
+    }
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Please log in to download the combined TMP + TGS PDF.');
+      return;
+    }
+
+    setDownloadingCombined(true);
+    try {
+      const response = await fetch(`${API}/api/plans/${planId}/pdf-with-tgs`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          tgs_image_base64: visualTGS.satellite_tgs.image_base64,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      const safeName = (planData?.plan_name || 'plan').replace(/\s+/g, '_');
+      link.href = url;
+      link.download = `${safeName}_TMP_TGS.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading combined TMP + TGS PDF:', error);
+      alert(`Failed to download combined TMP + TGS PDF: ${error.message}`);
+    } finally {
+      setDownloadingCombined(false);
+    }
+  };
+
   };
 
   const downloadTGSImage = () => {
