@@ -24,8 +24,6 @@ const RiskAssessmentSection = ({ formData, handleInputChange, BACKEND_URL }) => 
 
   useEffect(() => {
     fetchRiskRegistry();
-    // We intentionally omit fetchRiskRegistry from deps to avoid re-creating function
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getRiskColor = (score) => {
