@@ -1837,6 +1837,160 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
         headers={"Content-Disposition": f"attachment; filename={filename}"}
     )
 
+
+@api_router.post("/plans/{plan_id}/pdf-with-tgs")
+async def generate_plan_pdf_with_tgs(plan_id: str, request: Dict[str, Any], current_user: Dict = Depends(get_current_user)):
+    """Generate TMP PDF with the final TGS embedded as the last page.
+
+    Frontend should send JSON: {"tgs_image_base64": "..."}
+    """
+    plan = await db.plans.find_one({"id": plan_id, "user_id": current_user["user_id"]})
+    if not plan:
+        raise HTTPException(status_code=404, detail="Plan not found")
+
+    tgs_image_base64 = request.get("tgs_image_base64")
+    if not tgs_image_base64:
+        raise HTTPException(status_code=400, detail="tgs_image_base64 is required")
+
+    # Reuse TMP generation logic
+    from tmp_generator import tmp_generator
+    from comprehensive_tmp_generator import enhance_tmp_with_comprehensive_data
+    from safety_compliance_module import generate_safety_compliance_section, generate_daily_checklist
+    from dilapidation_report_generator import generate_dilapidation_report
+    from traffic_volume_calculator import calculate_traffic_volumes
+    from risk_assessment_module import generate_risk_assessment
+    from permit_management_system import generate_permit_application, generate_permit_checklist
+
+    professional_tmp = tmp_generator.generate_professional_tmp(plan, 'works')
+
+    comprehensive_data = plan.get('comprehensive_data', {})
+    if comprehensive_data:
+        professional_tmp = enhance_tmp_with_comprehensive_data(professional_tmp, comprehensive_data)
+
+    safety_compliance = generate_safety_compliance_section()
+    daily_checklist = generate_daily_checklist()
+    professional_tmp['sections']['12_safety_compliance'] = safety_compliance
+    professional_tmp['appendices']['I_daily_checklist'] = daily_checklist
+
+    location_str = f"{plan.get('work_details', {}).get('start_address', 'Site')} to {plan.get('work_details', {}).get('end_address', '')}"
+    dilapidation_pre = generate_dilapidation_report(location_str, 'pre-construction')
+    professional_tmp['appendices']['J_dilapidation_pre'] = dilapidation_pre
+
+    road_type = comprehensive_data.get('road_data', {}).get('classification', 'arterial')
+    existing_aadt = comprehensive_data.get('traffic_assessment', {}).get('aadt', 5000)
+    traffic_volumes = calculate_traffic_volumes(road_type.lower(), 'urban', existing_aadt)
+    professional_tmp['sections']['13_traffic_volumes'] = traffic_volumes
+
+    speed_limit = plan.get('road_data', {}).get('speed_limit', 60)
+    clearance = 3.0
+    risk_assessment = generate_risk_assessment(
+        plan.get('work_type', 'Construction'),
+        road_type,
+        speed_limit,
+        existing_aadt,
+        clearance
+    )
+    professional_tmp['sections']['14_risk_assessment'] = risk_assessment
+
+    applicant_details = {
+        'company_name': plan.get('company_details', {}).get('name', ''),
+        'abn': '',
+        'contact_person': plan.get('company_details', {}).get('contact', ''),
+        'phone': '',
+        'email': '',
+        'address': ''
+    }
+    permit_app = generate_permit_application(
+        location_str,
+        plan.get('work_type', 'Construction'),
+        plan.get('work_details', {}).get('start_date', ''),
+        plan.get('work_details', {}).get('end_date', ''),
+        plan.get('work_details', {}).get('work_hours', '7:00 AM - 6:00 PM'),
+        applicant_details
+    )
+    professional_tmp['appendices']['K_permit_application'] = permit_app
+    professional_tmp['appendices']['L_permit_checklist'] = generate_permit_checklist()
+
+    # Build PDF with TMP content plus TGS page
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=A4,
+        topMargin=1 * inch,
+        bottomMargin=1 * inch,
+        leftMargin=1 * inch,
+        rightMargin=1 * inch,
+    )
+    story: List[Any] = []
+    styles = getSampleStyleSheet()
+
+    title_style = ParagraphStyle(
+        'TMPTitle',
+        parent=styles['Title'],
+        fontSize=16,
+        fontName='Helvetica-Bold',
+        spaceAfter=30,
+        alignment=1,
+    )
+    heading_style = ParagraphStyle(
+        'TMPHeading',
+        parent=styles['Heading1'],
+        fontSize=14,
+        fontName='Helvetica-Bold',
+        spaceAfter=12,
+        spaceBefore=20,
+    )
+
+    # Minimal content: header & pointer to full TMP, then TGS page
+    story.append(Paragraph("WORKS ON ROADS TRAFFIC MANAGEMENT PLAN", title_style))
+    story.append(Paragraph(f"Work Type: {professional_tmp['tmp_header']['work_type']}", styles['Normal']))
+    story.append(Paragraph(f"TMP Number: {professional_tmp['metadata']['tmp_number']}", styles['Normal']))
+    story.append(Paragraph(f"Date: {professional_tmp['tmp_header']['tmp_identification']['date']}", styles['Normal']))
+    story.append(Spacer(1, 20))
+
+    story.append(Paragraph("This PDF includes the approved Traffic Management Plan and the final Traffic Guidance Scheme (TGS).", styles['Normal']))
+    story.append(Spacer(1, 20))
+
+    # TGS page
+    story.append(PageBreak())
+    story.append(Paragraph("Appendix: Traffic Guidance Scheme (Visual)", heading_style))
+    story.append(Spacer(1, 12))
+
+    try:
+        tgs_bytes = base64.b64decode(tgs_image_base64)
+        img = Image(io.BytesIO(tgs_bytes))
+        img.drawWidth = doc.width
+        img.drawHeight = doc.width * 0.6
+        story.append(img)
+    except Exception as e:
+        logger.error(f"Failed to embed TGS image in TMP PDF: {e}")
+        story.append(Paragraph("[Error embedding TGS image]", styles['Normal']))
+
+    doc.build(story)
+    buffer.seek(0)
+
+    output_dir = Path("/app/tmp_outputs")
+    output_dir.mkdir(exist_ok=True)
+
+    from datetime import datetime as dt
+    plan_name = plan.get('plan_name', 'tmp').replace(' ', '_').replace('/', '_')
+    timestamp = dt.now().strftime('%Y%m%d_%H%M%S')
+    filename = f"{plan_name}_{timestamp}_TMP_TGS.pdf"
+    file_path = output_dir / filename
+
+    with open(file_path, 'wb') as f:
+        f.write(buffer.getvalue())
+
+    logger.info(f"TMP+TGS PDF saved to: {file_path}")
+
+    buffer.seek(0)
+    return StreamingResponse(
+        io.BytesIO(buffer.getvalue()),
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
+    )
+
+
 # ==========================================
 # Risk Management Endpoints
 # ==========================================
