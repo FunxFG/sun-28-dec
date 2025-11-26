@@ -151,6 +151,7 @@ async def fetch_location_metadata_system_data(lat: float, lng: float, road_name:
     Uses Geoscience Australia services and OpenStreetMap with SA Government classification standards
     Datasets: 558 (Roads), 1639 (State Maintained Roads)
     """
+    # Start with base LMS data
     lms_data = {
         'road_name': road_name,
         'road_classification_official': None,
@@ -164,9 +165,19 @@ async def fetch_location_metadata_system_data(lat: float, lng: float, road_name:
         'data_source': 'Location Metadata System (LMS) - DIT/DEW + Geoscience Australia',
         'dataset_references': ['Dataset 558: Roads', 'Dataset 1639: State Maintained Roads']
     }
+
+    # First, try to enrich with the local State Maintained Roads dataset
+    try:
+        state_info = lookup_state_road(road_name)
+        if state_info.get('is_state_maintained'):
+            lms_data['maintenance_authority'] = state_info.get('authority_name')
+            # Use road_id as a proxy for an official LMS reference
+            lms_data['road_category_code'] = f"State Maintained Road (ID {state_info.get('road_id')})"
+    except Exception as e:
+        logger.debug(f"State road lookup failed: {str(e)}")
     
     try:
-        # First try Geoscience Australia National Roads service
+        # Then try Geoscience Australia National Roads service
         ga_roads_data = await fetch_geoscience_australia_roads(lat, lng)
         
         if ga_roads_data:
