@@ -174,3 +174,6 @@ frontend/node_modules/.cache/default-development/19.pack
 # Environment files
 *.env
 *.env.*
+backend/data/Roads_geojson.zip
+backend/data/Roads_GDA2020.geojson
+backend/data/Roads_GDA94.geojson
