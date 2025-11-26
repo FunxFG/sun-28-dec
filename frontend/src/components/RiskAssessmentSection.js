@@ -13,16 +13,16 @@ const RiskAssessmentSection = ({ formData, handleInputChange, BACKEND_URL }) => 
   
   const API = `${BACKEND_URL}/api`;
 
-  const fetchRiskRegistry = async () => {
-    try {
-      const response = await axios.get(`${API}/risks`);
-      setRiskRegistry(response.data);
-    } catch (error) {
-      console.error('Error fetching risk registry:', error);
-    }
-  };
-
   useEffect(() => {
+    const fetchRiskRegistry = async () => {
+      try {
+        const response = await axios.get(`${API}/risks`);
+        setRiskRegistry(response.data);
+      } catch (error) {
+        console.error('Error fetching risk registry:', error);
+      }
+    };
+
     fetchRiskRegistry();
   }, []);
 
