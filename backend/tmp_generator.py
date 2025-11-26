@@ -363,6 +363,10 @@ class TrafficManagementPlanGenerator:
         """Generate strategies based on plan data"""
         strategies = []
         
+        # Handle None plan_data
+        if plan_data is None:
+            plan_data = {}
+        
         if plan_data.get('control_measures', {}).get('speed_reduction'):
             strategies.append('Implement temporary speed reduction')
         
