@@ -30,8 +30,13 @@ export default function AuthPage({ onLogin, onGuestLogin }) {
   };
 
   const handlePasswordReset = async () => {
-    if (!resetData.email || !resetData.new_password) {
-      toast.error('Please enter both email and new password');
+    if (!resetData.email || !resetData.new_password || !resetData.confirm_password) {
+      toast.error('Please enter email, new password and confirm password');
+      return;
+    }
+
+    if (resetData.new_password !== resetData.confirm_password) {
+      toast.error('New password and confirm password do not match');
       return;
     }
 
