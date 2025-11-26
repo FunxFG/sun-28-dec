@@ -1193,7 +1193,6 @@ async def fetch_digital_atlas_road_data(lat: float, lng: float):
             # Extract Australian road data
             road_name = road_attrs.get('ROADNAME') or road_attrs.get('NAME') or 'Unknown Road'
             road_class = road_attrs.get('CLASS') or road_attrs.get('ROAD_CLASS') or 'Local'
-            road_type_code = road_attrs.get('TYPE') or road_attrs.get('ROAD_TYPE')
             surface = road_attrs.get('SURFACE', 'sealed')
             lanes = road_attrs.get('LANES', 2)
             state = road_attrs.get('STATE') or road_attrs.get('STATE_CODE')
