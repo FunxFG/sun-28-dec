@@ -405,7 +405,7 @@ class TrafficManagementPlanGenerator:
         """Identify project constraints"""
         constraints = []
         
-        road_occupancy = plan_data.get('road_occupancy', {})
+        road_occupancy = plan_data.get('road_occupancy') or {}
         if road_occupancy.get('complete_road_closure'):
             constraints.append('Complete road closure required')
         
