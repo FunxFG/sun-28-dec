@@ -87,7 +87,7 @@ class TrafficManagementPlanGenerator:
         """Generate declaration section"""
         return {
             'designer_declaration': {
-                'certifier_name': plan_data.get('traffic_company', {}).get('liaison_name', 'TBC'),
+                'certifier_name': (plan_data.get('traffic_company') or {}).get('liaison_name', 'TBC'),
                 'awtm_cert_number': 'AWTM-TBC',
                 'site_inspection_date': datetime.now().strftime('%d/%m/%Y'),
                 'compliance_statement': 'This Traffic Management Plan has been prepared in accordance with the Main Roads Code of Practice, AGTTM and AS 1742.3',
