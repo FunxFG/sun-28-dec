@@ -64,6 +64,10 @@ class TrafficManagementPlanGenerator:
     
     def _generate_header(self, plan_data: Dict, tmp_number: str, plan_type: str) -> Dict:
         """Generate TMP header section"""
+        # Handle None plan_data
+        if plan_data is None:
+            plan_data = {}
+            
         work_type = plan_data.get('work_details', {}).get('work_type', 'Construction').upper()
         
         return {
