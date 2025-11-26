@@ -28,14 +28,6 @@ const RiskAssessmentSection = ({ formData, handleInputChange, BACKEND_URL }) => 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-    try {
-      const response = await axios.get(`${API}/risks`);
-      setRiskRegistry(response.data);
-    } catch (error) {
-      console.error('Error fetching risk registry:', error);
-    }
-  };
-
   const getRiskColor = (score) => {
     if (score >= 17) return 'bg-red-100 border-red-500 text-red-900';
     if (score >= 11) return 'bg-orange-100 border-orange-500 text-orange-900';
