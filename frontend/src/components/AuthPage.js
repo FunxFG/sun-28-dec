@@ -221,6 +221,18 @@ export default function AuthPage({ onLogin, onGuestLogin }) {
                         className="h-10"
                       />
                     </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="reset_confirm_password">Confirm Password</Label>
+                      <Input
+                        id="reset_confirm_password"
+                        name="confirm_password"
+                        type="password"
+                        placeholder="Confirm new password"
+                        value={resetData.confirm_password}
+                        onChange={handleResetChange}
+                        className="h-10"
+                      />
+                    </div>
                     <div className="flex items-center justify-end gap-2 pt-2">
                       <Button
                         type="button"
