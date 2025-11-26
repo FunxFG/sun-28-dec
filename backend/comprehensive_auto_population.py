@@ -9,6 +9,8 @@ from typing import Dict, List, Any
 # Import SA Traffic Intelligence module for Top 40 Roads, Intersections, Travel Speeds
 from integrated_sa_traffic_data import get_traffic_intelligence_for_location
 
+from state_roads_index import lookup_state_road
+
 logger = logging.getLogger(__name__)
 
 async def fetch_osm_road_data(lat: float, lng: float) -> Dict[str, Any]:
