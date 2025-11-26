@@ -1840,40 +1840,6 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
 # Risk Management Endpoints
 # ==========================================
 
-@api_router.get("/risks")
-async def get_risks():
-    """
-    Get comprehensive risk registry for roadwork traffic management
-    Returns all identified risks with controls from risk_registry module
-    """
-    try:
-        from risk_registry import get_risk_registry
-        risks = get_risk_registry()
-        return risks
-    except Exception as e:
-        logger.error(f"Error loading risks: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-# Duplicate endpoint - removed
-
-@api_router.post("/risks/calculate")
-async def calculate_risk(request: dict):
-    """
-    Calculate risk score based on likelihood and consequence
-    Request body: {"likelihood": "possible", "consequence": "moderate"}
-    """
-    try:
-        likelihood = request.get("likelihood")
-        consequence = request.get("consequence")
-        
-        if not likelihood or not consequence:
-            raise HTTPException(status_code=400, detail="likelihood and consequence are required")
-        
-        risk_score = calculate_risk_score(likelihood, consequence)
-        return risk_score
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
 @api_router.post("/plans/{plan_id}/risk-assessment")
 async def save_risk_assessment(plan_id: str, assessment: dict, current_user: Dict = Depends(get_current_user)):
     """
