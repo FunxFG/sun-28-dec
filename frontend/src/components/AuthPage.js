@@ -60,7 +60,7 @@ export default function AuthPage({ onLogin, onGuestLogin }) {
       toast.success('Password reset successfully. You can now sign in with your new password.');
       setShowReset(false);
       setFormData((prev) => ({ ...prev, email: resetData.email, password: '' }));
-      setResetData({ email: '', new_password: '' });
+      setResetData({ email: '', new_password: '', confirm_password: '' });
     } catch (error) {
       console.error('Password reset error:', error);
       toast.error(error.message || 'Failed to reset password. Please try again.');
