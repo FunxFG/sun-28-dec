@@ -261,7 +261,7 @@ const VisualTGSViewer = ({ planData, placedDevices, planId }) => {
                       <Camera className="w-5 h-5 text-yellow-600" />
                       <div>
                         <div className="font-semibold text-yellow-900">
-                          Driver's Perspective - Sign Position {selectedStreetView + 1}
+                          Driver&apos;s Perspective - Sign Position {selectedStreetView + 1}
                         </div>
                         <div className="text-sm text-yellow-700">
                           {visualTGS.streetview_images[selectedStreetView].sign_name}
