@@ -17,9 +17,12 @@ const RiskAssessmentSection = ({ formData, handleInputChange, BACKEND_URL }) => 
     const fetchRiskRegistry = async () => {
       try {
         const response = await axios.get(`${API}/risks`);
-        setRiskRegistry(response.data);
+        // Handle both array response and object with risks property
+        const risksData = Array.isArray(response.data) ? response.data : (response.data.risks || []);
+        setRiskRegistry(risksData);
       } catch (error) {
         console.error('Error fetching risk registry:', error);
+        setRiskRegistry([]); // Set empty array on error
       }
     };
 
