@@ -439,8 +439,8 @@ class TrafficManagementPlanGenerator:
             },
             'site_supervisor': {'name': 'TBC', 'contact': 'TBC'},
             'tmp_designer': {
-                'name': plan_data.get('traffic_company', {}).get('liaison_name', 'TBC'),
-                'contact': plan_data.get('traffic_company', {}).get('liaison_phone', 'TBC')
+                'name': (plan_data.get('traffic_company') or {}).get('liaison_name', 'TBC'),
+                'contact': (plan_data.get('traffic_company') or {}).get('liaison_phone', 'TBC')
             }
         }
     
