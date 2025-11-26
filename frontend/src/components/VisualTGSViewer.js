@@ -8,6 +8,7 @@ const VisualTGSViewer = ({ planData, placedDevices, planId }) => {
   const [loading, setLoading] = useState(false);
   const [activeView, setActiveView] = useState('satellite'); // 'satellite' or 'streetview'
   const [selectedStreetView, setSelectedStreetView] = useState(0);
+  const [downloadingCombined, setDownloadingCombined] = useState(false);
 
   const API = process.env.REACT_APP_BACKEND_URL || '';
 
