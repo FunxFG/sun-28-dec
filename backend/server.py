@@ -1906,9 +1906,7 @@ async def get_plan_risk_assessment(plan_id: str, current_user: Dict = Depends(ge
     Get risk assessment for a specific traffic management plan
     """
     try:
-        user_data = verify_token(credentials.credentials)
-        
-        plan = await db.plans.find_one({"id": plan_id, "user_id": user_data["user_id"]})
+        plan = await db.plans.find_one({"id": plan_id, "user_id": current_user["user_id"]})
         if not plan:
             raise HTTPException(status_code=404, detail="Plan not found")
         
