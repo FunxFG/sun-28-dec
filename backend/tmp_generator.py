@@ -516,7 +516,8 @@ class TrafficManagementPlanGenerator:
         """Generate site-specific risks based on plan data"""
         risks = []
         
-        if plan_data.get('road_occupancy', {}).get('complete_road_closure'):
+        road_occupancy = plan_data.get('road_occupancy') or {}
+        if road_occupancy.get('complete_road_closure'):
             risks.append({
                 'risk_event': 'Emergency vehicle access blocked',
                 'consequence': 'Delayed emergency response',
