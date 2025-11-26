@@ -386,7 +386,8 @@ class TrafficManagementPlanGenerator:
         
         print(f"DEBUG: plan_data type: {type(plan_data)}, value: {plan_data}")
         
-        if plan_data.get('control_measures', {}).get('speed_reduction'):
+        control_measures = plan_data.get('control_measures') or {}
+        if control_measures.get('speed_reduction'):
             strategies.append('Implement temporary speed reduction')
         
         if plan_data.get('control_measures', {}).get('signage'):
