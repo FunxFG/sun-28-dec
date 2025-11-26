@@ -97,8 +97,6 @@ const VisualTGSViewer = ({ planData, placedDevices, planId }) => {
     }
   };
 
-  };
-
   const downloadTGSImage = () => {
     if (!visualTGS?.satellite_tgs?.image_base64) return;
 
