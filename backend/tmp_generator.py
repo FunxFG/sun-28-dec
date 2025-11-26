@@ -113,6 +113,10 @@ class TrafficManagementPlanGenerator:
     
     def _generate_introduction(self, plan_data: Dict) -> Dict:
         """Generate Section 1: Introduction"""
+        # Handle None plan_data
+        if plan_data is None:
+            plan_data = {}
+            
         return {
             '1.1_purpose_and_scope': {
                 'purpose': f"This Traffic Management Plan (TMP) has been prepared for {plan_data.get('work_details', {}).get('description', 'roadworks')} on {plan_data.get('work_details', {}).get('start_address', 'TBC')}.",
