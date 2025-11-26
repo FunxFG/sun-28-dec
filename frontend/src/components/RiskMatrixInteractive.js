@@ -359,7 +359,7 @@ export default function RiskMatrixInteractive({ formData, setFormData, onNext })
                         </div>
                         <div className="flex flex-col items-end gap-2">
                           <Badge className={getRiskColor(risk.risk_level)}>
-                            {risk.risk_level} ({risk.risk_score})
+                            {risk.risk_level} ({risk.risk_score?.rating || risk.risk_score?.score || risk.risk_score})
                           </Badge>
                           <Button
                             variant="ghost"
