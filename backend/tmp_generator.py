@@ -93,6 +93,10 @@ class TrafficManagementPlanGenerator:
     
     def _generate_declaration(self, plan_data: Dict) -> Dict:
         """Generate declaration section"""
+        # Handle None plan_data
+        if plan_data is None:
+            plan_data = {}
+            
         return {
             'designer_declaration': {
                 'certifier_name': (plan_data.get('traffic_company') or {}).get('liaison_name', 'TBC'),
