@@ -3608,9 +3608,9 @@ export default function PlanEditor({ user, onLogout }) {
                       <div className="space-y-2">
                         {comprehensiveData.comprehensive_risk_assessment.identified_hazards.slice(0, 3).map((hazard, idx) => (
                           <div key={idx} className={`border p-2 rounded ${
-                            hazard.risk_rating === 'Extreme' ? 'bg-red-50 border-red-300' :
-                            hazard.risk_rating === 'High' ? 'bg-orange-50 border-orange-300' :
-                            hazard.risk_rating === 'Medium' ? 'bg-yellow-50 border-yellow-300' :
+                            (hazard.risk_rating?.level || hazard.risk_rating) === 'Extreme' ? 'bg-red-50 border-red-300' :
+                            (hazard.risk_rating?.level || hazard.risk_rating) === 'High' ? 'bg-orange-50 border-orange-300' :
+                            (hazard.risk_rating?.level || hazard.risk_rating) === 'Medium' ? 'bg-yellow-50 border-yellow-300' :
                             'bg-green-50 border-green-300'
                           }`}>
                             <div className="font-medium text-sm">{hazard.hazard}</div>
