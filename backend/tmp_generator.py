@@ -432,7 +432,7 @@ class TrafficManagementPlanGenerator:
     
     def _describe_lane_closures(self, plan_data: Dict) -> str:
         """Describe lane closures"""
-        occupancy = plan_data.get('road_occupancy', {})
+        occupancy = plan_data.get('road_occupancy') or {}
         closures = []
         
         if occupancy.get('left_lane'):
