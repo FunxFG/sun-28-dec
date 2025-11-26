@@ -3616,7 +3616,7 @@ export default function PlanEditor({ user, onLogout }) {
                             <div className="font-medium text-sm">{hazard.hazard}</div>
                             <div className="text-xs text-gray-600">{hazard.description}</div>
                             <div className="text-xs mt-1">
-                              <span className="font-medium">Risk:</span> {hazard.risk_rating} (L:{hazard.likelihood} × C:{hazard.consequence})
+                              <span className="font-medium">Risk:</span> {hazard.risk_rating?.level || hazard.risk_rating} (L:{hazard.likelihood} × C:{hazard.consequence})
                             </div>
                           </div>
                         ))}
