@@ -552,7 +552,8 @@ class TrafficManagementPlanGenerator:
         """Detail speed management strategies"""
         strategies = []
         
-        if plan_data.get('control_measures', {}).get('speed_reduction'):
+        control_measures = plan_data.get('control_measures') or {}
+        if control_measures.get('speed_reduction'):
             strategies.extend([
                 'Temporary speed limit signs',
                 'Speed enforcement coordination',
