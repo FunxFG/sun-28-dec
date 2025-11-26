@@ -21,7 +21,8 @@ export default function AuthPage({ onLogin, onGuestLogin }) {
 
   const [resetData, setResetData] = useState({
     email: '',
-    new_password: ''
+    new_password: '',
+    confirm_password: ''
   });
 
   const handleResetChange = (e) => {
