@@ -219,6 +219,17 @@ export default function AuthPage({ onLogin, onGuestLogin }) {
                       className="h-11"
                     />
                   </div>
+
+                  <div className="flex items-center justify-between text-xs text-slate-600 mb-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowReset(true)}
+                      className="text-orange-600 hover:underline"
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
+
                   <Button 
                     onClick={() => handleSubmit(true)}
                     disabled={loading}
