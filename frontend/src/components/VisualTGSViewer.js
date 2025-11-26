@@ -47,6 +47,9 @@ const VisualTGSViewer = ({ planData, placedDevices, planId }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+
   const downloadCombinedTmpWithTgs = async () => {
     if (!visualTGS?.satellite_tgs?.image_base64 || !planId) {
       alert('Save the plan and generate Visual TGS before downloading combined TMP + TGS PDF.');
