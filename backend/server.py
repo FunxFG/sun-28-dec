@@ -1901,7 +1901,7 @@ async def save_risk_assessment(plan_id: str, assessment: dict, current_user: Dic
         raise HTTPException(status_code=500, detail=str(e))
 
 @api_router.get("/plans/{plan_id}/risk-assessment")
-async def get_plan_risk_assessment(plan_id: str, credentials: HTTPAuthorizationCredentials = Depends(security)):
+async def get_plan_risk_assessment(plan_id: str, current_user: Dict = Depends(get_current_user)):
     """
     Get risk assessment for a specific traffic management plan
     """
