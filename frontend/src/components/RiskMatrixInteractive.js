@@ -449,7 +449,7 @@ export default function RiskMatrixInteractive({ formData, setFormData, onNext })
                               <span>Consequence: <strong>{risk.residual_consequence_level}</strong></span>
                               <span>Score: <strong>{risk.residual_risk_score}</strong></span>
                               <Badge className={getRiskColor(risk.residual_risk_level)}>
-                                {risk.residual_risk_level}
+                                {typeof risk.residual_risk_level === 'object' ? risk.residual_risk_level?.level || 'Unknown' : risk.residual_risk_level}
                               </Badge>
                             </div>
                           </div>
