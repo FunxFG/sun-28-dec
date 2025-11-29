@@ -33,12 +33,25 @@ export default function Dashboard({ user, onLogout }) {
   const fetchPlans = async () => {
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        setLoading(false);
+        toast.error('Please sign in again to load your plans.');
+        return;
+      }
+
       const response = await axios.get(`${API}/plans`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setPlans(response.data);
     } catch (error) {
-      toast.error('Failed to fetch plans');
+      if (error.response && error.response.status === 401) {
+        toast.error('Your session has expired. Please sign in again.');
+        if (onLogout) {
+          onLogout();
+        }
+      } else {
+        toast.error('Failed to fetch plans');
+      }
     } finally {
       setLoading(false);
     }
