@@ -3900,7 +3900,7 @@ export default function PlanEditor({ user, onLogout }) {
               handleInputChange={handleInputChange} 
             />
 
-            {/* Risk Assessment */}
+            {/* Comprehensive Risk Assessment */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -3923,13 +3923,6 @@ export default function PlanEditor({ user, onLogout }) {
             <SafetyPlanSection 
               formData={formData} 
               handleInputChange={handleInputChange} 
-            />
-
-            {/* Section 6A: Risk Assessment */}
-            <RiskAssessmentSection 
-              formData={formData} 
-              handleInputChange={handleInputChange}
-              BACKEND_URL={BACKEND_URL}
             />
 
             {/* Emergency Contacts */}
