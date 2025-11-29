@@ -43,7 +43,7 @@ import {
   ImplementationSection,
   MonitoringSection
 } from './TMPFormSections';
-import RiskAssessmentSection from './RiskAssessmentSection';
+// import RiskAssessmentSection from './RiskAssessmentSection';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://roadworksai.preview.emergentagent.com';
