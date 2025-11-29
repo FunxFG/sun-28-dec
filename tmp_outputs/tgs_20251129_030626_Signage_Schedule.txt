@@ -1,0 +1,58 @@
+================================================================================
+SIGNAGE SCHEDULE - tgs
+Generated: 29 November 2025 at 03:06 AM
+================================================================================
+
+Total Signs: 41
+
+#    Sign Code       Sign Name                                Distance (m) Side    
+--------------------------------------------------------------------------------
+1    N/A             Unknown Sign                             0.0          left    
+2    N/A             Unknown Sign                             0.0          left    
+3    N/A             Unknown Sign                             0.0          left    
+4    N/A             Unknown Sign                             0.0          right   
+5    N/A             Unknown Sign                             0.0          right   
+6    N/A             Unknown Sign                             0.0          right   
+7    N/A             Unknown Sign                             0.0          left    
+8    N/A             Unknown Sign                             0.0          left    
+9    N/A             Unknown Sign                             0.0          left    
+10   N/A             Unknown Sign                             0.0          right   
+11   N/A             Unknown Sign                             0.0          right   
+12   N/A             Unknown Sign                             0.0          right   
+13   N/A             Unknown Sign                             0.0          left    
+14   N/A             Unknown Sign                             0.0          left    
+15   N/A             Unknown Sign                             0.0          left    
+16   N/A             Unknown Sign                             0.0          right   
+17   N/A             Unknown Sign                             0.0          right   
+18   N/A             Unknown Sign                             0.0          right   
+19   N/A             Unknown Sign                             0.0          left    
+20   N/A             Unknown Sign                             0.0          left    
+21   N/A             Unknown Sign                             0.0          left    
+22   N/A             Unknown Sign                             0.0          left    
+23   N/A             Unknown Sign                             0.0          left    
+24   N/A             Unknown Sign                             0.0          left    
+25   N/A             Unknown Sign                             0.0          left    
+26   N/A             Unknown Sign                             0.0          left    
+27   N/A             Unknown Sign                             0.0          left    
+28   N/A             Unknown Sign                             0.0          left    
+29   N/A             Unknown Sign                             0.0          left    
+30   N/A             Unknown Sign                             0.0          left    
+31   N/A             Unknown Sign                             0.0          left    
+32   N/A             Unknown Sign                             0.0          left    
+33   N/A             Unknown Sign                             0.0          left    
+34   N/A             Unknown Sign                             0.0          left    
+35   N/A             Unknown Sign                             0.0          left    
+36   N/A             Unknown Sign                             0.0          left    
+37   N/A             Unknown Sign                             0.0          left    
+38   N/A             Unknown Sign                             0.0          left    
+39   N/A             Unknown Sign                             0.0          left    
+40   N/A             Unknown Sign                             0.0          left    
+41   N/A             Unknown Sign                             0.0          left    
+
+================================================================================
+NOTES:
+- All distances measured from work zone start point
+- Signs must be installed according to AS 1742.3 specifications
+- Bilateral signage required where indicated
+- All signs must be maintained in clean, reflective condition
+================================================================================
