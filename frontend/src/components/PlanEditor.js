@@ -4504,7 +4504,7 @@ export default function PlanEditor({ user, onLogout }) {
                     </div>
                     <p className="text-slate-500 mb-2">No devices placed yet</p>
                     <p className="text-xs text-slate-400 mb-4">
-                      Use "Auto-Place Devices" or click on the map to add devices
+                      Use &quot;Auto-Place Devices&quot; or click on the map to add devices
                     </p>
                   </div>
                 ) : (
