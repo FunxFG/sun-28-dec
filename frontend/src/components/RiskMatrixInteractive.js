@@ -154,9 +154,20 @@ export default function RiskMatrixInteractive({ formData, setFormData, onNext })
   }, {});
 
   const handleSave = () => {
+    // Build summary by risk level for quick profile
+    const summary = Object.values(selectedRisks).reduce((acc, risk) => {
+      if (!risk || !risk.risk_level) return acc;
+      acc[risk.risk_level] = (acc[risk.risk_level] || 0) + 1;
+      return acc;
+    }, {});
+
     setFormData(prev => ({
       ...prev,
-      risk_assessment: selectedRisks
+      risk_assessment: {
+        selected_risks: selectedRisks,
+        summary,
+        completed_at: new Date().toISOString()
+      }
     }));
     
     toast.success(`${selectedCount} risks saved to TMP`);
