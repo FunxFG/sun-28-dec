@@ -1734,29 +1734,128 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
     
     # Risk Register
     story.append(Paragraph("3.2 Risk Register", subheading_style))
-    risk_data = [['Risk Event', 'Consequence', 'Pre-Treatment Risk', 'Treatment', 'Residual Risk']]
-    
-    for risk_item in risk['3.2_risk_register']['generic_risks']:
-        risk_data.append([
-            risk_item['risk_event'],
-            risk_item['consequence'],
-            risk_item['pre_treatment_risk']['rating'],
-            risk_item['treatment'],
-            risk_item['residual_risk']['rating']
-        ])
-    
-    risk_table = Table(risk_data, colWidths=[1.5*inch, 1.2*inch, 0.8*inch, 1.8*inch, 0.7*inch])
-    risk_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, -1), 8),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-        ('VALIGN', (0, 0), (-1, -1), 'TOP')
-    ]))
-    story.append(risk_table)
-    story.append(Spacer(1, 20))
+
+    # If a detailed risk assessment has been saved with the plan, use that
+    plan_risk_assessment = plan.get("risk_assessment") or {}
+    selected_risks = plan_risk_assessment.get("selected_risks") or {}
+
+    detailed_rows: List[List[str]] = []
+
+    if selected_risks:
+        # Build a detailed register styled on the provided industry examples
+        header = [
+            'Task / Hazard',
+            'Description',
+            'Inherent Risk',
+            'Control Measures (E, S, Eng, Admin, PPE)',
+            'Residual Risk'
+        ]
+        detailed_rows.append(header)
+
+        for risk_id, r in selected_risks.items():
+            # Two possible shapes: full registry risk or simpler UI assessment
+            hazard = r.get('hazard') or r.get('risk_event') or risk_id
+            description = r.get('description') or r.get('consequence') or ''
+
+            # Inherent risk
+            inh_like = r.get('likelihood') or r.get('pre_treatment_risk', {}).get('likelihood')
+            inh_cons = r.get('consequence_level') or r.get('pre_treatment_risk', {}).get('consequence')
+            inh_rating = (
+                (r.get('risk_score', {}) if isinstance(r.get('risk_score'), dict) else {})
+                .get('rating')
+                or r.get('risk_level')
+                or r.get('pre_treatment_risk', {}).get('rating')
+                or ''
+            )
+            inherent = "".join(filter(None, [
+                f"L: {inh_like}" if inh_like else '',
+                f" C: {inh_cons}" if inh_cons else '',
+                f" ({inh_rating})" if inh_rating else ''
+            ]))
+
+            # Controls hierarchy
+            controls_obj = r.get('controls') or {}
+            ctrl_elim = controls_obj.get('elimination') or r.get('control_elimination')
+            ctrl_sub = controls_obj.get('substitution') or r.get('control_substitution')
+            ctrl_eng = controls_obj.get('engineering') or r.get('control_engineering')
+            ctrl_admin = controls_obj.get('administrative') or r.get('control_administrative')
+            ctrl_ppe = controls_obj.get('ppe') or r.get('control_ppe')
+
+            controls_text_parts = []
+            if ctrl_elim:
+                controls_text_parts.append(f"1. Elimination: {ctrl_elim}")
+            if ctrl_sub:
+                controls_text_parts.append(f"2. Substitution: {ctrl_sub}")
+            if ctrl_eng:
+                controls_text_parts.append(f"3. Engineering: {ctrl_eng}")
+            if ctrl_admin:
+                controls_text_parts.append(f"4. Administrative: {ctrl_admin}")
+            if ctrl_ppe:
+                controls_text_parts.append(f"5. PPE: {ctrl_ppe}")
+
+            controls_text = "\n".join(controls_text_parts) if controls_text_parts else ''
+
+            # Residual risk
+            res_like = r.get('residual_likelihood') or r.get('residual_risk', {}).get('likelihood')
+            res_cons = r.get('residual_consequence_level') or r.get('residual_risk', {}).get('consequence')
+            res_score_obj = r.get('residual_risk_score') or r.get('residual_risk', {})
+            if isinstance(res_score_obj, dict):
+                res_rating = res_score_obj.get('rating') or ''
+            else:
+                res_rating = res_score_obj or ''
+
+            residual = "".join(filter(None, [
+                f"L: {res_like}" if res_like else '',
+                f" C: {res_cons}" if res_cons else '',
+                f" ({res_rating})" if res_rating else ''
+            ]))
+
+            detailed_rows.append([
+                str(hazard),
+                str(description),
+                inherent,
+                controls_text,
+                residual
+            ])
+
+        risk_table = Table(detailed_rows, colWidths=[1.6*inch, 1.6*inch, 1.0*inch, 2.0*inch, 0.8*inch])
+        risk_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 8),
+            ('FONTSIZE', (0, 1), (-1, -1), 7),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP')
+        ]))
+        story.append(risk_table)
+        story.append(Spacer(1, 20))
+
+    else:
+        # Fallback: use generic risks from template if no plan-specific assessment
+        risk_data = [['Risk Event', 'Consequence', 'Pre-Treatment Risk', 'Treatment', 'Residual Risk']]
+        for risk_item in risk['3.2_risk_register']['generic_risks']:
+            risk_data.append([
+                risk_item['risk_event'],
+                risk_item['consequence'],
+                risk_item['pre_treatment_risk']['rating'],
+                risk_item['treatment'],
+                risk_item['residual_risk']['rating']
+            ])
+
+        risk_table = Table(risk_data, colWidths=[1.5*inch, 1.2*inch, 0.8*inch, 1.8*inch, 0.7*inch])
+        risk_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, -1), 8),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP')
+        ]))
+        story.append(risk_table)
+        story.append(Spacer(1, 20))
     
     # Traffic Guidance Schemes
     if plan.get('devices'):
