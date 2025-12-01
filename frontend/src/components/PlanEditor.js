@@ -241,7 +241,8 @@ export default function PlanEditor({ user, onLogout }) {
       detour: false,
       pedestrian_control: false,
       lateral_shift: false,
-      shuttle_flow: false
+      shuttle_flow: false,
+      contra_flow: false
     },
     road_data: {
       traffic_volume: null,
