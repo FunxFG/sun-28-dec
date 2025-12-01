@@ -239,7 +239,8 @@ export default function PlanEditor({ user, onLogout }) {
       signage: false,
       speed_reduction: false,
       detour: false,
-      pedestrian_control: false
+      pedestrian_control: false,
+      lateral_shift: false
     },
     road_data: {
       traffic_volume: null,
