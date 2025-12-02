@@ -235,14 +235,23 @@ export default function PlanEditor({ user, onLogout }) {
       complete_road_closure: false
     },
     control_measures: {
+      // Existing controls
       twenty_min_rule: false,
       signage: false,
       speed_reduction: false,
       detour: false,
       pedestrian_control: false,
+      
+      // Traffic control types (match Traffio app)
+      continuous_stop_slow: false,
+      mobile_works: false,
+      contra_flow: false,
+      lane_closure: false,
+      shoulder_closure: false,
+      road_closure_with_detour: false,
+      pedestrian_management: false,
       lateral_shift: false,
-      shuttle_flow: false,
-      contra_flow: false
+      shuttle_flow: false
     },
     road_data: {
       traffic_volume: null,
