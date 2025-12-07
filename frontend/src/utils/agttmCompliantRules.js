@@ -860,13 +860,9 @@ export class AGTTMCompliantPlacement {
         
         // Add protective cones on either side of the left sign
         const leftSignId = `warning_left_${level}_${Date.now()}`;
-        devices.push(...this.addProtectiveCones(leftPosition, bearing, leftSignId, 'left'));
+        devices.push(...this.addProtectiveCones(leftPosition, road_bearing, leftSignId, 'left'));
         
-        // Right side sign (exact bilateral pair)
-        const rightPosition = this.calculatePosition(
-          signPosition.lat, signPosition.lng, bearing + 90, analysis.right_side.lateral_offset
-        );
-        
+        // Right side sign (exact bilateral pair) - already calculated above
         devices.push({
           id: `warning_right_${level}_${Date.now()}`,
           device_type: 'warning',
