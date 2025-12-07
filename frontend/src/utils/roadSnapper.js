@@ -249,6 +249,153 @@ class RoadSnapper {
   clearCache() {
     this.snapCache.clear();
   }
+
+  /**
+   * Snap a point to actual road edge polyline (when available from backend)
+   * This is MORE ACCURATE than perpendicular offset method
+   * @param {number} targetLat - Latitude to snap
+   * @param {number} targetLng - Longitude to snap  
+   * @param {Array} edgePolyline - Array of [lat, lng] points from backend
+   * @param {number} lateralOffset - Additional offset from edge (meters)
+   * @returns {object} Snapped position with lat, lng
+   */
+  snapToRoadEdge(targetLat, targetLng, edgePolyline, lateralOffset = 0) {
+    if (!edgePolyline || edgePolyline.length === 0) {
+      console.warn('No edge polyline provided, using fallback');
+      return { lat: targetLat, lng: targetLng };
+    }
+
+    // Find closest point on the edge polyline
+    let closestPoint = null;
+    let minDistance = Infinity;
+    let closestSegmentBearing = 0;
+
+    for (let i = 0; i < edgePolyline.length; i++) {
+      const edgeLat = edgePolyline[i][0];
+      const edgeLng = edgePolyline[i][1];
+      
+      const distance = this.calculateDistance(targetLat, targetLng, edgeLat, edgeLng);
+      
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestPoint = { lat: edgeLat, lng: edgeLng };
+        
+        // Calculate bearing of this segment (for lateral offset)
+        if (i < edgePolyline.length - 1) {
+          closestSegmentBearing = this.calculateBearing(
+            edgeLat, edgeLng,
+            edgePolyline[i + 1][0], edgePolyline[i + 1][1]
+          );
+        } else if (i > 0) {
+          closestSegmentBearing = this.calculateBearing(
+            edgePolyline[i - 1][0], edgePolyline[i - 1][1],
+            edgeLat, edgeLng
+          );
+        }
+      }
+    }
+
+    // Apply additional lateral offset if needed (for verge placement)
+    if (lateralOffset > 0 && closestPoint) {
+      // Offset perpendicular to road edge (outward from road)
+      const perpBearing = closestSegmentBearing + 90;
+      const offsetPosition = this.calculatePosition(
+        closestPoint.lat,
+        closestPoint.lng,
+        perpBearing,
+        lateralOffset
+      );
+      
+      return {
+        lat: offsetPosition.lat,
+        lng: offsetPosition.lng,
+        snappedToEdge: true,
+        edgeDistance: minDistance,
+        lateralOffset: lateralOffset
+      };
+    }
+
+    return {
+      lat: closestPoint.lat,
+      lng: closestPoint.lng,
+      snappedToEdge: true,
+      edgeDistance: minDistance
+    };
+  }
+
+  /**
+   * Get position along road edge at specific distance
+   * @param {Array} edgePolyline - Array of [lat, lng] points
+   * @param {number} distanceAlongRoad - Distance in meters from start
+   * @param {number} lateralOffset - Offset perpendicular to edge
+   * @returns {object} Position with lat, lng
+   */
+  getPositionAlongRoadEdge(edgePolyline, distanceAlongRoad, lateralOffset = 0) {
+    if (!edgePolyline || edgePolyline.length < 2) {
+      console.warn('Invalid edge polyline');
+      return null;
+    }
+
+    let cumulativeDistance = 0;
+    let targetSegmentIndex = 0;
+    let remainingDistance = distanceAlongRoad;
+
+    // Find which segment contains our target distance
+    for (let i = 0; i < edgePolyline.length - 1; i++) {
+      const segmentDistance = this.calculateDistance(
+        edgePolyline[i][0], edgePolyline[i][1],
+        edgePolyline[i + 1][0], edgePolyline[i + 1][1]
+      );
+      
+      if (cumulativeDistance + segmentDistance >= distanceAlongRoad) {
+        targetSegmentIndex = i;
+        remainingDistance = distanceAlongRoad - cumulativeDistance;
+        break;
+      }
+      
+      cumulativeDistance += segmentDistance;
+    }
+
+    // Interpolate position along the target segment
+    const startPoint = edgePolyline[targetSegmentIndex];
+    const endPoint = edgePolyline[targetSegmentIndex + 1];
+    
+    const segmentLength = this.calculateDistance(
+      startPoint[0], startPoint[1],
+      endPoint[0], endPoint[1]
+    );
+    
+    const fraction = remainingDistance / segmentLength;
+    
+    const interpolatedLat = startPoint[0] + (endPoint[0] - startPoint[0]) * fraction;
+    const interpolatedLng = startPoint[1] + (endPoint[1] - startPoint[1]) * fraction;
+    
+    // Apply lateral offset if needed
+    if (lateralOffset > 0) {
+      const bearing = this.calculateBearing(startPoint[0], startPoint[1], endPoint[0], endPoint[1]);
+      const perpBearing = bearing + 90; // Perpendicular outward
+      
+      const offsetPosition = this.calculatePosition(
+        interpolatedLat,
+        interpolatedLng,
+        perpBearing,
+        lateralOffset
+      );
+      
+      return {
+        lat: offsetPosition.lat,
+        lng: offsetPosition.lng,
+        alongRoadDistance: distanceAlongRoad,
+        lateralOffset: lateralOffset
+      };
+    }
+
+    return {
+      lat: interpolatedLat,
+      lng: interpolatedLng,
+      alongRoadDistance: distanceAlongRoad
+    };
+  }
 }
 
 export default new RoadSnapper();
