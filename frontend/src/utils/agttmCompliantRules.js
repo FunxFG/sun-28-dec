@@ -1108,6 +1108,112 @@ export class AGTTMCompliantPlacement {
     return [];
   }
 
+  /**
+   * Place warning signs at side street intersections ("double-gating")
+   * AS 1742.3 requires warning signs on side street approaches to work zones
+   */
+  placeSideStreetSignage(workZoneData, sideStreets, analysis, snapper = null) {
+    const devices = [];
+    const heightSpec = this.agttmRules.sign_heights;
+    
+    if (!sideStreets || sideStreets.length === 0) {
+      return devices;
+    }
+    
+    sideStreets.forEach((sideStreet, index) => {
+      // Each side street needs bilateral warning signs on its approach legs
+      // "Double-gating" means signs on both sides of the side street entrance
+      
+      const sideStreetLat = sideStreet.lat || sideStreet.latitude;
+      const sideStreetLng = sideStreet.lng || sideStreet.longitude;
+      
+      if (!sideStreetLat || !sideStreetLng) {
+        console.warn(`Side street ${index} missing coordinates, skipping`);
+        return;
+      }
+      
+      // Calculate bearing from main road to side street
+      const bearingToSideStreet = this.calculateBearing(
+        workZoneData.start_lat,
+        workZoneData.start_lng,
+        sideStreetLat,
+        sideStreetLng
+      );
+      
+      // Place signs on both sides of side street entrance (double-gating)
+      // Left side of side street entrance
+      const leftSignDistance = 15; // 15m back from intersection on side street
+      const leftSignPosition = this.calculatePosition(
+        sideStreetLat,
+        sideStreetLng,
+        bearingToSideStreet + 180, // Opposite direction
+        leftSignDistance
+      );
+      
+      // Offset to left side of side street
+      const leftFinalPosition = this.calculatePosition(
+        leftSignPosition.lat,
+        leftSignPosition.lng,
+        bearingToSideStreet - 90,
+        2.5 // 2.5m lateral offset
+      );
+      
+      devices.push({
+        id: `side_street_left_${index}_${Date.now()}`,
+        device_type: 'warning',
+        device_name: 'Road Work Ahead',
+        position_lat: leftFinalPosition.lat,
+        position_lng: leftFinalPosition.lng,
+        properties: {
+          agttm_rule: 'as1742_3_side_street_warning',
+          as1742_reference: 'AS 1742.3 Section 4.3 - Side Street Signage',
+          placement_type: 'side_street_approach',
+          side: 'left',
+          side_street_name: sideStreet.name || `Side Street ${index + 1}`,
+          distance_from_intersection: leftSignDistance,
+          lateral_offset_exact: 2.5,
+          mounting_height_exact: heightSpec.minimum_mounting_height,
+          bilateral_pair: true,
+          bilateral_pair_id: `side_street_pair_${index}`,
+          auto_placed: true,
+          agttm_compliant: true
+        }
+      });
+      
+      // Right side of side street entrance
+      const rightFinalPosition = this.calculatePosition(
+        leftSignPosition.lat,
+        leftSignPosition.lng,
+        bearingToSideStreet + 90,
+        2.5 // 2.5m lateral offset
+      );
+      
+      devices.push({
+        id: `side_street_right_${index}_${Date.now()}`,
+        device_type: 'warning',
+        device_name: 'Road Work Ahead',
+        position_lat: rightFinalPosition.lat,
+        position_lng: rightFinalPosition.lng,
+        properties: {
+          agttm_rule: 'as1742_3_side_street_warning',
+          as1742_reference: 'AS 1742.3 Section 4.3 - Side Street Signage',
+          placement_type: 'side_street_approach',
+          side: 'right',
+          side_street_name: sideStreet.name || `Side Street ${index + 1}`,
+          distance_from_intersection: leftSignDistance,
+          lateral_offset_exact: 2.5,
+          mounting_height_exact: heightSpec.minimum_mounting_height,
+          bilateral_pair: true,
+          bilateral_pair_id: `side_street_pair_${index}`,
+          auto_placed: true,
+          agttm_compliant: true
+        }
+      });
+    });
+    
+    return devices;
+  }
+
   validateExactAGTTMCompliance(devices, analysis) {
     return devices.map(device => {
       const validation = this.validateExactCompliance(device, analysis);
