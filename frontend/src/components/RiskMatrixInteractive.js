@@ -670,6 +670,230 @@ function RiskMatrix({ risks, selectedRisks, onRiskClick }) {
   );
 }
 
+// Custom Risk Form Component
+function CustomRiskForm({ onSave, onCancel }) {
+  const [formData, setFormData] = useState({
+    hazard: '',
+    description: '',
+    likelihood: 'possible',
+    consequence_level: 'moderate',
+    controls: {
+      elimination: '',
+      substitution: '',
+      engineering: '',
+      administrative: '',
+      ppe: ''
+    },
+    residual_likelihood: 'unlikely',
+    residual_consequence_level: 'minor'
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    // Calculate risk scores
+    const likelihoodMap = { rare: 1, unlikely: 2, possible: 3, likely: 4, almost_certain: 5 };
+    const consequenceMap = { insignificant: 1, minor: 2, moderate: 3, extensive: 4, significant: 5 };
+    
+    const likelihood = likelihoodMap[formData.likelihood] || 3;
+    const consequence = consequenceMap[formData.consequence_level] || 3;
+    const risk_score = likelihood * consequence;
+    
+    const residual_likelihood = likelihoodMap[formData.residual_likelihood] || 2;
+    const residual_consequence = consequenceMap[formData.residual_consequence_level] || 2;
+    const residual_risk_score = residual_likelihood * residual_consequence;
+    
+    const getRiskLevel = (score) => {
+      if (score <= 4) return 'Low';
+      if (score <= 9) return 'Medium';
+      if (score <= 16) return 'High';
+      return 'Critical';
+    };
+    
+    const customRisk = {
+      risk_id: `custom_${Date.now()}`,
+      site_type: 'Site-Specific',
+      hazard: formData.hazard,
+      cause: '',
+      consequence: formData.description,
+      likelihood: formData.likelihood,
+      consequence_level: formData.consequence_level,
+      risk_score: risk_score,
+      risk_level: getRiskLevel(risk_score),
+      controls: formData.controls,
+      residual_likelihood: formData.residual_likelihood,
+      residual_consequence_level: formData.residual_consequence_level,
+      residual_risk_score: residual_risk_score,
+      residual_risk_level: getRiskLevel(residual_risk_score),
+      standards_refs: 'Site-Specific Assessment',
+      additional_notes: '',
+      is_custom: true
+    };
+    
+    onSave(customRisk);
+  };
+
+  return (
+    <Card className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <CardHeader>
+          <CardTitle>Add Custom Site-Specific Risk</CardTitle>
+          <CardDescription>
+            Add a risk specific to your site that isn't covered in the standard risk library
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label>Risk/Hazard Title *</Label>
+              <Input
+                value={formData.hazard}
+                onChange={(e) => setFormData({...formData, hazard: e.target.value})}
+                placeholder="e.g., Unstable ground conditions"
+                required
+              />
+            </div>
+
+            <div>
+              <Label>Description/Consequence *</Label>
+              <Textarea
+                value={formData.description}
+                onChange={(e) => setFormData({...formData, description: e.target.value})}
+                placeholder="Describe the potential consequence if this risk occurs"
+                required
+                rows={3}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Likelihood</Label>
+                <Select value={formData.likelihood} onValueChange={(v) => setFormData({...formData, likelihood: v})}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="rare">Rare (1)</SelectItem>
+                    <SelectItem value="unlikely">Unlikely (2)</SelectItem>
+                    <SelectItem value="possible">Possible (3)</SelectItem>
+                    <SelectItem value="likely">Likely (4)</SelectItem>
+                    <SelectItem value="almost_certain">Almost Certain (5)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label>Consequence</Label>
+                <Select value={formData.consequence_level} onValueChange={(v) => setFormData({...formData, consequence_level: v})}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="insignificant">Insignificant (1)</SelectItem>
+                    <SelectItem value="minor">Minor (2)</SelectItem>
+                    <SelectItem value="moderate">Moderate (3)</SelectItem>
+                    <SelectItem value="extensive">Extensive (4)</SelectItem>
+                    <SelectItem value="significant">Significant (5)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="border-t pt-4">
+              <h4 className="font-semibold mb-3">Control Measures (Hierarchy of Controls)</h4>
+              
+              <div className="space-y-3">
+                <div>
+                  <Label>1. Elimination</Label>
+                  <Input
+                    value={formData.controls.elimination}
+                    onChange={(e) => setFormData({...formData, controls: {...formData.controls, elimination: e.target.value}})}
+                    placeholder="Remove the hazard entirely"
+                  />
+                </div>
+
+                <div>
+                  <Label>2. Substitution</Label>
+                  <Input
+                    value={formData.controls.substitution}
+                    onChange={(e) => setFormData({...formData, controls: {...formData.controls, substitution: e.target.value}})}
+                    placeholder="Replace with less hazardous alternative"
+                  />
+                </div>
+
+                <div>
+                  <Label>3. Engineering Controls</Label>
+                  <Input
+                    value={formData.controls.engineering}
+                    onChange={(e) => setFormData({...formData, controls: {...formData.controls, engineering: e.target.value}})}
+                    placeholder="Physical barriers, guards, etc."
+                  />
+                </div>
+
+                <div>
+                  <Label>4. Administrative Controls</Label>
+                  <Input
+                    value={formData.controls.administrative}
+                    onChange={(e) => setFormData({...formData, controls: {...formData.controls, administrative: e.target.value}})}
+                    placeholder="Procedures, training, signage, etc."
+                  />
+                </div>
+
+                <div>
+                  <Label>5. Personal Protective Equipment (PPE)</Label>
+                  <Input
+                    value={formData.controls.ppe}
+                    onChange={(e) => setFormData({...formData, controls: {...formData.controls, ppe: e.target.value}})}
+                    placeholder="Safety equipment required"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t pt-4">
+              <h4 className="font-semibold mb-3">Residual Risk (After Controls)</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label>Residual Likelihood</Label>
+                  <Select value={formData.residual_likelihood} onValueChange={(v) => setFormData({...formData, residual_likelihood: v})}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="rare">Rare (1)</SelectItem>
+                      <SelectItem value="unlikely">Unlikely (2)</SelectItem>
+                      <SelectItem value="possible">Possible (3)</SelectItem>
+                      <SelectItem value="likely">Likely (4)</SelectItem>
+                      <SelectItem value="almost_certain">Almost Certain (5)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label>Residual Consequence</Label>
+                  <Select value={formData.residual_consequence_level} onValueChange={(v) => setFormData({...formData, residual_consequence_level: v})}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="insignificant">Insignificant (1)</SelectItem>
+                      <SelectItem value="minor">Minor (2)</SelectItem>
+                      <SelectItem value="moderate">Moderate (3)</SelectItem>
+                      <SelectItem value="extensive">Extensive (4)</SelectItem>
+                      <SelectItem value="significant">Significant (5)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 pt-4">
+              <Button type="submit" className="flex-1 bg-orange-600 hover:bg-orange-700">
+                Add Custom Risk
+              </Button>
+              <Button type="button" variant="outline" onClick={onCancel} className="flex-1">
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </div>
+    </Card>
+  );
+}
+
 // Helper Functions
 function generateRiskCSV(selectedRisks) {
   const headers = [
