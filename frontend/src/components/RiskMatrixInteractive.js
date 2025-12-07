@@ -60,6 +60,7 @@ export default function RiskMatrixInteractive({ formData, setFormData, onNext })
   const [filterRiskLevel, setFilterRiskLevel] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [view, setView] = useState('list'); // 'list' or 'matrix'
+  const [showCustomRiskForm, setShowCustomRiskForm] = useState(false);
 
   useEffect(() => {
     fetchRisks();
