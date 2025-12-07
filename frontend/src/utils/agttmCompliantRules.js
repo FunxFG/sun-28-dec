@@ -901,7 +901,7 @@ export class AGTTMCompliantPlacement {
         
         // Add protective cones on either side of the right sign
         const rightSignId = `warning_right_${level}_${Date.now()}`;
-        devices.push(...this.addProtectiveCones(rightPosition, bearing, rightSignId, 'right'));
+        devices.push(...this.addProtectiveCones(rightPosition, road_bearing, rightSignId, 'right'));
       }
     });
     
