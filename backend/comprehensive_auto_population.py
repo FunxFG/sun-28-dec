@@ -1597,21 +1597,32 @@ async def get_comprehensive_auto_population(lat: float, lng: float, start_addres
         osm_data = await fetch_osm_road_data(lat, lng)
         result['road_data'] = osm_data
         
-        # 0.5 POPULATE TRAFFIC ASSESSMENT (critical - was missing!)
-        from server import calculate_aadt_from_classification, estimate_heavy_vehicle_percentage
-        aadt = calculate_aadt_from_classification(osm_data)
-        peak_hour = int(aadt * 0.1)  # Peak hour typically 10% of AADT
-        speed_85 = osm_data.get('speed_limit', 60) + 5  # 85th percentile typically 5km/h over limit
-        heavy_vehicle_pct = estimate_heavy_vehicle_percentage(osm_data)
-        
-        result['traffic_assessment'] = {
-            'aadt': aadt,
-            'peak_hour_volume': peak_hour,
-            'percentile_85_speed': speed_85,
-            'heavy_vehicle_percentage': heavy_vehicle_pct,
-            'data_source': 'Estimated from road classification (Austroads standards)',
-            'assessment_method': 'Road classification analysis'
-        }
+        # 0.5 TRAFFIC ASSESSMENT - ONLY REAL DATA, NO ESTIMATES
+        # Try to fetch real traffic counts from SA Gov
+        try:
+            from sa_traffic_volumes import fetch_real_traffic_data
+            real_traffic = await fetch_real_traffic_data(lat, lng, start_address)
+            if real_traffic and real_traffic.get('aadt') and real_traffic['aadt'] > 0:
+                result['traffic_assessment'] = real_traffic
+            else:
+                # No real data available - user must input manually
+                result['traffic_assessment'] = {
+                    'aadt': None,
+                    'peak_hour_volume': None,
+                    'percentile_85_speed': None,
+                    'heavy_vehicle_percentage': None,
+                    'data_source': 'Manual input required',
+                    'note': 'No traffic count data available for this location - please obtain from local authority or conduct traffic survey'
+                }
+        except:
+            result['traffic_assessment'] = {
+                'aadt': None,
+                'peak_hour_volume': None,
+                'percentile_85_speed': None,
+                'heavy_vehicle_percentage': None,
+                'data_source': 'Manual input required',
+                'note': 'No traffic count data available for this location - please obtain from local authority or conduct traffic survey'
+            }
         
         # 0a. FETCH LOCATION METADATA SYSTEM DATA (Official SA Government)
         road_name = osm_data.get('road_name', 'Unknown Road')
