@@ -61,17 +61,26 @@ class RoadGeometryProcessor:
             google_result = self._get_geometry_from_google_roads(lat, lng)
             if google_result:
                 logger.info("✅ Google Roads API successful")
-                self.cache[cache_key] = google_result
+                self.cache[cache_key] = (google_result, time.time())
                 return google_result
             else:
                 logger.warning("⚠️ Google Roads API failed, falling back to OSM")
         
         # OPTION 2: Try OpenStreetMap (good accuracy, free)
+        # Rate limiting: Enforce minimum interval between OSM requests
+        time_since_last_request = time.time() - self.last_osm_request_time
+        if time_since_last_request < self.osm_request_interval:
+            wait_time = self.osm_request_interval - time_since_last_request
+            logger.info(f"⏱️ Rate limiting: waiting {wait_time:.2f}s before OSM request")
+            time.sleep(wait_time)
+        
         logger.info("Attempting OpenStreetMap API (Option 2)")
+        self.last_osm_request_time = time.time()
+        
         osm_result = self._get_geometry_from_osm(lat, lng, radius)
         if osm_result:
             logger.info("✅ OpenStreetMap API successful")
-            self.cache[cache_key] = osm_result
+            self.cache[cache_key] = (osm_result, time.time())
             return osm_result
         else:
             logger.warning("⚠️ OpenStreetMap API failed, using fallback")
@@ -79,7 +88,7 @@ class RoadGeometryProcessor:
         # OPTION 3: Fallback to basic calculation (always works)
         logger.info("Using fallback calculation (Option 3)")
         fallback_result = self._get_geometry_fallback(lat, lng)
-        self.cache[cache_key] = fallback_result
+        self.cache[cache_key] = (fallback_result, time.time())
         return fallback_result
     
     def _get_geometry_from_google_roads(self, lat: float, lng: float) -> Optional[Dict]:
