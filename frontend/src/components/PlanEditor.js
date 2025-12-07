@@ -583,6 +583,55 @@ export default function PlanEditor({ user, onLogout }) {
     }
   };
 
+  const handleApplyTemplate = async () => {
+    if (selectedTemplate === 'none') return;
+    
+    setLoadingTemplate(true);
+    try {
+      const endpoint = selectedTemplate === 'footpath_closure' 
+        ? '/api/tmp/footpath-closure-plan'
+        : selectedTemplate === 'emergency'
+        ? '/api/tmp/emergency'
+        : null;
+      
+      if (!endpoint) {
+        toast.info('This template is not yet implemented');
+        return;
+      }
+      
+      const response = await axios.post(`${API}${endpoint}`, {
+        location: formData.work_details.start_address,
+        work_type: formData.work_details.work_type,
+        duration_days: calculateDurationDays(),
+        work_hours: `${formData.work_details.work_hours_start}-${formData.work_details.work_hours_end}`
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      if (response.data.status === 'success') {
+        toast.success(`${selectedTemplate.replace('_', ' ')} template applied successfully`);
+        // Optionally populate form with template data
+        if (response.data.plan) {
+          console.log('Template plan data:', response.data.plan);
+        }
+      }
+    } catch (error) {
+      console.error('Template application error:', error);
+      toast.error('Failed to apply template');
+    } finally {
+      setLoadingTemplate(false);
+    }
+  };
+  
+  const calculateDurationDays = () => {
+    if (formData.work_details.start_date && formData.work_details.end_date) {
+      const start = new Date(formData.work_details.start_date);
+      const end = new Date(formData.work_details.end_date);
+      return Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+    }
+    return 1;
+  };
+
   const handleAutoPlaceDevices = async () => {
     if (!formData.work_details.start_address || !formData.work_details.end_address) {
       toast.error('Please enter start and end addresses first');
