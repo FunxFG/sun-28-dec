@@ -3,7 +3,7 @@ import sys
 import json
 
 class QuickBackendVerification:
-    def __init__(self, base_url="https://roadworksai.preview.emergentagent.com"):
+    def __init__(self, base_url="https://traffix-manager-1.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0
