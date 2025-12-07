@@ -304,7 +304,7 @@ class RoadGeometryProcessor:
         if 'width' in tags:
             try:
                 return float(tags['width'].replace('m', '').strip())
-            except:
+            except (ValueError, AttributeError):
                 pass
         
         # Calculate from number of lanes
