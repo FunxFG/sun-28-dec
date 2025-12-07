@@ -177,3 +177,11 @@ frontend/node_modules/.cache/default-development/19.pack
 backend/data/Roads_geojson.zip
 backend/data/Roads_GDA2020.geojson
 backend/data/Roads_GDA94.geojson
+-e 
+# Environment files
+*.env
+*.env.*
+-e 
+# Environment files
+*.env
+*.env.*
