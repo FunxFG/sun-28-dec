@@ -138,8 +138,15 @@ class VisualTGSGenerator:
         
         for device in devices:
             # Get device GPS coordinates (from placement rules)
-            device_lat = device.get('latitude', center_lat)
-            device_lng = device.get('longitude', center_lng)
+            # CRITICAL FIX: Support both 'latitude'/'longitude' AND 'position_lat'/'position_lng'
+            device_lat = device.get('latitude') or device.get('position_lat') or center_lat
+            device_lng = device.get('longitude') or device.get('position_lng') or center_lng
+            
+            # Skip devices with invalid coordinates
+            if device_lat is None or device_lng is None or \
+               not isinstance(device_lat, (int, float)) or not isinstance(device_lng, (int, float)):
+                logger.warning(f"Skipping device {device.get('code', 'UNKNOWN')} with invalid coordinates: lat={device_lat}, lng={device_lng}")
+                continue
             
             # Convert GPS to pixel coordinates using Mercator projection
             pixel_x, pixel_y = self._gps_to_pixel(
