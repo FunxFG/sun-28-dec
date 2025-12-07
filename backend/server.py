@@ -2731,6 +2731,45 @@ async def get_comprehensive_auto_populate(
                 'message': 'Road edge geometry failed - using standard offsets'
             }
         
+        # Add data availability summary for user feedback
+        data_summary = {
+            'total_datasets': 26,
+            'successful': [],
+            'failed': [],
+            'warnings': []
+        }
+        
+        # Check what data was successfully fetched
+        if result.get('road_data') and result['road_data'].get('road_name'):
+            data_summary['successful'].append('Road Data')
+        else:
+            data_summary['failed'].append('Road Data')
+        
+        if result.get('road_edge_geometry') and result['road_edge_geometry'].get('start'):
+            data_summary['successful'].append('Road Edge Geometry')
+        else:
+            data_summary['warnings'].append('Road Edge Geometry - using standard offsets')
+        
+        if result.get('side_streets') and len(result['side_streets']) > 0:
+            data_summary['successful'].append(f"Side Streets ({len(result['side_streets'])})")
+        else:
+            data_summary['warnings'].append('No side streets detected')
+        
+        if result.get('crash_statistics') and result['crash_statistics'].get('total_crashes_5yr', 0) > 0:
+            data_summary['successful'].append('Crash Statistics')
+        
+        if result.get('sa_traffic_intelligence'):
+            data_summary['successful'].append('SA Traffic Intelligence')
+        
+        if result.get('location_metadata_system'):
+            data_summary['successful'].append('Location Metadata System')
+        
+        if result.get('public_facilities'):
+            data_summary['successful'].append('Public Facilities')
+        
+        result['_data_summary'] = data_summary
+        logger.info(f"Auto-populate complete: {len(data_summary['successful'])} datasets successful, {len(data_summary['failed'])} failed, {len(data_summary['warnings'])} warnings")
+        
         return result
         
     except Exception as e:
