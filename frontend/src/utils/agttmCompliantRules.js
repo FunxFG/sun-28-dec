@@ -439,22 +439,22 @@ export class AGTTMCompliantPlacement {
     devices.push(...advanceDevices);
     
     // Generate bilateral regulatory signs with exact specifications
-    const regulatoryDevices = this.placeBilateralRegulatoryDevicesExact(roadAlignedWorkZone, geometryAnalysis);
+    const regulatoryDevices = this.placeBilateralRegulatoryDevicesExact(roadAlignedWorkZone, geometryAnalysis, roadSnapper);
     console.log(`Placed ${regulatoryDevices.length} regulatory devices`);
     devices.push(...regulatoryDevices);
     
     // Generate delineation devices with exact AGTTM spacing
-    const delineationDevices = this.placeDelineationDevicesExact(roadAlignedWorkZone, geometryAnalysis);
+    const delineationDevices = this.placeDelineationDevicesExact(roadAlignedWorkZone, geometryAnalysis, roadSnapper);
     console.log(`Placed ${delineationDevices.length} delineation devices`);
     devices.push(...delineationDevices);
     
     // Generate arrow boards if required
-    const arrowDevices = this.placeArrowBoardsExact(roadAlignedWorkZone, geometryAnalysis);
+    const arrowDevices = this.placeArrowBoardsExact(roadAlignedWorkZone, geometryAnalysis, roadSnapper);
     console.log(`Placed ${arrowDevices.length} arrow board devices`);
     devices.push(...arrowDevices);
     
     // Generate bilateral end-of-work signs
-    const endDevices = this.placeBilateralEndSignsExact(roadAlignedWorkZone, geometryAnalysis);
+    const endDevices = this.placeBilateralEndSignsExact(roadAlignedWorkZone, geometryAnalysis, roadSnapper);
     console.log(`Placed ${endDevices.length} end-of-work devices`);
     devices.push(...endDevices);
     
