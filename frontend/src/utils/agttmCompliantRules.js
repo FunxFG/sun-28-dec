@@ -1229,6 +1229,37 @@ export class AGTTMCompliantPlacement {
     return devices;
   }
 
+  /**
+   * Remove duplicate devices that are placed at the same or very similar positions
+   */
+  removeDuplicateDevices(devices) {
+    const unique = [];
+    const positionMap = new Map();
+    const threshold = 0.00001; // ~1 meter tolerance
+    
+    devices.forEach(device => {
+      if (!device.position_lat || !device.position_lng) {
+        unique.push(device);
+        return;
+      }
+      
+      // Create a position key (rounded to threshold)
+      const latKey = Math.round(device.position_lat / threshold);
+      const lngKey = Math.round(device.position_lng / threshold);
+      const posKey = `${latKey},${lngKey}`;
+      
+      // Check if a device already exists at this position
+      if (!positionMap.has(posKey)) {
+        positionMap.set(posKey, device);
+        unique.push(device);
+      } else {
+        console.log(`⚠️ Skipping duplicate device at ${device.position_lat}, ${device.position_lng}`);
+      }
+    });
+    
+    return unique;
+  }
+
   validateExactAGTTMCompliance(devices, analysis) {
     return devices.map(device => {
       const validation = this.validateExactCompliance(device, analysis);
