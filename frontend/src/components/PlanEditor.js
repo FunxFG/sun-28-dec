@@ -681,9 +681,12 @@ export default function PlanEditor({ user, onLogout }) {
         control_measures: formData.control_measures
       };
 
+      // CRITICAL: Include road edge geometry from comprehensive data for accurate snapping
       const roadGeometry = {
         ...roadData,
-        speed_limit: roadData.speed_limit || 60 // Use actual or default
+        speed_limit: roadData.speed_limit || 60, // Use actual or default
+        // Add road edge geometry if available from comprehensive auto-populate
+        road_edge_geometry: comprehensiveData?.road_edge_geometry || null
       };
 
       // Import and use AGTTM placement with road snapping
