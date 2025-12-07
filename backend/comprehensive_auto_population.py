@@ -1719,25 +1719,19 @@ async def fetch_side_streets(lat: float, lng: float):
             highway_type = element.get('tags', {}).get('highway')
             
             if name and name not in seen_names:
-                # Calculate approximate center of the way for coordinates
-                nodes = element.get('nodes', [])
-                if nodes and len(nodes) > 0:
-                    # Get geometry for the way to find its center point
-                    way_lat = element.get('lat')
-                    way_lng = element.get('lon')
-                    
-                    # If no direct lat/lon, estimate from main location
-                    if not way_lat or not way_lng:
-                        # Use the main location as approximation
-                        way_lat = lat
-                        way_lng = lng
-                    
+                # OSM returns center coordinates when using 'out center'
+                center = element.get('center', {})
+                way_lat = center.get('lat') or element.get('lat')
+                way_lng = center.get('lon') or element.get('lon')
+                
+                # If still no coordinates, calculate from bounds or skip
+                if way_lat and way_lng:
                     streets.append({
                         'name': name,
                         'type': highway_type,
                         'ref': element.get('tags', {}).get('ref', ''),
-                        'lat': way_lat,
-                        'lng': way_lng
+                        'lat': float(way_lat),
+                        'lng': float(way_lng)
                     })
                     seen_names.add(name)
         
