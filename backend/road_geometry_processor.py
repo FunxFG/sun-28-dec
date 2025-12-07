@@ -98,7 +98,7 @@ class RoadGeometryProcessor:
         """
         try:
             # Snap to nearest road
-            snap_url = f"https://roads.googleapis.com/v1/snapToRoads"
+            snap_url = "https://roads.googleapis.com/v1/snapToRoads"
             params = {
                 'path': f"{lat},{lng}",
                 'interpolate': 'false',
@@ -123,7 +123,7 @@ class RoadGeometryProcessor:
             place_id = snapped.get('placeId')
             
             # Get nearby roads for bearing calculation
-            nearby_url = f"https://roads.googleapis.com/v1/nearestRoads"
+            nearby_url = "https://roads.googleapis.com/v1/nearestRoads"
             nearby_params = {
                 'points': f"{snapped_lat},{snapped_lng}",
                 'key': self.google_maps_key
@@ -149,7 +149,7 @@ class RoadGeometryProcessor:
             # Try to get road details from Places API
             if place_id:
                 try:
-                    places_url = f"https://maps.googleapis.com/maps/api/place/details/json"
+                    places_url = "https://maps.googleapis.com/maps/api/place/details/json"
                     places_params = {
                         'place_id': place_id,
                         'fields': 'name,types',
