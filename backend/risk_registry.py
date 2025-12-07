@@ -2,6 +2,10 @@
 Comprehensive Risk Registry for Roadwork Traffic Management
 Based on AS 1742.3, AGTTM, and industry best practices
 """
+from pathlib import Path
+from parse_risk_csv import parse_csv_to_risk_registry
+
+
 
 RISK_CATEGORIES = {
     "people": "People",
