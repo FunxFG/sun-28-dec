@@ -1597,6 +1597,22 @@ async def get_comprehensive_auto_population(lat: float, lng: float, start_addres
         osm_data = await fetch_osm_road_data(lat, lng)
         result['road_data'] = osm_data
         
+        # 0.5 POPULATE TRAFFIC ASSESSMENT (critical - was missing!)
+        from server import calculate_aadt_from_classification, estimate_heavy_vehicle_percentage
+        aadt = calculate_aadt_from_classification(osm_data)
+        peak_hour = int(aadt * 0.1)  # Peak hour typically 10% of AADT
+        speed_85 = osm_data.get('speed_limit', 60) + 5  # 85th percentile typically 5km/h over limit
+        heavy_vehicle_pct = estimate_heavy_vehicle_percentage(osm_data)
+        
+        result['traffic_assessment'] = {
+            'aadt': aadt,
+            'peak_hour_volume': peak_hour,
+            'percentile_85_speed': speed_85,
+            'heavy_vehicle_percentage': heavy_vehicle_pct,
+            'data_source': 'Estimated from road classification (Austroads standards)',
+            'assessment_method': 'Road classification analysis'
+        }
+        
         # 0a. FETCH LOCATION METADATA SYSTEM DATA (Official SA Government)
         road_name = osm_data.get('road_name', 'Unknown Road')
         result['location_metadata_system'] = await fetch_location_metadata_system_data(lat, lng, road_name)
