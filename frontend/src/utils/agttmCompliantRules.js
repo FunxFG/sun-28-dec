@@ -493,8 +493,12 @@ export class AGTTMCompliantPlacement {
     
     console.log(`Total devices before validation: ${devices.length}`);
     
+    // Remove duplicate devices (same position within 1 meter)
+    const uniqueDevices = this.removeDuplicateDevices(devices);
+    console.log(`Removed ${devices.length - uniqueDevices.length} duplicate devices`);
+    
     // Final validation against exact AGTTM standards
-    const validatedDevices = this.validateExactAGTTMCompliance(devices, geometryAnalysis);
+    const validatedDevices = this.validateExactAGTTMCompliance(uniqueDevices, geometryAnalysis);
     console.log(`Total devices after validation: ${validatedDevices.length}`);
     
     return validatedDevices;
