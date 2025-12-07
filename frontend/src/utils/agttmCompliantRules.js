@@ -1094,7 +1094,7 @@ export class AGTTMCompliantPlacement {
     return devices;
   }
 
-  placeBilateralEndSignsExact(workZoneData, analysis) {
+  placeBilateralEndSignsExact(workZoneData, analysis, snapper = null) {
     // Implementation with exact end sign positioning
     return [];
   }
