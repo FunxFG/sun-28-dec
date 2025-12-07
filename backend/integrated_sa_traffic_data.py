@@ -294,19 +294,19 @@ async def get_traffic_intelligence_for_location(address: str, lat: float, lng: f
             result['recommendations'].append('Consider impacts on turning movements')
         
         if not road_match['is_top_40_road'] and not intersection_match['is_top_40_intersection']:
-            result['overall_traffic_level'] = 'MODERATE'
-            result['recommendations'].append('Standard traffic control measures appropriate')
+            result['overall_traffic_level'] = None
+            result['recommendations'].append('Location not in SA Top 40 traffic datasets - manual traffic assessment required')
         
-        # Ensure we always have a traffic level set
+        # If still unknown, mark as requiring manual input
         if result['overall_traffic_level'] == 'Unknown':
-            result['overall_traffic_level'] = 'MODERATE'
-            result['recommendations'].append('Location traffic levels estimated as moderate')
+            result['overall_traffic_level'] = None
+            result['recommendations'] = ['Traffic level data not available - conduct traffic survey or obtain counts from road authority']
         
     except Exception as e:
         logger.error(f"Error getting traffic intelligence: {str(e)}")
-        # Set defaults even on error
-        result['overall_traffic_level'] = 'MODERATE'
-        result['recommendations'] = ['Standard traffic control measures appropriate']
+        # No defaults on error - mark as manual input needed
+        result['overall_traffic_level'] = None
+        result['recommendations'] = ['Traffic data unavailable - manual traffic assessment required']
     
     return result
 
