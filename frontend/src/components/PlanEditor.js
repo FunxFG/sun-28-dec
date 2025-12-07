@@ -599,13 +599,14 @@ export default function PlanEditor({ user, onLogout }) {
         return;
       }
       
+      const userToken = localStorage.getItem('token');
       const response = await axios.post(`${API}${endpoint}`, {
         location: formData.work_details.start_address,
         work_type: formData.work_details.work_type,
         duration_days: calculateDurationDays(),
         work_hours: `${formData.work_details.work_hours_start}-${formData.work_details.work_hours_end}`
       }, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${userToken}` }
       });
       
       if (response.data.status === 'success') {
