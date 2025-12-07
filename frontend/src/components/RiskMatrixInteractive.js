@@ -799,7 +799,7 @@ function CustomRiskForm({ onSave, onCancel }) {
         <CardHeader>
           <CardTitle>Add Custom Site-Specific Risk</CardTitle>
           <CardDescription>
-            Add a risk specific to your site that isn't covered in the standard risk library
+            Add a risk specific to your site that is not covered in the standard risk library
           </CardDescription>
         </CardHeader>
         <CardContent>
