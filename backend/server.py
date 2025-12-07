@@ -1208,7 +1208,17 @@ async def fetch_digital_atlas_road_data(lat: float, lng: float):
                 logger.error(f"Digital Atlas API error: {response.status_code}")
                 return None
             
-            data = response.json()
+            # Check if response has content before parsing JSON
+            if not response.content or len(response.content) == 0:
+                logger.warning("Digital Atlas returned empty response")
+                return None
+            
+            try:
+                data = response.json()
+            except Exception as json_error:
+                logger.error(f"Digital Atlas JSON parse error: {str(json_error)}")
+                logger.debug(f"Response content: {response.text[:200]}")
+                return None
             
             if not data.get('features') or len(data['features']) == 0:
                 logger.warning("No road data found in Digital Atlas")
