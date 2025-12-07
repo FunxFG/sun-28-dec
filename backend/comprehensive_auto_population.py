@@ -131,17 +131,18 @@ async def fetch_osm_road_data(lat: float, lng: float) -> Dict[str, Any]:
     except Exception as e:
         logger.error(f"Error fetching OSM road data: {str(e)}")
         return {
-            'speed_limit': 60,
-            'lanes': 2,
-            'road_name': 'Unknown Road',
-            'highway_type': 'residential',
-            'surface': 'asphalt',
-            'has_footpath': False,
-            'has_cycleway': False,
-            'has_parking': False,
-            'road_classification': 'Local Road',
-            'jurisdiction': 'Local Council',
-            'functional_class': 'Collector'
+            'speed_limit': None,  # Manual input required
+            'lanes': None,
+            'road_name': None,
+            'highway_type': None,
+            'surface': None,
+            'has_footpath': None,
+            'has_cycleway': None,
+            'has_parking': None,
+            'road_classification': None,
+            'jurisdiction': 'Manual input required',
+            'functional_class': None,
+            'note': 'Unable to fetch road data - manual survey required'
         }
 
 
