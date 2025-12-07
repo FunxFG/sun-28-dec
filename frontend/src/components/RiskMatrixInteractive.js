@@ -324,6 +324,35 @@ export default function RiskMatrixInteractive({ formData, setFormData, onNext })
         </CardContent>
       </Card>
 
+      {/* Add Custom Risk Button */}
+      <Card>
+        <CardContent className="pt-6">
+          <Button
+            onClick={() => setShowCustomRiskForm(true)}
+            className="w-full bg-orange-600 hover:bg-orange-700"
+          >
+            <AlertTriangle className="w-4 h-4 mr-2" />
+            Add Custom Site-Specific Risk
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Custom Risk Form Modal */}
+      {showCustomRiskForm && (
+        <CustomRiskForm
+          onSave={(customRisk) => {
+            const customId = `custom_${Date.now()}`;
+            setSelectedRisks(prev => ({
+              ...prev,
+              [customId]: customRisk
+            }));
+            setShowCustomRiskForm(false);
+            toast.success('Custom risk added successfully');
+          }}
+          onCancel={() => setShowCustomRiskForm(false)}
+        />
+      )}
+
       {/* Risk Matrix View */}
       {view === 'matrix' && (
         <RiskMatrix 
