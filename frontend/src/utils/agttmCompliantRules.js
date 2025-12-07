@@ -418,14 +418,20 @@ export class AGTTMCompliantPlacement {
     const geometryAnalysis = this.analyzeRoadGeometryExact(roadGeometry, category, bilateralRequired);
     
     // CRITICAL: Add road edge geometry for accurate snapping
+    console.log('🔍 Road geometry data:', roadGeometry);
+    console.log('🔍 Road edge geometry:', roadGeometry.road_edge_geometry);
+    
     if (roadGeometry.road_edge_geometry?.start) {
+      const leftEdgeCount = roadGeometry.road_edge_geometry.start.left_edge?.length || 0;
+      const rightEdgeCount = roadGeometry.road_edge_geometry.start.right_edge?.length || 0;
+      
       geometryAnalysis.road_edges = {
         left_edge: roadGeometry.road_edge_geometry.start.left_edge || [],
         right_edge: roadGeometry.road_edge_geometry.start.right_edge || [],
         centerline: roadGeometry.road_edge_geometry.start.centerline || [],
-        has_real_edges: true
+        has_real_edges: leftEdgeCount > 0 && rightEdgeCount > 0
       };
-      console.log('✅ Using real road edge geometry for accurate placement');
+      console.log(`✅ Using real road edge geometry: ${leftEdgeCount} left points, ${rightEdgeCount} right points`);
     } else {
       geometryAnalysis.road_edges = {
         has_real_edges: false
