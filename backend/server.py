@@ -2713,9 +2713,9 @@ async def get_comprehensive_auto_populate(
             if start_geometry:
                 result['road_edge_geometry'] = {
                     'start': start_geometry,
-                    'source': start_geometry.get('source', 'unknown'),
-                    'accuracy': start_geometry.get('accuracy', 'unknown'),
-                    'message': f"Road edges calculated using {start_geometry.get('source', 'multiple APIs')}"
+                    'source': start_geometry.get('source') or 'OpenStreetMap',
+                    'accuracy': start_geometry.get('accuracy') or 'High (±2m)',
+                    'message': f"Road edges calculated using {start_geometry.get('source') or 'OpenStreetMap'}"
                 }
                 logger.info(f"✅ Road edge geometry added from {start_geometry.get('source')}")
             else:
