@@ -730,23 +730,23 @@ async def fetch_crash_statistics(lat: float, lng: float, address: str) -> Dict[s
     except Exception as e:
         logger.error(f"Error fetching enhanced crash statistics: {str(e)}")
         
-        # Fallback to basic crash data structure
+        # No real data available - return null
         return {
-            'total_crashes': 0,
-            'casualties': 0,
-            'fatal_crashes': 0,
-            'serious_injury': 0,
-            'minor_injury': 0,
-            'property_damage_only': 0,
+            'total_crashes': None,
+            'casualties': None,
+            'fatal_crashes': None,
+            'serious_injury': None,
+            'minor_injury': None,
+            'property_damage_only': None,
             'crashes_by_year': {},
-            'common_factors': ['No significant crash history identified in recent 5 years'],
+            'common_factors': [],
             'peak_times': [],
             'recent_crashes': [],
-            'data_source': 'SA Government Road Crash Database (data.sa.gov.au)',
-            'note': 'No major crashes recorded within 1km radius - location has good safety record',
+            'data_source': 'Manual input required',
+            'note': 'Crash data not available - contact SA DIT or local council for crash history reports',
             'risk_assessment': {
-                'risk_level': 'LOW',
-                'risk_description': 'Location has minimal crash history - standard safety controls recommended'
+                'risk_level': None,
+                'risk_description': 'Manual crash risk assessment required - obtain local crash data'
             }
         }
     """
