@@ -11,6 +11,7 @@ import math
 from typing import Dict, List, Tuple, Optional
 import logging
 import os
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +23,9 @@ class RoadGeometryProcessor:
         self.overpass_url = "https://overpass-api.de/api/interpreter"
         self.google_maps_key = os.getenv('GOOGLE_MAPS_API_KEY', '')
         self.cache = {}  # Cache results to avoid redundant API calls
+        self.cache_ttl = 3600  # Cache TTL: 1 hour (3600 seconds)
+        self.last_osm_request_time = 0  # Track last OSM request for rate limiting
+        self.osm_request_interval = 1.0  # Minimum 1 second between OSM requests
     
     def get_road_geometry(self, lat: float, lng: float, radius: int = 50) -> Optional[Dict]:
         """
