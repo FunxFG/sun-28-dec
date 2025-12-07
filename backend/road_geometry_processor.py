@@ -44,10 +44,16 @@ class RoadGeometryProcessor:
         """
         cache_key = f"{lat:.6f},{lng:.6f}"
         
-        # Check cache first
+        # Check cache first with TTL validation
         if cache_key in self.cache:
-            logger.info(f"Using cached road geometry for {cache_key}")
-            return self.cache[cache_key]
+            cached_data, cached_time = self.cache[cache_key]
+            # Check if cache is still valid (within TTL)
+            if time.time() - cached_time < self.cache_ttl:
+                logger.info(f"✅ Using cached road geometry for {cache_key} (age: {int(time.time() - cached_time)}s)")
+                return cached_data
+            else:
+                logger.info(f"⏰ Cache expired for {cache_key}, fetching fresh data")
+                del self.cache[cache_key]
         
         # OPTION 1: Try Google Roads API first (most accurate)
         if self.google_maps_key:
