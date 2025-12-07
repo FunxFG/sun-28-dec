@@ -474,16 +474,21 @@ export class AGTTMCompliantPlacement {
     }
     
     // SIDE STREET SIGNAGE: Place "double-gating" warning signs at side street approaches
+    console.log('🔍 Comprehensive data:', roadGeometry.comprehensive_data);
+    console.log('🔍 Side streets:', roadGeometry.comprehensive_data?.side_streets);
+    
     if (roadGeometry.comprehensive_data?.side_streets && roadGeometry.comprehensive_data.side_streets.length > 0) {
-      console.log(`Placing signage for ${roadGeometry.comprehensive_data.side_streets.length} side streets...`);
+      console.log(`📍 Placing signage for ${roadGeometry.comprehensive_data.side_streets.length} side streets...`);
       const sideStreetDevices = this.placeSideStreetSignage(
         roadAlignedWorkZone,
         roadGeometry.comprehensive_data.side_streets,
         geometryAnalysis,
         roadSnapper
       );
-      console.log(`Placed ${sideStreetDevices.length} side street warning devices`);
+      console.log(`✅ Placed ${sideStreetDevices.length} side street warning devices`);
       devices.push(...sideStreetDevices);
+    } else {
+      console.log('⚠️ No side streets found in comprehensive data');
     }
     
     console.log(`Total devices before validation: ${devices.length}`);
