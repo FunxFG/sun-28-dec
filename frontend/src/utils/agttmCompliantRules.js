@@ -912,7 +912,7 @@ export class AGTTMCompliantPlacement {
     return devices;
   }
 
-  placeArrowBoardsExact(workZoneData, analysis) {
+  placeArrowBoardsExact(workZoneData, analysis, snapper = null) {
     const devices = [];
     
     // Arrow boards required for lane closures on multi-lane roads (as1742_3_016)
