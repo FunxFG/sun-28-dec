@@ -98,7 +98,7 @@ export default function RiskMatrixInteractive({ formData, setFormData, onNext })
         // Deselect
         delete newSelected[riskId];
       } else {
-        // Select with default values
+        // Select with default values and all controls enabled by default
         newSelected[riskId] = {
           risk_id: riskId,
           site_type: risk.site_type,
@@ -116,6 +116,13 @@ export default function RiskMatrixInteractive({ formData, setFormData, onNext })
             administrative: risk.control_administrative,
             ppe: risk.control_ppe
           },
+          selected_controls: {
+            elimination: risk.control_elimination ? true : false,
+            substitution: risk.control_substitution ? true : false,
+            engineering: risk.control_engineering ? true : false,
+            administrative: risk.control_administrative ? true : false,
+            ppe: risk.control_ppe ? true : false
+          },
           residual_likelihood: risk.residual_likelihood,
           residual_consequence_level: risk.residual_consequence_level,
           residual_risk_score: risk.residual_risk_score,
@@ -127,6 +134,19 @@ export default function RiskMatrixInteractive({ formData, setFormData, onNext })
       
       return newSelected;
     });
+  };
+
+  const toggleControl = (riskId, controlType, checked) => {
+    setSelectedRisks(prev => ({
+      ...prev,
+      [riskId]: {
+        ...prev[riskId],
+        selected_controls: {
+          ...prev[riskId]?.selected_controls,
+          [controlType]: checked
+        }
+      }
+    }));
   };
 
   const updateRiskNotes = (riskId, notes) => {
