@@ -417,8 +417,24 @@ export class AGTTMCompliantPlacement {
     // Analyze road geometry for exact placement feasibility
     const geometryAnalysis = this.analyzeRoadGeometryExact(roadGeometry, category, bilateralRequired);
     
+    // CRITICAL: Add road edge geometry for accurate snapping
+    if (roadGeometry.road_edge_geometry?.start) {
+      geometryAnalysis.road_edges = {
+        left_edge: roadGeometry.road_edge_geometry.start.left_edge || [],
+        right_edge: roadGeometry.road_edge_geometry.start.right_edge || [],
+        centerline: roadGeometry.road_edge_geometry.start.centerline || [],
+        has_real_edges: true
+      };
+      console.log('✅ Using real road edge geometry for accurate placement');
+    } else {
+      geometryAnalysis.road_edges = {
+        has_real_edges: false
+      };
+      console.log('⚠️ No road edge geometry available, using calculated offsets');
+    }
+    
     // Generate bilateral advance warning signs with exact measurements
-    const advanceDevices = this.placeBilateralAdvanceWarningsExact(roadAlignedWorkZone, geometryAnalysis);
+    const advanceDevices = this.placeBilateralAdvanceWarningsExact(roadAlignedWorkZone, geometryAnalysis, roadSnapper);
     console.log(`Placed ${advanceDevices.length} advance warning devices`);
     devices.push(...advanceDevices);
     
