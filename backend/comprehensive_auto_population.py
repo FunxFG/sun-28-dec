@@ -1704,7 +1704,7 @@ async def fetch_side_streets(lat: float, lng: float):
         (
           way(around:200,{lat},{lng})["highway"]["name"];
         );
-        out body;
+        out center;
         """
         
         async with httpx.AsyncClient(timeout=15.0) as client:
