@@ -957,12 +957,12 @@ export class AGTTMCompliantPlacement {
   }
 
   // Continue with other exact placement methods...
-  placeBilateralRegulatoryDevicesExact(workZoneData, analysis) {
+  placeBilateralRegulatoryDevicesExact(workZoneData, analysis, snapper = null) {
     // Implementation with exact measurements
     return [];
   }
 
-  placeDelineationDevicesExact(workZoneData, analysis) {
+  placeDelineationDevicesExact(workZoneData, analysis, snapper = null) {
     const devices = [];
     const speedKey = this.getSpeedKey(analysis.speed_limit);
     const taperSpecs = this.agttmRules.taper_calculations[speedKey];
