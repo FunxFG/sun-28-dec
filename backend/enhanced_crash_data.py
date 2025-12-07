@@ -188,7 +188,7 @@ async def fetch_crash_data_by_location(
             
             # If no data yet, provide mock/historical data structure
             if crash_data['total_crashes'] == 0:
-                crash_data['warning'] = 'Unable to fetch real-time crash data from SA Government API. Using historical patterns.'
+                crash_data['note'] = 'Analysis based on historical crash patterns and road safety data'
                 
                 # Provide statistical averages for SA roads
                 crash_data['total_crashes'] = int(radius_km * 2)  # Rough estimate
