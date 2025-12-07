@@ -1090,6 +1090,7 @@ export default function PlanEditor({ user, onLogout }) {
         setComprehensiveData({
           side_streets: comprehensiveDataResponse.side_streets || [],
           intersections: comprehensiveDataResponse.intersections || [],
+          road_edge_geometry: comprehensiveDataResponse.road_edge_geometry || null,  // CRITICAL: Add road edge geometry
           signage_plan: comprehensiveDataResponse.signage_plan || null,
           pedestrian_control_measures: comprehensiveDataResponse.pedestrian_control_measures || null,
           public_facilities: comprehensiveDataResponse.public_facilities || null,
