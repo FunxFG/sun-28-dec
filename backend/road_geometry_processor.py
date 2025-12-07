@@ -167,7 +167,7 @@ class RoadGeometryProcessor:
                         elif 'primary' in str(road_types):
                             lanes = 2
                             road_width = 10.0
-                except:
+                except Exception:
                     pass
             
             # Calculate centerline (simplified - just snapped point)
