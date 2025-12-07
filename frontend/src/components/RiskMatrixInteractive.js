@@ -438,44 +438,84 @@ export default function RiskMatrixInteractive({ formData, setFormData, onNext })
                             </div>
                           </div>
 
-                          {/* Control Measures (5-Level Hierarchy) */}
+                          {/* Control Measures (5-Level Hierarchy) with Checkboxes */}
                           <div className="space-y-2">
                             <Label className="text-sm font-semibold text-slate-700">
-                              Control Measures (Hierarchy of Controls)
+                              Control Measures (Select which controls to apply)
                             </Label>
                             
                             {risk.control_elimination && (
-                              <div className="bg-green-50 p-3 rounded">
-                                <strong className="text-green-900">1. Elimination:</strong>
-                                <p className="text-sm mt-1">{risk.control_elimination}</p>
+                              <div className="bg-green-50 p-3 rounded flex items-start gap-2">
+                                <Checkbox
+                                  checked={selectedRisks[risk.id]?.selected_controls?.elimination !== false}
+                                  onCheckedChange={(checked) => toggleControl(risk.id, 'elimination', checked)}
+                                  disabled={!isSelected}
+                                  className="mt-1"
+                                />
+                                <div className="flex-1">
+                                  <strong className="text-green-900">1. Elimination:</strong>
+                                  <p className="text-sm mt-1">{risk.control_elimination}</p>
+                                </div>
                               </div>
                             )}
                             
                             {risk.control_substitution && (
-                              <div className="bg-blue-50 p-3 rounded">
-                                <strong className="text-blue-900">2. Substitution:</strong>
-                                <p className="text-sm mt-1">{risk.control_substitution}</p>
+                              <div className="bg-blue-50 p-3 rounded flex items-start gap-2">
+                                <Checkbox
+                                  checked={selectedRisks[risk.id]?.selected_controls?.substitution !== false}
+                                  onCheckedChange={(checked) => toggleControl(risk.id, 'substitution', checked)}
+                                  disabled={!isSelected}
+                                  className="mt-1"
+                                />
+                                <div className="flex-1">
+                                  <strong className="text-blue-900">2. Substitution:</strong>
+                                  <p className="text-sm mt-1">{risk.control_substitution}</p>
+                                </div>
                               </div>
                             )}
                             
                             {risk.control_engineering && (
-                              <div className="bg-purple-50 p-3 rounded">
-                                <strong className="text-purple-900">3. Engineering:</strong>
-                                <p className="text-sm mt-1">{risk.control_engineering}</p>
+                              <div className="bg-purple-50 p-3 rounded flex items-start gap-2">
+                                <Checkbox
+                                  checked={selectedRisks[risk.id]?.selected_controls?.engineering !== false}
+                                  onCheckedChange={(checked) => toggleControl(risk.id, 'engineering', checked)}
+                                  disabled={!isSelected}
+                                  className="mt-1"
+                                />
+                                <div className="flex-1">
+                                  <strong className="text-purple-900">3. Engineering:</strong>
+                                  <p className="text-sm mt-1">{risk.control_engineering}</p>
+                                </div>
                               </div>
                             )}
                             
                             {risk.control_administrative && (
-                              <div className="bg-yellow-50 p-3 rounded">
-                                <strong className="text-yellow-900">4. Administrative:</strong>
-                                <p className="text-sm mt-1">{risk.control_administrative}</p>
+                              <div className="bg-yellow-50 p-3 rounded flex items-start gap-2">
+                                <Checkbox
+                                  checked={selectedRisks[risk.id]?.selected_controls?.administrative !== false}
+                                  onCheckedChange={(checked) => toggleControl(risk.id, 'administrative', checked)}
+                                  disabled={!isSelected}
+                                  className="mt-1"
+                                />
+                                <div className="flex-1">
+                                  <strong className="text-yellow-900">4. Administrative:</strong>
+                                  <p className="text-sm mt-1">{risk.control_administrative}</p>
+                                </div>
                               </div>
                             )}
                             
                             {risk.control_ppe && (
-                              <div className="bg-orange-50 p-3 rounded">
-                                <strong className="text-orange-900">5. PPE:</strong>
-                                <p className="text-sm mt-1">{risk.control_ppe}</p>
+                              <div className="bg-orange-50 p-3 rounded flex items-start gap-2">
+                                <Checkbox
+                                  checked={selectedRisks[risk.id]?.selected_controls?.ppe !== false}
+                                  onCheckedChange={(checked) => toggleControl(risk.id, 'ppe', checked)}
+                                  disabled={!isSelected}
+                                  className="mt-1"
+                                />
+                                <div className="flex-1">
+                                  <strong className="text-orange-900">5. PPE:</strong>
+                                  <p className="text-sm mt-1">{risk.control_ppe}</p>
+                                </div>
                               </div>
                             )}
                           </div>
