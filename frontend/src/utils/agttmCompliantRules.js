@@ -773,25 +773,48 @@ export class AGTTMCompliantPlacement {
     return spacing['≥90kmh'];
   }
 
-  placeBilateralAdvanceWarningsExact(workZoneData, analysis) {
+  placeBilateralAdvanceWarningsExact(workZoneData, analysis, snapper = null) {
     const devices = [];
-    const { startLat, startLng, bearing } = workZoneData;
+    const { start_lat, start_lng, road_bearing } = workZoneData;
     const distances = analysis.advance_distances;
     const heightSpec = this.agttmRules.sign_heights;
     
     // Place exact bilateral advance warnings
     Object.entries(distances).forEach(([level, distance]) => {
-      const signPosition = this.calculatePosition(startLat, startLng, bearing + 180, distance);
+      // Calculate position along road centerline at specified distance
+      const signPosition = this.calculatePosition(start_lat, start_lng, road_bearing + 180, distance);
       
       // Only place bilateral if both sides meet exact clearance requirements
       if (analysis.bilateral_required && 
           analysis.left_side.minimum_clearance_met && 
           analysis.right_side.minimum_clearance_met) {
         
-        // Left side sign with exact measurements
-        const leftPosition = this.calculatePosition(
-          signPosition.lat, signPosition.lng, bearing - 90, analysis.left_side.lateral_offset
-        );
+        // ENHANCED: Use actual road edges when available
+        let leftPosition, rightPosition;
+        
+        if (analysis.road_edges?.has_real_edges && snapper) {
+          // Snap to actual left edge at this distance
+          leftPosition = snapper.getPositionAlongRoadEdge(
+            analysis.road_edges.left_edge,
+            distance,
+            analysis.left_side.lateral_offset
+          );
+          
+          // Snap to actual right edge at this distance
+          rightPosition = snapper.getPositionAlongRoadEdge(
+            analysis.road_edges.right_edge,
+            distance,
+            analysis.right_side.lateral_offset
+          );
+        } else {
+          // Fallback: Use mathematical offset (old method)
+          leftPosition = this.calculatePosition(
+            signPosition.lat, signPosition.lng, road_bearing - 90, analysis.left_side.lateral_offset
+          );
+          rightPosition = this.calculatePosition(
+            signPosition.lat, signPosition.lng, road_bearing + 90, analysis.right_side.lateral_offset
+          );
+        }
         
         devices.push({
           id: `warning_left_${level}_${Date.now()}`,
