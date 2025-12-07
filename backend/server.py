@@ -1731,6 +1731,66 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
     
     story.append(Paragraph("3.1 Risk Classification", subheading_style))
     story.append(Paragraph("Risk assessment follows the qualitative risk matrix approach with consequence and likelihood ratings.", styles['Normal']))
+    story.append(Spacer(1, 10))
+    
+    # Add Risk Matrix Visual
+    story.append(Paragraph("3.1.1 Risk Matrix", subheading_style))
+    
+    # Create 5x5 Risk Matrix table
+    matrix_data = [
+        ['Likelihood →\nConsequence ↓', 'Insignificant (1)', 'Minor (2)', 'Moderate (3)', 'Major (4)', 'Catastrophic (5)'],
+        ['Almost Certain (5)', 'Medium', 'High', 'High', 'Extreme', 'Extreme'],
+        ['Likely (4)', 'Medium', 'Medium', 'High', 'High', 'Extreme'],
+        ['Possible (3)', 'Low', 'Medium', 'Medium', 'High', 'Extreme'],
+        ['Unlikely (2)', 'Low', 'Low', 'Medium', 'Medium', 'High'],
+        ['Rare (1)', 'Low', 'Low', 'Low', 'Medium', 'Medium']
+    ]
+    
+    # Define colors for risk levels
+    risk_colors = {
+        'Low': colors.green,
+        'Medium': colors.yellow,
+        'High': colors.orange,
+        'Extreme': colors.red
+    }
+    
+    # Build table styles with colored cells
+    matrix_table_style = [
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTNAME', (0, 1), (0, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('BACKGROUND', (0, 0), (0, 0), colors.lightgrey),
+        ('BACKGROUND', (1, 0), (-1, 0), colors.lightgrey),
+        ('BACKGROUND', (0, 1), (0, -1), colors.lightgrey),
+    ]
+    
+    # Color the risk cells
+    for row_idx, row in enumerate(matrix_data[1:], start=1):  # Skip header row
+        for col_idx, cell in enumerate(row[1:], start=1):  # Skip header column
+            if cell in risk_colors:
+                matrix_table_style.append(
+                    ('BACKGROUND', (col_idx, row_idx), (col_idx, row_idx), risk_colors[cell])
+                )
+    
+    matrix_table = Table(matrix_data, colWidths=[1.5*inch] + [1*inch]*5)
+    matrix_table.setStyle(TableStyle(matrix_table_style))
+    story.append(matrix_table)
+    story.append(Spacer(1, 15))
+    
+    # Risk level definitions
+    story.append(Paragraph("<b>Risk Level Definitions:</b>", styles['Normal']))
+    risk_definitions = [
+        "<b>Extreme:</b> Immediate action required. Work cannot proceed until controls are implemented.",
+        "<b>High:</b> Senior management attention needed. Implement additional controls before proceeding.",
+        "<b>Medium:</b> Management responsibility specified. Timeframe for risk reduction established.",
+        "<b>Low:</b> Manage by routine procedures. Monitor and review controls regularly."
+    ]
+    for definition in risk_definitions:
+        story.append(Paragraph(f"• {definition}", styles['Normal']))
+    story.append(Spacer(1, 15))
     
     # Risk Register
     story.append(Paragraph("3.2 Risk Register", subheading_style))
