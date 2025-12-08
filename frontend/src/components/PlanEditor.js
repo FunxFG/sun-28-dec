@@ -880,6 +880,7 @@ export default function PlanEditor({ user, onLogout }) {
 
       // Re-initialize map with new devices
       if (googleMapRef.current) {
+        console.log('🗺️ Adding markers to map...');
         // Clear existing markers
         if (window.deviceMarkers) {
           window.deviceMarkers.forEach(marker => marker.setMap(null));
@@ -887,9 +888,14 @@ export default function PlanEditor({ user, onLogout }) {
         window.deviceMarkers = [];
         
         // Add new device markers
-        devicesWithMeasurements.forEach(device => {
+        console.log(`   Creating ${devicesWithMeasurements.length} markers...`);
+        devicesWithMeasurements.forEach((device, idx) => {
+          if (idx < 3) {
+            console.log(`   Marker ${idx}: ${device.device_name} at (${device.position_lat}, ${device.position_lng})`);
+          }
           addDeviceMarker(googleMapRef.current, device);
         });
+        console.log(`   ✅ ${window.deviceMarkers?.length || 0} markers added to map`);
         
         // Draw detour routes if available
         if (detourData) {
