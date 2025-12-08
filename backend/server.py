@@ -3232,6 +3232,122 @@ async def get_emergency_tiers():
         logger.error(f"Error getting emergency tiers: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@api_router.post("/tmp/lane-closure")
+async def create_lane_closure_tmp(request: Dict):
+    """Generate standard lane closure TMP with compliant signage"""
+    try:
+        location = request.get('location', '')
+        work_type = request.get('work_type', 'Lane Closure Works')
+        duration_days = request.get('duration_days', 1)
+        work_hours = request.get('work_hours', '7am-5pm')
+        posted_speed = request.get('posted_speed', 60)
+        lanes_total = request.get('lanes_total', 2)
+        lanes_closed = request.get('lanes_closed', 1)
+        
+        plan = {
+            "template_type": "lane_closure",
+            "work_details": {
+                "location": location,
+                "work_type": work_type,
+                "duration": f"{duration_days} days",
+                "work_hours": work_hours
+            },
+            "road_occupancy": {
+                "lane_closure": True,
+                "lanes_affected": lanes_closed,
+                "total_lanes": lanes_total,
+                "complete_road_closure": False
+            },
+            "control_measures": {
+                "advance_warning_signs": True,
+                "speed_reduction": 40,
+                "traffic_cones": True,
+                "arrow_boards": lanes_total > 1,
+                "bilateral_signage": True
+            },
+            "devices": [
+                {"device_name": "Road Work Ahead", "device_type": "warning", "quantity": 2, "placement": "Bilateral"},
+                {"device_name": "Lane Closure Ahead", "device_type": "warning", "quantity": 2, "placement": "Bilateral"},
+                {"device_name": "Speed Limit 40", "device_type": "regulatory", "quantity": 2, "placement": "Bilateral"},
+                {"device_name": "Traffic Cones 700mm", "device_type": "delineation", "quantity": "Variable", "spacing": "5-10m"},
+                {"device_name": "End Road Work", "device_type": "regulatory", "quantity": 2, "placement": "Bilateral"}
+            ],
+            "signage_plan": {
+                "advance_warning_distance": f"{60 if posted_speed <= 60 else 90}m",
+                "taper_length": f"{posted_speed * 0.67}m",
+                "buffer_zone": "30m minimum"
+            }
+        }
+        
+        return {
+            "status": "success",
+            "plan": plan,
+            "message": f"Lane closure TMP generated for {location}"
+        }
+    except Exception as e:
+        logger.error(f"Error generating lane closure TMP: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/tmp/road-closure")
+async def create_road_closure_tmp(request: Dict):
+    """Generate full road closure TMP with detour routes"""
+    try:
+        location = request.get('location', '')
+        work_type = request.get('work_type', 'Road Closure Works')
+        duration_days = request.get('duration_days', 1)
+        work_hours = request.get('work_hours', '7am-5pm')
+        detour_required = request.get('detour_required', True)
+        emergency_access = request.get('emergency_access', True)
+        
+        plan = {
+            "template_type": "road_closure",
+            "work_details": {
+                "location": location,
+                "work_type": work_type,
+                "duration": f"{duration_days} days",
+                "work_hours": work_hours
+            },
+            "road_occupancy": {
+                "complete_road_closure": True,
+                "pedestrian_access": False,
+                "vehicle_access": False,
+                "emergency_access_maintained": emergency_access
+            },
+            "control_measures": {
+                "detour": detour_required,
+                "road_closed_signs": True,
+                "barrier_boards": True,
+                "advance_warning_distance": "250m minimum",
+                "notification_requirements": ["Residents", "Businesses", "Emergency Services", "Public Transport"]
+            },
+            "devices": [
+                {"device_name": "Road Closed Ahead", "device_type": "warning", "quantity": 4, "placement": "All approaches"},
+                {"device_name": "Road Closed", "device_type": "regulatory", "quantity": 2, "placement": "At closure point"},
+                {"device_name": "Detour (if applicable)", "device_type": "guide", "quantity": "Variable", "placement": "Along detour route"},
+                {"device_name": "Barrier Boards", "device_type": "barrier", "quantity": "Sufficient to block road", "placement": "Closure point"},
+                {"device_name": "Local Access Only", "device_type": "regulatory", "quantity": 2, "placement": "If partial access"}
+            ],
+            "signage_plan": {
+                "advance_notice": "7 days minimum for scheduled closures",
+                "signage_advance_distance": "250m, 100m, closure point",
+                "detour_signage": detour_required ? "Complete detour route signing required" : "Not applicable"
+            },
+            "notification_plan": {
+                "advance_notice_days": 7,
+                "methods": ["Letter box drop", "Media release", "Council website", "Variable message signs"],
+                "emergency_services_notified": True
+            }
+        }
+        
+        return {
+            "status": "success",
+            "plan": plan,
+            "message": f"Road closure TMP generated for {location}"
+        }
+    except Exception as e:
+        logger.error(f"Error generating road closure TMP: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # ===================================================
 # WORKSITE TMP ENDPOINTS  
 # ===================================================
