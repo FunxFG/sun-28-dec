@@ -588,14 +588,19 @@ export default function PlanEditor({ user, onLogout }) {
     
     setLoadingTemplate(true);
     try {
-      const endpoint = selectedTemplate === 'footpath_closure' 
-        ? '/api/tmp/footpath-closure-plan'
-        : selectedTemplate === 'emergency'
-        ? '/api/tmp/emergency'
-        : null;
+      // Map template selection to API endpoint
+      const endpointMap = {
+        'footpath_closure': '/api/tmp/footpath-closure',
+        'emergency': '/api/tmp/emergency',
+        'lane_closure': '/api/tmp/lane-closure',
+        'road_closure': '/api/tmp/road-closure'
+      };
+      
+      const endpoint = endpointMap[selectedTemplate];
       
       if (!endpoint) {
         toast.info('This template is not yet implemented');
+        setLoadingTemplate(false);
         return;
       }
       
