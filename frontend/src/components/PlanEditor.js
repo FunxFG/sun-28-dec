@@ -739,11 +739,11 @@ export default function PlanEditor({ user, onLogout }) {
         ...roadData,
         speed_limit: roadData.speed_limit || 60, // Use actual or default
         // Add road edge geometry if available from comprehensive auto-populate
-        road_edge_geometry: comprehensiveData?.road_edge_geometry || null,
+        road_edge_geometry: fetchedComprehensiveData?.road_edge_geometry || null,
         // Add comprehensive data for side streets and other features
         comprehensive_data: {
-          side_streets: comprehensiveData?.side_streets || [],
-          intersections: comprehensiveData?.intersections || []
+          side_streets: fetchedComprehensiveData?.side_streets || [],
+          intersections: fetchedComprehensiveData?.intersections || []
         }
       };
 
