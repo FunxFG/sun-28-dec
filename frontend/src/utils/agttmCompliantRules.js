@@ -862,6 +862,18 @@ export class AGTTMCompliantPlacement {
           );
         }
         
+        // SAFETY CHECK: Ensure positions are valid before creating devices
+        if (!leftPosition || !leftPosition.lat || !leftPosition.lng) {
+          console.error(`❌ Invalid left position for ${level}:`, leftPosition);
+          return; // Skip this sign
+        }
+        if (!rightPosition || !rightPosition.lat || !rightPosition.lng) {
+          console.error(`❌ Invalid right position for ${level}:`, rightPosition);
+          return; // Skip this sign
+        }
+        
+        console.log(`  ✅ Creating devices for ${level} at:`, {left: leftPosition, right: rightPosition});
+        
         devices.push({
           id: `warning_left_${level}_${Date.now()}`,
           device_type: 'warning',
