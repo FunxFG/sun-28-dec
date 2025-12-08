@@ -615,11 +615,28 @@ export default function PlanEditor({ user, onLogout }) {
       });
       
       if (response.data.status === 'success') {
-        toast.success(`${selectedTemplate.replace('_', ' ')} template applied successfully`);
-        // Optionally populate form with template data
-        if (response.data.plan) {
-          console.log('Template plan data:', response.data.plan);
-        }
+        const templatePlan = response.data.plan;
+        console.log('Template plan data:', templatePlan);
+        
+        // Populate form with template data
+        setFormData(prev => ({
+          ...prev,
+          work_details: {
+            ...prev.work_details,
+            ...templatePlan.work_details,
+            work_type: templatePlan.work_details?.work_type || prev.work_details.work_type
+          },
+          road_occupancy: {
+            ...prev.road_occupancy,
+            ...templatePlan.road_occupancy
+          },
+          control_measures: {
+            ...prev.control_measures,
+            ...templatePlan.control_measures
+          }
+        }));
+        
+        toast.success(`✅ ${selectedTemplate.replace(/_/g, ' ').toUpperCase()} template applied! Review and adjust as needed.`);
       }
     } catch (error) {
       console.error('Template application error:', error);
