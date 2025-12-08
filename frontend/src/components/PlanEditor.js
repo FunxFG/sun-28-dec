@@ -1257,10 +1257,14 @@ export default function PlanEditor({ user, onLogout }) {
       }
       toast.success(message);
       
+      // Return comprehensive data for immediate use
+      return comprehensiveDataResponse;
+      
     } catch (error) {
       console.error('Error fetching road/traffic/site data:', error);
       toast.error('Failed to fetch complete assessment data');
       setAutoPopulationComplete(false);
+      return null;
     }
   };
 
