@@ -807,10 +807,19 @@ export class AGTTMCompliantPlacement {
     const distances = analysis.advance_distances;
     const heightSpec = this.agttmRules.sign_heights;
     
+    console.log('🔍 placeBilateralAdvanceWarningsExact called');
+    console.log('  - Has snapper:', !!snapper);
+    console.log('  - Has road_edges:', !!analysis.road_edges);
+    console.log('  - Has real edges:', analysis.road_edges?.has_real_edges);
+    console.log('  - Start coords:', start_lat, start_lng);
+    console.log('  - Road bearing:', road_bearing);
+    console.log('  - Distances:', distances);
+    
     // Place exact bilateral advance warnings
     Object.entries(distances).forEach(([level, distance]) => {
       // Calculate position along road centerline at specified distance
       const signPosition = this.calculatePosition(start_lat, start_lng, road_bearing + 180, distance);
+      console.log(`📍 Processing ${level} at ${distance}m - centerline:`, signPosition);
       
       // Only place bilateral if both sides meet exact clearance requirements
       if (analysis.bilateral_required && 
@@ -821,12 +830,17 @@ export class AGTTMCompliantPlacement {
         let leftPosition, rightPosition;
         
         if (analysis.road_edges?.has_real_edges && snapper) {
+          console.log(`  ✅ Using REAL road edges for ${level}`);
+          console.log('  - Left edge points:', analysis.road_edges.left_edge?.length);
+          console.log('  - Right edge points:', analysis.road_edges.right_edge?.length);
+          
           // Snap to actual left edge at this distance
           leftPosition = snapper.getPositionAlongRoadEdge(
             analysis.road_edges.left_edge,
             distance,
             analysis.left_side.lateral_offset
           );
+          console.log(`  - Left position result:`, leftPosition);
           
           // Snap to actual right edge at this distance
           rightPosition = snapper.getPositionAlongRoadEdge(
@@ -834,7 +848,11 @@ export class AGTTMCompliantPlacement {
             distance,
             analysis.right_side.lateral_offset
           );
+          console.log(`  - Right position result:`, rightPosition);
         } else {
+          console.log(`  ⚠️ Using FALLBACK mathematical offset for ${level}`);
+          console.log('  - Reason: has_real_edges=', analysis.road_edges?.has_real_edges, ', has_snapper=', !!snapper);
+          
           // Fallback: Use mathematical offset (old method)
           leftPosition = this.calculatePosition(
             signPosition.lat, signPosition.lng, road_bearing - 90, analysis.left_side.lateral_offset
