@@ -185,3 +185,7 @@ backend/data/Roads_GDA94.geojson
 # Environment files
 *.env
 *.env.*
+-e 
+# Environment files
+*.env
+*.env.*

@@ -96,7 +96,7 @@ export class TMPAutoPopulator {
       const lng = roadData.start_coords?.lng || 153.0251;
       
       const response = await fetch(
-        `https://traffix-manager-1.preview.emergentagent.com/api/traffic-assessment?lat=${lat}&lng=${lng}&address=${encodeURIComponent(address)}`
+        `https://trafsafe.preview.emergentagent.com/api/traffic-assessment?lat=${lat}&lng=${lng}&address=${encodeURIComponent(address)}`
       );
       
       if (response.ok) {
@@ -130,7 +130,7 @@ export class TMPAutoPopulator {
       const lng = roadData.start_coords?.lng || 153.0251;
       
       const response = await fetch(
-        `https://traffix-manager-1.preview.emergentagent.com/api/site-assessment?lat=${lat}&lng=${lng}&address=${encodeURIComponent(address)}`
+        `https://trafsafe.preview.emergentagent.com/api/site-assessment?lat=${lat}&lng=${lng}&address=${encodeURIComponent(address)}`
       );
       
       if (response.ok) {

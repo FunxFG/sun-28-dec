@@ -11,7 +11,7 @@ import time
 def test_comprehensive_endpoint():
     """Test the comprehensive auto-population endpoint with a single request"""
     
-    base_url = "https://traffix-manager-1.preview.emergentagent.com"
+    base_url = "https://trafsafe.preview.emergentagent.com"
     api_url = f"{base_url}/api"
     
     print("🔍 Testing Comprehensive Auto-Population Endpoint...")

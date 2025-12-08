@@ -14,7 +14,7 @@ def test_sa_datasets_integration():
     print("Testing Location Metadata System (LMS) and DIT Infrastructure Assets")
     print("=" * 80)
     
-    base_url = "https://traffix-manager-1.preview.emergentagent.com"
+    base_url = "https://trafsafe.preview.emergentagent.com"
     api_url = f"{base_url}/api"
     
     # Quick authentication
