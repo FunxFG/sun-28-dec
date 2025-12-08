@@ -3330,7 +3330,7 @@ async def create_road_closure_tmp(request: Dict):
             "signage_plan": {
                 "advance_notice": "7 days minimum for scheduled closures",
                 "signage_advance_distance": "250m, 100m, closure point",
-                "detour_signage": detour_required ? "Complete detour route signing required" : "Not applicable"
+                "detour_signage": "Complete detour route signing required" if detour_required else "Not applicable"
             },
             "notification_plan": {
                 "advance_notice_days": 7,
