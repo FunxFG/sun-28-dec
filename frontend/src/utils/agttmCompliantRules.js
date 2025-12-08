@@ -830,11 +830,11 @@ export class AGTTMCompliantPlacement {
         let leftPosition, rightPosition;
         
         if (analysis.road_edges?.has_real_edges && snapper) {
-          console.log(`  ✅ Using REAL road edges for ${level}`);
+          console.log(`  ✅ Attempting REAL road edges for ${level}`);
           console.log('  - Left edge points:', analysis.road_edges.left_edge?.length);
           console.log('  - Right edge points:', analysis.road_edges.right_edge?.length);
           
-          // Snap to actual left edge at this distance
+          // Try to snap to actual left edge at this distance
           leftPosition = snapper.getPositionAlongRoadEdge(
             analysis.road_edges.left_edge,
             distance,
@@ -842,13 +842,24 @@ export class AGTTMCompliantPlacement {
           );
           console.log(`  - Left position result:`, leftPosition);
           
-          // Snap to actual right edge at this distance
+          // Try to snap to actual right edge at this distance
           rightPosition = snapper.getPositionAlongRoadEdge(
             analysis.road_edges.right_edge,
             distance,
             analysis.right_side.lateral_offset
           );
           console.log(`  - Right position result:`, rightPosition);
+          
+          // CRITICAL FIX: If snapping failed (returned null), use fallback
+          if (!leftPosition || !rightPosition) {
+            console.log(`  ⚠️ Snapping returned null, falling back to mathematical offset`);
+            leftPosition = this.calculatePosition(
+              signPosition.lat, signPosition.lng, road_bearing - 90, analysis.left_side.lateral_offset
+            );
+            rightPosition = this.calculatePosition(
+              signPosition.lat, signPosition.lng, road_bearing + 90, analysis.right_side.lateral_offset
+            );
+          }
         } else {
           console.log(`  ⚠️ Using FALLBACK mathematical offset for ${level}`);
           console.log('  - Reason: has_real_edges=', analysis.road_edges?.has_real_edges, ', has_snapper=', !!snapper);
