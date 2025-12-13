@@ -35,7 +35,7 @@ export class ProfessionalTGSGenerator {
   /**
    * Generate Professional PDF Drawing (A3 format)
    */
-  generateProfessionalPDF(planData, devices, roadData, companyInfo) {
+  async generateProfessionalPDF(planData, devices, roadData, companyInfo) {
     const doc = new jsPDF({
       orientation: 'landscape',
       unit: 'mm',
