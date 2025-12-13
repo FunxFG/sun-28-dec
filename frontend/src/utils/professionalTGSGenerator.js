@@ -164,12 +164,29 @@ export class ProfessionalTGSGenerator {
    */
   drawDeviceSymbol(doc, device, roadStartX, roadStartY, roadLength, laneWidth) {
     // Calculate position based on distance from start
-    const distanceFromStart = parseFloat(device.measurements?.distance_from_workzone_start || 0);
-    const xPos = roadStartX + (distanceFromStart / 1000) * roadLength;
+    // Support both measurements and properties format
+    const distanceStr = device.measurements?.distance_from_workzone_start || 
+                       device.properties?.distance_advance_exact || 
+                       device.properties?.distance || '0';
+    const distanceFromStart = parseFloat(String(distanceStr).replace('m', ''));
     
-    // Lateral offset
-    const lateralOffset = parseFloat(device.measurements?.lateral_offset_from_centerline || 0);
-    const yPos = roadStartY + laneWidth + (lateralOffset / 10) * laneWidth;
+    // Skip if distance is invalid or 0
+    if (!distanceFromStart || distanceFromStart <= 0) {
+      return;
+    }
+    
+    const xPos = roadStartX + Math.min((distanceFromStart / 100) * roadLength, roadLength);
+    
+    // Lateral offset - support both formats
+    const lateralStr = device.measurements?.lateral_offset_from_centerline || 
+                      device.properties?.lateral_offset_exact || 
+                      device.properties?.clearance_exact || '0';
+    const lateralOffset = parseFloat(String(lateralStr).replace('m', ''));
+    
+    // Determine which side (left = negative y, right = positive y)
+    const side = device.properties?.side || device.measurements?.side_of_road || 'left';
+    const yMultiplier = side === 'left' ? -1 : 1;
+    const yPos = roadStartY + laneWidth + (yMultiplier * Math.min(Math.abs(lateralOffset), 3));
     
     // Device type determines symbol
     if (device.device_type === 'sign') {
