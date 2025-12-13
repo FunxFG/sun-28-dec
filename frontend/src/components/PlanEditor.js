@@ -1792,8 +1792,8 @@ export default function PlanEditor({ user, onLogout }) {
         end_address: formData.work_details?.end_address || ''
       };
 
-      // Generate professional TGS PDF with device images
-      const pdfBlob = tgsGenerator.generateProfessionalPDF(
+      // Generate professional TGS PDF with satellite view (async)
+      const pdfBlob = await tgsGenerator.generateProfessionalPDF(
         {...formData, work_details: workDetails}, 
         formData.devices, 
         roadData, 
