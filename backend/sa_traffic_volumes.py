@@ -64,6 +64,117 @@ async def fetch_real_traffic_data(lat: float, lng: float, address: str) -> Optio
     return None
 
 
+async def fetch_from_sa_traffic_volumes(lat: float, lng: float, address: str) -> Optional[Dict]:
+    """
+    Fetch from SA Government Traffic Volumes dataset (data.sa.gov.au)
+    Dataset: Traffic Volume Estimates 2024
+    Resource ID: daf8098d-4ffb-4b07-b347-6b3c204add43 (GeoJSON)
+    
+    This uses spatial search to find nearest road segment with traffic data
+    """
+    try:
+        # SA Government open data portal - Traffic volumes
+        base_url = "https://data.sa.gov.au/data/api/3/action/datastore_search_sql"
+        
+        # Try to query the datastore if available
+        # Note: GeoJSON files are typically not in datastore, so we'll use a different approach
+        
+        # Alternative: Use WFS (Web Feature Service) if available
+        wfs_url = "https://location.sa.gov.au/lms/services/SA_Traffic_Volumes/MapServer/WFSServer"
+        
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            # WFS GetFeature request with bounding box around location
+            # Search within 2km radius (approx 0.02 degrees)
+            bbox = f"{lng-0.02},{lat-0.02},{lng+0.02},{lat+0.02}"
+            
+            params = {
+                'service': 'WFS',
+                'version': '2.0.0',
+                'request': 'GetFeature',
+                'typeName': 'Traffic_Volumes',
+                'outputFormat': 'application/json',
+                'BBOX': bbox,
+                'srsName': 'EPSG:4326'
+            }
+            
+            response = await client.get(wfs_url, params=params, timeout=30.0)
+            
+            if response.status_code == 200:
+                data = response.json()
+                features = data.get('features', [])
+                
+                if features and len(features) > 0:
+                    # Find nearest road segment
+                    nearest_feature = find_nearest_feature(features, lat, lng)
+                    
+                    if nearest_feature:
+                        props = nearest_feature.get('properties', {})
+                        
+                        # Extract traffic volume data
+                        # Field names may vary - common names: TESECN_VOLUME, AADT, VOLUME
+                        aadt = props.get('TESECN_VOLUME') or props.get('AADT') or props.get('VOLUME')
+                        base_year = props.get('TESECN_BASE_YEAR') or props.get('BASE_YEAR')
+                        road_name = props.get('ROAD_NAME') or props.get('NAME')
+                        
+                        if aadt and int(float(aadt)) > 0:
+                            return {
+                                'aadt': int(float(aadt)),
+                                'peak_hour_volume': int(float(aadt) * 0.1),  # Standard 10% estimation
+                                'percentile_85_speed': None,  # Not in this dataset
+                                'heavy_vehicle_percentage': props.get('CV_PERCENT'),
+                                'data_source': 'SA Government Traffic Volumes (data.sa.gov.au)',
+                                'road_name': road_name,
+                                'base_survey_year': base_year,
+                                'data_quality': 'Official SA DIT traffic volume estimates',
+                                'note': f'Traffic data from {base_year} survey on {road_name}'
+                            }
+        
+        return None
+        
+    except Exception as e:
+        logger.error(f"Error fetching SA traffic volumes: {e}")
+        return None
+
+
+def find_nearest_feature(features: list, target_lat: float, target_lng: float) -> Optional[dict]:
+    """
+    Find the nearest feature from a list based on coordinates
+    Uses simple distance calculation
+    """
+    import math
+    
+    min_distance = float('inf')
+    nearest = None
+    
+    for feature in features:
+        geom = feature.get('geometry', {})
+        geom_type = geom.get('type')
+        coords = geom.get('coordinates', [])
+        
+        # Handle different geometry types
+        if geom_type == 'LineString':
+            # For line, check distance to closest point on line
+            for coord in coords:
+                lng, lat = coord[0], coord[1]
+                dist = math.sqrt((lat - target_lat)**2 + (lng - target_lng)**2)
+                if dist < min_distance:
+                    min_distance = dist
+                    nearest = feature
+        
+        elif geom_type == 'Point':
+            lng, lat = coords[0], coords[1]
+            dist = math.sqrt((lat - target_lat)**2 + (lng - target_lng)**2)
+            if dist < min_distance:
+                min_distance = dist
+                nearest = feature
+    
+    # Only return if within reasonable distance (0.02 degrees ~ 2km)
+    if min_distance < 0.02:
+        return nearest
+    
+    return None
+
+
 async def fetch_from_nfdh(lat: float, lng: float, address: str) -> Optional[Dict]:
     """
     Fetch from National Freight Data Hub - Harmonised Traffic Counts
