@@ -104,12 +104,12 @@ export class ProfessionalTGSGenerator {
   /**
    * Generate TGS Description
    */
-  generateTGSDescription(planData, roadData) {
+  generateTGSDescription(planData = {}, roadData = {}) {
     const occupancy = this.getOccupancyType(planData.road_occupancy);
     const speedLimit = roadData.speed_limit || 60;
     const roadType = roadData.road_type || 'Road';
     
-    return `${occupancy} ${roadType} ${speedLimit}km/h`;
+    return String(`${occupancy} ${roadType} ${speedLimit}km/h`);
   }
 
   /**
