@@ -1736,7 +1736,7 @@ export default function PlanEditor({ user, onLogout }) {
         abn: formData.company_details?.abn || ''
       };
 
-      const pdfBlob = tgsGenerator.generateProfessionalPDF(formData, formData.devices || [], roadData, companyInfo);
+      const pdfBlob = await tgsGenerator.generateProfessionalPDF(formData, formData.devices || [], roadData, companyInfo);
       
       const url = window.URL.createObjectURL(pdfBlob);
       const link = document.createElement('a');
