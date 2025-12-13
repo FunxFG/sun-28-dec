@@ -673,6 +673,73 @@ export class ProfessionalTGSGenerator {
       }))
     };
   }
+
+  /**
+   * Draw devices on map placeholder
+   */
+  drawDevicesOnMap(doc, devices, startX, startY, mapWidth, mapHeight, centerLat, centerLng) {
+    if (!devices || devices.length === 0) return;
+    
+    // Simple positioning based on relative coordinates
+    devices.forEach((device, idx) => {
+      if (device.position_lat && device.position_lng) {
+        // Calculate relative position within the map bounds
+        const relativeX = startX + (mapWidth * 0.3) + (idx * 15); // Simple spacing
+        const relativeY = startY + (mapHeight * 0.5) + ((idx % 2) * 20);
+        
+        // Draw device symbol on map
+        if (device.device_type === 'warning' || device.device_type === 'sign') {
+          doc.setFillColor(255, 255, 0); // Yellow
+          doc.triangle(relativeX, relativeY - 2, relativeX - 2, relativeY + 2, relativeX + 2, relativeY + 2, 'FD');
+        } else if (device.device_type === 'cone') {
+          doc.setFillColor(255, 128, 0); // Orange
+          doc.triangle(relativeX, relativeY - 2, relativeX - 1, relativeY + 2, relativeX + 1, relativeY + 2, 'FD');
+        } else {
+          doc.setFillColor(0, 0, 255); // Blue
+          doc.circle(relativeX, relativeY, 2, 'FD');
+        }
+        
+        // Add device label
+        doc.setFontSize(6);
+        doc.setTextColor(0, 0, 0);
+        doc.text(device.device_name.substring(0, 8), relativeX, relativeY + 5, { align: 'center' });
+      }
+    });
+  }
+
+  /**
+   * Draw fallback schematic (original road view)
+   */
+  drawFallbackSchematic(doc, devices, startX, startY) {
+    const roadLength = 180;
+    const laneWidth = 8;
+    
+    // Draw road
+    doc.setDrawColor(0);
+    doc.setFillColor(200, 200, 200);
+    doc.rect(startX, startY, roadLength, laneWidth * 2, 'F');
+    
+    // Draw center line
+    doc.setLineDash([5, 3]);
+    doc.line(startX, startY + laneWidth, startX + roadLength, startY + laneWidth);
+    doc.setLineDash([]);
+    
+    // Draw devices with AS 1742.3 symbols
+    if (devices && devices.length > 0) {
+      console.log(`  Drawing ${devices.length} device symbols...`);
+      devices.forEach((device, idx) => {
+        console.log(`  Device ${idx}: ${device.device_name} (${device.device_type})`);
+        this.drawDeviceSymbol(doc, device, startX, startY, roadLength, laneWidth);
+      });
+    } else {
+      console.warn('⚠️ No devices to draw on TGS');
+      // Draw a note that no devices are placed yet
+      doc.setFontSize(12);
+      doc.setTextColor(150, 150, 150);
+      doc.text('No devices placed - use Auto-Place Devices button', startX + roadLength/2, startY + laneWidth, { align: 'center' });
+      doc.setTextColor(0, 0, 0);
+    }
+  }
 }
 
 export default ProfessionalTGSGenerator;
