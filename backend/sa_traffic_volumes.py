@@ -66,73 +66,62 @@ async def fetch_real_traffic_data(lat: float, lng: float, address: str) -> Optio
 
 async def fetch_from_sa_traffic_volumes(lat: float, lng: float, address: str) -> Optional[Dict]:
     """
-    Fetch from SA Government Traffic Volumes dataset (data.sa.gov.au)
-    Dataset: Traffic Volume Estimates 2024
-    Resource ID: daf8098d-4ffb-4b07-b347-6b3c204add43 (GeoJSON)
+    Fetch from SA Government Traffic Volumes dataset (MongoDB)
+    Dataset: Traffic Volume Estimates 2024 (pre-loaded from data.sa.gov.au)
     
-    This uses spatial search to find nearest road segment with traffic data
+    This uses MongoDB geospatial query to find nearest road segment with traffic data
+    Coverage: 2,685 road segments across South Australia
     """
     try:
-        # SA Government open data portal - Traffic volumes
-        base_url = "https://data.sa.gov.au/data/api/3/action/datastore_search_sql"
+        from motor.motor_asyncio import AsyncIOMotorClient
+        import os
         
-        # Try to query the datastore if available
-        # Note: GeoJSON files are typically not in datastore, so we'll use a different approach
+        # Connect to MongoDB
+        mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
+        client = AsyncIOMotorClient(mongo_url)
+        db = client.trafsafe
+        collection = db.sa_traffic_volumes
         
-        # Alternative: Use WFS (Web Feature Service) if available
-        wfs_url = "https://location.sa.gov.au/lms/services/SA_Traffic_Volumes/MapServer/WFSServer"
+        # Create GeoJSON point for the query location
+        point = {
+            "type": "Point",
+            "coordinates": [lng, lat]  # GeoJSON uses [longitude, latitude]
+        }
         
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            # WFS GetFeature request with bounding box around location
-            # Search within 2km radius (approx 0.02 degrees)
-            bbox = f"{lng-0.02},{lat-0.02},{lng+0.02},{lat+0.02}"
-            
-            params = {
-                'service': 'WFS',
-                'version': '2.0.0',
-                'request': 'GetFeature',
-                'typeName': 'Traffic_Volumes',
-                'outputFormat': 'application/json',
-                'BBOX': bbox,
-                'srsName': 'EPSG:4326'
+        # Find nearest road segment within 1km
+        nearest = await collection.find_one({
+            "geometry": {
+                "$near": {
+                    "$geometry": point,
+                    "$maxDistance": 1000  # 1km radius
+                }
             }
+        })
+        
+        client.close()
+        
+        if nearest and nearest.get('aadt', 0) > 0:
+            aadt = int(nearest['aadt'])
+            base_year = nearest.get('base_year')
+            road_no = nearest.get('road_no', 'Unknown')
             
-            response = await client.get(wfs_url, params=params, timeout=30.0)
-            
-            if response.status_code == 200:
-                data = response.json()
-                features = data.get('features', [])
-                
-                if features and len(features) > 0:
-                    # Find nearest road segment
-                    nearest_feature = find_nearest_feature(features, lat, lng)
-                    
-                    if nearest_feature:
-                        props = nearest_feature.get('properties', {})
-                        
-                        # Extract traffic volume data
-                        # Field names may vary - common names: TESECN_VOLUME, AADT, VOLUME
-                        aadt = props.get('TESECN_VOLUME') or props.get('AADT') or props.get('VOLUME')
-                        base_year = props.get('TESECN_BASE_YEAR') or props.get('BASE_YEAR')
-                        road_name = props.get('ROAD_NAME') or props.get('NAME')
-                        
-                        if aadt and int(float(aadt)) > 0:
-                            return {
-                                'aadt': int(float(aadt)),
-                                'peak_hour_volume': int(float(aadt) * 0.1),  # Standard 10% estimation
-                                'percentile_85_speed': None,  # Not in this dataset
-                                'heavy_vehicle_percentage': props.get('CV_PERCENT'),
-                                'data_source': 'SA Government Traffic Volumes (data.sa.gov.au)',
-                                'road_name': road_name,
-                                'base_survey_year': base_year,
-                                'data_quality': 'Official SA DIT traffic volume estimates',
-                                'note': f'Traffic data from {base_year} survey on {road_name}'
-                            }
+            return {
+                'aadt': aadt,
+                'peak_hour_volume': int(aadt * 0.1),  # Standard 10% peak hour
+                'percentile_85_speed': None,  # Not in this dataset
+                'heavy_vehicle_percentage': nearest.get('heavy_vehicle_percent'),
+                'data_source': 'SA DIT Traffic Volume Estimates 2024 (data.sa.gov.au)',
+                'road_identifier': f"Road #{road_no}",
+                'base_survey_year': base_year,
+                'data_quality': 'Official SA Government traffic volume estimates',
+                'coverage': 'Pre-loaded dataset - 2,685 road segments',
+                'note': f'AADT of {aadt} vehicles/day from {base_year} survey (Road #{road_no})'
+            }
         
         return None
         
     except Exception as e:
-        logger.error(f"Error fetching SA traffic volumes: {e}")
+        logger.error(f"Error fetching SA traffic volumes from MongoDB: {e}")
         return None
 
 
