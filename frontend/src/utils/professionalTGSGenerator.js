@@ -151,14 +151,21 @@ export class ProfessionalTGSGenerator {
           const centerLat = lats.reduce((a, b) => a + b, 0) / lats.length;
           const centerLng = lngs.reduce((a, b) => a + b, 0) / lngs.length;
           
-          // Get Google Maps API key from window (set during app init)
-          const apiKey = window.GOOGLE_MAPS_API_KEY || 'YOUR_API_KEY_HERE';
+          // Use the same Google Maps API key from the app
+          const apiKey = 'AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs';
+          
+          // Calculate zoom level based on device spread
+          const latSpread = Math.max(...lats) - Math.min(...lats);
+          const lngSpread = Math.max(...lngs) - Math.min(...lngs);
+          const maxSpread = Math.max(latSpread, lngSpread);
+          const zoom = maxSpread > 0.01 ? 16 : maxSpread > 0.005 ? 17 : 18;
           
           // Build Static Maps API URL with satellite view
           const staticMapUrl = `https://maps.googleapis.com/maps/api/staticmap?` +
             `center=${centerLat},${centerLng}` +
-            `&zoom=18` +
+            `&zoom=${zoom}` +
             `&size=800x600` +
+            `&scale=2` +
             `&maptype=satellite` +
             `&key=${apiKey}`;
           
