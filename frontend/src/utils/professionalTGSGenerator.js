@@ -46,7 +46,7 @@ export class ProfessionalTGSGenerator {
     this.drawTitleBlock(doc, planData, roadData);
     
     // 2. Main Schematic (Center)
-    this.drawMainSchematic(doc, devices, roadData);
+    await this.drawMainSchematic(doc, devices, roadData, planData);
     
     // 3. Inset Diagrams (Bottom)
     this.drawInsetDiagrams(doc, devices, roadData);
