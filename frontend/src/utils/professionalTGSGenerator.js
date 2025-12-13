@@ -273,6 +273,18 @@ export class ProfessionalTGSGenerator {
   }
 
   /**
+   * Draw Barrier Symbol
+   */
+  drawBarrierSymbol(doc, x, y) {
+    doc.setFillColor(200, 200, 200); // Gray
+    doc.setDrawColor(255, 0, 0); // Red stripes
+    doc.rect(x - 2, y - 1, 4, 2, 'FD');
+    // Red diagonal stripes
+    doc.line(x - 2, y - 1, x + 2, y + 1);
+    doc.line(x - 1, y - 1, x + 2, y);
+  }
+
+  /**
    * Draw Measurements and Annotations
    */
   drawMeasurements(doc, devices, roadData, startX, startY, roadLength) {
