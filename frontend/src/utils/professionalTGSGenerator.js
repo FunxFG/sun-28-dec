@@ -134,6 +134,8 @@ export class ProfessionalTGSGenerator {
     const roadLength = 180;
     const laneWidth = 8;
     
+    console.log(`🎨 Drawing TGS schematic with ${devices?.length || 0} devices`);
+    
     // Draw road
     doc.setDrawColor(0);
     doc.setFillColor(200, 200, 200);
@@ -145,9 +147,20 @@ export class ProfessionalTGSGenerator {
     doc.setLineDash([]);
     
     // Draw devices with AS 1742.3 symbols
-    devices.forEach(device => {
-      this.drawDeviceSymbol(doc, device, startX, startY, roadLength, laneWidth);
-    });
+    if (devices && devices.length > 0) {
+      console.log(`  Drawing ${devices.length} device symbols...`);
+      devices.forEach((device, idx) => {
+        console.log(`  Device ${idx}: ${device.device_name} (${device.device_type})`);
+        this.drawDeviceSymbol(doc, device, startX, startY, roadLength, laneWidth);
+      });
+    } else {
+      console.warn('⚠️ No devices to draw on TGS');
+      // Draw a note that no devices are placed yet
+      doc.setFontSize(12);
+      doc.setTextColor(150, 150, 150);
+      doc.text('No devices placed - use Auto-Place Devices button', startX + roadLength/2, startY + laneWidth, { align: 'center' });
+      doc.setTextColor(0, 0, 0);
+    }
     
     // Draw measurements
     this.drawMeasurements(doc, devices, roadData, startX, startY, roadLength);
