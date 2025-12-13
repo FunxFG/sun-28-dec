@@ -803,9 +803,9 @@ export default function PlanEditor({ user, onLogout }) {
       
       // DEBUG: Check device coordinates
       if (autoDevices && autoDevices.length > 0) {
-        console.log('📍 First 3 devices coordinates:');
-        autoDevices.slice(0, 3).forEach((device, idx) => {
-          console.log(`  Device ${idx}: ${device.device_name} at (${device.position_lat}, ${device.position_lng})`);
+        console.log('📍 All device coordinates:');
+        autoDevices.forEach((device, idx) => {
+          console.log(`  ${idx + 1}. ${device.device_name} at (${device.position_lat}, ${device.position_lng})`);
         });
         
         // Check if all devices have the same coordinates (BUG indicator)
@@ -814,7 +814,11 @@ export default function PlanEditor({ user, onLogout }) {
         if (uniqueCoords.size === 1) {
           console.error('❌ BUG DETECTED: All devices have the same coordinates!');
           console.error('   Coordinates:', Array.from(uniqueCoords)[0]);
+        } else {
+          console.log('✅ Devices have different coordinates - placement working correctly!');
         }
+      } else {
+        console.error('❌ NO DEVICES CREATED! Check placement logic.');
       }
 
       // Check if auto-placement returned devices
