@@ -919,6 +919,32 @@ export default function PlanEditor({ user, onLogout }) {
         });
         console.log(`   ✅ ${window.deviceMarkers?.length || 0} markers added to map`);
         
+        // CRITICAL FIX: Adjust map bounds to show all devices
+        if (devicesWithMeasurements.length > 0 && window.google) {
+          console.log('📐 Adjusting map bounds to show all devices...');
+          const bounds = new window.google.maps.LatLngBounds();
+          
+          // Add all device positions to bounds
+          devicesWithMeasurements.forEach(device => {
+            if (device.position_lat && device.position_lng) {
+              bounds.extend(new window.google.maps.LatLng(device.position_lat, device.position_lng));
+            }
+          });
+          
+          // Fit map to show all devices
+          googleMapRef.current.fitBounds(bounds);
+          
+          // Add some padding
+          setTimeout(() => {
+            const currentZoom = googleMapRef.current.getZoom();
+            if (currentZoom > 17) {
+              googleMapRef.current.setZoom(17); // Don't zoom in too much
+            }
+          }, 100);
+          
+          console.log('   ✅ Map bounds adjusted');
+        }
+        
         // Draw detour routes if available
         if (detourData) {
           const DetourRouter = (await import('../utils/detourRouter.js')).default;
