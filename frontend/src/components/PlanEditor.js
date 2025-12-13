@@ -1760,7 +1760,7 @@ export default function PlanEditor({ user, onLogout }) {
       return;
     }
 
-    toast.info('Generating professional TGS drawing with device images...');
+    toast.info('Generating professional TGS drawing with satellite view...');
 
     try {
       const tgsGenerator = new ProfessionalTGSGenerator();
