@@ -69,7 +69,7 @@ export class ProfessionalTGSGenerator {
   /**
    * Draw Title Block
    */
-  drawTitleBlock(doc, planData, roadData) {
+  drawTitleBlock(doc, planData = {}, roadData = {}) {
     // Top Left - Traffic Team Leader Section
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
@@ -87,18 +87,18 @@ export class ProfessionalTGSGenerator {
     ];
     
     fields.forEach((field, idx) => {
-      doc.text(field, 10, 22 + (idx * 5));
+      doc.text(String(field), 10, 22 + (idx * 5));
     });
 
     // Top Right - Generic Number and Description
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
     const genericNum = `GENERIC ${planData.id || '001'}`;
-    doc.text(genericNum, this.pageWidth - 10, 15, { align: 'right' });
+    doc.text(String(genericNum), this.pageWidth - 10, 15, { align: 'right' });
     
     doc.setFontSize(10);
     const description = this.generateTGSDescription(planData, roadData);
-    doc.text(description, this.pageWidth - 10, 22, { align: 'right' });
+    doc.text(String(description), this.pageWidth - 10, 22, { align: 'right' });
   }
 
   /**
