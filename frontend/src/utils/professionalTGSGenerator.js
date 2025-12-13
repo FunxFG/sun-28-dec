@@ -456,19 +456,23 @@ export class ProfessionalTGSGenerator {
   /**
    * Draw Company Branding
    */
-  drawCompanyBranding(doc, companyInfo) {
+  drawCompanyBranding(doc, companyInfo = {}) {
     const x = 10;
     const y = this.pageHeight - 20;
     
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
-    doc.text(companyInfo.company_name || 'Company Name', x, y);
+    const companyName = companyInfo.company_name || companyInfo.name || 'Company Name';
+    doc.text(String(companyName), x, y);
     
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
-    doc.text(companyInfo.address || 'Address', x, y + 5);
-    doc.text(companyInfo.phone || 'Phone', x, y + 9);
-    doc.text(companyInfo.website || 'Website', x, y + 13);
+    const address = companyInfo.address || 'Address';
+    const phone = companyInfo.phone || 'Phone';
+    const website = companyInfo.website || companyInfo.email || 'Website';
+    doc.text(String(address), x, y + 5);
+    doc.text(String(phone), x, y + 9);
+    doc.text(String(website), x, y + 13);
   }
 
   /**
