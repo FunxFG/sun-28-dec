@@ -189,19 +189,24 @@ export class ProfessionalTGSGenerator {
     const yPos = roadStartY + laneWidth + (yMultiplier * Math.min(Math.abs(lateralOffset), 3));
     
     // Device type determines symbol
-    if (device.device_type === 'sign') {
+    const deviceType = device.device_type || 'warning';
+    
+    if (deviceType === 'warning' || deviceType === 'regulatory' || deviceType === 'sign' || deviceType === 'guide') {
       this.drawSignSymbol(doc, xPos, yPos, device.device_name);
-    } else if (device.device_type === 'cone') {
+    } else if (deviceType === 'cone' || deviceType === 'delineation') {
       this.drawConeSymbol(doc, xPos, yPos);
-    } else if (device.device_type === 'arrow_board') {
+    } else if (deviceType === 'arrow_board' || deviceType === 'guidance') {
       this.drawArrowBoardSymbol(doc, xPos, yPos);
-    } else if (device.device_type === 'controller') {
-      this.drawControllerSymbol(doc, xPos, yPos);
+    } else if (deviceType === 'barrier') {
+      this.drawBarrierSymbol(doc, xPos, yPos);
+    } else {
+      // Default to sign symbol
+      this.drawSignSymbol(doc, xPos, yPos, device.device_name);
     }
     
     // Add distance annotation
     doc.setFontSize(6);
-    doc.text(`${distanceFromStart.toFixed(0)}m`, xPos, yPos - 3, { align: 'center' });
+    doc.text(`${distanceFromStart.toFixed(0)}m`, xPos, yPos - 5, { align: 'center' });
   }
 
   /**
