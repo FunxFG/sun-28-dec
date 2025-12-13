@@ -426,7 +426,7 @@ export class ProfessionalTGSGenerator {
   /**
    * Draw Compliance Block
    */
-  drawComplianceBlock(doc, companyInfo) {
+  drawComplianceBlock(doc, companyInfo = {}) {
     const x = this.pageWidth - 90;
     const y = this.pageHeight - 50;
     
@@ -444,7 +444,8 @@ export class ProfessionalTGSGenerator {
     doc.setFont('helvetica', 'bold');
     doc.text('Approved:', x, y + 30);
     doc.setFont('helvetica', 'normal');
-    doc.text(companyInfo.approved_by || '_______________', x + 20, y + 30);
+    const approvedBy = companyInfo.approved_by || companyInfo.name || '_______________';
+    doc.text(String(approvedBy), x + 20, y + 30);
     
     doc.text('Date:', x, y + 35);
     doc.text(new Date().toLocaleDateString('en-AU'), x + 20, y + 35);
