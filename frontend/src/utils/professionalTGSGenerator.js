@@ -16,10 +16,10 @@ export class ProfessionalTGSGenerator {
    * Generate complete TGS package
    * Returns: { pdf: blob, mapOverlay: SVG, streetViewMarkers: [] }
    */
-  generateCompleteTGS(planData, devices, roadData, companyInfo) {
+  async generateCompleteTGS(planData, devices, roadData, companyInfo) {
     return {
       // Professional PDF for permit submission
-      pdf: this.generateProfessionalPDF(planData, devices, roadData, companyInfo),
+      pdf: await this.generateProfessionalPDF(planData, devices, roadData, companyInfo),
       
       // SVG overlay for Google Maps
       mapOverlay: this.generateMapOverlaySVG(devices, roadData),
