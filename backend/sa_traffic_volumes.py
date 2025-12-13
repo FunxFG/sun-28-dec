@@ -17,12 +17,25 @@ async def fetch_real_traffic_data(lat: float, lng: float, address: str) -> Optio
     Returns None if no real data available (NO ESTIMATES)
     
     Sources:
-    1. National Freight Data Hub - Harmonised Traffic Counts
-    2. NSW Transport Open Data Hub (if NSW location)
-    3. Queensland Transport Data (if QLD location)
+    1. SA Government Traffic Volumes (data.sa.gov.au) - PRIMARY SOURCE FOR SA
+    2. National Freight Data Hub - Harmonised Traffic Counts
+    3. State-specific APIs (NSW, QLD)
     """
     
-    # Try National Freight Data Hub first (covers all of Australia)
+    # Determine state from address
+    state = extract_state_from_address(address)
+    
+    # Try SA Government Traffic Volumes first if in SA
+    if state == 'SA':
+        try:
+            sa_data = await fetch_from_sa_traffic_volumes(lat, lng, address)
+            if sa_data:
+                logger.info(f"Found SA traffic data: AADT={sa_data.get('aadt')}")
+                return sa_data
+        except Exception as e:
+            logger.debug(f"SA traffic volumes not available: {e}")
+    
+    # Try National Freight Data Hub (covers all of Australia)
     try:
         nfdh_data = await fetch_from_nfdh(lat, lng, address)
         if nfdh_data:
@@ -31,8 +44,6 @@ async def fetch_real_traffic_data(lat: float, lng: float, address: str) -> Optio
         logger.debug(f"NFDH traffic data not available: {e}")
     
     # Try state-specific APIs based on location
-    state = extract_state_from_address(address)
-    
     if state == 'NSW':
         try:
             nsw_data = await fetch_from_nsw_api(lat, lng)
