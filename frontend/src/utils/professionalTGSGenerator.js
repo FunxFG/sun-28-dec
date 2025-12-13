@@ -174,23 +174,50 @@ export class ProfessionalTGSGenerator {
             }
           });
           
-          console.log('  Fetching satellite image...');
-          // Note: In production, you'd fetch this image and embed it
-          // For now, draw a placeholder with text
-          doc.setFillColor(240, 240, 240);
-          doc.rect(startX, startY, mapWidth, mapHeight, 'F');
+          console.log('  Fetching satellite image from Google Maps...');
           
-          doc.setFontSize(10);
-          doc.setTextColor(100, 100, 100);
-          doc.text('Satellite View', startX + mapWidth/2, startY + 10, { align: 'center' });
-          doc.setFontSize(8);
-          doc.text(`Location: ${planData?.work_details?.start_address || 'Work Site'}`, 
-                   startX + mapWidth/2, startY + 18, { align: 'center' });
-          
-          // Draw device positions on the map placeholder
-          this.drawDevicesOnMap(doc, devices, startX, startY, mapWidth, mapHeight, centerLat, centerLng);
-          
-          console.log('  ✅ Map area prepared with device overlays');
+          // Fetch the satellite image
+          try {
+            const response = await fetch(staticMapUrl);
+            if (response.ok) {
+              const blob = await response.blob();
+              const reader = new FileReader();
+              
+              await new Promise((resolve, reject) => {
+                reader.onloadend = () => {
+                  const base64data = reader.result;
+                  
+                  // Embed satellite image in PDF
+                  doc.addImage(base64data, 'PNG', startX, startY, mapWidth, mapHeight);
+                  console.log('  ✅ Satellite image embedded successfully');
+                  
+                  // Draw device positions on top of satellite image
+                  this.drawDevicesOnMap(doc, devices, startX, startY, mapWidth, mapHeight, centerLat, centerLng);
+                  
+                  resolve();
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+              });
+            } else {
+              throw new Error(`Failed to fetch map: ${response.status}`);
+            }
+          } catch (fetchError) {
+            console.error('Failed to fetch satellite image:', fetchError);
+            // Draw placeholder if fetch fails
+            doc.setFillColor(240, 240, 240);
+            doc.rect(startX, startY, mapWidth, mapHeight, 'F');
+            
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text('Satellite View (Image unavailable)', startX + mapWidth/2, startY + 10, { align: 'center' });
+            doc.setFontSize(8);
+            doc.text(`Location: ${planData?.work_details?.start_address || 'Work Site'}`, 
+                     startX + mapWidth/2, startY + 18, { align: 'center' });
+            
+            // Draw device positions on the map placeholder
+            this.drawDevicesOnMap(doc, devices, startX, startY, mapWidth, mapHeight, centerLat, centerLng);
+          }
         }
       } catch (error) {
         console.error('Failed to add satellite imagery:', error);
