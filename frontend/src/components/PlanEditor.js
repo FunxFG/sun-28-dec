@@ -472,9 +472,25 @@ export default function PlanEditor({ user, onLogout }) {
   };
 
   const addDeviceMarker = (map, device) => {
+    // Validate inputs
+    if (!map) {
+      console.error('❌ addDeviceMarker: map is null/undefined');
+      return;
+    }
+    if (!device) {
+      console.error('❌ addDeviceMarker: device is null/undefined');
+      return;
+    }
+    if (!device.position_lat || !device.position_lng) {
+      console.error('❌ addDeviceMarker: invalid device coordinates', device);
+      return;
+    }
+    
     const isAutoPlaced = device.properties?.auto_placed;
     const deviceTypeIcon = getDeviceIcon(device.device_type);
     const markerColor = isAutoPlaced ? '#3B82F6' : '#F97316'; // Blue for auto, orange for manual
+    
+    console.log(`  ➕ Adding marker: ${device.device_name} at (${device.position_lat}, ${device.position_lng})`);
     
     const marker = new window.google.maps.Marker({
       position: { lat: device.position_lat, lng: device.position_lng },
