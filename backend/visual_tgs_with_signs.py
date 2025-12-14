@@ -36,8 +36,8 @@ class VisualTGSGenerator:
         center_lng: float,
         placed_devices: List[Dict],
         zoom: int = 20,  # Higher zoom for precise device placement (19-20 shows lane markings)
-        width: int = 1280,
-        height: int = 720
+        width: int = 1600,   # Larger image for better detail
+        height: int = 1200   # Higher resolution for device precision
     ) -> Dict[str, Any]:
         """
         Generate satellite imagery with sign overlays
