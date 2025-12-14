@@ -13,17 +13,33 @@ const VisualTGSViewer = ({ planData, placedDevices, planId }) => {
   const API = process.env.REACT_APP_BACKEND_URL || '';
 
   const generateVisualTGS = async () => {
+    console.log('🎬 generateVisualTGS called');
+    console.log('  planData:', planData);
+    console.log('  placedDevices count:', placedDevices?.length);
+    
     if (!planData || !placedDevices || placedDevices.length === 0) {
+      console.error('❌ Missing required data');
       alert('Please place some devices first to generate visual TGS');
       return;
     }
 
     setLoading(true);
     try {
-      const center_lat = planData.start_lat || -34.9285;
-      const center_lng = planData.start_lng || 138.6007;
+      const center_lat = planData.start_lat || planData.map_center_lat || -34.9285;
+      const center_lng = planData.start_lng || planData.map_center_lng || 138.6007;
+      
+      console.log('📍 Center coordinates:', center_lat, center_lng);
+      console.log('📦 Request payload:', {
+        center_lat,
+        center_lng,
+        placed_devices: placedDevices,
+        include_streetview: true
+      });
 
-      const response = await fetch(`${API}/api/tgs/generate-visual`, {
+      const url = `${API}/api/tgs/generate-visual`;
+      console.log('🌐 Calling:', url);
+
+      const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -34,15 +50,20 @@ const VisualTGSViewer = ({ planData, placedDevices, planId }) => {
         })
       });
 
+      console.log('📨 Response status:', response.status);
+
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+        const errorText = await response.text();
+        console.error('❌ Response error:', errorText);
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
 
       const data = await response.json();
+      console.log('✅ Visual TGS generated successfully:', data);
       setVisualTGS(data);
-      console.log('Visual TGS generated:', data);
+      alert('✅ Visual TGS generated! You can now download it.');
     } catch (error) {
-      console.error('Error generating visual TGS:', error);
+      console.error('❌ Error generating visual TGS:', error);
       alert(`Failed to generate visual TGS: ${error.message}`);
     } finally {
       setLoading(false);
