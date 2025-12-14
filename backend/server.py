@@ -2552,6 +2552,59 @@ async def generate_improved_tgs_endpoint(request: dict):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@api_router.post("/tgs/save-and-download")
+async def save_tgs_for_download(request: dict):
+    """
+    Save TGS image to server and return download URL
+    Workaround for browser sandbox download restrictions
+    """
+    try:
+        image_base64 = request.get('image_base64')
+        plan_name = request.get('plan_name', 'tgs')
+        
+        if not image_base64:
+            raise HTTPException(status_code=400, detail="image_base64 is required")
+        
+        # Decode base64 and save to tmp_outputs
+        import base64
+        from pathlib import Path
+        
+        image_data = base64.b64decode(image_base64)
+        filename = f"{plan_name.replace(' ', '_')}_TGS_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+        filepath = Path("/app/tmp_outputs") / filename
+        
+        with open(filepath, 'wb') as f:
+            f.write(image_data)
+        
+        # Return the filename for download
+        return {
+            "success": True,
+            "filename": filename,
+            "download_url": f"/api/tgs/download/{filename}"
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/tgs/download/{filename}")
+async def download_tgs_file(filename: str):
+    """
+    Download a TGS file from tmp_outputs
+    """
+    from fastapi.responses import FileResponse
+    from pathlib import Path
+    
+    filepath = Path("/app/tmp_outputs") / filename
+    
+    if not filepath.exists():
+        raise HTTPException(status_code=404, detail="File not found")
+    
+    return FileResponse(
+        path=str(filepath),
+        filename=filename,
+        media_type='image/png'
+    )
+
 @api_router.post("/tgs/generate-visual")
 async def generate_visual_tgs_with_signs(request: dict):
     """
