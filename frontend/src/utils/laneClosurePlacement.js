@@ -184,7 +184,7 @@ class LaneClosurePlacement {
       const coneLat = start_lat + (end_lat - start_lat) * ratio;
       const coneLng = start_lng + (end_lng - start_lng) * ratio;
       
-      const workzoneConePos = this.offsetPosition({lat: coneLat, lng: coneLng}, road_bearing - 90, 0.5);
+      const workzoneConePos = this.offsetPosition({lat: coneLat, lng: coneLng}, bearing - 90, 0.5);
       
       devices.push({
         id: `cone_workzone_${i}_${Date.now()}`,
