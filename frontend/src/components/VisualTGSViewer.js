@@ -134,21 +134,42 @@ const VisualTGSViewer = ({ planData, placedDevices, planId }) => {
     }
 
     try {
-      console.log('📥 Creating download link...');
-      const link = document.createElement('a');
-      link.href = `data:image/png;base64,${visualTGS.satellite_tgs.image_base64}`;
-      link.download = `tgs_${planData?.plan_name || 'plan'}_${new Date().toISOString().split('T')[0]}.png`;
+      console.log('📥 Opening image in new window...');
+      const dataUrl = `data:image/png;base64,${visualTGS.satellite_tgs.image_base64}`;
       
-      // Add to document, click, and remove (required for some browsers)
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      console.log('✅ Download initiated');
-      alert('✅ TGS image downloaded! Check your Downloads folder.');
+      // Method 1: Try opening in new window (bypasses iframe sandbox)
+      const newWindow = window.open('', '_blank');
+      if (newWindow) {
+        newWindow.document.write(`
+          <html>
+            <head>
+              <title>TGS Image - Right-click to save</title>
+              <style>
+                body { margin: 0; padding: 20px; background: #f0f0f0; text-align: center; }
+                img { max-width: 100%; border: 2px solid #333; background: white; }
+                .instructions { margin: 20px; padding: 10px; background: #fff; border-radius: 5px; }
+              </style>
+            </head>
+            <body>
+              <div class="instructions">
+                <h2>TGS Image Generated</h2>
+                <p><strong>Right-click on the image below and select "Save image as..."</strong></p>
+                <p>Suggested filename: tgs_${planData?.plan_name || 'plan'}_${new Date().toISOString().split('T')[0]}.png</p>
+              </div>
+              <img src="${dataUrl}" alt="Traffic Guidance Scheme" />
+            </body>
+          </html>
+        `);
+        newWindow.document.close();
+        console.log('✅ Image opened in new window');
+        alert('✅ Image opened in new window! Right-click on it to save.');
+      } else {
+        // Fallback: Try direct download
+        throw new Error('Popup blocked. Please allow popups for this site.');
+      }
     } catch (error) {
       console.error('❌ Download failed:', error);
-      alert(`Download failed: ${error.message}`);
+      alert(`Download failed: ${error.message}\n\nTry right-clicking on the image below and select "Save image as..."`);
     }
   };
 
