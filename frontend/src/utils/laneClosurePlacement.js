@@ -34,10 +34,26 @@ class LaneClosurePlacement {
     console.log('🚧 Placing Lane Closure devices');
     console.log('  Speed limit:', speedLimit, 'km/h');
     console.log('  Spacing rules:', spacing);
+    console.log('  Start coords:', start_lat, start_lng);
+    console.log('  End coords:', end_lat, end_lng);
+    console.log('  Road bearing:', road_bearing);
     
-    // Calculate approach bearing (opposite of road direction for southbound)
-    // For northbound traffic, signs are placed south of workzone
-    const approachBearing = road_bearing + 180; // Reverse direction
+    // Validate inputs
+    if (!start_lat || !start_lng || !end_lat || !end_lng) {
+      console.error('❌ Invalid coordinates provided to lane closure placement');
+      return devices;
+    }
+    
+    // Calculate road bearing if not provided
+    let bearing = road_bearing;
+    if (!bearing || isNaN(bearing)) {
+      bearing = this.calculateBearing(start_lat, start_lng, end_lat, end_lng);
+      console.log('  Calculated bearing:', bearing);
+    }
+    
+    // Calculate approach bearing (opposite of road direction)
+    // For northbound traffic (506->480), signs are placed south of workzone
+    const approachBearing = (bearing + 180) % 360;
     
     // 1. RWA/40 Sign (bilateral)
     const rwaDistance = spacing.rwa_distance;
