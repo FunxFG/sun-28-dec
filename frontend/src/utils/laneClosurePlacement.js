@@ -125,12 +125,14 @@ class LaneClosurePlacement {
       // Taper: gradually move from 3m to 0.5m from edge
       const lateralOffset = 3 - (i / numCones) * 2.5;
       
+      const conePos = this.offsetPosition(conePosition, road_bearing - 90, lateralOffset);
+      
       devices.push({
         id: `cone_taper_${i}_${Date.now()}`,
         device_type: 'delineation',
         device_name: 'Traffic Cone 700mm',
-        position_lat: conePosition.lat,
-        position_lng: this.offsetPosition(conePosition, road_bearing - 90, lateralOffset).lng,
+        position_lat: conePos.lat,
+        position_lng: conePos.lng,
         properties: {
           side: 'left',
           distance_from_start: coneDistance,
