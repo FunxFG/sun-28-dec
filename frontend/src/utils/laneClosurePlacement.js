@@ -204,8 +204,8 @@ class LaneClosurePlacement {
     const endDistance = 10; // 10m after end (forward direction)
     const endPosition = this.calculatePosition(end_lat, end_lng, road_bearing, endDistance);
     
-    const endLeft = this.offsetPosition(endPosition, road_bearing - 90, 3);
-    const endRight = this.offsetPosition(endPosition, road_bearing + 90, 3);
+    const endLeft = this.offsetPosition(endPosition, bearing - 90, 3);
+    const endRight = this.offsetPosition(endPosition, bearing + 90, 3);
     
     devices.push({
       id: `end_left_${Date.now()}`,
