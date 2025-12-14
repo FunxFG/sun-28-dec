@@ -620,15 +620,22 @@ export default function PlanEditor({ user, onLogout }) {
         return;
       }
       
-      const userToken = localStorage.getItem('token');
-      const response = await axios.post(`${API}${endpoint}`, {
-        location: formData.work_details.start_address,
-        work_type: formData.work_details.work_type,
+      console.log('📋 Applying template:', selectedTemplate);
+      console.log('📍 Endpoint:', `${API}${endpoint}`);
+      
+      const payload = {
+        location: formData.work_details.start_address || 'Work Site',
+        work_type: formData.work_details.work_type || 'Road Works',
         duration_days: calculateDurationDays(),
-        work_hours: `${formData.work_details.work_hours_start}-${formData.work_details.work_hours_end}`
-      }, {
-        headers: { Authorization: `Bearer ${userToken}` }
-      });
+        work_hours: `${formData.work_details.work_hours_start || '7am'}-${formData.work_details.work_hours_end || '5pm'}`,
+        posted_speed: formData.road_data?.speed_limit || 60,
+        lanes_total: formData.road_data?.lanes || 2,
+        lanes_closed: 1
+      };
+      
+      console.log('📦 Payload:', payload);
+      
+      const response = await axios.post(`${API}${endpoint}`, payload);
       
       if (response.data.status === 'success') {
         const templatePlan = response.data.plan;
