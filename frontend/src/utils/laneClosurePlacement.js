@@ -79,12 +79,15 @@ class LaneClosurePlacement {
     const mergeDistance = rwaDistance - spacing.merge_distance;
     const mergePosition = this.calculatePosition(start_lat, start_lng, approachBearing, mergeDistance);
     
+    const mergeLeft = this.offsetPosition(mergePosition, road_bearing - 90, 3);
+    const mergeRight = this.offsetPosition(mergePosition, road_bearing + 90, 3);
+    
     devices.push({
       id: `merge_left_${Date.now()}`,
       device_type: 'warning',
       device_name: 'Lane Merge Right (T1-15)',
-      position_lat: mergePosition.lat,
-      position_lng: this.offsetPosition(mergePosition, road_bearing - 90, 3).lng,
+      position_lat: mergeLeft.lat,
+      position_lng: mergeLeft.lng,
       properties: {
         side: 'left',
         distance_from_start: mergeDistance,
@@ -97,8 +100,8 @@ class LaneClosurePlacement {
       id: `merge_right_${Date.now()}`,
       device_type: 'warning',
       device_name: 'Lane Merge Right (T1-15)',
-      position_lat: mergePosition.lat,
-      position_lng: this.offsetPosition(mergePosition, road_bearing + 90, 3).lng,
+      position_lat: mergeRight.lat,
+      position_lng: mergeRight.lng,
       properties: {
         side: 'right',
         distance_from_start: mergeDistance,
