@@ -1,0 +1,68 @@
+================================================================================
+TRAFFIC GUIDANCE SCHEME SPECIFICATIONS
+Plan: tgs
+Generated: 14 December 2025 at 05:07 PM
+================================================================================
+
+1. WORK ZONE DETAILS
+--------------------------------------------------------------------------------
+Location: N/A
+Work Type: N/A
+Speed Limit: N/A km/h
+Road Classification: N/A
+Traffic Volume (AADT): N/A
+
+2. SIGNAGE SUMMARY
+--------------------------------------------------------------------------------
+Total Signs Required: 53
+
+Sign Types:
+  Unknown: 53 unit(s)
+
+3. INSTALLATION REQUIREMENTS
+--------------------------------------------------------------------------------
+- All signs must comply with AS 1742.3-2019
+- Signs must be Class 1 retroreflective (minimum)
+- Mounting height: 1.2m to 2.5m to bottom of sign
+- Signs must be perpendicular to traffic flow
+- Offset from edge of carriageway: minimum 0.6m (urban), 1.5m (rural)
+- All sign faces must be clean and clearly visible
+
+4. ADVANCE WARNING DISTANCES
+--------------------------------------------------------------------------------
+Speed ≤60 km/h: 50m minimum advance warning
+
+5. BILATERAL SIGNAGE REQUIREMENTS
+--------------------------------------------------------------------------------
+Bilateral signage required for:
+- All lane closures
+- Work zone advance warning signs
+- Road works ahead signs
+- End of works signs
+- Side street approaches within work zone
+
+6. MAINTENANCE AND INSPECTION
+--------------------------------------------------------------------------------
+- Daily inspection of all signs required
+- Damaged or dirty signs must be replaced/cleaned immediately
+- Non-reflective signs must be replaced
+- Document all inspections and maintenance
+
+7. REMOVAL PROCEDURE
+--------------------------------------------------------------------------------
+- Remove end of works signs first
+- Work backwards from end of works to start
+- Remove bilateral signs simultaneously
+- Ensure no signs remain after works complete
+
+8. COMPLIANCE STATEMENT
+--------------------------------------------------------------------------------
+This TGS has been prepared in accordance with:
+- AS 1742.3-2019 Manual of Uniform Traffic Control Devices
+- Austroads Guide to Temporary Traffic Management
+- SA Government Traffic Management Guidelines
+- Work Health and Safety Regulations 2012
+
+================================================================================
+END OF SPECIFICATIONS
+================================================================================
