@@ -60,8 +60,12 @@ class LaneClosurePlacement {
     const rwaPosition = this.calculatePosition(start_lat, start_lng, approachBearing, rwaDistance);
     
     // Calculate left and right positions (perpendicular to road)
-    const rwaLeft = this.offsetPosition(rwaPosition, road_bearing - 90, 3); // 3m left
-    const rwaRight = this.offsetPosition(rwaPosition, road_bearing + 90, 3); // 3m right
+    const rwaLeft = this.offsetPosition(rwaPosition, bearing - 90, 3); // 3m left
+    const rwaRight = this.offsetPosition(rwaPosition, bearing + 90, 3); // 3m right
+    
+    console.log('  RWA center:', rwaPosition);
+    console.log('  RWA left:', rwaLeft);
+    console.log('  RWA right:', rwaRight);
     
     devices.push({
       id: `rwa_left_${Date.now()}`,
