@@ -35,7 +35,7 @@ class VisualTGSGenerator:
         center_lat: float,
         center_lng: float,
         placed_devices: List[Dict],
-        zoom: int = 18,
+        zoom: int = 20,  # Higher zoom for precise device placement (19-20 shows lane markings)
         width: int = 1280,
         height: int = 720
     ) -> Dict[str, Any]:
