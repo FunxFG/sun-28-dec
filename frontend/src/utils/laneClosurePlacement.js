@@ -43,12 +43,16 @@ class LaneClosurePlacement {
     const rwaDistance = spacing.rwa_distance;
     const rwaPosition = this.calculatePosition(start_lat, start_lng, approachBearing, rwaDistance);
     
+    // Calculate left and right positions (perpendicular to road)
+    const rwaLeft = this.offsetPosition(rwaPosition, road_bearing - 90, 3); // 3m left
+    const rwaRight = this.offsetPosition(rwaPosition, road_bearing + 90, 3); // 3m right
+    
     devices.push({
       id: `rwa_left_${Date.now()}`,
       device_type: 'warning',
       device_name: 'Road Work Ahead / 40',
-      position_lat: rwaPosition.lat,
-      position_lng: this.offsetPosition(rwaPosition, road_bearing - 90, 3).lng, // 3m left
+      position_lat: rwaLeft.lat,
+      position_lng: rwaLeft.lng,
       properties: {
         side: 'left',
         distance_from_start: rwaDistance,
@@ -61,8 +65,8 @@ class LaneClosurePlacement {
       id: `rwa_right_${Date.now()}`,
       device_type: 'warning',
       device_name: 'Road Work Ahead / 40',
-      position_lat: rwaPosition.lat,
-      position_lng: this.offsetPosition(rwaPosition, road_bearing + 90, 3).lng, // 3m right
+      position_lat: rwaRight.lat,
+      position_lng: rwaRight.lng,
       properties: {
         side: 'right',
         distance_from_start: rwaDistance,
