@@ -25,7 +25,7 @@ class LaneClosurePlacement {
    * @param {Array} sideStreets - Array of side streets with coordinates
    * @returns {Array} - Array of device objects with positions
    */
-  placeLaneClosureDevices(workZoneData, speedLimit = 60, sideStreets = []) {
+  placeLaneClosureDevices(workZoneData, speedLimit = 60, sideStreets = [], trafficDirection = 'northbound') {
     const devices = [];
     const spacing = this.spacingRules[speedLimit] || this.spacingRules[60];
     
@@ -33,6 +33,7 @@ class LaneClosurePlacement {
     
     console.log('🚧 Placing Lane Closure devices');
     console.log('  Speed limit:', speedLimit, 'km/h');
+    console.log('  Traffic direction:', trafficDirection);
     console.log('  Spacing rules:', spacing);
     console.log('  Start coords:', start_lat, start_lng);
     console.log('  End coords:', end_lat, end_lng);
@@ -51,9 +52,19 @@ class LaneClosurePlacement {
       console.log('  Calculated bearing:', bearing);
     }
     
-    // Calculate approach bearing (opposite of road direction)
-    // For northbound traffic (506->480), signs are placed south of workzone
-    const approachBearing = (bearing + 180) % 360;
+    // Map traffic direction to compass bearing adjustment
+    // Signs must be placed BEFORE the workzone from traffic's approach direction
+    const directionMap = {
+      'northbound': 180,  // Traffic going north, signs south (reverse bearing)
+      'southbound': 0,    // Traffic going south, signs north (same bearing)
+      'eastbound': 270,   // Traffic going east, signs west
+      'westbound': 90     // Traffic going west, signs east
+    };
+    
+    const approachAdjustment = directionMap[trafficDirection] || 180;
+    const approachBearing = (bearing + approachAdjustment) % 360;
+    
+    console.log(`  Traffic ${trafficDirection}: signs placed at bearing ${approachBearing}° (${approachAdjustment}° from road bearing)`);
     
     // 1. RWA/40 Sign (bilateral)
     const rwaDistance = spacing.rwa_distance;
