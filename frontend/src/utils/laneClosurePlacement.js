@@ -129,22 +129,33 @@ class LaneClosurePlacement {
     // 3. Buffer zone (no signs, just space)
     const bufferStart = mergeDistance - spacing.buffer;
     
-    // 4. Taper with cones
+    // 4. Taper with cones - PROPER GRADUATED TAPER
     const taperStart = bufferStart - spacing.taper;
     const coneSpacing = 5; // 5m between cones in taper
     const numCones = Math.floor(spacing.taper / coneSpacing);
     
+    console.log(`  Creating ${numCones} taper cones over ${spacing.taper}m`);
+    
+    // Taper formula: gradually angle from full lane width to edge
+    // Start: 3.5m from centerline (full lane position)
+    // End: 0.3m from edge (workzone boundary)
+    const taperStartOffset = 3.5; // Full lane width
+    const taperEndOffset = 0.3;   // Edge of workzone
+    
     for (let i = 0; i <= numCones; i++) {
+      const progress = i / numCones; // 0 to 1
       const coneDistance = taperStart - (i * coneSpacing);
       const conePosition = this.calculatePosition(start_lat, start_lng, approachBearing, coneDistance);
       
-      // Taper: gradually move from 3m to 0.5m from edge
-      const lateralOffset = 3 - (i / numCones) * 2.5;
+      // Graduated taper: smooth curve from lane to edge
+      // Using quadratic easing for smooth transition
+      const easedProgress = progress * progress; // Accelerating taper
+      const lateralOffset = taperStartOffset - (easedProgress * (taperStartOffset - taperEndOffset));
       
-      const conePos = this.offsetPosition(conePosition, road_bearing - 90, lateralOffset);
+      const conePos = this.offsetPosition(conePosition, bearing - 90, lateralOffset);
       
       devices.push({
-        id: `cone_taper_${i}_${Date.now()}`,
+        id: `cone_taper_${i}_${Date.now() + i}`,
         device_type: 'delineation',
         device_name: 'Traffic Cone 700mm',
         position_lat: conePos.lat,
@@ -152,6 +163,8 @@ class LaneClosurePlacement {
         properties: {
           side: 'left',
           distance_from_start: coneDistance,
+          lateral_offset: lateralOffset.toFixed(1) + 'm',
+          taper_position: `${(progress * 100).toFixed(0)}%`,
           in_taper: true,
           auto_placed: true
         }
