@@ -2605,6 +2605,70 @@ async def download_tgs_file(filename: str):
         media_type='image/png'
     )
 
+@api_router.get("/files/list")
+async def list_generated_files():
+    """
+    List all generated files in tmp_outputs directory
+    """
+    from pathlib import Path
+    import os
+    
+    try:
+        output_dir = Path("/app/tmp_outputs")
+        if not output_dir.exists():
+            return {"files": []}
+        
+        files = []
+        for file in output_dir.iterdir():
+            if file.is_file():
+                stat = file.stat()
+                files.append({
+                    "name": file.name,
+                    "size": stat.st_size,
+                    "modified": datetime.fromtimestamp(stat.st_mtime).isoformat()
+                })
+        
+        # Sort by modified date, newest first
+        files.sort(key=lambda x: x['modified'], reverse=True)
+        
+        return {"files": files, "total": len(files)}
+    except Exception as e:
+        logger.error(f"Error listing files: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/files/download/{filename}")
+async def download_generated_file(filename: str):
+    """
+    Download any generated file from tmp_outputs
+    """
+    from fastapi.responses import FileResponse
+    from pathlib import Path
+    
+    # Security: prevent path traversal
+    if ".." in filename or "/" in filename:
+        raise HTTPException(status_code=400, detail="Invalid filename")
+    
+    filepath = Path("/app/tmp_outputs") / filename
+    
+    if not filepath.exists():
+        raise HTTPException(status_code=404, detail="File not found")
+    
+    # Determine media type
+    if filename.endswith('.pdf'):
+        media_type = 'application/pdf'
+    elif filename.endswith('.png'):
+        media_type = 'image/png'
+    elif filename.endswith('.jpg') or filename.endswith('.jpeg'):
+        media_type = 'image/jpeg'
+    else:
+        media_type = 'application/octet-stream'
+    
+    return FileResponse(
+        path=str(filepath),
+        filename=filename,
+        media_type=media_type
+    )
+
 @api_router.post("/tgs/generate-visual")
 async def generate_visual_tgs_with_signs(request: dict):
     """
