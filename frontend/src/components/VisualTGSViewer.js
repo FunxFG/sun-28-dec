@@ -119,12 +119,30 @@ const VisualTGSViewer = ({ planData, placedDevices, planId }) => {
   };
 
   const downloadTGSImage = () => {
-    if (!visualTGS?.satellite_tgs?.image_base64) return;
+    console.log('🔽 downloadTGSImage called');
+    if (!visualTGS?.satellite_tgs?.image_base64) {
+      console.error('❌ No image data available');
+      alert('No TGS image available to download');
+      return;
+    }
 
-    const link = document.createElement('a');
-    link.href = `data:image/png;base64,${visualTGS.satellite_tgs.image_base64}`;
-    link.download = `tgs_${planData?.plan_name || 'plan'}_${new Date().toISOString().split('T')[0]}.png`;
-    link.click();
+    try {
+      console.log('📥 Creating download link...');
+      const link = document.createElement('a');
+      link.href = `data:image/png;base64,${visualTGS.satellite_tgs.image_base64}`;
+      link.download = `tgs_${planData?.plan_name || 'plan'}_${new Date().toISOString().split('T')[0]}.png`;
+      
+      // Add to document, click, and remove (required for some browsers)
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      console.log('✅ Download initiated');
+      alert('✅ TGS image downloaded! Check your Downloads folder.');
+    } catch (error) {
+      console.error('❌ Download failed:', error);
+      alert(`Download failed: ${error.message}`);
+    }
   };
 
   const downloadStreetView = (index) => {
