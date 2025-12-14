@@ -154,20 +154,30 @@ export class ProfessionalTGSGenerator {
           // Use the same Google Maps API key from the app
           const apiKey = 'AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs';
           
-          // Calculate zoom level based on device spread
+          // Calculate zoom level for PRECISE device placement visibility
+          // Higher zoom = closer view for pinpoint accuracy
           const latSpread = Math.max(...lats) - Math.min(...lats);
           const lngSpread = Math.max(...lngs) - Math.min(...lngs);
           const maxSpread = Math.max(latSpread, lngSpread);
-          const zoom = maxSpread > 0.01 ? 16 : maxSpread > 0.005 ? 17 : 18;
           
-          // Build Static Maps API URL with satellite view
+          // ZOOM LEVELS (higher = closer):
+          // 19-20: Individual lane markings visible, perfect for device placement
+          // 18: Road edges and lanes clear
+          // 17: Road width visible but less detail
+          const zoom = maxSpread > 0.005 ? 18 : maxSpread > 0.002 ? 19 : 20;
+          
+          console.log(`  Map spread: ${(maxSpread * 111000).toFixed(0)}m, using zoom: ${zoom}`);
+          
+          // Build Static Maps API URL with HIGH DETAIL satellite view
           const staticMapUrl = `https://maps.googleapis.com/maps/api/staticmap?` +
             `center=${centerLat},${centerLng}` +
             `&zoom=${zoom}` +
-            `&size=800x600` +
-            `&scale=2` +
+            `&size=1280x960` +  // Larger image for more detail
+            `&scale=2` +         // Retina/high-DPI for sharpness
             `&maptype=satellite` +
             `&key=${apiKey}`;
+          
+          console.log(`  Fetching high-resolution satellite image at zoom ${zoom}...`);
           
           // Add device markers to the URL
           devices.forEach((device, idx) => {
