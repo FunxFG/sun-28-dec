@@ -61,6 +61,33 @@ const VisualTGSViewer = ({ planData, placedDevices, planId }) => {
       const data = await response.json();
       console.log('✅ Visual TGS generated successfully:', data);
       setVisualTGS(data);
+      
+      // Also save to backend for easier downloading
+      if (data.satellite_tgs?.image_base64) {
+        try {
+          const saveResponse = await fetch(`${API}/api/tgs/save-and-download`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              image_base64: data.satellite_tgs.image_base64,
+              plan_name: planData?.plan_name || 'tgs'
+            })
+          });
+          
+          if (saveResponse.ok) {
+            const saveData = await saveResponse.json();
+            console.log('✅ TGS saved to server:', saveData);
+            // Store download URL in visualTGS for easy access
+            setVisualTGS({
+              ...data,
+              download_url: `${API}${saveData.download_url}`
+            });
+          }
+        } catch (saveError) {
+          console.warn('Failed to save to server:', saveError);
+        }
+      }
+      
       alert('✅ Visual TGS generated! You can now download it.');
     } catch (error) {
       console.error('❌ Error generating visual TGS:', error);
