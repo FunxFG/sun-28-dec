@@ -2318,8 +2318,45 @@ export default function PlanEditor({ user, onLogout }) {
                 <CardDescription>Select which areas of the road will be occupied</CardDescription>
               </CardHeader>
               <CardContent>
+                {/* Traffic Direction Selector */}
+                <div className="mb-6 p-4 border rounded-lg bg-blue-50">
+                  <Label className="text-base font-semibold mb-3 block">
+                    🧭 Direction of Affected Traffic
+                  </Label>
+                  <p className="text-sm text-gray-600 mb-3">
+                    Select which direction of traffic will encounter the work zone (determines sign placement)
+                  </p>
+                  <div className="grid grid-cols-4 gap-2">
+                    {[
+                      { value: 'northbound', label: '⬆️ Northbound', icon: '↑' },
+                      { value: 'eastbound', label: '➡️ Eastbound', icon: '→' },
+                      { value: 'southbound', label: '⬇️ Southbound', icon: '↓' },
+                      { value: 'westbound', label: '⬅️ Westbound', icon: '←' }
+                    ].map(dir => (
+                      <button
+                        key={dir.value}
+                        type="button"
+                        onClick={() => handleInputChange('road_occupancy', 'affected_traffic_direction', dir.value)}
+                        className={`p-3 rounded border-2 transition-all ${
+                          formData.road_occupancy.affected_traffic_direction === dir.value
+                            ? 'border-blue-600 bg-blue-600 text-white shadow-lg'
+                            : 'border-gray-300 bg-white hover:border-blue-400'
+                        }`}
+                      >
+                        <div className="text-2xl mb-1">{dir.icon}</div>
+                        <div className="text-xs font-medium">{dir.label.split(' ')[1]}</div>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-2 text-xs text-gray-500">
+                    Selected: <strong>{formData.road_occupancy.affected_traffic_direction?.toUpperCase()}</strong>
+                  </div>
+                </div>
+
                 <div className="grid grid-cols-2 gap-4">
-                  {Object.entries(formData.road_occupancy).map(([key, value]) => (
+                  {Object.entries(formData.road_occupancy)
+                    .filter(([key]) => key !== 'affected_traffic_direction') // Don't show as checkbox
+                    .map(([key, value]) => (
                     <div key={key} className="flex items-center space-x-2">
                       <Checkbox
                         id={key}
