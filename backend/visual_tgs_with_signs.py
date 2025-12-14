@@ -46,7 +46,7 @@ class VisualTGSGenerator:
             center_lat: Center latitude
             center_lng: Center longitude
             placed_devices: List of placed devices with positions
-            zoom: Map zoom level (18 = street level)
+            zoom: Map zoom level (20 = lane-level detail, shows exact device positions)
             width: Image width in pixels
             height: Image height in pixels
             
