@@ -235,7 +235,8 @@ export default function PlanEditor({ user, onLogout }) {
       right_lane: false,
       right_shoulder: false,
       median_strip: false,
-      complete_road_closure: false
+      complete_road_closure: false,
+      affected_traffic_direction: 'northbound' // New field
     },
     control_measures: {
       // Existing controls
