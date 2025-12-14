@@ -334,7 +334,14 @@ const VisualTGSViewer = ({ planData, placedDevices, planId }) => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <Button
-                      onClick={downloadTGSImage}
+                      onClick={() => {
+                        if (visualTGS.download_url) {
+                          // Use server URL if available (bypasses iframe restrictions)
+                          window.open(visualTGS.download_url, '_blank');
+                        } else {
+                          downloadTGSImage();
+                        }
+                      }}
                       variant="outline"
                       className="w-full"
                     >
