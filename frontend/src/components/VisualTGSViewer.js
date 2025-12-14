@@ -146,13 +146,27 @@ const VisualTGSViewer = ({ planData, placedDevices, planId }) => {
   };
 
   const downloadStreetView = (index) => {
+    console.log('🔽 downloadStreetView called for index:', index);
     const streetview = visualTGS?.streetview_images?.[index];
-    if (!streetview?.image_base64) return;
+    if (!streetview?.image_base64) {
+      console.error('❌ No streetview data available');
+      return;
+    }
 
-    const link = document.createElement('a');
-    link.href = `data:image/jpeg;base64,${streetview.image_base64}`;
-    link.download = `streetview_${streetview.sign_code}_${new Date().toISOString().split('T')[0]}.jpg`;
-    link.click();
+    try {
+      const link = document.createElement('a');
+      link.href = `data:image/jpeg;base64,${streetview.image_base64}`;
+      link.download = `streetview_${streetview.sign_code}_${new Date().toISOString().split('T')[0]}.jpg`;
+      
+      // Add to document, click, and remove
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      console.log('✅ Street view download initiated');
+    } catch (error) {
+      console.error('❌ Street view download failed:', error);
+    }
   };
 
   return (
