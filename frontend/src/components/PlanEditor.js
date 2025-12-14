@@ -808,11 +808,29 @@ export default function PlanEditor({ user, onLogout }) {
         };
       }
       
-      const autoDevices = await agttmRules.default.calculateAGTTMCompliantPlacement(
-        workZoneData,
-        roadGeometry,
-        GOOGLE_MAPS_API_KEY
-      );
+      // Check if lane closure template is being used
+      const isLaneClosure = formData.control_measures?.lane_closure || 
+                           formData.road_occupancy?.lane_closure ||
+                           (formData.work_details?.work_type && formData.work_details.work_type.toLowerCase().includes('lane closure'));
+      
+      let autoDevices;
+      
+      if (isLaneClosure) {
+        console.log('🚧 Using Lane Closure placement logic');
+        const laneClosurePlacement = await import('../utils/laneClosurePlacement.js');
+        autoDevices = laneClosurePlacement.default.placeLaneClosureDevices(
+          workZoneData,
+          roadGeometry.speed_limit || 60,
+          fetchedComprehensiveData?.side_streets || []
+        );
+      } else {
+        console.log('🚧 Using standard AGTTM placement logic');
+        autoDevices = await agttmRules.default.calculateAGTTMCompliantPlacement(
+          workZoneData,
+          roadGeometry,
+          GOOGLE_MAPS_API_KEY
+        );
+      }
 
       console.log('Auto-placement complete. Devices returned:', autoDevices);
       console.log('Device count:', autoDevices?.length || 0);
