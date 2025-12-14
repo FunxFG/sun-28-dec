@@ -4824,6 +4824,11 @@ export default function PlanEditor({ user, onLogout }) {
               planId={planId}
             />
 
+            {/* File Download Manager */}
+            <div className="mt-8">
+              <FileDownloadManager />
+            </div>
+
           </div>
         </div>
       </div>
