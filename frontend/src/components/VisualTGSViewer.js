@@ -106,10 +106,17 @@ const VisualTGSViewer = ({ planData, placedDevices, planId }) => {
       const safeName = (planData?.plan_name || 'plan').replace(/\s+/g, '_');
       link.href = url;
       link.download = `${safeName}_TMP_TGS.pdf`;
+      
+      // Add to document, click, and remove (required for some browsers)
       document.body.appendChild(link);
       link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+      
+      // Clean up the URL after a short delay
+      setTimeout(() => window.URL.revokeObjectURL(url), 100);
+
+      console.log('✅ PDF download initiated');
+      alert('✅ TMP + TGS PDF downloaded! Check your Downloads folder.');
     } catch (error) {
       console.error('Error downloading combined TMP + TGS PDF:', error);
       alert(`Failed to download combined TMP + TGS PDF: ${error.message}`);
