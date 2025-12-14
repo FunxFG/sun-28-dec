@@ -202,7 +202,7 @@ class LaneClosurePlacement {
     
     // 6. End Roadworks sign (bilateral) - after workzone
     const endDistance = 10; // 10m after end (forward direction)
-    const endPosition = this.calculatePosition(end_lat, end_lng, road_bearing, endDistance);
+    const endPosition = this.calculatePosition(end_lat, end_lng, bearing, endDistance);
     
     const endLeft = this.offsetPosition(endPosition, bearing - 90, 3);
     const endRight = this.offsetPosition(endPosition, bearing + 90, 3);
