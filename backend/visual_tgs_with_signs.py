@@ -212,6 +212,10 @@ class VisualTGSGenerator:
         """
         Overlay sign images on the satellite map
         """
+        # Ensure base image is in RGBA mode for transparency support
+        if base_image.mode != 'RGBA':
+            base_image = base_image.convert('RGBA')
+        
         # Create a copy to work with
         composite = base_image.copy()
         draw = ImageDraw.Draw(composite, 'RGBA')
