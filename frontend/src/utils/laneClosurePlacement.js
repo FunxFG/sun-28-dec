@@ -269,7 +269,12 @@ class LaneClosurePlacement {
   }
 
   offsetPosition(position, bearing, offsetMeters) {
-    return this.calculatePosition(position.lat, position.lng, bearing, offsetMeters);
+    // Calculate lateral offset from a position (perpendicular to road)
+    const result = this.calculatePosition(position.lat, position.lng, bearing, offsetMeters);
+    return {
+      lat: result.lat,
+      lng: result.lng
+    };
   }
 
   calculateDistance(lat1, lng1, lat2, lng2) {
