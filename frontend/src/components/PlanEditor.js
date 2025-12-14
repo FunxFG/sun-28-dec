@@ -655,8 +655,15 @@ export default function PlanEditor({ user, onLogout }) {
         toast.success(`✅ ${selectedTemplate.replace(/_/g, ' ').toUpperCase()} template applied! Review and adjust as needed.`);
       }
     } catch (error) {
-      console.error('Template application error:', error);
-      toast.error('Failed to apply template');
+      console.error('❌ Template application error:', error);
+      console.error('Error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
+      
+      const errorMsg = error.response?.data?.detail || error.response?.data?.message || error.message || 'Unknown error';
+      toast.error(`Failed to apply template: ${errorMsg}`);
     } finally {
       setLoadingTemplate(false);
     }
