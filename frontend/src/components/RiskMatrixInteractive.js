@@ -72,8 +72,25 @@ export default function RiskMatrixInteractive({ formData, setFormData, onNext })
       const response = await fetch(`${API}/risks`);
       const data = await response.json();
       
-      // Parse CSV data from backend
-      setRisks(data.risks || []);
+      console.log('✅ Fetched risks from backend:', data.total_risks, 'risks');
+      
+      // Transform backend data structure to match frontend expectations
+      const transformedRisks = (data.risks || []).map(risk => ({
+        id: risk.id,
+        category: risk.category,
+        site_type: risk.title || 'General Roadwork',
+        hazard: risk.description || risk.title,
+        cause: risk.description || 'Work zone activities',
+        consequence: `Risk Score: ${risk.risk_score?.rating || 'Medium'}`,
+        likelihood: risk.default_likelihood || 'possible',
+        risk_level: risk.risk_score?.rating || 'Medium',
+        risk_score: risk.risk_score,
+        controls: risk.controls || [],
+        references: risk.references || []
+      }));
+      
+      setRisks(transformedRisks);
+      console.log('📋 Transformed risks for display:', transformedRisks.length);
       
       // Load existing risk assessment from formData
       if (formData.risk_assessment) {
