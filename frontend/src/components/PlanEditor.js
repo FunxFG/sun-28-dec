@@ -605,12 +605,12 @@ export default function PlanEditor({ user, onLogout }) {
     
     setLoadingTemplate(true);
     try {
-      // Map template selection to API endpoint
+      // Map template selection to API endpoint (no /api prefix - already in API constant)
       const endpointMap = {
-        'footpath_closure': '/api/tmp/footpath-closure',
-        'emergency': '/api/tmp/emergency',
-        'lane_closure': '/api/tmp/lane-closure',
-        'road_closure': '/api/tmp/road-closure'
+        'footpath_closure': '/tmp/footpath-closure',
+        'emergency': '/tmp/emergency',
+        'lane_closure': '/tmp/lane-closure',
+        'road_closure': '/tmp/road-closure'
       };
       
       const endpoint = endpointMap[selectedTemplate];
@@ -622,7 +622,7 @@ export default function PlanEditor({ user, onLogout }) {
       }
       
       console.log('📋 Applying template:', selectedTemplate);
-      console.log('📍 Endpoint:', `${API}${endpoint}`);
+      console.log('📍 Full URL:', `${API}${endpoint}`);
       
       const payload = {
         location: formData.work_details.start_address || 'Work Site',
