@@ -168,15 +168,18 @@ class LaneClosurePlacement {
     }
     
     // 6. End Roadworks sign (bilateral) - after workzone
-    const endDistance = -10; // 10m after end
+    const endDistance = 10; // 10m after end (forward direction)
     const endPosition = this.calculatePosition(end_lat, end_lng, road_bearing, endDistance);
+    
+    const endLeft = this.offsetPosition(endPosition, road_bearing - 90, 3);
+    const endRight = this.offsetPosition(endPosition, road_bearing + 90, 3);
     
     devices.push({
       id: `end_left_${Date.now()}`,
       device_type: 'regulatory',
       device_name: 'End Roadworks',
-      position_lat: endPosition.lat,
-      position_lng: this.offsetPosition(endPosition, road_bearing - 90, 3).lng,
+      position_lat: endLeft.lat,
+      position_lng: endLeft.lng,
       properties: {
         side: 'left',
         sign_code: 'END_RW',
@@ -188,8 +191,8 @@ class LaneClosurePlacement {
       id: `end_right_${Date.now()}`,
       device_type: 'regulatory',
       device_name: 'End Roadworks',
-      position_lat: endPosition.lat,
-      position_lng: this.offsetPosition(endPosition, road_bearing + 90, 3).lng,
+      position_lat: endRight.lat,
+      position_lng: endRight.lng,
       properties: {
         side: 'right',
         sign_code: 'END_RW',
