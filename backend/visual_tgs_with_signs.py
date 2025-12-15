@@ -294,6 +294,19 @@ class VisualTGSGenerator:
         
         return marker
     
+    def _extract_road_name(self, devices: List[Dict]) -> str:
+        """Extract road name from device properties"""
+        for device in devices:
+            # Try to get street name from device properties
+            if 'street_name' in device:
+                return device['street_name']
+            if 'properties' in device and isinstance(device['properties'], dict):
+                if 'street_name' in device['properties']:
+                    return device['properties']['street_name']
+                if 'road_name' in device['properties']:
+                    return device['properties']['road_name']
+        return "Work Zone"
+    
     def _add_annotations(
         self,
         image: Image.Image,
