@@ -344,6 +344,35 @@ class LaneClosurePlacement {
     };
   }
 
+  snapToRoadEdge(targetLat, targetLng, roadEdgePoints, side = 'left') {
+    /**
+     * Snap a device position to the nearest point on the ACTUAL road edge
+     * Returns the coordinates of the closest road edge point
+     */
+    if (!roadEdgePoints || roadEdgePoints.length === 0) {
+      return { lat: targetLat, lng: targetLng };
+    }
+    
+    let minDistance = Infinity;
+    let closestPoint = { lat: targetLat, lng: targetLng };
+    
+    // Find the closest point on the road edge
+    for (const edgePoint of roadEdgePoints) {
+      const distance = this.calculateDistance(
+        targetLat, targetLng,
+        edgePoint.lat, edgePoint.lng
+      );
+      
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestPoint = { lat: edgePoint.lat, lng: edgePoint.lng };
+      }
+    }
+    
+    console.log(`    Snapped ${side} to road edge: distance ${minDistance.toFixed(1)}m`);
+    return closestPoint;
+  }
+
   calculateBearing(lat1, lng1, lat2, lng2) {
     const dLng = (lng2 - lng1) * Math.PI / 180;
     const lat1Rad = lat1 * Math.PI / 180;
