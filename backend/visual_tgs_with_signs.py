@@ -313,14 +313,38 @@ class VisualTGSGenerator:
             title_font = ImageFont.load_default()
             label_font = ImageFont.load_default()
         
-        # Add title bar
-        draw.rectangle([0, 0, image.width, 60], fill=(0, 0, 0, 200))
+        # Add title bar with semi-transparent background
+        draw.rectangle([0, 0, image.width, 70], fill=(0, 0, 0, 200))
         draw.text((20, 15), "Traffic Guidance Scheme - Satellite View", 
                   fill=(255, 255, 255, 255), font=title_font)
         
-        # Add sign count
-        draw.text((20, 40), f"Total Signs: {len(devices)}", 
+        # Add sign count and zoom level
+        draw.text((20, 45), f"Total Devices: {len(devices)} | Zoom: High Detail (Lane-level)", 
                   fill=(200, 200, 200, 255), font=label_font)
+        
+        # Add road name labels on the image (centered)
+        if devices and len(devices) > 0:
+            # Extract road name from first device or use default
+            road_name = self._extract_road_name(devices)
+            if road_name:
+                # Draw road name label with background in center-top
+                road_label_y = 90
+                road_label_text = f"📍 {road_name}"
+                bbox = draw.textbbox((0, 0), road_label_text, font=title_font)
+                text_width = bbox[2] - bbox[0]
+                road_label_x = (image.width - text_width) // 2
+                
+                # Background rectangle for road name
+                padding = 10
+                draw.rectangle(
+                    [road_label_x - padding, road_label_y - padding, 
+                     road_label_x + text_width + padding, road_label_y + 25 + padding],
+                    fill=(255, 255, 255, 230),
+                    outline=(0, 100, 200, 255),
+                    width=2
+                )
+                draw.text((road_label_x, road_label_y), road_label_text, 
+                          fill=(0, 50, 150, 255), font=title_font)
         
         # Add legend in bottom right
         legend_height = 150
