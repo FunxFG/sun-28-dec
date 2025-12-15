@@ -25,19 +25,28 @@ class LaneClosurePlacement {
    * @param {Array} sideStreets - Array of side streets with coordinates
    * @returns {Array} - Array of device objects with positions
    */
-  placeLaneClosureDevices(workZoneData, speedLimit = 60, sideStreets = [], trafficDirection = 'northbound') {
+  placeLaneClosureDevices(workZoneData, speedLimit = 60, sideStreets = [], trafficDirection = 'northbound', roadEdgeGeometry = null) {
     const devices = [];
     const spacing = this.spacingRules[speedLimit] || this.spacingRules[60];
     
     const { start_lat, start_lng, end_lat, end_lng, road_bearing } = workZoneData;
     
-    console.log('🚧 Placing Lane Closure devices');
+    console.log('🚧 Placing Lane Closure devices WITH REAL ROAD EDGES');
     console.log('  Speed limit:', speedLimit, 'km/h');
     console.log('  Traffic direction:', trafficDirection);
     console.log('  Spacing rules:', spacing);
     console.log('  Start coords:', start_lat, start_lng);
     console.log('  End coords:', end_lat, end_lng);
     console.log('  Road bearing:', road_bearing);
+    console.log('  Real road edges available:', !!roadEdgeGeometry);
+    
+    // Check if we have REAL road edge data
+    const hasRealEdges = roadEdgeGeometry && 
+                        roadEdgeGeometry.start && 
+                        roadEdgeGeometry.start.left_edge && 
+                        roadEdgeGeometry.start.left_edge.length > 0;
+    
+    console.log('  Using real road geometry:', hasRealEdges);
     
     // Validate inputs
     if (!start_lat || !start_lng || !end_lat || !end_lng) {
