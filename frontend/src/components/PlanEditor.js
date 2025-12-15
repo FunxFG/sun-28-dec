@@ -1702,6 +1702,8 @@ export default function PlanEditor({ user, onLogout }) {
     try {
       const token = localStorage.getItem('token');
       
+      console.log('💾 Saving plan with work hours:', formData.work_details?.work_hours_start, '-', formData.work_details?.work_hours_end);
+      
       // Include comprehensive data (hidden from form but needed for PDF generation)
       const planDataWithComprehensive = {
         ...formData,
@@ -1712,7 +1714,7 @@ export default function PlanEditor({ user, onLogout }) {
         await axios.put(`${API}/plans/${planId}`, planDataWithComprehensive, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        toast.success('Plan updated successfully');
+        toast.success('Plan updated successfully - work hours saved');
       } else {
         const response = await axios.post(`${API}/plans`, planDataWithComprehensive, {
           headers: { Authorization: `Bearer ${token}` }
