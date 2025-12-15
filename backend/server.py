@@ -2033,7 +2033,7 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
 
 
 @api_router.post("/plans/{plan_id}/pdf-with-tgs")
-async def generate_plan_pdf_with_tgs(plan_id: str, request: Dict[str, Any], current_user: Dict = Depends(get_current_user)):
+async def generate_tmp_with_tgs_combined_pdf(plan_id: str, request: Dict[str, Any], current_user: Dict = Depends(get_current_user)):
     """Generate TMP PDF with the final TGS embedded as the last page.
 
     Frontend should send JSON: {"tgs_image_base64": "..."}
