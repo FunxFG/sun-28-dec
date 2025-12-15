@@ -2666,8 +2666,63 @@ async def download_generated_file(filename: str):
     return FileResponse(
         path=str(filepath),
         filename=filename,
-        media_type=media_type
+        media_type=media_type,
+        headers={
+            "Content-Disposition": f"attachment; filename={filename}",
+            "Access-Control-Allow-Origin": "*"
+        }
     )
+
+@api_router.post("/tgs/generate-and-download")
+async def generate_tgs_and_download(request: dict):
+    """
+    Generate TGS and return direct download URL
+    Simpler endpoint that just creates the TGS without TMP
+    """
+    try:
+        center_lat = request.get('center_lat')
+        center_lng = request.get('center_lng')
+        placed_devices = request.get('placed_devices', [])
+        plan_name = request.get('plan_name', 'tgs')
+        
+        if not center_lat or not center_lng:
+            raise HTTPException(status_code=400, detail="center_lat and center_lng required")
+        
+        # Generate TGS
+        from visual_tgs_with_signs import VisualTGSGenerator
+        generator = VisualTGSGenerator()
+        
+        result = await generator.generate_satellite_tgs(
+            center_lat=center_lat,
+            center_lng=center_lng,
+            placed_devices=placed_devices,
+            zoom=20,
+            width=1600,
+            height=1200
+        )
+        
+        if result.get('success'):
+            # Find the generated file
+            from pathlib import Path
+            output_dir = Path("/app/tmp_outputs")
+            
+            # Look for the most recent TGS file
+            tgs_files = sorted(output_dir.glob("tgs_*_TGS_Drawing.png"), key=lambda p: p.stat().st_mtime, reverse=True)
+            
+            if tgs_files:
+                filename = tgs_files[0].name
+                return {
+                    "success": True,
+                    "filename": filename,
+                    "download_url": f"/api/files/download/{filename}",
+                    "message": "TGS generated successfully"
+                }
+        
+        raise HTTPException(status_code=500, detail="TGS generation failed")
+        
+    except Exception as e:
+        logger.error(f"Error in generate_tgs_and_download: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @api_router.post("/tgs/generate-visual")
 async def generate_visual_tgs_with_signs(request: dict):
