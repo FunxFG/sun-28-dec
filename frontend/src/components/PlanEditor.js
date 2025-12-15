@@ -418,10 +418,13 @@ export default function PlanEditor({ user, onLogout }) {
         ...prev,
         ...response.data,
         // Ensure nested objects exist with defaults
+        work_details: { ...prev.work_details, ...(response.data.work_details || {}) },
         personnel: { ...prev.personnel, ...(response.data.personnel || {}) },
         permits_insurance: { ...prev.permits_insurance, ...(response.data.permits_insurance || {}) },
         emergency_contacts: { ...prev.emergency_contacts, ...(response.data.emergency_contacts || {}) }
       }));
+      
+      console.log('✅ Plan loaded with work hours:', response.data.work_details?.work_hours_start, '-', response.data.work_details?.work_hours_end);
     } catch (error) {
       toast.error('Failed to load plan');
       navigate('/dashboard');
