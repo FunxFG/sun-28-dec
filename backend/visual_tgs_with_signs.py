@@ -235,12 +235,38 @@ class VisualTGSGenerator:
                 # Paste sign marker
                 composite.paste(sign_marker, (x, y), sign_marker)
                 
-                # Draw connection line to road
+                # Draw connection line to exact position on road
                 draw.line(
                     [(position['pixel_x'], position['pixel_y']),
                      (position['pixel_x'], position['pixel_y'] + 20)],
                     fill=(255, 255, 0, 200),
-                    width=2
+                    width=3
+                )
+                
+                # Add device label with distance info
+                try:
+                    label_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 11)
+                except:
+                    label_font = ImageFont.load_default()
+                
+                device_name = device.get('name', 'Device')[:20]  # Truncate long names
+                distance = device.get('distance', 0)
+                label_text = f"{device_name}"
+                if distance > 0:
+                    label_text += f"\n{int(distance)}m"
+                
+                # Draw label with white background
+                bbox = draw.textbbox((position['pixel_x'] + 5, position['pixel_y'] - 15), label_text, font=label_font)
+                draw.rectangle(
+                    [bbox[0] - 2, bbox[1] - 2, bbox[2] + 2, bbox[3] + 2],
+                    fill=(255, 255, 255, 230),
+                    outline=(0, 0, 0, 255)
+                )
+                draw.text(
+                    (position['pixel_x'] + 5, position['pixel_y'] - 15),
+                    label_text,
+                    fill=(0, 0, 0, 255),
+                    font=label_font
                 )
         
         return composite
