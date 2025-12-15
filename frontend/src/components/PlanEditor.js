@@ -835,14 +835,17 @@ export default function PlanEditor({ user, onLogout }) {
       let autoDevices;
       
       if (isLaneClosure) {
-        console.log('🚧 Using Lane Closure placement logic');
+        console.log('🚧 Using Lane Closure placement logic with REAL road edges');
         console.log('  Traffic direction:', formData.road_occupancy?.affected_traffic_direction);
+        console.log('  Road edge geometry available:', !!fetchedComprehensiveData?.road_edge_geometry);
+        
         const laneClosurePlacement = await import('../utils/laneClosurePlacement.js');
         autoDevices = laneClosurePlacement.default.placeLaneClosureDevices(
           workZoneData,
           roadGeometry.speed_limit || 60,
           fetchedComprehensiveData?.side_streets || [],
-          formData.road_occupancy?.affected_traffic_direction || 'northbound'
+          formData.road_occupancy?.affected_traffic_direction || 'northbound',
+          fetchedComprehensiveData?.road_edge_geometry || null  // Pass REAL road edges
         );
       } else {
         console.log('🚧 Using standard AGTTM placement logic');
