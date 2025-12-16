@@ -1733,68 +1733,46 @@ export default function PlanEditor({ user, onLogout }) {
   };
 
   const handleDownloadPdf = async () => {
-    // Try backend generation first if plan is saved, otherwise use client-side
+    // Try backend generation first if plan is saved
     if (planId) {
       try {
         const token = localStorage.getItem('token');
+        toast.info('Generating PDF... Please wait');
+        
         const response = await axios.get(`${API}/plans/${planId}/pdf`, {
           headers: { Authorization: `Bearer ${token}` },
           responseType: 'blob'
         });
         
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `${formData.plan_name.replace(/\s+/g, '_')}_traffic_plan.pdf`);
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        window.URL.revokeObjectURL(url);
+        // Create blob and open in new window to bypass sandbox restrictions
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const blobUrl = window.URL.createObjectURL(blob);
         
-        toast.success('PDF downloaded successfully');
+        // Open in new window - this bypasses iframe sandbox
+        const newWindow = window.open(blobUrl, '_blank');
+        if (!newWindow) {
+          // If popup blocked, try anchor approach
+          const link = document.createElement('a');
+          link.href = blobUrl;
+          link.target = '_blank';
+          link.setAttribute('download', `${formData.plan_name.replace(/\s+/g, '_')}_traffic_plan.pdf`);
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+        
+        // Clean up after delay
+        setTimeout(() => window.URL.revokeObjectURL(blobUrl), 5000);
+        
+        toast.success('✅ PDF generated! Check your Downloads folder or the new tab.');
+        toast.info('💡 Tip: Scroll down to "Download Your Files" section for all generated files');
         return;
       } catch (error) {
-        console.error('Backend PDF generation failed, falling back to client-side:', error);
+        console.error('Backend PDF generation failed:', error);
+        toast.error('PDF generation failed. Try scrolling down to the download section.');
       }
-    }
-    
-    // Client-side PDF generation (if backend fails or no planId)
-    toast.info('Generating PDF from current form data...');
-    
-    try {
-      // Use the same TGS generator to create a basic PDF
-      const tgsGenerator = new ProfessionalTGSGenerator();
-      
-      const roadData = {
-        workzone_size: formData.road_data?.workzone_size || 0,
-        speed_limit: formData.road_data?.speed_limit || 60,
-        road_classification: formData.road_data?.road_classification || 'Urban Road',
-        lanes: 2,
-        governing_body: formData.road_data?.governing_body || 'Local Council'
-      };
-
-      const companyInfo = {
-        name: formData.company_details?.name || 'Company Name',
-        address: formData.company_details?.address || '',
-        phone: formData.company_details?.phone || '',
-        abn: formData.company_details?.abn || ''
-      };
-
-      const pdfBlob = await tgsGenerator.generateProfessionalPDF(formData, formData.devices || [], roadData, companyInfo);
-      
-      const url = window.URL.createObjectURL(pdfBlob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `${(formData.plan_name || 'TMP').replace(/\s+/g, '_')}_traffic_plan.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-      
-      toast.success('✅ PDF generated successfully (client-side)');
-    } catch (error) {
-      console.error('Client-side PDF generation failed:', error);
-      toast.error('Failed to generate PDF. Please save the plan first.');
+    } else {
+      toast.error('Please save the plan first before downloading PDF');
     }
   };
 
