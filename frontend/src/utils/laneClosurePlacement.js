@@ -223,7 +223,12 @@ class LaneClosurePlacement {
       const coneLat = start_lat + (end_lat - start_lat) * ratio;
       const coneLng = start_lng + (end_lng - start_lng) * ratio;
       
-      const workzoneConePos = this.offsetPosition({lat: coneLat, lng: coneLng}, bearing - 90, 0.5);
+      let workzoneConePos = this.offsetPosition({lat: coneLat, lng: coneLng}, bearing - 90, 0.5);
+      
+      // SNAP WORKZONE EDGE CONES TO REAL ROAD EDGE
+      if (hasRealEdges) {
+        workzoneConePos = this.snapToRoadEdge(workzoneConePos.lat, workzoneConePos.lng, roadEdgeGeometry.start.left_edge, 'workzone');
+      }
       
       devices.push({
         id: `cone_workzone_${i}_${Date.now()}`,
