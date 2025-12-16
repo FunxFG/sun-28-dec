@@ -75,17 +75,24 @@ class LaneClosurePlacement {
     
     console.log(`  Traffic ${trafficDirection}: signs placed at bearing ${approachBearing}° (${approachAdjustment}° from road bearing)`);
     
-    // 1. RWA/40 Sign (bilateral)
+    // 1. RWA/40 Sign (bilateral) - SNAP TO REAL ROAD EDGE
     const rwaDistance = spacing.rwa_distance;
     const rwaPosition = this.calculatePosition(start_lat, start_lng, approachBearing, rwaDistance);
     
-    // Calculate left and right positions (perpendicular to road)
-    const rwaLeft = this.offsetPosition(rwaPosition, bearing - 90, 3); // 3m left
-    const rwaRight = this.offsetPosition(rwaPosition, bearing + 90, 3); // 3m right
+    // Calculate initial positions
+    let rwaLeft = this.offsetPosition(rwaPosition, bearing - 90, 3); // 3m left
+    let rwaRight = this.offsetPosition(rwaPosition, bearing + 90, 3); // 3m right
+    
+    // SNAP TO REAL ROAD EDGES if available
+    if (hasRealEdges) {
+      console.log('  🎯 Snapping RWA signs to REAL road edges');
+      rwaLeft = this.snapToRoadEdge(rwaLeft.lat, rwaLeft.lng, roadEdgeGeometry.start.left_edge, 'left');
+      rwaRight = this.snapToRoadEdge(rwaRight.lat, rwaRight.lng, roadEdgeGeometry.start.right_edge, 'right');
+    }
     
     console.log('  RWA center:', rwaPosition);
-    console.log('  RWA left:', rwaLeft);
-    console.log('  RWA right:', rwaRight);
+    console.log('  RWA left (snapped):', rwaLeft);
+    console.log('  RWA right (snapped):', rwaRight);
     
     devices.push({
       id: `rwa_left_${Date.now()}`,
