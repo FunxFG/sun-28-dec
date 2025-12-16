@@ -437,7 +437,7 @@ export default function RiskMatrixInteractive({ formData, setFormData, onNext })
                         </div>
                         <div className="flex flex-col items-end gap-2">
                           <Badge className={getRiskColor(risk.risk_level)}>
-                            {risk.risk_level} ({risk.risk_score?.rating || risk.risk_score?.score || risk.risk_score})
+                            {risk.risk_level} ({typeof risk.risk_score === 'object' ? (risk.risk_score?.rating || risk.risk_score?.score || 'N/A') : risk.risk_score})
                           </Badge>
                           <Button
                             variant="ghost"
@@ -471,7 +471,7 @@ export default function RiskMatrixInteractive({ formData, setFormData, onNext })
                             <div className="flex gap-4 mt-2 text-sm">
                               <span>Likelihood: <strong>{risk.likelihood}</strong></span>
                               <span>Consequence: <strong>{risk.consequence_level}</strong></span>
-                              <span>Score: <strong>{risk.risk_score?.score || risk.risk_score}</strong></span>
+                              <span>Score: <strong>{typeof risk.risk_score === 'object' ? (risk.risk_score?.score || 'N/A') : risk.risk_score}</strong></span>
                             </div>
                           </div>
 
@@ -565,7 +565,7 @@ export default function RiskMatrixInteractive({ formData, setFormData, onNext })
                             <div className="flex gap-4 mt-2 text-sm">
                               <span>Likelihood: <strong>{risk.residual_likelihood}</strong></span>
                               <span>Consequence: <strong>{risk.residual_consequence_level}</strong></span>
-                              <span>Score: <strong>{risk.residual_risk_score?.score || risk.residual_risk_score}</strong></span>
+                              <span>Score: <strong>{typeof risk.residual_risk_score === 'object' ? (risk.residual_risk_score?.score || 'N/A') : risk.residual_risk_score}</strong></span>
                               <Badge className={getRiskColor(risk.residual_risk_level)}>
                                 {typeof risk.residual_risk_level === 'object' ? risk.residual_risk_level?.level || 'Unknown' : risk.residual_risk_level}
                               </Badge>
