@@ -143,7 +143,7 @@ export default function FileDownloadManager({ autoRefresh = false }) {
             <div>
               <p className="text-green-800 font-semibold">✅ Downloads Work Here!</p>
               <p className="text-green-700 text-sm">
-                Click any "Download" button → File opens in new tab → Downloads automatically to your device
+                Click any &quot;Download&quot; button → File opens in new tab → Downloads automatically to your device
               </p>
             </div>
           </div>
@@ -240,11 +240,11 @@ export default function FileDownloadManager({ autoRefresh = false }) {
           <div className="flex items-start gap-2">
             <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
             <div className="text-sm text-blue-800">
-              <p className="font-semibold">💡 If download doesn't start:</p>
+              <p className="font-semibold">💡 If download doesn&apos;t start:</p>
               <ul className="list-disc ml-4 mt-1 space-y-0.5">
                 <li>Allow popups for this site in your browser</li>
                 <li>Click the link icon to copy URL, then paste in new tab</li>
-                <li>Right-click "Download" and select "Open in new tab"</li>
+                <li>Right-click &quot;Download&quot; and select &quot;Open in new tab&quot;</li>
               </ul>
             </div>
           </div>
