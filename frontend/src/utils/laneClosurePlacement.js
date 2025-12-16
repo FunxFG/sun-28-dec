@@ -122,12 +122,19 @@ class LaneClosurePlacement {
       }
     });
     
-    // 2. Lane Merge Right (T1-15) - bilateral
+    // 2. Lane Merge Right (T1-15) - bilateral - SNAP TO REAL ROAD EDGE
     const mergeDistance = rwaDistance - spacing.merge_distance;
     const mergePosition = this.calculatePosition(start_lat, start_lng, approachBearing, mergeDistance);
     
-    const mergeLeft = this.offsetPosition(mergePosition, bearing - 90, 3);
-    const mergeRight = this.offsetPosition(mergePosition, bearing + 90, 3);
+    let mergeLeft = this.offsetPosition(mergePosition, bearing - 90, 3);
+    let mergeRight = this.offsetPosition(mergePosition, bearing + 90, 3);
+    
+    // SNAP TO REAL ROAD EDGES if available
+    if (hasRealEdges) {
+      console.log('  🎯 Snapping Merge signs to REAL road edges');
+      mergeLeft = this.snapToRoadEdge(mergeLeft.lat, mergeLeft.lng, roadEdgeGeometry.start.left_edge, 'left');
+      mergeRight = this.snapToRoadEdge(mergeRight.lat, mergeRight.lng, roadEdgeGeometry.start.right_edge, 'right');
+    }
     
     devices.push({
       id: `merge_left_${Date.now()}`,
