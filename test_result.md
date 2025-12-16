@@ -812,6 +812,19 @@ frontend:
         agent: "testing"
         comment: "✅ PASSED - Field Guide placement endpoint working excellently. POST /api/field-guide/calculate-zones calculates all SA DIT Field Guide zones correctly: buffer zone (20m), advance warning (50m for 60km/h), taper area (30m), safety buffer (40m), work area (100m as specified). Total setup length calculated. All distances comply with SA DIT Field Guide Version 9.1 2021. 200 OK response."
 
+frontend:
+  - task: "File Download Functionality Testing"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/FileDownloadManager.js, frontend/src/components/PlanEditor.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Testing file download functionality on SafeRoadWorks Traffic Management Plan application. Need to test: 1) Navigate to application and bypass authentication, 2) Create new plan with specific addresses (185 Torrens Road, Ridleyton SA to 200 Torrens Road, Ridleyton SA), 3) Auto-place devices, 4) Test FileDownloadManager component - verify download buttons trigger window.open(), test copy URL functionality, verify 209+ files available. Expected: Download buttons should open files in new tabs, download section should show available files."
+
 
 metadata:
   created_by: "main_agent"
