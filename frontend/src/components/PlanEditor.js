@@ -1822,17 +1822,26 @@ export default function PlanEditor({ user, onLogout }) {
         companyInfo
       );
       
-      // Download the PDF
-      const url = window.URL.createObjectURL(pdfBlob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `${(formData.plan_name || 'TGS').replace(/\s+/g, '_')}_TGS_Drawing.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
+      // Open in new window to bypass sandbox restrictions
+      const blobUrl = window.URL.createObjectURL(pdfBlob);
+      const newWindow = window.open(blobUrl, '_blank');
       
-      toast.success(`✅ Professional TGS Drawing downloaded with ${formData.devices.length} devices!`);
+      if (!newWindow) {
+        // If popup blocked, try anchor approach
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.target = '_blank';
+        link.setAttribute('download', `${(formData.plan_name || 'TGS').replace(/\s+/g, '_')}_TGS_Drawing.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+      
+      // Clean up after delay
+      setTimeout(() => window.URL.revokeObjectURL(blobUrl), 5000);
+      
+      toast.success(`✅ Professional TGS Drawing generated with ${formData.devices.length} devices!`);
+      toast.info('💡 Tip: Scroll down to "Download Your Files" section for all generated files');
     } catch (error) {
       console.error('Error generating TGS PDF:', error);
       toast.error(`Failed to generate TGS Drawing: ${error.message}`);
