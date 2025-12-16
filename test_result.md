@@ -834,8 +834,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Professional TMP Frontend Integration"
-    - "End-to-End Testing with Professional TMP Data"
+    - "File Download Functionality Testing"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
   test_all: false
