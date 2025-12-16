@@ -4872,9 +4872,17 @@ export default function PlanEditor({ user, onLogout }) {
               planId={planId}
             />
 
-            {/* File Download Manager */}
-            <div className="mt-8">
-              <FileDownloadManager />
+            {/* File Download Manager - PRIMARY DOWNLOAD METHOD */}
+            <div className="mt-8" id="download-section">
+              <div className="mb-4 p-4 bg-yellow-50 border-2 border-yellow-400 rounded-lg">
+                <h3 className="text-lg font-bold text-yellow-800 flex items-center gap-2">
+                  ⬇️ Download Your Files Here
+                </h3>
+                <p className="text-yellow-700 text-sm">
+                  After generating TMP or TGS, scroll down to find your files ready for download
+                </p>
+              </div>
+              <FileDownloadManager autoRefresh={true} />
             </div>
 
           </div>
