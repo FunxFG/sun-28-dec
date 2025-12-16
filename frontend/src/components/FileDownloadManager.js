@@ -84,10 +84,17 @@ export default function FileDownloadManager() {
         </div>
       )}
 
-      <div className="mt-4 p-3 bg-blue-50 rounded border border-blue-200">
-        <p className="text-sm text-blue-800">
-          <strong>Tip:</strong> Click "Download" to open the file in a new tab. Your browser will download it automatically or you can right-click → "Save as..."
-        </p>
+      <div className="mt-4 space-y-2">
+        <div className="p-3 bg-green-50 rounded border border-green-200">
+          <p className="text-sm text-green-800">
+            <strong>✅ DOWNLOADS WORK HERE:</strong> Click any "Download" button below. Files open in new tab automatically!
+          </p>
+        </div>
+        <div className="p-3 bg-blue-50 rounded border border-blue-200">
+          <p className="text-sm text-blue-800">
+            <strong>💡 How to Download:</strong> Click "Download" → File opens in new tab → Browser downloads automatically OR right-click → "Save as..."
+          </p>
+        </div>
       </div>
     </div>
   );
