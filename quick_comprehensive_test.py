@@ -10,7 +10,7 @@ import time
 def test_comprehensive_endpoint():
     """Test the comprehensive auto-populate endpoint with one scenario"""
     
-    base_url = "https://trafsafe.preview.emergentagent.com"
+    base_url = "https://trafficcontrol.preview.emergentagent.com"
     api_url = f"{base_url}/api"
     
     print("🔍 Testing Comprehensive Auto-Populate Endpoint...")
