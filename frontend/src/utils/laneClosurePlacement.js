@@ -248,8 +248,15 @@ class LaneClosurePlacement {
     const endDistance = 10; // 10m after end (forward direction)
     const endPosition = this.calculatePosition(end_lat, end_lng, bearing, endDistance);
     
-    const endLeft = this.offsetPosition(endPosition, bearing - 90, 3);
-    const endRight = this.offsetPosition(endPosition, bearing + 90, 3);
+    let endLeft = this.offsetPosition(endPosition, bearing - 90, 3);
+    let endRight = this.offsetPosition(endPosition, bearing + 90, 3);
+    
+    // SNAP END SIGNS TO REAL ROAD EDGES
+    if (hasRealEdges) {
+      console.log('  🎯 Snapping End Roadworks signs to REAL road edges');
+      endLeft = this.snapToRoadEdge(endLeft.lat, endLeft.lng, roadEdgeGeometry.end?.left_edge || roadEdgeGeometry.start.left_edge, 'left');
+      endRight = this.snapToRoadEdge(endRight.lat, endRight.lng, roadEdgeGeometry.end?.right_edge || roadEdgeGeometry.start.right_edge, 'right');
+    }
     
     devices.push({
       id: `end_left_${Date.now()}`,
