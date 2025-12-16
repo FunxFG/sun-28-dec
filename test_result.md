@@ -940,3 +940,27 @@ agent_communication:
     message: "🎯 TGS GENERATION FEATURE TESTING COMPLETE - COMPREHENSIVE ANALYSIS COMPLETED! Conducted thorough testing of TGS (Traffic Guidance Scheme) generation feature as requested. ✅ FEATURE LOCATION CONFIRMED: Found 'Visual Traffic Guidance Scheme (TGS)' section in plan editor, located by scrolling down in the interface. TGS generation button labeled 'Generate Visual TGS' is present and visible. ✅ PREREQUISITE VALIDATION: TGS button correctly requires device placement first - shows as disabled until devices are auto-placed on map. Warning message displays: 'Place devices on the map first using Auto-Place Devices button'. ✅ BACKEND INTEGRATION VERIFIED: Backend has comprehensive TGS endpoints (/api/tgs/generate-visual, /api/tgs/generate-improved) with visual_tgs_with_signs.py and improved_visual_tgs.py modules. TGS documentation generator and streetview integration confirmed in backend code. ✅ WORKFLOW TESTED: Successfully filled required fields (185 Torrens Road, Ridleyton SA → 200 Torrens Road, Ridleyton SA), selected work type, clicked Auto-Place Devices button. Auto-placement process initiated but encountered API rate limiting (OpenStreetMap 429/504 errors) preventing device placement completion. ⚠️ CURRENT ISSUE: TGS generation button remains disabled because auto-placement didn't complete successfully due to external API rate limiting (OpenStreetMap Overpass API returning 429 Too Many Requests and 504 Gateway Timeout errors). This is not a TGS feature bug but an external dependency issue. ✅ TGS FEATURE ASSESSMENT: TGS generation feature is properly implemented and functional. Button becomes enabled once devices are successfully placed. The feature includes professional TGS with sign overlays on satellite imagery and Street View perspectives as described. Backend logs show comprehensive auto-population working (200 OK responses) but some external APIs experiencing rate limits. 🔧 RECOMMENDATION: TGS feature is working correctly - the issue is external API rate limiting preventing device auto-placement completion. Once devices are placed successfully, TGS generation should work as designed."
   - agent: "main"
     message: "✨ PHASE 2 FRONTEND INTEGRATION COMPLETE - PROFESSIONAL TMP UI CARDS ADDED! Successfully integrated all professional TMP modules into PlanEditor.js frontend: ✅ STATE MANAGEMENT: Added 5 new state fields to comprehensiveData (dilapidation_report, traffic_volumes, comprehensive_risk_assessment, permit_application, field_guide_zones). ✅ DATA FETCHING: Created fetchProfessionalTMPData() function that calls all 5 new backend endpoints asynchronously with proper error handling. ✅ UI DISPLAY CARDS: Added 5 comprehensive data display cards: (1) 📋 Dilapidation Report Card (purple border) - shows report type, location, inspector, defect categories with download button, (2) 🚗 Traffic Volume Analysis Card (blue border) - displays AADT, peak hour volumes, commercial percentages, construction traffic data, (3) ⚠️ Comprehensive Risk Assessment Card (red border) - shows overall risk level, identified hazards with risk ratings (Extreme/High/Medium/Low color coding), (4) 📋 DIT TMC Permit Application Card (green border) - displays application ID, status, DIT TMC contact info, critical requirements with MANDATORY warnings, (5) 📏 SA DIT Field Guide Zones Card (indigo border) - shows zone breakdown (buffer, advance warning, taper, safety buffer, work area) with SA DIT Field Guide Version 9.1 2021 compliance badge. ✅ INTEGRATION: All cards integrate with existing comprehensive auto-populate flow, fetched automatically when user clicks 'Fetch Road Data', displayed in collapsible Review Auto-Populated Data section. ✅ DOWNLOAD FUNCTIONALITY: Each card includes JSON download button for data export. Frontend compiled successfully. Ready for end-to-end testing."
+
+# Test Results
+
+## Current Testing Session - Dec 16, 2025
+
+### Test Focus: File Download Functionality Fix
+- **Issue**: Users cannot download generated TMP/TGS files via UI
+- **Root Cause**: Sandboxed iframe environment blocking frontend download methods
+- **Fix Applied**: 
+  1. Updated `FileDownloadManager.js` to use `window.open()` for downloads
+  2. Made download section more prominent with auto-refresh
+  3. Added copy-to-clipboard for download URLs
+  4. Updated PDF download functions to open in new tabs
+
+### Backend API Verification (PASSED):
+- `/api/files/list` - Returns 209 files ✅
+- `/api/files/download/{filename}` - Returns 200 OK with correct content-type ✅
+- Direct URL works: `https://trafficcontrol.preview.emergentagent.com/api/files/download/tgs_20251216_090812_TGS_Drawing.pdf`
+
+### Files Modified:
+1. `/app/frontend/src/components/FileDownloadManager.js` - Enhanced download UI
+2. `/app/frontend/src/components/PlanEditor.js` - Fixed PDF download functions
+
+### Next: Frontend Testing Agent to verify UI downloads work
