@@ -52,8 +52,10 @@ export default function FileDownloadManager() {
       </div>
 
       {files.length === 0 ? (
-        <div className="text-center py-8 text-gray-500">
-          No files found. Generate a TGS or TMP to see files here.
+        <div className="text-center py-12 border-2 border-dashed border-gray-300 rounded">
+          <p className="text-gray-500 text-lg mb-2">📁 No files found yet</p>
+          <p className="text-sm text-gray-400">Generate a TGS or TMP to see downloadable files here</p>
+          <p className="text-xs text-gray-400 mt-2">Files will appear automatically after generation</p>
         </div>
       ) : (
         <div className="space-y-2">
