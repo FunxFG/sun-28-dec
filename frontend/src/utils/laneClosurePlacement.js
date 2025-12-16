@@ -190,7 +190,12 @@ class LaneClosurePlacement {
       const easedProgress = progress * progress; // Accelerating taper
       const lateralOffset = taperStartOffset - (easedProgress * (taperStartOffset - taperEndOffset));
       
-      const conePos = this.offsetPosition(conePosition, bearing - 90, lateralOffset);
+      let conePos = this.offsetPosition(conePosition, bearing - 90, lateralOffset);
+      
+      // SNAP TAPER CONES TO REAL ROAD EDGE (critical - keeps taper on road, not property!)
+      if (hasRealEdges) {
+        conePos = this.snapToRoadEdge(conePos.lat, conePos.lng, roadEdgeGeometry.start.left_edge, 'taper');
+      }
       
       devices.push({
         id: `cone_taper_${i}_${Date.now() + i}`,
