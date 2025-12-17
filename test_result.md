@@ -1000,3 +1000,33 @@ agent_communication:
 - Lines 440, 474, 568 updated to handle object types for risk_score properly
 
 ## P0 BLOCKER RESOLVED: File Downloads Now Working ✅
+
+---
+
+## P1: Device Placement Logic - Fix Applied
+
+### Changes Made to `/app/frontend/src/utils/laneClosurePlacement.js`:
+
+1. **Fixed `snapToRoadEdge` function** (critical bug):
+   - Function expected objects `{lat, lng}` but backend returns arrays `[lat, lng]`
+   - Now handles both formats with proper validation
+   - Added detailed logging for debugging
+
+2. **Improved taper cone placement**:
+   - Changed from quadratic easing to LINEAR taper (AS 1742.3 compliant)
+   - Cones now form a proper diagonal line from lane edge to curb
+   - Only snaps cones that are clearly off-road (>5m from edge)
+   - Uses real road width when available
+
+3. **Enhanced logging**:
+   - Detailed road edge geometry structure logging
+   - Shows snapped vs original coordinates
+   - Shows taper cone positions and offsets
+
+### Test Required:
+- Navigate to /demo
+- Fill in: Start Address "185 Torrens Road, Ridleyton SA", End Address "200 Torrens Road, Ridleyton SA"
+- Set Traffic Direction to "West" (toward Adelaide)
+- Click "Auto-Place Devices"
+- Verify devices are placed on road edges, not on private property
+- Check browser console for placement logs
