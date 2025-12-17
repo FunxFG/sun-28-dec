@@ -3981,61 +3981,7 @@ export default function PlanEditor({ user, onLogout }) {
               </Card>
             )}
 
-            {/* NEW: Comprehensive Risk Assessment Card */}
-            {comprehensiveData.comprehensive_risk_assessment && (
-              <Card className="border-l-4 border-l-red-500">
-                <CardHeader>
-                  <CardTitle className="text-red-700">⚠️ Comprehensive Risk Assessment</CardTitle>
-                  <CardDescription>SA DIT Field Guide compliant hazard analysis</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {comprehensiveData.comprehensive_risk_assessment.overall_risk_level && (
-                    <div className={`border p-3 rounded ${
-                      comprehensiveData.comprehensive_risk_assessment.overall_risk_level.includes('Extreme')
-                        ? 'bg-red-50 border-red-300'
-                        : comprehensiveData.comprehensive_risk_assessment.overall_risk_level.includes('High')
-                        ? 'bg-orange-50 border-orange-300'
-                        : 'bg-yellow-50 border-yellow-300'
-                    }`}>
-                      <div className="font-semibold mb-1">Overall Risk Level</div>
-                      <div className="text-sm">{comprehensiveData.comprehensive_risk_assessment.overall_risk_level}</div>
-                    </div>
-                  )}
-
-                  {comprehensiveData.comprehensive_risk_assessment.identified_hazards?.length > 0 && (
-                    <div>
-                      <h4 className="font-semibold mb-2 text-sm">Identified Hazards ({comprehensiveData.comprehensive_risk_assessment.identified_hazards.length})</h4>
-                      <div className="space-y-2">
-                        {comprehensiveData.comprehensive_risk_assessment.identified_hazards.slice(0, 3).map((hazard, idx) => (
-                          <div key={idx} className={`border p-2 rounded ${
-                            (hazard.risk_rating?.level || hazard.risk_rating) === 'Extreme' ? 'bg-red-50 border-red-300' :
-                            (hazard.risk_rating?.level || hazard.risk_rating) === 'High' ? 'bg-orange-50 border-orange-300' :
-                            (hazard.risk_rating?.level || hazard.risk_rating) === 'Medium' ? 'bg-yellow-50 border-yellow-300' :
-                            'bg-green-50 border-green-300'
-                          }`}>
-                            <div className="font-medium text-sm">{hazard.hazard}</div>
-                            <div className="text-xs text-gray-600">{hazard.description}</div>
-                            <div className="text-xs mt-1">
-                              <span className="font-medium">Risk:</span> {hazard.risk_rating?.level || hazard.risk_rating} (L:{hazard.likelihood} × C:{hazard.consequence})
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  <Button
-                    onClick={() => downloadJSON(comprehensiveData.comprehensive_risk_assessment, 'risk_assessment.json')}
-                    variant="outline"
-                    size="sm"
-                    className="w-full"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Download Risk Assessment
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
+            {/* Comprehensive Risk Assessment Card - REMOVED: Using RiskMatrixInteractive instead */}
 
             {/* NEW: DIT TMC Permit Application Card */}
             {comprehensiveData.permit_application && (
