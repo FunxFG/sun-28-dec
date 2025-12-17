@@ -101,6 +101,7 @@ class VisualTGSGenerator:
     ) -> Optional[Image.Image]:
         """Fetch satellite imagery from Google Maps Static API"""
         try:
+            logger.info(f"🗺️ Fetching satellite image for coordinates: lat={lat}, lng={lng}, zoom={zoom}")
             params = {
                 'center': f"{lat},{lng}",
                 'zoom': zoom,
@@ -108,6 +109,7 @@ class VisualTGSGenerator:
                 'maptype': 'hybrid',  # Changed from 'satellite' to 'hybrid' to show street names
                 'key': self.api_key
             }
+            logger.info(f"🗺️ Google Maps API params: {params}")
             
             async with httpx.AsyncClient(timeout=30.0) as client:
                 response = await client.get(GOOGLE_STATIC_MAPS_BASE, params=params)
