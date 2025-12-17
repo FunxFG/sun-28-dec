@@ -210,51 +210,82 @@ export default function FileDownloadManager({ autoRefresh = false }) {
         ) : (
           <div className="space-y-2 max-h-96 overflow-y-auto">
             {filteredFiles.map((file, index) => (
-              <div 
-                key={index} 
-                className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 hover:border-green-300 transition-colors"
-              >
-                <div className="flex items-center gap-3 flex-1 min-w-0">
-                  {getFileIcon(file.name)}
-                  <div className="flex-1 min-w-0">
-                    <div className="font-medium truncate text-sm" title={file.name}>
-                      {file.name}
-                    </div>
-                    <div className="text-xs text-gray-500 flex gap-2">
-                      <span className="bg-gray-100 px-1.5 py-0.5 rounded">{getFileTypeLabel(file.name)}</span>
-                      <span>{formatFileSize(file.size)}</span>
-                      <span>•</span>
-                      <span>{formatDate(file.modified)}</span>
+              <div key={index} className="border rounded-lg hover:border-green-300 transition-colors">
+                <div className="flex items-center justify-between p-3 hover:bg-gray-50">
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    {getFileIcon(file.name)}
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium truncate text-sm" title={file.name}>
+                        {file.name}
+                      </div>
+                      <div className="text-xs text-gray-500 flex gap-2">
+                        <span className="bg-gray-100 px-1.5 py-0.5 rounded">{getFileTypeLabel(file.name)}</span>
+                        <span>{formatFileSize(file.size)}</span>
+                        <span>•</span>
+                        <span>{formatDate(file.modified)}</span>
+                      </div>
                     </div>
                   </div>
+                  <div className="flex gap-2 ml-2 flex-shrink-0">
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => copyDownloadUrl(file.name)}
+                      title="Copy download URL"
+                    >
+                      {downloadStatus[file.name] === 'copied' ? '✓ Copied!' : <><ExternalLink className="w-4 h-4 mr-1" />Copy URL</>}
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      className={`${downloadStatus[file.name] === 'success' ? 'bg-green-600' : 'bg-blue-600'} hover:bg-blue-700 text-white`}
+                      onClick={() => handleDownload(file.name)}
+                    >
+                      {downloadStatus[file.name] === 'success' ? (
+                        <>
+                          <CheckCircle className="w-4 h-4 mr-1" />
+                          Done
+                        </>
+                      ) : (
+                        <>
+                          <Download className="w-4 h-4 mr-1" />
+                          Download
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex gap-2 ml-2 flex-shrink-0">
-                  <Button 
-                    size="sm" 
-                    variant="outline"
-                    onClick={() => copyDownloadUrl(file.name)}
-                    title="Copy download URL"
-                  >
-                    {downloadStatus[file.name] === 'copied' ? '✓' : <ExternalLink className="w-4 h-4" />}
-                  </Button>
-                  <Button 
-                    size="sm" 
-                    className={`${downloadStatus[file.name] === 'success' ? 'bg-green-600' : 'bg-blue-600'} hover:bg-blue-700 text-white`}
-                    onClick={() => handleDownload(file.name)}
-                  >
-                    {downloadStatus[file.name] === 'success' ? (
-                      <>
-                        <CheckCircle className="w-4 h-4 mr-1" />
-                        Done
-                      </>
-                    ) : (
-                      <>
-                        <Download className="w-4 h-4 mr-1" />
-                        Download
-                      </>
-                    )}
-                  </Button>
-                </div>
+                {/* Show URL when download is clicked */}
+                {showUrlFor === file.name && (
+                  <div className="px-3 pb-3 pt-1 bg-yellow-50 border-t border-yellow-200">
+                    <p className="text-xs text-yellow-800 font-medium mb-1">📋 If download didn&apos;t start, copy this URL:</p>
+                    <div className="flex gap-2">
+                      <input 
+                        type="text" 
+                        readOnly 
+                        value={getDownloadUrl(file.name)}
+                        className="flex-1 text-xs p-2 bg-white border rounded font-mono select-all"
+                        onClick={(e) => e.target.select()}
+                      />
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => {
+                          navigator.clipboard.writeText(getDownloadUrl(file.name));
+                          setDownloadStatus(prev => ({ ...prev, [file.name]: 'copied' }));
+                        }}
+                      >
+                        Copy
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => setShowUrlFor(null)}
+                      >
+                        ✕
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
