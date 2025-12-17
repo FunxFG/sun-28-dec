@@ -1154,10 +1154,18 @@ export default function PlanEditor({ user, onLogout }) {
               window.detourArrows.push(arrowMarker);
             });
           }
+        } catch (detourError) {
+          console.warn('⚠️ Detour rendering error (non-fatal):', detourError.message);
         }
-        
-        // Center map on work zone
-        googleMapRef.current.setCenter({ lat: startCoords.lat, lng: startCoords.lng });
+      }
+      
+      // Center map on work zone (with error handling)
+      if (googleMapRef.current && startCoords) {
+        try {
+          googleMapRef.current.setCenter({ lat: startCoords.lat, lng: startCoords.lng });
+        } catch(e) {
+          console.warn('⚠️ Could not center map:', e.message);
+        }
       }
 
       const totalDevices = devicesWithMeasurements.length;
