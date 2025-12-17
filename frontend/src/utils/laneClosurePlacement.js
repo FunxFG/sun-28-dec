@@ -31,22 +31,34 @@ class LaneClosurePlacement {
     
     const { start_lat, start_lng, end_lat, end_lng, road_bearing } = workZoneData;
     
-    console.log('🚧 Placing Lane Closure devices WITH REAL ROAD EDGES');
+    console.log('🚧 ====== LANE CLOSURE DEVICE PLACEMENT ======');
     console.log('  Speed limit:', speedLimit, 'km/h');
     console.log('  Traffic direction:', trafficDirection);
-    console.log('  Spacing rules:', spacing);
+    console.log('  Spacing rules:', JSON.stringify(spacing));
     console.log('  Start coords:', start_lat, start_lng);
     console.log('  End coords:', end_lat, end_lng);
-    console.log('  Road bearing:', road_bearing);
-    console.log('  Real road edges available:', !!roadEdgeGeometry);
+    console.log('  Road bearing (provided):', road_bearing);
+    
+    // Detailed road edge geometry check
+    console.log('  Road edge geometry object:', roadEdgeGeometry ? 'Present' : 'NULL');
+    if (roadEdgeGeometry) {
+      console.log('    - start:', roadEdgeGeometry.start ? 'Present' : 'Missing');
+      if (roadEdgeGeometry.start) {
+        console.log('    - left_edge:', roadEdgeGeometry.start.left_edge ? `${roadEdgeGeometry.start.left_edge.length} points` : 'Missing');
+        console.log('    - right_edge:', roadEdgeGeometry.start.right_edge ? `${roadEdgeGeometry.start.right_edge.length} points` : 'Missing');
+        console.log('    - road width:', roadEdgeGeometry.start.width || 'Unknown');
+        console.log('    - bearing:', roadEdgeGeometry.start.bearing || 'Unknown');
+      }
+    }
     
     // Check if we have REAL road edge data
     const hasRealEdges = roadEdgeGeometry && 
                         roadEdgeGeometry.start && 
                         roadEdgeGeometry.start.left_edge && 
+                        Array.isArray(roadEdgeGeometry.start.left_edge) &&
                         roadEdgeGeometry.start.left_edge.length > 0;
     
-    console.log('  Using real road geometry:', hasRealEdges);
+    console.log('  ✅ Using real road geometry:', hasRealEdges);
     
     // Validate inputs
     if (!start_lat || !start_lng || !end_lat || !end_lng) {
