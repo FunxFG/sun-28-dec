@@ -1,0 +1,27 @@
+================================================================================
+SIGNAGE SCHEDULE - Torrens_Road_Adelaide
+Generated: 17 December 2025 at 08:20 AM
+================================================================================
+
+Total Signs: 10
+
+#    Sign Code       Sign Name                                Distance (m) Side    
+--------------------------------------------------------------------------------
+1    N/A             Unknown Sign                             0.0          left    
+2    N/A             Unknown Sign                             0.0          left    
+3    N/A             Unknown Sign                             0.0          left    
+4    N/A             Unknown Sign                             0.0          left    
+5    N/A             Unknown Sign                             0.0          left    
+6    N/A             Unknown Sign                             0.0          left    
+7    N/A             Unknown Sign                             0.0          left    
+8    N/A             Unknown Sign                             0.0          right   
+9    N/A             Unknown Sign                             0.0          right   
+10   N/A             Unknown Sign                             0.0          right   
+
+================================================================================
+NOTES:
+- All distances measured from work zone start point
+- Signs must be installed according to AS 1742.3 specifications
+- Bilateral signage required where indicated
+- All signs must be maintained in clean, reflective condition
+================================================================================
