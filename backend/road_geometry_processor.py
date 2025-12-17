@@ -170,8 +170,11 @@ class RoadGeometryProcessor:
                 except Exception:
                     pass
             
-            # Calculate centerline (simplified - just snapped point)
-            centerline = [(snapped_lat, snapped_lng)]
+            # Calculate centerline - need at least 2 points for edge calculation
+            # Create a short segment in the direction of the bearing
+            SEGMENT_LENGTH = 50  # meters
+            end_lat, end_lng = self._offset_position(snapped_lat, snapped_lng, bearing, SEGMENT_LENGTH)
+            centerline = [(snapped_lat, snapped_lng), (end_lat, end_lng)]
             
             # Calculate edges
             edges = self._calculate_road_edges(centerline, road_width)
