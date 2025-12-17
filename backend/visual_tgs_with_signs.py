@@ -105,7 +105,7 @@ class VisualTGSGenerator:
                 'center': f"{lat},{lng}",
                 'zoom': zoom,
                 'size': f"{width}x{height}",
-                'maptype': 'satellite',
+                'maptype': 'hybrid',  # Changed from 'satellite' to 'hybrid' to show street names
                 'key': self.api_key
             }
             
