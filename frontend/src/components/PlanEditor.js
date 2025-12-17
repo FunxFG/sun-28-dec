@@ -1035,7 +1035,7 @@ export default function PlanEditor({ user, onLogout }) {
           // Clear existing markers
           if (window.deviceMarkers) {
             window.deviceMarkers.forEach(marker => {
-              try { marker.setMap(null); } catch(e) {}
+              try { marker.setMap(null); } catch(e) { /* ignore marker cleanup errors */ }
             });
           }
           window.deviceMarkers = [];
