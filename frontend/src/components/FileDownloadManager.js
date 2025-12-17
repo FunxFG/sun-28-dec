@@ -59,62 +59,60 @@ export default function FileDownloadManager({ autoRefresh = false }) {
     return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
+  const [showUrlFor, setShowUrlFor] = useState(null);
+  
   const handleDownload = (filename) => {
     const url = `${API}/api/files/download/${encodeURIComponent(filename)}`;
     console.log('📥 Download URL:', url);
     
     setDownloadStatus(prev => ({ ...prev, [filename]: 'downloading' }));
     
-    // Method 1: Try iframe download (works in sandboxed environments)
+    // Show the URL immediately so user can copy it
+    setShowUrlFor(filename);
+    
+    // Try multiple download methods
+    let downloadStarted = false;
+    
+    // Method 1: Hidden iframe (often works in sandboxed environments)
     try {
       const iframe = document.createElement('iframe');
       iframe.style.display = 'none';
       iframe.src = url;
       document.body.appendChild(iframe);
-      
-      // Remove iframe after download starts
       setTimeout(() => {
-        document.body.removeChild(iframe);
-      }, 5000);
-      
-      setDownloadStatus(prev => ({ ...prev, [filename]: 'success' }));
-      
-      // Show the URL for manual copy if needed
-      alert(`Download started!\n\nIf the file doesn't download automatically, copy this URL and paste in a new browser tab:\n\n${url}`);
-      
-      setTimeout(() => {
-        setDownloadStatus(prev => ({ ...prev, [filename]: null }));
-      }, 3000);
-      return;
+        try { document.body.removeChild(iframe); } catch(e) { /* ignore */ }
+      }, 10000);
+      downloadStarted = true;
     } catch (e) {
-      console.log('Iframe method failed, trying alternatives...');
+      console.log('Iframe method failed');
     }
     
-    // Method 2: Try window.open
-    const newWindow = window.open(url, '_blank');
+    // Method 2: window.open
+    if (!downloadStarted) {
+      const newWindow = window.open(url, '_blank');
+      if (newWindow) downloadStarted = true;
+    }
     
-    if (newWindow) {
-      setDownloadStatus(prev => ({ ...prev, [filename]: 'success' }));
-    } else {
-      // Method 3: Hidden anchor as last resort
+    // Method 3: Anchor element
+    if (!downloadStarted) {
       const link = document.createElement('a');
       link.href = url;
       link.target = '_blank';
-      link.rel = 'noopener noreferrer';
       link.download = filename;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
-      setDownloadStatus(prev => ({ ...prev, [filename]: 'success' }));
-      
-      // Show URL in case nothing worked
-      alert(`If the download didn't start, copy this URL:\n\n${url}`);
     }
+    
+    setDownloadStatus(prev => ({ ...prev, [filename]: 'success' }));
     
     setTimeout(() => {
       setDownloadStatus(prev => ({ ...prev, [filename]: null }));
-    }, 3000);
+    }, 5000);
+  };
+  
+  const getDownloadUrl = (filename) => {
+    return `${API}/api/files/download/${encodeURIComponent(filename)}`;
   };
 
   const copyDownloadUrl = (filename) => {
