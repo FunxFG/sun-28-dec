@@ -1028,50 +1028,66 @@ export default function PlanEditor({ user, onLogout }) {
         detour_data: detourData // Store detour information
       }));
 
-      // Re-initialize map with new devices
-      if (googleMapRef.current) {
-        console.log('🗺️ Adding markers to map...');
-        // Clear existing markers
-        if (window.deviceMarkers) {
-          window.deviceMarkers.forEach(marker => marker.setMap(null));
-        }
-        window.deviceMarkers = [];
-        
-        // Add new device markers
-        console.log(`   Creating ${devicesWithMeasurements.length} markers...`);
-        devicesWithMeasurements.forEach((device, idx) => {
-          if (idx < 3) {
-            console.log(`   Marker ${idx}: ${device.device_name} at (${device.position_lat}, ${device.position_lng})`);
+      // Re-initialize map with new devices (with error handling)
+      if (googleMapRef.current && window.google?.maps) {
+        try {
+          console.log('🗺️ Adding markers to map...');
+          // Clear existing markers
+          if (window.deviceMarkers) {
+            window.deviceMarkers.forEach(marker => {
+              try { marker.setMap(null); } catch(e) {}
+            });
           }
-          addDeviceMarker(googleMapRef.current, device);
-        });
-        console.log(`   ✅ ${window.deviceMarkers?.length || 0} markers added to map`);
-        
-        // CRITICAL FIX: Adjust map bounds to show all devices
-        if (devicesWithMeasurements.length > 0 && window.google) {
-          console.log('📐 Adjusting map bounds to show all devices...');
-          const bounds = new window.google.maps.LatLngBounds();
+          window.deviceMarkers = [];
           
-          // Add all device positions to bounds
-          devicesWithMeasurements.forEach(device => {
-            if (device.position_lat && device.position_lng) {
-              bounds.extend(new window.google.maps.LatLng(device.position_lat, device.position_lng));
+          // Add new device markers
+          console.log(`   Creating ${devicesWithMeasurements.length} markers...`);
+          devicesWithMeasurements.forEach((device, idx) => {
+            if (idx < 3) {
+              console.log(`   Marker ${idx}: ${device.device_name} at (${device.position_lat}, ${device.position_lng})`);
+            }
+            try {
+              addDeviceMarker(googleMapRef.current, device);
+            } catch(markerErr) {
+              console.warn('   Warning: Could not add marker:', markerErr.message);
             }
           });
+          console.log(`   ✅ ${window.deviceMarkers?.length || 0} markers added to map`);
           
-          // Fit map to show all devices
-          googleMapRef.current.fitBounds(bounds);
-          
-          // Add some padding
-          setTimeout(() => {
-            const currentZoom = googleMapRef.current.getZoom();
-            if (currentZoom > 17) {
-              googleMapRef.current.setZoom(17); // Don't zoom in too much
-            }
-          }, 100);
-          
-          console.log('   ✅ Map bounds adjusted');
+          // CRITICAL FIX: Adjust map bounds to show all devices
+          if (devicesWithMeasurements.length > 0) {
+            console.log('📐 Adjusting map bounds to show all devices...');
+            const bounds = new window.google.maps.LatLngBounds();
+            
+            // Add all device positions to bounds
+            devicesWithMeasurements.forEach(device => {
+              if (device.position_lat && device.position_lng) {
+                bounds.extend(new window.google.maps.LatLng(device.position_lat, device.position_lng));
+              }
+            });
+            
+            // Fit map to show all devices
+            googleMapRef.current.fitBounds(bounds);
+            
+            // Add some padding
+            setTimeout(() => {
+              try {
+                const currentZoom = googleMapRef.current?.getZoom();
+                if (currentZoom && currentZoom > 17) {
+                  googleMapRef.current.setZoom(17); // Don't zoom in too much
+                }
+              } catch(e) {}
+            }, 100);
+            
+            console.log('   ✅ Map bounds adjusted');
+          }
+        } catch (mapError) {
+          console.error('⚠️ Map update error (non-fatal):', mapError.message);
+          // Continue anyway - devices are stored in form state
         }
+      } else {
+        console.log('⚠️ Map not available, devices stored in state only');
+      }
         
         // Draw detour routes if available
         if (detourData) {
