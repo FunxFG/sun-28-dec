@@ -61,33 +61,60 @@ export default function FileDownloadManager({ autoRefresh = false }) {
 
   const handleDownload = (filename) => {
     const url = `${API}/api/files/download/${encodeURIComponent(filename)}`;
-    console.log('📥 Opening download URL:', url);
+    console.log('📥 Download URL:', url);
     
     setDownloadStatus(prev => ({ ...prev, [filename]: 'downloading' }));
     
-    // Use window.open to bypass iframe sandbox restrictions
+    // Method 1: Try iframe download (works in sandboxed environments)
+    try {
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = url;
+      document.body.appendChild(iframe);
+      
+      // Remove iframe after download starts
+      setTimeout(() => {
+        document.body.removeChild(iframe);
+      }, 5000);
+      
+      setDownloadStatus(prev => ({ ...prev, [filename]: 'success' }));
+      
+      // Show the URL for manual copy if needed
+      alert(`Download started!\n\nIf the file doesn't download automatically, copy this URL and paste in a new browser tab:\n\n${url}`);
+      
+      setTimeout(() => {
+        setDownloadStatus(prev => ({ ...prev, [filename]: null }));
+      }, 3000);
+      return;
+    } catch (e) {
+      console.log('Iframe method failed, trying alternatives...');
+    }
+    
+    // Method 2: Try window.open
     const newWindow = window.open(url, '_blank');
     
     if (newWindow) {
       setDownloadStatus(prev => ({ ...prev, [filename]: 'success' }));
-      setTimeout(() => {
-        setDownloadStatus(prev => ({ ...prev, [filename]: null }));
-      }, 3000);
     } else {
-      // Fallback: try with hidden anchor
+      // Method 3: Hidden anchor as last resort
       const link = document.createElement('a');
       link.href = url;
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
+      link.download = filename;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       
       setDownloadStatus(prev => ({ ...prev, [filename]: 'success' }));
-      setTimeout(() => {
-        setDownloadStatus(prev => ({ ...prev, [filename]: null }));
-      }, 3000);
+      
+      // Show URL in case nothing worked
+      alert(`If the download didn't start, copy this URL:\n\n${url}`);
     }
+    
+    setTimeout(() => {
+      setDownloadStatus(prev => ({ ...prev, [filename]: null }));
+    }, 3000);
   };
 
   const copyDownloadUrl = (filename) => {
