@@ -379,8 +379,13 @@ class LaneClosurePlacement {
     /**
      * Snap a device position to the nearest point on the ACTUAL road edge
      * Returns the coordinates of the closest road edge point
+     * 
+     * Road edge points can be either:
+     * - Array format: [[lat, lng], [lat, lng], ...]
+     * - Object format: [{lat, lng}, {lat, lng}, ...]
      */
     if (!roadEdgePoints || roadEdgePoints.length === 0) {
+      console.log(`    ⚠️ No road edge points for ${side}, using original position`);
       return { lat: targetLat, lng: targetLng };
     }
     
@@ -389,18 +394,43 @@ class LaneClosurePlacement {
     
     // Find the closest point on the road edge
     for (const edgePoint of roadEdgePoints) {
+      // Handle both array format [lat, lng] and object format {lat, lng}
+      let pointLat, pointLng;
+      
+      if (Array.isArray(edgePoint)) {
+        // Array format: [lat, lng]
+        pointLat = edgePoint[0];
+        pointLng = edgePoint[1];
+      } else if (edgePoint && typeof edgePoint === 'object') {
+        // Object format: {lat, lng}
+        pointLat = edgePoint.lat;
+        pointLng = edgePoint.lng;
+      } else {
+        console.warn('    Invalid edge point format:', edgePoint);
+        continue;
+      }
+      
+      // Validate coordinates
+      if (typeof pointLat !== 'number' || typeof pointLng !== 'number' || 
+          isNaN(pointLat) || isNaN(pointLng)) {
+        console.warn('    Invalid coordinates:', pointLat, pointLng);
+        continue;
+      }
+      
       const distance = this.calculateDistance(
         targetLat, targetLng,
-        edgePoint.lat, edgePoint.lng
+        pointLat, pointLng
       );
       
       if (distance < minDistance) {
         minDistance = distance;
-        closestPoint = { lat: edgePoint.lat, lng: edgePoint.lng };
+        closestPoint = { lat: pointLat, lng: pointLng };
       }
     }
     
-    console.log(`    Snapped ${side} to road edge: distance ${minDistance.toFixed(1)}m`);
+    console.log(`    ✅ Snapped ${side} to road edge: distance ${minDistance.toFixed(1)}m`);
+    console.log(`       Original: (${targetLat.toFixed(6)}, ${targetLng.toFixed(6)})`);
+    console.log(`       Snapped:  (${closestPoint.lat.toFixed(6)}, ${closestPoint.lng.toFixed(6)})`);
     return closestPoint;
   }
 
