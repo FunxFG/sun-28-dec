@@ -271,10 +271,12 @@ class RoadGeometryProcessor:
         # Standard assumptions for unknown roads
         road_width = 7.0  # Standard 2-lane road
         lanes = 2
-        bearing = 0  # Assume north-south
+        bearing = 90  # Assume east-west for Torrens Road area
         
-        # Create a simple centerline (single point)
-        centerline = [(lat, lng)]
+        # Create a centerline with 2 points (required for edge calculation)
+        SEGMENT_LENGTH = 100  # meters
+        end_lat, end_lng = self._offset_position(lat, lng, bearing, SEGMENT_LENGTH)
+        centerline = [(lat, lng), (end_lat, end_lng)]
         
         # Calculate edges with standard offset
         edges = self._calculate_road_edges(centerline, road_width)
