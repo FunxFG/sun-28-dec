@@ -705,36 +705,52 @@ export default function PlanEditor({ user, onLogout }) {
       toast.info('Auto-populating TMP and calculating device placement...');
       console.log('📡 Starting auto-population process...');
       
-      // IMPORTANT: First call fetchRoadData which includes comprehensive auto-populate
-      // Store the returned comprehensive data for immediate use
-      const fetchedComprehensiveData = await fetchRoadData();
+      // Step 1: Fetch road data with comprehensive auto-populate
+      console.log('📍 Step 1: Fetching road data...');
+      let fetchedComprehensiveData = null;
+      try {
+        fetchedComprehensiveData = await fetchRoadData();
+        console.log('✅ Step 1 complete: fetchRoadData returned', fetchedComprehensiveData ? 'data' : 'null');
+      } catch (fetchError) {
+        console.error('⚠️ Step 1 warning: fetchRoadData failed, continuing with basic data:', fetchError.message);
+      }
       
-      // Get coordinates for start and end addresses
+      // Step 2: Get coordinates for start and end addresses
+      console.log('📍 Step 2: Geocoding addresses...');
       const startCoords = await geocodeAddress(formData.work_details.start_address);
       const endCoords = await geocodeAddress(formData.work_details.end_address);
+      console.log('✅ Step 2 complete: Start:', startCoords, 'End:', endCoords);
       
-      // Get road data
+      // Step 3: Get road data
+      console.log('📍 Step 3: Fetching road data from API...');
       const roadDataResponse = await fetch(`${API}/road-data?start_address=${encodeURIComponent(formData.work_details.start_address)}&end_address=${encodeURIComponent(formData.work_details.end_address)}`);
       const roadData = await roadDataResponse.json();
+      console.log('✅ Step 3 complete: Road data:', roadData.road_name, roadData.speed_limit + 'km/h');
 
-      // AUTO-POPULATE TMP FORM
-      const TMPAutoPopulator = (await import('../utils/tmpAutoPopulator.js')).default;
-      const autoPopulator = new TMPAutoPopulator();
-      
-      const userProfile = JSON.parse(localStorage.getItem('user') || '{}');
-      
-      const minimalInputs = {
-        work_type: formData.work_details.work_type,
-        work_style: formData.work_details.work_style,
-        start_address: formData.work_details.start_address,
-        end_address: formData.work_details.end_address,
-        start_date: formData.work_details.start_date,
-        end_date: formData.work_details.end_date,
-        road_occupancy: formData.road_occupancy
-      };
-      
-      const autoPopulatedData = await autoPopulator.autoPopulateTMP(minimalInputs, userProfile, roadData);
-      console.log('Auto-populated TMP data:', autoPopulatedData);
+      // Step 4: AUTO-POPULATE TMP FORM (Skip if it causes issues)
+      console.log('📍 Step 4: Auto-populating TMP form...');
+      let autoPopulatedData = {};
+      try {
+        const TMPAutoPopulator = (await import('../utils/tmpAutoPopulator.js')).default;
+        const autoPopulator = new TMPAutoPopulator();
+        
+        const userProfile = JSON.parse(localStorage.getItem('user') || '{}');
+        
+        const minimalInputs = {
+          work_type: formData.work_details.work_type,
+          work_style: formData.work_details.work_style,
+          start_address: formData.work_details.start_address,
+          end_address: formData.work_details.end_address,
+          start_date: formData.work_details.start_date,
+          end_date: formData.work_details.end_date,
+          road_occupancy: formData.road_occupancy
+        };
+        
+        autoPopulatedData = await autoPopulator.autoPopulateTMP(minimalInputs, userProfile, roadData);
+        console.log('✅ Step 4 complete: TMP auto-populated');
+      } catch (autoPopError) {
+        console.error('⚠️ Step 4 warning: TMP auto-populate failed, continuing:', autoPopError.message);
+      }
       
       // Merge auto-populated data with existing form data
       setFormData(prev => ({
