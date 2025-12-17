@@ -1088,9 +1088,10 @@ export default function PlanEditor({ user, onLogout }) {
       } else {
         console.log('⚠️ Map not available, devices stored in state only');
       }
-        
-        // Draw detour routes if available
-        if (detourData) {
+      
+      // Draw detour routes if available (in separate try block)
+      if (detourData && googleMapRef.current && window.google?.maps) {
+        try {
           const DetourRouter = (await import('../utils/detourRouter.js')).default;
           const detourRouter = new DetourRouter(GOOGLE_MAPS_API_KEY);
           const polylines = detourRouter.createDetourPolylines(
