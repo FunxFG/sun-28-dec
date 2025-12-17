@@ -31,6 +31,12 @@ from risk_registry import (
     LIKELIHOOD_LEVELS,
     CONSEQUENCE_LEVELS
 )
+from csv_risk_parser import (
+    parse_csv_risk_registry,
+    get_risks_by_category,
+    get_risk_summary,
+    CATEGORY_INFO as CSV_RISK_CATEGORIES
+)
 from device_library import (
     DEVICE_LIBRARY,
     DEVICE_CATEGORIES,
