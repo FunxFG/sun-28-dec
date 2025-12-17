@@ -386,18 +386,39 @@ export default function PlanEditor({ user, onLogout }) {
       fetchPlan();
     }
     
-    // Load Google Maps script
+    // Load Google Maps script (singleton pattern to prevent multiple loads)
     const loadGoogleMaps = () => {
-      if (window.google) {
+      // Check if already loaded and ready
+      if (window.google?.maps?.Map) {
+        console.log('🗺️ Google Maps already loaded, initializing map...');
         initializeMap();
         return;
       }
 
+      // Check if script is already being loaded
+      const existingScript = document.querySelector('script[src*="maps.googleapis.com"]');
+      if (existingScript) {
+        console.log('🗺️ Google Maps script exists, waiting for load...');
+        // Wait for it to load
+        const checkLoaded = setInterval(() => {
+          if (window.google?.maps?.Map) {
+            clearInterval(checkLoaded);
+            console.log('🗺️ Google Maps now ready');
+            initializeMap();
+          }
+        }, 200);
+        return;
+      }
+
+      // First time loading - add script
+      console.log('🗺️ Loading Google Maps script...');
       const script = document.createElement('script');
       script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBbADUvXPuDrd51iZogWd6sR-DMolBjHfs&libraries=places`;
       script.async = true;
       script.defer = true;
+      script.id = 'google-maps-script';
       script.onload = () => {
+        console.log('🗺️ Google Maps script loaded');
         setTimeout(initializeMap, 100);
       };
       document.head.appendChild(script);
