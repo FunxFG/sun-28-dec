@@ -705,14 +705,28 @@ export default function PlanEditor({ user, onLogout }) {
       toast.info('Auto-populating TMP and calculating device placement...');
       console.log('📡 Starting auto-population process...');
       
-      // Step 1: Fetch road data with comprehensive auto-populate
-      console.log('📍 Step 1: Fetching road data...');
+      // Step 1: Fetch comprehensive auto-populate data directly (faster, more reliable)
+      console.log('📍 Step 1: Fetching comprehensive data...');
       let fetchedComprehensiveData = null;
       try {
-        fetchedComprehensiveData = await fetchRoadData();
-        console.log('✅ Step 1 complete: fetchRoadData returned', fetchedComprehensiveData ? 'data' : 'null');
+        // First get coordinates for the start address
+        const geoResponse = await fetch(`${API}/geocode?address=${encodeURIComponent(formData.work_details.start_address)}`);
+        const geoData = await geoResponse.json();
+        console.log('  Geocoded:', geoData.lat, geoData.lng);
+        
+        // Now get comprehensive data with coordinates
+        const compResponse = await fetch(`${API}/comprehensive-auto-populate?start_address=${encodeURIComponent(formData.work_details.start_address)}&end_address=${encodeURIComponent(formData.work_details.end_address)}&lat=${geoData.lat}&lng=${geoData.lng}&work_type=${formData.work_details.work_type || 'construction'}`);
+        fetchedComprehensiveData = await compResponse.json();
+        
+        console.log('✅ Step 1 complete: Comprehensive data received');
+        console.log('  road_edge_geometry:', fetchedComprehensiveData.road_edge_geometry ? 'present' : 'missing');
+        if (fetchedComprehensiveData.road_edge_geometry?.start) {
+          console.log('  left_edge points:', fetchedComprehensiveData.road_edge_geometry.start.left_edge?.length || 0);
+          console.log('  right_edge points:', fetchedComprehensiveData.road_edge_geometry.start.right_edge?.length || 0);
+        }
       } catch (fetchError) {
-        console.error('⚠️ Step 1 warning: fetchRoadData failed, continuing with basic data:', fetchError.message);
+        console.error('⚠️ Step 1 warning: Comprehensive data fetch failed:', fetchError.message);
+        console.error('  Full error:', fetchError);
       }
       
       // Step 2: Get coordinates for start and end addresses
