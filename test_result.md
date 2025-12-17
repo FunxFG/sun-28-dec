@@ -813,20 +813,20 @@ frontend:
         comment: "✅ PASSED - Field Guide placement endpoint working excellently. POST /api/field-guide/calculate-zones calculates all SA DIT Field Guide zones correctly: buffer zone (20m), advance warning (50m for 60km/h), taper area (30m), safety buffer (40m), work area (100m as specified). Total setup length calculated. All distances comply with SA DIT Field Guide Version 9.1 2021. 200 OK response."
 
 frontend:
-  - task: "File Download Functionality Testing"
+  - task: "Device Placement Functionality Testing (SafeRoadWorks TMP)"
     implemented: true
     working: false
-    file: "frontend/src/components/FileDownloadManager.js, frontend/src/components/PlanEditor.js"
+    file: "frontend/src/components/PlanEditor.js, frontend/src/utils/agttmCompliantRules.js"
     stuck_count: 1
-    priority: "high"
+    priority: "critical"
     needs_retesting: false
     status_history:
       - working: "NA"
         agent: "testing"
-        comment: "Testing file download functionality on SafeRoadWorks Traffic Management Plan application. Need to test: 1) Navigate to application and bypass authentication, 2) Create new plan with specific addresses (185 Torrens Road, Ridleyton SA to 200 Torrens Road, Ridleyton SA), 3) Auto-place devices, 4) Test FileDownloadManager component - verify download buttons trigger window.open(), test copy URL functionality, verify 209+ files available. Expected: Download buttons should open files in new tabs, download section should show available files."
+        comment: "Testing device placement functionality on SafeRoadWorks Traffic Management Plan application as requested. Test objectives: 1) Navigate to /demo route, 2) Fill Work Details (185 Torrens Road, Ridleyton SA → 200 Torrens Road, Ridleyton SA, Traffic Direction: West), 3) Click Auto-Place Devices button, 4) Check console for placement logs (LANE CLOSURE DEVICE PLACEMENT, Using real road geometry, Snapped to road edge), 5) Verify devices appear on map with proper road snapping, 6) Check taper cones form diagonal line."
       - working: false
         agent: "testing"
-        comment: "❌ CRITICAL FRONTEND ISSUE: FileDownloadManager component cannot be tested due to React application not loading properly. Frontend shows blank pages after authentication bypass. However, BACKEND FILE DOWNLOAD FUNCTIONALITY IS WORKING PERFECTLY: ✅ Backend API /api/files/list returns 209 files as expected ✅ Download endpoints working correctly (GET /api/files/download/{filename}) ✅ Files open in new tabs with proper Content-Type headers ✅ All file types available (PDF, PNG, TXT) including TGS drawings, TMP documents, signage schedules, specifications ✅ Direct download URLs functional (tested: tgs_20251216_090812_TGS_Drawing.pdf opens successfully) The FileDownloadManager component code looks correct with proper window.open() implementation and copy URL functionality. Issue is React app not rendering - likely related to known authentication session persistence problems. Backend file system is production-ready, frontend UI needs React rendering fix."
+        comment: "❌ DEVICE PLACEMENT PARTIALLY WORKING - BACKEND OK, FRONTEND ISSUE: Comprehensive testing reveals mixed results. ✅ WORKING COMPONENTS: Demo page loads correctly at /demo route, form fields accept addresses (185 Torrens Road, Ridleyton SA → 200 Torrens Road, Ridleyton SA), Auto-Place Devices button found and clickable, all backend API calls working perfectly (road-data: 200 OK, traffic-assessment: 200 OK, site-assessment: 200 OK, comprehensive-auto-populate: called successfully), Google Maps integration operational. ❌ CRITICAL ISSUES: No devices appear on map (0 devices placed), no placement console logs generated (missing 'LANE CLOSURE DEVICE PLACEMENT', 'Using real road geometry', 'Snapped to road edge' messages), no taper cones or device markers visible, Google Maps API loaded multiple times causing conflicts ('You have included the Google Maps JavaScript API multiple times on this page'). ✅ BACKEND VERIFICATION: Backend logs confirm successful API processing - geocoding working (-34.8899492, 138.5719451), comprehensive auto-populate returning 200 OK with 26 datasets, SA traffic intelligence integration operational. ❌ FRONTEND ISSUE: Auto-placement algorithm not executing properly despite API calls succeeding - suggests JavaScript execution problem in device placement logic after data retrieval. The comprehensive auto-populate endpoint is being called but the frontend placement algorithm (agttmCompliantRules.js) is not processing the returned data to generate and display devices on the map."
 
 
 metadata:
