@@ -838,6 +838,10 @@ export default function PlanEditor({ user, onLogout }) {
         throw new Error('Invalid coordinates for auto-placement');
       }
       
+      console.log('📍 Step 5: Preparing device placement...');
+      console.log('  workZoneData:', JSON.stringify(workZoneData));
+      console.log('  roadGeometry (initial):', roadGeometry ? `${roadGeometry.road_name}, ${roadGeometry.speed_limit}km/h` : 'null');
+      
       // Ensure road geometry has minimum required data
       if (!roadGeometry || !roadGeometry.road_name) {
         console.warn('Limited road geometry data, using defaults');
@@ -856,6 +860,7 @@ export default function PlanEditor({ user, onLogout }) {
                            (formData.work_details?.work_type && formData.work_details.work_type.toLowerCase().includes('lane closure')) ||
                            true; // DEFAULT: Always use lane closure logic for better placement
       
+      console.log('✅ Step 5 complete: Ready for device placement');
       console.log('=== DEVICE PLACEMENT START ===');
       console.log('  isLaneClosure:', isLaneClosure);
       console.log('  formData.control_measures:', formData.control_measures);
