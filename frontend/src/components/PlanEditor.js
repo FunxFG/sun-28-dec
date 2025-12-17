@@ -828,32 +828,57 @@ export default function PlanEditor({ user, onLogout }) {
       }
       
       // Check if lane closure template is being used
+      // Default to using lane closure logic which has better road edge snapping
       const isLaneClosure = formData.control_measures?.lane_closure || 
                            formData.road_occupancy?.lane_closure ||
-                           (formData.work_details?.work_type && formData.work_details.work_type.toLowerCase().includes('lane closure'));
+                           (formData.work_details?.work_type && formData.work_details.work_type.toLowerCase().includes('lane closure')) ||
+                           true; // DEFAULT: Always use lane closure logic for better placement
+      
+      console.log('=== DEVICE PLACEMENT START ===');
+      console.log('  isLaneClosure:', isLaneClosure);
+      console.log('  formData.control_measures:', formData.control_measures);
+      console.log('  formData.road_occupancy:', formData.road_occupancy);
+      console.log('  Fetched comprehensive data:', !!fetchedComprehensiveData);
+      console.log('  Road edge geometry:', fetchedComprehensiveData?.road_edge_geometry ? 'Available' : 'Not available');
       
       let autoDevices;
       
-      if (isLaneClosure) {
-        console.log('🚧 Using Lane Closure placement logic with REAL road edges');
-        console.log('  Traffic direction:', formData.road_occupancy?.affected_traffic_direction);
-        console.log('  Road edge geometry available:', !!fetchedComprehensiveData?.road_edge_geometry);
-        
-        const laneClosurePlacement = await import('../utils/laneClosurePlacement.js');
-        autoDevices = laneClosurePlacement.default.placeLaneClosureDevices(
-          workZoneData,
-          roadGeometry.speed_limit || 60,
-          fetchedComprehensiveData?.side_streets || [],
-          formData.road_occupancy?.affected_traffic_direction || 'northbound',
-          fetchedComprehensiveData?.road_edge_geometry || null  // Pass REAL road edges
-        );
-      } else {
-        console.log('🚧 Using standard AGTTM placement logic');
-        autoDevices = await agttmRules.default.calculateAGTTMCompliantPlacement(
-          workZoneData,
-          roadGeometry,
-          GOOGLE_MAPS_API_KEY
-        );
+      try {
+        if (isLaneClosure) {
+          console.log('🚧 Using Lane Closure placement logic with REAL road edges');
+          console.log('  Traffic direction:', formData.road_occupancy?.affected_traffic_direction || formData.work_details?.affected_traffic_direction || 'West');
+          console.log('  Road edge geometry available:', !!fetchedComprehensiveData?.road_edge_geometry);
+          
+          const laneClosurePlacement = await import('../utils/laneClosurePlacement.js');
+          
+          // Use affected_traffic_direction from various sources
+          const trafficDirection = formData.road_occupancy?.affected_traffic_direction || 
+                                   formData.work_details?.affected_traffic_direction || 
+                                   'West'; // Default to West for Torrens Road
+          
+          autoDevices = laneClosurePlacement.default.placeLaneClosureDevices(
+            workZoneData,
+            roadGeometry.speed_limit || 60,
+            fetchedComprehensiveData?.side_streets || [],
+            trafficDirection,
+            fetchedComprehensiveData?.road_edge_geometry || null  // Pass REAL road edges
+          );
+          
+          console.log('🚧 Lane closure placement returned:', autoDevices?.length || 0, 'devices');
+        } else {
+          console.log('🚧 Using standard AGTTM placement logic');
+          autoDevices = await agttmRules.default.calculateAGTTMCompliantPlacement(
+            workZoneData,
+            roadGeometry,
+            GOOGLE_MAPS_API_KEY
+          );
+        }
+      } catch (placementError) {
+        console.error('❌ Device placement error:', placementError);
+        console.error('   Error details:', placementError.message);
+        console.error('   Stack:', placementError.stack);
+        toast.error(`Device placement failed: ${placementError.message}`);
+        autoDevices = [];
       }
 
       console.log('Auto-placement complete. Devices returned:', autoDevices);
