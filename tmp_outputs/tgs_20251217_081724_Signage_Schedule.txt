@@ -1,0 +1,17 @@
+================================================================================
+SIGNAGE SCHEDULE - tgs
+Generated: 17 December 2025 at 08:17 AM
+================================================================================
+
+Total Signs: 0
+
+#    Sign Code       Sign Name                                Distance (m) Side    
+--------------------------------------------------------------------------------
+
+================================================================================
+NOTES:
+- All distances measured from work zone start point
+- Signs must be installed according to AS 1742.3 specifications
+- Bilateral signage required where indicated
+- All signs must be maintained in clean, reflective condition
+================================================================================
