@@ -2305,15 +2305,24 @@ async def get_risks(category: str = None, source: str = "csv"):
 async def get_risk_details(risk_id: str):
     """
     Get detailed information for a specific risk by ID
+    Searches both CSV and hardcoded registries
     """
     try:
-        risks = get_risk_registry()
-        risk = next((r for r in risks if r.get('id') == risk_id), None)
+        # First try CSV registry
+        csv_risks = parse_csv_risk_registry()
+        risk = next((r for r in csv_risks if r.get('id') == risk_id), None)
         
-        if not risk:
-            raise HTTPException(status_code=404, detail=f"Risk {risk_id} not found")
+        if risk:
+            return {**risk, "source": "csv"}
         
-        return risk
+        # Fallback to hardcoded
+        hardcoded_risks = get_hardcoded_risk_registry()
+        risk = next((r for r in hardcoded_risks if r.get('id') == risk_id), None)
+        
+        if risk:
+            return {**risk, "source": "hardcoded"}
+        
+        raise HTTPException(status_code=404, detail=f"Risk {risk_id} not found")
     except HTTPException:
         raise
     except Exception as e:
