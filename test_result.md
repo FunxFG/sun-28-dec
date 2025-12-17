@@ -1034,13 +1034,28 @@ agent_communication:
    - Shows snapped vs original coordinates
    - Shows taper cone positions and offsets
 
-### Test Required:
-- Navigate to /demo
-- Fill in: Start Address "185 Torrens Road, Ridleyton SA", End Address "200 Torrens Road, Ridleyton SA"
-- Set Traffic Direction to "West" (toward Adelaide)
-- Click "Auto-Place Devices"
-- Verify devices are placed on road edges, not on private property
-- Check browser console for placement logs
+### Test Results - PARTIAL SUCCESS:
+
+**Backend fixes - WORKING:**
+- ✅ Road edge geometry now returns 2 points each for left_edge and right_edge (was 0)
+- ✅ `/api/geocode` - 200 OK
+- ✅ `/api/comprehensive-auto-populate` - 200 OK  
+- ✅ `/api/road-data` - 200 OK
+- ✅ Lane closure placement algorithm creates 32 devices correctly (tested via Node.js)
+
+**Frontend fixes - PARTIAL:**
+- ✅ Google Maps singleton loading implemented (prevents multiple loads)
+- ✅ Error handling added around Google Maps operations
+- ✅ Form data binding verified working (addresses persist in state)
+- ⚠️ Device markers sometimes appear, sometimes don't (race condition suspected)
+
+**Screenshot evidence:**
+- One test showed map zoomed to Adelaide with device markers visible
+- Other tests showed map staying at Brisbane default
+
+**Remaining issue:**
+- The button onClick handler logging doesn't consistently appear in console
+- May be a React event propagation issue or timing issue with async operations
 
 ## DEVICE PLACEMENT TESTING RESULTS - Dec 17, 2025
 
