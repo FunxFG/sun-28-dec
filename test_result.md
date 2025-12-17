@@ -837,9 +837,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "File Download Functionality Testing"
+    - "Device Placement Functionality Testing (SafeRoadWorks TMP)"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
+    - "Device Placement Functionality Testing (SafeRoadWorks TMP)"
   test_all: false
   test_priority: "high_first"
   backend_testing_complete: true
@@ -849,6 +850,7 @@ test_plan:
   new_modules_integration_phase: true
   professional_tmp_backend_complete: true
   professional_tmp_frontend_complete: true
+  device_placement_testing_complete: true
 
 agent_communication:
   - agent: "main"
