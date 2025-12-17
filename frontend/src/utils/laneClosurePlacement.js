@@ -167,34 +167,55 @@ class LaneClosurePlacement {
     // 3. Buffer zone (no signs, just space)
     const bufferStart = mergeDistance - spacing.buffer;
     
-    // 4. Taper with cones - PROPER GRADUATED TAPER
+    // 4. Taper with cones - PROPER GRADUATED TAPER (AS 1742.3 compliant)
     const taperStart = bufferStart - spacing.taper;
     const coneSpacing = 5; // 5m between cones in taper
     const numCones = Math.floor(spacing.taper / coneSpacing);
     
-    console.log(`  Creating ${numCones} taper cones over ${spacing.taper}m`);
+    console.log(`  🔶 Creating ${numCones} taper cones over ${spacing.taper}m`);
     
-    // Taper formula: gradually angle from full lane width to edge
-    // Start: 3.5m from centerline (full lane position)
-    // End: 0.3m from edge (workzone boundary)
-    const taperStartOffset = 3.5; // Full lane width
-    const taperEndOffset = 0.3;   // Edge of workzone
+    // For taper placement:
+    // - First cone should be at edge of carriageway (approximately 3m from centerline)
+    // - Last cone should be at the work zone edge (road shoulder/curb)
+    // - Cones form a diagonal line guiding traffic around the work zone
+    
+    // Use road edge data to calculate proper lane width if available
+    let laneEdgeOffset = 3.0;  // Distance from centerline to lane edge
+    let curbOffset = 0.5;      // Distance from centerline to curb/work zone
+    
+    if (hasRealEdges && roadEdgeGeometry.start.width) {
+      // Use actual road width data
+      const halfWidth = roadEdgeGeometry.start.width / 2;
+      laneEdgeOffset = halfWidth - 0.5;  // Lane edge is slightly inside road edge
+      curbOffset = halfWidth + 0.3;      // Curb is at road edge plus small offset
+      console.log(`    Using real road width: ${roadEdgeGeometry.start.width}m`);
+    }
     
     for (let i = 0; i <= numCones; i++) {
       const progress = i / numCones; // 0 to 1
       const coneDistance = taperStart - (i * coneSpacing);
       const conePosition = this.calculatePosition(start_lat, start_lng, approachBearing, coneDistance);
       
-      // Graduated taper: smooth curve from lane to edge
-      // Using quadratic easing for smooth transition
-      const easedProgress = progress * progress; // Accelerating taper
-      const lateralOffset = taperStartOffset - (easedProgress * (taperStartOffset - taperEndOffset));
+      // LINEAR taper: straight diagonal line from lane edge to curb
+      // (Not quadratic - that creates a curve which isn't correct for AS 1742.3)
+      const lateralOffset = laneEdgeOffset - (progress * (laneEdgeOffset - curbOffset));
       
+      // Calculate cone position perpendicular to road bearing
       let conePos = this.offsetPosition(conePosition, bearing - 90, lateralOffset);
       
-      // SNAP TAPER CONES TO REAL ROAD EDGE (critical - keeps taper on road, not property!)
+      // IMPORTANT: For taper cones, we DON'T snap to nearest road edge
+      // because the taper needs to form a diagonal line across the lane
+      // Only snap the final position if it would be off the road
       if (hasRealEdges) {
-        conePos = this.snapToRoadEdge(conePos.lat, conePos.lng, roadEdgeGeometry.start.left_edge, 'taper');
+        // Verify cone is within road bounds (between left and right edges)
+        const nearestEdge = this.snapToRoadEdge(conePos.lat, conePos.lng, roadEdgeGeometry.start.left_edge, 'taper-check');
+        const distToEdge = this.calculateDistance(conePos.lat, conePos.lng, nearestEdge.lat, nearestEdge.lng);
+        
+        // If cone is more than 5m from road edge, it's likely on private property - snap it
+        if (distToEdge > 5) {
+          console.log(`    ⚠️ Taper cone ${i} was ${distToEdge.toFixed(1)}m from road - snapping`);
+          conePos = nearestEdge;
+        }
       }
       
       devices.push({
@@ -206,13 +227,19 @@ class LaneClosurePlacement {
         properties: {
           side: 'left',
           distance_from_start: coneDistance,
-          lateral_offset: lateralOffset.toFixed(1) + 'm',
+          lateral_offset: lateralOffset.toFixed(2) + 'm',
           taper_position: `${(progress * 100).toFixed(0)}%`,
           in_taper: true,
+          taper_index: i,
+          total_taper_cones: numCones + 1,
           auto_placed: true
         }
       });
     }
+    
+    console.log(`    ✅ Placed ${numCones + 1} taper cones in diagonal line`);
+    console.log(`    Taper: ${laneEdgeOffset.toFixed(1)}m (lane edge) → ${curbOffset.toFixed(1)}m (curb)`);
+
     
     // 5. Workzone edge marking (more cones along workzone)
     const workzoneLength = this.calculateDistance(start_lat, start_lng, end_lat, end_lng);
