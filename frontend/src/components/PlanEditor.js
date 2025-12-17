@@ -1076,7 +1076,7 @@ export default function PlanEditor({ user, onLogout }) {
                 if (currentZoom && currentZoom > 17) {
                   googleMapRef.current.setZoom(17); // Don't zoom in too much
                 }
-              } catch(e) {}
+              } catch(e) { /* ignore zoom adjustment errors */ }
             }, 100);
             
             console.log('   ✅ Map bounds adjusted');
