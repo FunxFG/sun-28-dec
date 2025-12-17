@@ -25,7 +25,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 import base64
 from risk_registry import (
-    get_risk_registry,
+    get_risk_registry as get_hardcoded_risk_registry,
     calculate_risk_score,
     RISK_CATEGORIES,
     LIKELIHOOD_LEVELS,
