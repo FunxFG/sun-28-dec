@@ -691,13 +691,19 @@ export default function PlanEditor({ user, onLogout }) {
   };
 
   const handleAutoPlaceDevices = async () => {
+    console.log('🚀 handleAutoPlaceDevices called');
+    console.log('  Start address:', formData.work_details.start_address);
+    console.log('  End address:', formData.work_details.end_address);
+    
     if (!formData.work_details.start_address || !formData.work_details.end_address) {
       toast.error('Please enter start and end addresses first');
+      console.log('❌ Missing addresses, returning early');
       return;
     }
 
     try {
       toast.info('Auto-populating TMP and calculating device placement...');
+      console.log('📡 Starting auto-population process...');
       
       // IMPORTANT: First call fetchRoadData which includes comprehensive auto-populate
       // Store the returned comprehensive data for immediate use
