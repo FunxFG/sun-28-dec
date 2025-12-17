@@ -2243,30 +2243,62 @@ async def get_plan_risk_assessment(plan_id: str, current_user: Dict = Depends(ge
 # ==========================================
 
 @api_router.get("/risks")
-async def get_risks(category: str = None):
+async def get_risks(category: str = None, source: str = "csv"):
     """
     Get comprehensive risk registry for roadwork traffic management
-    Optional category filter: people, information, property, reputation, financial, capability
+    - source=csv (default): Uses the full 106-risk CSV registry
+    - source=hardcoded: Uses the original 25-risk hardcoded registry
+    - Optional category filter
     """
     try:
-        risks = get_risk_registry()
-        
-        if category:
-            filtered_risks = [r for r in risks if r.get('category') == category]
+        # Use CSV-based registry by default (106 risks from risk_data.csv)
+        if source == "csv":
+            risks = parse_csv_risk_registry()
+            
+            if category:
+                filtered_risks = [r for r in risks if r.get('category') == category]
+                return {
+                    "category": category,
+                    "risks": filtered_risks,
+                    "count": len(filtered_risks),
+                    "source": "csv"
+                }
+            
+            # Get categorized view
+            by_category = get_risks_by_category()
+            summary = get_risk_summary()
+            
             return {
-                "category": category,
-                "risks": filtered_risks,
-                "count": len(filtered_risks)
+                "categories": CSV_RISK_CATEGORIES,
+                "risks": risks,
+                "risks_by_category": by_category,
+                "total_risks": len(risks),
+                "summary": summary,
+                "source": "csv"
             }
-        
-        return {
-            "categories": RISK_CATEGORIES,
-            "risks": risks,
-            "total_risks": len(risks),
-            "likelihood_levels": LIKELIHOOD_LEVELS,
-            "consequence_levels": CONSEQUENCE_LEVELS
-        }
+        else:
+            # Fallback to hardcoded registry
+            risks = get_hardcoded_risk_registry()
+            
+            if category:
+                filtered_risks = [r for r in risks if r.get('category') == category]
+                return {
+                    "category": category,
+                    "risks": filtered_risks,
+                    "count": len(filtered_risks),
+                    "source": "hardcoded"
+                }
+            
+            return {
+                "categories": RISK_CATEGORIES,
+                "risks": risks,
+                "total_risks": len(risks),
+                "likelihood_levels": LIKELIHOOD_LEVELS,
+                "consequence_levels": CONSEQUENCE_LEVELS,
+                "source": "hardcoded"
+            }
     except Exception as e:
+        logger.error(f"Error fetching risks: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @api_router.get("/risks/{risk_id}")
