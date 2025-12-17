@@ -4231,7 +4231,11 @@ export default function PlanEditor({ user, onLogout }) {
                   </div>
                   <div className="flex gap-2">
                     <Button
-                      onClick={handleAutoPlaceDevices}
+                      onClick={() => {
+                        console.log('🔘 Auto-Place button clicked!');
+                        console.log('   addresses:', formData.work_details.start_address, '->', formData.work_details.end_address);
+                        handleAutoPlaceDevices();
+                      }}
                       className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white"
                       disabled={!formData.work_details.start_address || !formData.work_details.end_address}
                     >
