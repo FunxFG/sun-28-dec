@@ -1,478 +1,368 @@
 /**
  * AS 1742.3 Compliant Lane Closure Device Placement
+ * Based on ADVANCED Traffic Management Generic TGS Package 2026
  * 
- * Implements proper sign sequencing for lane closures:
- * RWA/40 → Lane Merge → Buffer → Taper → Workzone → End Roadworks
- * Plus side street signage
+ * This module implements proper TGS-compliant device placement with:
+ * - Correct sign sequences at proper distances
+ * - Proper taper formations with correct cone spacing
+ * - Devices placed ON the road edge (not scattered)
+ * - Buffer zones and safety areas
  */
 
 class LaneClosurePlacement {
-  constructor() {
-    // AS 1742.3 spacing requirements based on speed limit
-    this.spacingRules = {
-      40: { rwa_distance: 60, merge_distance: 40, buffer: 30, taper: 30 },
-      50: { rwa_distance: 70, merge_distance: 50, buffer: 40, taper: 40 },
-      60: { rwa_distance: 80, merge_distance: 60, buffer: 50, taper: 50 },
-      70: { rwa_distance: 90, merge_distance: 70, buffer: 60, taper: 60 },
-      80: { rwa_distance: 100, merge_distance: 80, buffer: 70, taper: 70 }
-    };
+  
+  // ==================== TGS SIGN SEQUENCES ====================
+  
+  // Sign sequence for approach side (low speed 40-70 km/h)
+  getApproachSignsLowSpeed() {
+    return [
+      { code: 'T1-1', name: 'Road Work Ahead', distance: 195, side: 'left' },
+      { code: 'T1-1', name: 'Road Work Ahead', distance: 145, side: 'left' },
+      { code: 'T1-25', name: 'Lane Status / Merge Left', distance: 100, side: 'left' },
+      { code: 'R4-1', name: 'Speed Limit 40', distance: 60, side: 'left' },
+      { code: 'Arrow', name: 'Arrow Board Left', distance: 45, side: 'left' },
+    ];
+  }
+  
+  // Sign sequence for approach side (high speed 80-110 km/h)
+  getApproachSignsHighSpeed() {
+    return [
+      { code: 'T1-1', name: 'Road Work Ahead', distance: 400, side: 'left' },
+      { code: 'T1-1', name: 'Road Work Ahead', distance: 320, side: 'left' },
+      { code: 'T1-2', name: 'Prepare to Stop', distance: 240, side: 'left' },
+      { code: 'T1-25', name: 'Lane Status / Merge Left', distance: 160, side: 'left' },
+      { code: 'R4-1', name: 'Speed Limit 60', distance: 100, side: 'left' },
+      { code: 'Arrow', name: 'Arrow Board Left', distance: 60, side: 'left' },
+    ];
+  }
+  
+  // Sign sequence for departure side (after work zone)
+  getDepartureSignsLowSpeed() {
+    return [
+      { code: 'T1-11', name: 'End Road Work', distance: -50, side: 'left' },
+    ];
+  }
+  
+  getDepartureSignsHighSpeed() {
+    return [
+      { code: 'T1-11', name: 'End Road Work', distance: -80, side: 'left' },
+    ];
   }
 
-  /**
-   * Calculate lane closure device placement
-   * @param {Object} workZoneData - Work zone details (start/end lat/lng, bearing)
-   * @param {Number} speedLimit - Posted speed limit
-   * @param {Array} sideStreets - Array of side streets with coordinates
-   * @returns {Array} - Array of device objects with positions
-   */
-  placeLaneClosureDevices(workZoneData, speedLimit = 60, sideStreets = [], trafficDirection = 'northbound', roadEdgeGeometry = null) {
-    const devices = [];
-    const spacing = this.spacingRules[speedLimit] || this.spacingRules[60];
-    
-    const { start_lat, start_lng, end_lat, end_lng, road_bearing } = workZoneData;
-    
-    console.log('🚧 ====== LANE CLOSURE DEVICE PLACEMENT ======');
+  // ==================== TAPER CONFIGURATIONS ====================
+  
+  getTaperConfig(speedLimit) {
+    if (speedLimit <= 50) {
+      return { length: 15, coneSpacing: 3, numCones: 6 };
+    } else if (speedLimit <= 70) {
+      return { length: 30, coneSpacing: 5, numCones: 7 };
+    } else if (speedLimit <= 90) {
+      return { length: 90, coneSpacing: 10, numCones: 10 };
+    } else {
+      return { length: 145, coneSpacing: 15, numCones: 10 };
+    }
+  }
+  
+  // Buffer zone sizes
+  getBufferZone(speedLimit) {
+    return speedLimit <= 70 ? 20 : 30; // meters
+  }
+
+  // ==================== MAIN PLACEMENT FUNCTION ====================
+  
+  placeLaneClosureDevices(workZoneData, speedLimit, sideStreets = [], trafficDirection = 'West', roadEdgeGeometry = null) {
+    console.log('🚧 ====== TGS-COMPLIANT DEVICE PLACEMENT ======');
     console.log('  Speed limit:', speedLimit, 'km/h');
     console.log('  Traffic direction:', trafficDirection);
-    console.log('  Spacing rules:', JSON.stringify(spacing));
-    console.log('  Start coords:', start_lat, start_lng);
-    console.log('  End coords:', end_lat, end_lng);
-    console.log('  Road bearing (provided):', road_bearing);
     
-    // Detailed road edge geometry check
-    console.log('  Road edge geometry object:', roadEdgeGeometry ? 'Present' : 'NULL');
-    if (roadEdgeGeometry) {
-      console.log('    - start:', roadEdgeGeometry.start ? 'Present' : 'Missing');
-      if (roadEdgeGeometry.start) {
-        console.log('    - left_edge:', roadEdgeGeometry.start.left_edge ? `${roadEdgeGeometry.start.left_edge.length} points` : 'Missing');
-        console.log('    - right_edge:', roadEdgeGeometry.start.right_edge ? `${roadEdgeGeometry.start.right_edge.length} points` : 'Missing');
-        console.log('    - road width:', roadEdgeGeometry.start.width || 'Unknown');
-        console.log('    - bearing:', roadEdgeGeometry.start.bearing || 'Unknown');
-      }
-    }
+    const devices = [];
+    const { start_lat, start_lng, end_lat, end_lng, road_bearing } = workZoneData;
     
-    // Check if we have REAL road edge data
-    const hasRealEdges = roadEdgeGeometry && 
-                        roadEdgeGeometry.start && 
-                        roadEdgeGeometry.start.left_edge && 
-                        Array.isArray(roadEdgeGeometry.start.left_edge) &&
-                        roadEdgeGeometry.start.left_edge.length > 0;
-    
-    console.log('  ✅ Using real road geometry:', hasRealEdges);
-    
-    // Validate inputs
-    if (!start_lat || !start_lng || !end_lat || !end_lng) {
-      console.error('❌ Invalid coordinates provided to lane closure placement');
-      return devices;
+    // Validate coordinates
+    if (!start_lat || !start_lng || isNaN(start_lat) || isNaN(start_lng)) {
+      console.error('❌ Invalid start coordinates');
+      return [];
     }
     
     // Calculate road bearing if not provided
     let bearing = road_bearing;
     if (!bearing || isNaN(bearing)) {
-      bearing = this.calculateBearing(start_lat, start_lng, end_lat, end_lng);
-      console.log('  Calculated bearing:', bearing);
+      bearing = this.calculateBearing(start_lat, start_lng, end_lat || start_lat, end_lng || start_lng);
+      if (isNaN(bearing)) bearing = 90; // Default to east-west
     }
+    console.log('  Road bearing:', bearing.toFixed(1), '°');
     
-    // Map traffic direction to compass bearing adjustment
-    // Signs must be placed BEFORE the workzone from traffic's approach direction
-    const directionMap = {
-      'northbound': 180,  // Traffic going north, signs south (reverse bearing)
-      'southbound': 0,    // Traffic going south, signs north (same bearing)
-      'eastbound': 270,   // Traffic going east, signs west
-      'westbound': 90     // Traffic going west, signs east
-    };
+    // Determine approach bearing based on traffic direction
+    const approachBearing = this.getApproachBearing(bearing, trafficDirection);
+    console.log('  Approach bearing:', approachBearing.toFixed(1), '°');
     
-    const approachAdjustment = directionMap[trafficDirection] || 180;
-    const approachBearing = (bearing + approachAdjustment) % 360;
+    // Get road edge for device placement (devices go on LEFT edge of travel lane)
+    const roadEdge = this.getRoadEdgePoints(roadEdgeGeometry, start_lat, start_lng, bearing);
+    console.log('  Road edge available:', roadEdge.length > 0 ? 'Yes' : 'No (using calculated)');
     
-    console.log(`  Traffic ${trafficDirection}: signs placed at bearing ${approachBearing}° (${approachAdjustment}° from road bearing)`);
+    // ==================== 1. APPROACH SIGNS ====================
+    console.log('📍 Placing approach signs...');
+    const approachSigns = speedLimit <= 70 ? this.getApproachSignsLowSpeed() : this.getApproachSignsHighSpeed();
     
-    // 1. RWA/40 Sign (bilateral) - SNAP TO REAL ROAD EDGE
-    const rwaDistance = spacing.rwa_distance;
-    const rwaPosition = this.calculatePosition(start_lat, start_lng, approachBearing, rwaDistance);
-    
-    // Calculate initial positions
-    let rwaLeft = this.offsetPosition(rwaPosition, bearing - 90, 3); // 3m left
-    let rwaRight = this.offsetPosition(rwaPosition, bearing + 90, 3); // 3m right
-    
-    // SNAP TO REAL ROAD EDGES if available
-    if (hasRealEdges) {
-      console.log('  🎯 Snapping RWA signs to REAL road edges');
-      rwaLeft = this.snapToRoadEdge(rwaLeft.lat, rwaLeft.lng, roadEdgeGeometry.start.left_edge, 'left');
-      rwaRight = this.snapToRoadEdge(rwaRight.lat, rwaRight.lng, roadEdgeGeometry.start.right_edge, 'right');
-    }
-    
-    console.log('  RWA center:', rwaPosition);
-    console.log('  RWA left (snapped):', rwaLeft);
-    console.log('  RWA right (snapped):', rwaRight);
-    
-    devices.push({
-      id: `rwa_left_${Date.now()}`,
-      device_type: 'warning',
-      device_name: 'Road Work Ahead / 40',
-      position_lat: rwaLeft.lat,
-      position_lng: rwaLeft.lng,
-      properties: {
-        side: 'left',
-        distance_from_start: rwaDistance,
-        sign_code: 'RWA/40',
-        auto_placed: true
-      }
-    });
-    
-    devices.push({
-      id: `rwa_right_${Date.now()}`,
-      device_type: 'warning',
-      device_name: 'Road Work Ahead / 40',
-      position_lat: rwaRight.lat,
-      position_lng: rwaRight.lng,
-      properties: {
-        side: 'right',
-        distance_from_start: rwaDistance,
-        sign_code: 'RWA/40',
-        auto_placed: true
-      }
-    });
-    
-    // 2. Lane Merge Right (T1-15) - bilateral - SNAP TO REAL ROAD EDGE
-    const mergeDistance = rwaDistance - spacing.merge_distance;
-    const mergePosition = this.calculatePosition(start_lat, start_lng, approachBearing, mergeDistance);
-    
-    let mergeLeft = this.offsetPosition(mergePosition, bearing - 90, 3);
-    let mergeRight = this.offsetPosition(mergePosition, bearing + 90, 3);
-    
-    // SNAP TO REAL ROAD EDGES if available
-    if (hasRealEdges) {
-      console.log('  🎯 Snapping Merge signs to REAL road edges');
-      mergeLeft = this.snapToRoadEdge(mergeLeft.lat, mergeLeft.lng, roadEdgeGeometry.start.left_edge, 'left');
-      mergeRight = this.snapToRoadEdge(mergeRight.lat, mergeRight.lng, roadEdgeGeometry.start.right_edge, 'right');
-    }
-    
-    devices.push({
-      id: `merge_left_${Date.now()}`,
-      device_type: 'warning',
-      device_name: 'Lane Merge Right (T1-15)',
-      position_lat: mergeLeft.lat,
-      position_lng: mergeLeft.lng,
-      properties: {
-        side: 'left',
-        distance_from_start: mergeDistance,
-        sign_code: 'T1-15',
-        auto_placed: true
-      }
-    });
-    
-    devices.push({
-      id: `merge_right_${Date.now()}`,
-      device_type: 'warning',
-      device_name: 'Lane Merge Right (T1-15)',
-      position_lat: mergeRight.lat,
-      position_lng: mergeRight.lng,
-      properties: {
-        side: 'right',
-        distance_from_start: mergeDistance,
-        sign_code: 'T1-15',
-        auto_placed: true
-      }
-    });
-    
-    // 3. Buffer zone (no signs, just space)
-    const bufferStart = mergeDistance - spacing.buffer;
-    
-    // 4. Taper with cones - PROPER GRADUATED TAPER (AS 1742.3 compliant)
-    const taperStart = bufferStart - spacing.taper;
-    const coneSpacing = 5; // 5m between cones in taper
-    const numCones = Math.floor(spacing.taper / coneSpacing);
-    
-    console.log(`  🔶 Creating ${numCones} taper cones over ${spacing.taper}m`);
-    
-    // For taper placement:
-    // - First cone should be at edge of carriageway (approximately 3m from centerline)
-    // - Last cone should be at the work zone edge (road shoulder/curb)
-    // - Cones form a diagonal line guiding traffic around the work zone
-    
-    // Use road edge data to calculate proper lane width if available
-    let laneEdgeOffset = 3.0;  // Distance from centerline to lane edge
-    let curbOffset = 0.5;      // Distance from centerline to curb/work zone
-    
-    if (hasRealEdges && roadEdgeGeometry.start.width) {
-      // Use actual road width data
-      const halfWidth = roadEdgeGeometry.start.width / 2;
-      laneEdgeOffset = halfWidth - 0.5;  // Lane edge is slightly inside road edge
-      curbOffset = halfWidth + 0.3;      // Curb is at road edge plus small offset
-      console.log(`    Using real road width: ${roadEdgeGeometry.start.width}m`);
-    }
-    
-    for (let i = 0; i <= numCones; i++) {
-      const progress = i / numCones; // 0 to 1
-      const coneDistance = taperStart - (i * coneSpacing);
-      const conePosition = this.calculatePosition(start_lat, start_lng, approachBearing, coneDistance);
+    approachSigns.forEach((sign, idx) => {
+      // Calculate position BEFORE the work zone (positive distance = upstream)
+      const signPos = this.calculatePosition(start_lat, start_lng, approachBearing + 180, sign.distance);
       
-      // LINEAR taper: straight diagonal line from lane edge to curb
-      // (Not quadratic - that creates a curve which isn't correct for AS 1742.3)
-      const lateralOffset = laneEdgeOffset - (progress * (laneEdgeOffset - curbOffset));
-      
-      // Calculate cone position perpendicular to road bearing
-      let conePos = this.offsetPosition(conePosition, bearing - 90, lateralOffset);
-      
-      // IMPORTANT: For taper cones, we DON'T snap to nearest road edge
-      // because the taper needs to form a diagonal line across the lane
-      // Only snap the final position if it would be off the road
-      if (hasRealEdges) {
-        // Verify cone is within road bounds (between left and right edges)
-        const nearestEdge = this.snapToRoadEdge(conePos.lat, conePos.lng, roadEdgeGeometry.start.left_edge, 'taper-check');
-        const distToEdge = this.calculateDistance(conePos.lat, conePos.lng, nearestEdge.lat, nearestEdge.lng);
-        
-        // If cone is more than 5m from road edge, it's likely on private property - snap it
-        if (distToEdge > 5) {
-          console.log(`    ⚠️ Taper cone ${i} was ${distToEdge.toFixed(1)}m from road - snapping`);
-          conePos = nearestEdge;
-        }
-      }
+      // Offset to road edge (left side for approach traffic)
+      const edgeOffset = 1.0; // 1m from road edge
+      const finalPos = this.offsetToRoadEdge(signPos.lat, signPos.lng, bearing, edgeOffset, roadEdge);
       
       devices.push({
-        id: `cone_taper_${i}_${Date.now() + i}`,
-        device_type: 'delineation',
-        device_name: 'Traffic Cone 700mm',
-        position_lat: conePos.lat,
-        position_lng: conePos.lng,
+        id: `approach_sign_${idx}_${Date.now()}`,
+        device_type: 'warning',
+        device_name: sign.name,
+        device_code: sign.code,
+        position_lat: finalPos.lat,
+        position_lng: finalPos.lng,
         properties: {
           side: 'left',
-          distance_from_start: coneDistance,
-          lateral_offset: lateralOffset.toFixed(2) + 'm',
+          distance_from_workzone: sign.distance,
+          placement: 'approach',
+          sequence: idx + 1,
+          auto_placed: true
+        }
+      });
+      console.log(`    ${sign.code} - ${sign.name} at ${sign.distance}m`);
+    });
+    
+    // ==================== 2. TAPER CONES ====================
+    console.log('📍 Placing taper cones...');
+    const taperConfig = this.getTaperConfig(speedLimit);
+    const taperStartDistance = 30; // Taper starts 30m before work zone
+    
+    // Lane width (standard 3.5m)
+    const laneWidth = 3.5;
+    
+    for (let i = 0; i <= taperConfig.numCones; i++) {
+      const progress = i / taperConfig.numCones; // 0 to 1
+      const distanceAlongTaper = i * taperConfig.coneSpacing;
+      
+      // Position along the road (from taper start toward work zone)
+      const conePos = this.calculatePosition(
+        start_lat, start_lng, 
+        approachBearing + 180, 
+        taperStartDistance - distanceAlongTaper
+      );
+      
+      // LINEAR TAPER: Lateral offset decreases from lane edge (3.5m) to road edge (0.3m)
+      const lateralOffset = laneWidth - (progress * (laneWidth - 0.3));
+      
+      // Apply lateral offset perpendicular to road
+      const finalPos = this.offsetPerpendicular(conePos.lat, conePos.lng, bearing, lateralOffset);
+      
+      devices.push({
+        id: `taper_cone_${i}_${Date.now()}`,
+        device_type: 'delineation',
+        device_name: 'Traffic Cone 700mm',
+        device_code: 'TC1',
+        position_lat: finalPos.lat,
+        position_lng: finalPos.lng,
+        properties: {
+          side: 'left',
+          distance_along_taper: distanceAlongTaper,
+          lateral_offset: lateralOffset.toFixed(2),
           taper_position: `${(progress * 100).toFixed(0)}%`,
           in_taper: true,
-          taper_index: i,
-          total_taper_cones: numCones + 1,
           auto_placed: true
         }
       });
     }
+    console.log(`    Placed ${taperConfig.numCones + 1} taper cones over ${taperConfig.length}m`);
     
-    console.log(`    ✅ Placed ${numCones + 1} taper cones in diagonal line`);
-    console.log(`    Taper: ${laneEdgeOffset.toFixed(1)}m (lane edge) → ${curbOffset.toFixed(1)}m (curb)`);
-
+    // ==================== 3. WORK ZONE DELINEATION ====================
+    console.log('📍 Placing work zone delineation...');
+    const workzoneLength = this.calculateDistance(start_lat, start_lng, end_lat || start_lat, end_lng || start_lng) || 50;
+    const delineationSpacing = 10; // 10m spacing along work zone
+    const numDelineators = Math.max(3, Math.floor(workzoneLength / delineationSpacing));
     
-    // 5. Workzone edge marking (more cones along workzone)
-    const workzoneLength = this.calculateDistance(start_lat, start_lng, end_lat, end_lng);
-    const workzoneCones = Math.floor(workzoneLength / 10); // 10m spacing
-    
-    for (let i = 0; i <= workzoneCones; i++) {
-      const ratio = i / workzoneCones;
-      const coneLat = start_lat + (end_lat - start_lat) * ratio;
-      const coneLng = start_lng + (end_lng - start_lng) * ratio;
+    for (let i = 0; i <= numDelineators; i++) {
+      const distanceAlong = i * delineationSpacing;
       
-      let workzoneConePos = this.offsetPosition({lat: coneLat, lng: coneLng}, bearing - 90, 0.5);
+      // Position along work zone
+      const delinPos = this.calculatePosition(start_lat, start_lng, bearing, distanceAlong);
       
-      // SNAP WORKZONE EDGE CONES TO REAL ROAD EDGE
-      if (hasRealEdges) {
-        workzoneConePos = this.snapToRoadEdge(workzoneConePos.lat, workzoneConePos.lng, roadEdgeGeometry.start.left_edge, 'workzone');
-      }
+      // Place on road edge (0.3m offset)
+      const finalPos = this.offsetPerpendicular(delinPos.lat, delinPos.lng, bearing, 0.3);
       
       devices.push({
-        id: `cone_workzone_${i}_${Date.now()}`,
+        id: `workzone_delin_${i}_${Date.now()}`,
         device_type: 'delineation',
-        device_name: 'Traffic Cone 700mm',
-        position_lat: workzoneConePos.lat,
-        position_lng: workzoneConePos.lng,
+        device_name: i === 0 || i === numDelineators ? 'Bollard' : 'Traffic Cone 700mm',
+        device_code: i === 0 || i === numDelineators ? 'Bollard' : 'TC1',
+        position_lat: finalPos.lat,
+        position_lng: finalPos.lng,
         properties: {
           side: 'left',
+          distance_from_start: distanceAlong,
           in_workzone: true,
           auto_placed: true
         }
       });
     }
+    console.log(`    Placed ${numDelineators + 1} work zone delineators over ${workzoneLength}m`);
     
-    // 6. End Roadworks sign (bilateral) - after workzone
-    const endDistance = 10; // 10m after end (forward direction)
-    const endPosition = this.calculatePosition(end_lat, end_lng, bearing, endDistance);
+    // ==================== 4. DEPARTURE SIGNS ====================
+    console.log('📍 Placing departure signs...');
+    const departureSigns = speedLimit <= 70 ? this.getDepartureSignsLowSpeed() : this.getDepartureSignsHighSpeed();
     
-    let endLeft = this.offsetPosition(endPosition, bearing - 90, 3);
-    let endRight = this.offsetPosition(endPosition, bearing + 90, 3);
-    
-    // SNAP END SIGNS TO REAL ROAD EDGES
-    if (hasRealEdges) {
-      console.log('  🎯 Snapping End Roadworks signs to REAL road edges');
-      endLeft = this.snapToRoadEdge(endLeft.lat, endLeft.lng, roadEdgeGeometry.end?.left_edge || roadEdgeGeometry.start.left_edge, 'left');
-      endRight = this.snapToRoadEdge(endRight.lat, endRight.lng, roadEdgeGeometry.end?.right_edge || roadEdgeGeometry.start.right_edge, 'right');
-    }
-    
-    devices.push({
-      id: `end_left_${Date.now()}`,
-      device_type: 'regulatory',
-      device_name: 'End Roadworks',
-      position_lat: endLeft.lat,
-      position_lng: endLeft.lng,
-      properties: {
-        side: 'left',
-        sign_code: 'END_RW',
-        auto_placed: true
-      }
+    departureSigns.forEach((sign, idx) => {
+      // Calculate position AFTER the work zone (negative distance = downstream)
+      const endLat = end_lat || start_lat;
+      const endLng = end_lng || start_lng;
+      const signPos = this.calculatePosition(endLat, endLng, bearing, Math.abs(sign.distance));
+      
+      // Offset to road edge
+      const finalPos = this.offsetPerpendicular(signPos.lat, signPos.lng, bearing, 1.0);
+      
+      devices.push({
+        id: `departure_sign_${idx}_${Date.now()}`,
+        device_type: 'warning',
+        device_name: sign.name,
+        device_code: sign.code,
+        position_lat: finalPos.lat,
+        position_lng: finalPos.lng,
+        properties: {
+          side: 'left',
+          distance_from_workzone_end: Math.abs(sign.distance),
+          placement: 'departure',
+          auto_placed: true
+        }
+      });
+      console.log(`    ${sign.code} - ${sign.name} at +${Math.abs(sign.distance)}m after work zone`);
     });
     
-    devices.push({
-      id: `end_right_${Date.now()}`,
-      device_type: 'regulatory',
-      device_name: 'End Roadworks',
-      position_lat: endRight.lat,
-      position_lng: endRight.lng,
-      properties: {
-        side: 'right',
-        sign_code: 'END_RW',
-        auto_placed: true
-      }
-    });
-    
-    // 7. Side street signage
+    // ==================== 5. SIDE STREET SIGNS (if any) ====================
     if (sideStreets && sideStreets.length > 0) {
-      console.log(`  Processing ${sideStreets.length} side streets`);
+      console.log('📍 Placing side street warning signs...');
       sideStreets.forEach((street, idx) => {
-        if (!street.lat || !street.lng) return;
-        
-        // RWA on approach to main road
-        const streetApproach = this.calculatePosition(street.lat, street.lng, street.bearing || 0, 20);
-        
-        devices.push({
-          id: `side_rwa_${idx}_${Date.now()}`,
-          device_type: 'warning',
-          device_name: 'Road Work Ahead',
-          position_lat: streetApproach.lat,
-          position_lng: streetApproach.lng,
-          properties: {
-            side_street: true,
-            street_name: street.name,
-            sign_code: 'RWA',
-            auto_placed: true
-          }
-        });
-        
-        // END ROADWORKS on back of same sign (same location, facing away)
-        devices.push({
-          id: `side_end_${idx}_${Date.now()}`,
-          device_type: 'regulatory',
-          device_name: 'End Roadworks (back of RWA)',
-          position_lat: streetApproach.lat,
-          position_lng: streetApproach.lng,
-          properties: {
-            side_street: true,
-            street_name: street.name,
-            back_of_sign: true,
-            sign_code: 'END_RW',
-            auto_placed: true
-          }
-        });
-        
-        // "Left Lane Closed" at intersection
-        devices.push({
-          id: `side_lane_closed_${idx}_${Date.now()}`,
-          device_type: 'regulatory',
-          device_name: 'Left Lane Closed',
-          position_lat: street.lat,
-          position_lng: street.lng,
-          properties: {
-            side_street: true,
-            street_name: street.name,
-            at_intersection: true,
-            sign_code: 'LANE_CLOSED',
-            auto_placed: true
-          }
-        });
+        if (street.lat && street.lng) {
+          // Place "Road Work Ahead" on side street approach
+          const sideSignPos = this.calculatePosition(street.lat, street.lng, street.bearing || 0, 50);
+          
+          devices.push({
+            id: `side_street_sign_${idx}_${Date.now()}`,
+            device_type: 'warning',
+            device_name: 'Road Work Ahead',
+            device_code: 'T1-1',
+            position_lat: sideSignPos.lat,
+            position_lng: sideSignPos.lng,
+            properties: {
+              side_street: street.name || `Side Street ${idx + 1}`,
+              distance_from_intersection: 50,
+              auto_placed: true
+            }
+          });
+        }
       });
     }
     
-    console.log(`✅ Placed ${devices.length} devices for lane closure`);
+    console.log(`✅ TGS Placement Complete: ${devices.length} devices placed`);
+    console.log('   - Approach signs:', approachSigns.length);
+    console.log('   - Taper cones:', taperConfig.numCones + 1);
+    console.log('   - Work zone delineation:', numDelineators + 1);
+    console.log('   - Departure signs:', departureSigns.length);
+    
     return devices;
   }
 
+  // ==================== HELPER FUNCTIONS ====================
+  
+  getApproachBearing(roadBearing, trafficDirection) {
+    // Traffic direction determines which way vehicles approach
+    const directionMap = {
+      'North': 0,
+      'South': 180,
+      'East': 90,
+      'West': 270,
+      'northbound': 0,
+      'southbound': 180,
+      'eastbound': 90,
+      'westbound': 270,
+    };
+    
+    if (directionMap[trafficDirection] !== undefined) {
+      return directionMap[trafficDirection];
+    }
+    
+    // Default to road bearing
+    return roadBearing;
+  }
+  
   calculatePosition(lat, lng, bearing, distanceMeters) {
+    // Calculate new position given bearing and distance
     const R = 6371000; // Earth radius in meters
-    const bearingRad = bearing * Math.PI / 180;
-    const latRad = lat * Math.PI / 180;
+    const d = distanceMeters / R;
+    const brng = bearing * Math.PI / 180;
+    const lat1 = lat * Math.PI / 180;
+    const lng1 = lng * Math.PI / 180;
     
-    const newLatRad = Math.asin(
-      Math.sin(latRad) * Math.cos(distanceMeters / R) +
-      Math.cos(latRad) * Math.sin(distanceMeters / R) * Math.cos(bearingRad)
+    const lat2 = Math.asin(
+      Math.sin(lat1) * Math.cos(d) +
+      Math.cos(lat1) * Math.sin(d) * Math.cos(brng)
     );
     
-    const newLngRad = (lng * Math.PI / 180) + Math.atan2(
-      Math.sin(bearingRad) * Math.sin(distanceMeters / R) * Math.cos(latRad),
-      Math.cos(distanceMeters / R) - Math.sin(latRad) * Math.sin(newLatRad)
+    const lng2 = lng1 + Math.atan2(
+      Math.sin(brng) * Math.sin(d) * Math.cos(lat1),
+      Math.cos(d) - Math.sin(lat1) * Math.sin(lat2)
     );
     
     return {
-      lat: newLatRad * 180 / Math.PI,
-      lng: newLngRad * 180 / Math.PI
+      lat: lat2 * 180 / Math.PI,
+      lng: lng2 * 180 / Math.PI
     };
   }
-
-  offsetPosition(position, bearing, offsetMeters) {
-    // Calculate lateral offset from a position (perpendicular to road)
-    const result = this.calculatePosition(position.lat, position.lng, bearing, offsetMeters);
-    return {
-      lat: result.lat,
-      lng: result.lng
-    };
+  
+  offsetPerpendicular(lat, lng, bearing, offsetMeters) {
+    // Offset position perpendicular to bearing (positive = left side)
+    const perpBearing = bearing - 90;
+    return this.calculatePosition(lat, lng, perpBearing, offsetMeters);
   }
-
-  snapToRoadEdge(targetLat, targetLng, roadEdgePoints, side = 'left') {
-    /**
-     * Snap a device position to the nearest point on the ACTUAL road edge
-     * Returns the coordinates of the closest road edge point
-     * 
-     * Road edge points can be either:
-     * - Array format: [[lat, lng], [lat, lng], ...]
-     * - Object format: [{lat, lng}, {lat, lng}, ...]
-     */
-    if (!roadEdgePoints || roadEdgePoints.length === 0) {
-      console.log(`    ⚠️ No road edge points for ${side}, using original position`);
-      return { lat: targetLat, lng: targetLng };
+  
+  offsetToRoadEdge(lat, lng, bearing, edgeOffset, roadEdgePoints) {
+    // If we have road edge data, snap to nearest edge point
+    if (roadEdgePoints && roadEdgePoints.length > 0) {
+      return this.snapToNearestEdge(lat, lng, roadEdgePoints);
+    }
+    // Otherwise use calculated offset
+    return this.offsetPerpendicular(lat, lng, bearing, edgeOffset);
+  }
+  
+  snapToNearestEdge(lat, lng, edgePoints) {
+    if (!edgePoints || edgePoints.length === 0) {
+      return { lat, lng };
     }
     
-    let minDistance = Infinity;
-    let closestPoint = { lat: targetLat, lng: targetLng };
+    let minDist = Infinity;
+    let nearestPoint = { lat, lng };
     
-    // Find the closest point on the road edge
-    for (const edgePoint of roadEdgePoints) {
-      // Handle both array format [lat, lng] and object format {lat, lng}
-      let pointLat, pointLng;
+    for (const point of edgePoints) {
+      const pointLat = Array.isArray(point) ? point[0] : point.lat;
+      const pointLng = Array.isArray(point) ? point[1] : point.lng;
       
-      if (Array.isArray(edgePoint)) {
-        // Array format: [lat, lng]
-        pointLat = edgePoint[0];
-        pointLng = edgePoint[1];
-      } else if (edgePoint && typeof edgePoint === 'object') {
-        // Object format: {lat, lng}
-        pointLat = edgePoint.lat;
-        pointLng = edgePoint.lng;
-      } else {
-        console.warn('    Invalid edge point format:', edgePoint);
-        continue;
-      }
+      if (typeof pointLat !== 'number' || typeof pointLng !== 'number') continue;
       
-      // Validate coordinates
-      if (typeof pointLat !== 'number' || typeof pointLng !== 'number' || 
-          isNaN(pointLat) || isNaN(pointLng)) {
-        console.warn('    Invalid coordinates:', pointLat, pointLng);
-        continue;
-      }
-      
-      const distance = this.calculateDistance(
-        targetLat, targetLng,
-        pointLat, pointLng
-      );
-      
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestPoint = { lat: pointLat, lng: pointLng };
+      const dist = this.calculateDistance(lat, lng, pointLat, pointLng);
+      if (dist < minDist) {
+        minDist = dist;
+        nearestPoint = { lat: pointLat, lng: pointLng };
       }
     }
     
-    console.log(`    ✅ Snapped ${side} to road edge: distance ${minDistance.toFixed(1)}m`);
-    console.log(`       Original: (${targetLat.toFixed(6)}, ${targetLng.toFixed(6)})`);
-    console.log(`       Snapped:  (${closestPoint.lat.toFixed(6)}, ${closestPoint.lng.toFixed(6)})`);
-    return closestPoint;
+    return nearestPoint;
   }
-
+  
+  getRoadEdgePoints(roadEdgeGeometry, lat, lng, bearing) {
+    if (roadEdgeGeometry?.start?.left_edge) {
+      return roadEdgeGeometry.start.left_edge;
+    }
+    return [];
+  }
+  
   calculateBearing(lat1, lng1, lat2, lng2) {
     const dLng = (lng2 - lng1) * Math.PI / 180;
     const lat1Rad = lat1 * Math.PI / 180;
@@ -483,21 +373,18 @@ class LaneClosurePlacement {
               Math.sin(lat1Rad) * Math.cos(lat2Rad) * Math.cos(dLng);
     
     let bearing = Math.atan2(y, x) * 180 / Math.PI;
-    bearing = (bearing + 360) % 360; // Normalize to 0-360
-    
-    return bearing;
+    return (bearing + 360) % 360;
   }
-
+  
   calculateDistance(lat1, lng1, lat2, lng2) {
-    const R = 6371000;
+    const R = 6371000; // Earth radius in meters
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLng = (lng2 - lng1) * Math.PI / 180;
-    
     const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
               Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
               Math.sin(dLng/2) * Math.sin(dLng/2);
-    
-    return 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)) * R;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
   }
 }
 
