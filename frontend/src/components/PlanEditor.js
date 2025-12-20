@@ -712,6 +712,7 @@ export default function PlanEditor({ user, onLogout }) {
   };
 
   const handleAutoPlaceDevices = async () => {
+    console.log('🚀🚀🚀 === TGS AUTO-PLACEMENT TRIGGERED === 🚀🚀🚀');
     console.log('🚀 handleAutoPlaceDevices called');
     console.log('  Start address:', formData.work_details.start_address);
     console.log('  End address:', formData.work_details.end_address);
