@@ -1808,7 +1808,10 @@ export default function PlanEditor({ user, onLogout }) {
     try {
       const token = localStorage.getItem('token');
       
-      console.log('💾 Saving plan with work hours:', formData.work_details?.work_hours_start, '-', formData.work_details?.work_hours_end);
+      console.log('💾 === SAVING PLAN ===');
+      console.log('  work_hours_start:', formData.work_details?.work_hours_start);
+      console.log('  work_hours_end:', formData.work_details?.work_hours_end);
+      console.log('  Full work_details:', JSON.stringify(formData.work_details, null, 2));
       
       // Include comprehensive data (hidden from form but needed for PDF generation)
       const planDataWithComprehensive = {
@@ -1817,19 +1820,22 @@ export default function PlanEditor({ user, onLogout }) {
       };
       
       if (planId) {
-        await axios.put(`${API}/plans/${planId}`, planDataWithComprehensive, {
+        const response = await axios.put(`${API}/plans/${planId}`, planDataWithComprehensive, {
           headers: { Authorization: `Bearer ${token}` }
         });
+        console.log('✅ Plan updated, response:', response.data);
         toast.success('Plan updated successfully - work hours saved');
       } else {
         const response = await axios.post(`${API}/plans`, planDataWithComprehensive, {
           headers: { Authorization: `Bearer ${token}` }
         });
+        console.log('✅ Plan created, response:', response.data);
         navigate(`/plan/${response.data.id}`);
         toast.success('Plan created successfully');
       }
     } catch (error) {
-      toast.error('Failed to save plan');
+      console.error('❌ Save error:', error);
+      toast.error('Failed to save plan: ' + error.message);
     } finally {
       setSaving(false);
     }
