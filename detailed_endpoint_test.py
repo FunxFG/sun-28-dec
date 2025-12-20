@@ -9,7 +9,7 @@ import sys
 
 def test_detailed_responses():
     """Test all endpoints with detailed response validation"""
-    base_url = "https://trafficcontrol.preview.emergentagent.com/api"
+    base_url = "https://tmp-generator-1.preview.emergentagent.com/api"
     
     print("🔍 DETAILED TESTING OF NEW TMP PROFESSIONAL ENDPOINTS")
     print("=" * 80)

@@ -47,7 +47,7 @@ import {
 // import RiskAssessmentSection from './RiskAssessmentSection';
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://trafficcontrol.preview.emergentagent.com';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://tmp-generator-1.preview.emergentagent.com';
 const API = `${BACKEND_URL}/api`;
 
 // Download helper functions

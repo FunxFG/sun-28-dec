@@ -14,7 +14,7 @@ devices = [
 ]
 
 response = requests.post(
-    "https://trafficcontrol.preview.emergentagent.com/api/tgs/generate-improved",
+    "https://tmp-generator-1.preview.emergentagent.com/api/tgs/generate-improved",
     json={
         "center_lat": -34.9285,
         "center_lng": 138.6007,

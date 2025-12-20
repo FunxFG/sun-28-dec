@@ -999,7 +999,7 @@ agent_communication:
 ### Backend API Verification (PASSED):
 - `/api/files/list` - Returns 209 files ✅
 - `/api/files/download/{filename}` - Returns 200 OK with correct content-type ✅
-- Direct URL works: `https://trafficcontrol.preview.emergentagent.com/api/files/download/tgs_20251216_090812_TGS_Drawing.pdf`
+- Direct URL works: `https://tmp-generator-1.preview.emergentagent.com/api/files/download/tgs_20251216_090812_TGS_Drawing.pdf`
 
 ### Files Modified:
 1. `/app/frontend/src/components/FileDownloadManager.js` - Enhanced download UI
