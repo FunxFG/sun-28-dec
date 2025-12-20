@@ -888,16 +888,8 @@ export default function PlanEditor({ user, onLogout }) {
         };
       }
       
-      // Check if lane closure template is being used
-      // Default to using lane closure logic which has better road edge snapping
-      const isLaneClosure = formData.control_measures?.lane_closure || 
-                           formData.road_occupancy?.lane_closure ||
-                           (formData.work_details?.work_type && formData.work_details.work_type.toLowerCase().includes('lane closure')) ||
-                           true; // DEFAULT: Always use lane closure logic for better placement
-      
-      console.log('✅ Step 5 complete: Ready for device placement');
-      console.log('=== DEVICE PLACEMENT START ===');
-      console.log('  isLaneClosure:', isLaneClosure);
+      console.log('✅ Step 5 complete: Ready for TGS-compliant device placement');
+      console.log('=== NEW TGS PLACEMENT ENGINE ===');
       console.log('  formData.control_measures:', formData.control_measures);
       console.log('  formData.road_occupancy:', formData.road_occupancy);
       console.log('  Fetched comprehensive data:', !!fetchedComprehensiveData);
