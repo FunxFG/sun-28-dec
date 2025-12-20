@@ -46,21 +46,56 @@ class TGSPlacementEngine {
       let devices = [];
       
       switch(tgsType) {
+        // STOP-SLOW PATTERNS
+        case 'STOP_SLOW_LOW_TRAFFIC_LANE':
+        case 'STOP_SLOW_HIGH_TRAFFIC_LANE':
+        case 'STOP_SLOW_LOW_SHOULDER':
+        case 'STOP_SLOW_HIGH_SHOULDER':
+        case 'STOP_SLOW_LOW_SPEED':
+        case 'STOP_SLOW_HIGH_SPEED':
+          devices = this.placeStopSlowTGS(workZoneData, speedLimit, roadEdgeGeometry);
+          break;
+        
+        // LANE CLOSURE PATTERNS
+        case 'LANE_CLOSURE_LOW_NO_MEDIAN':
+        case 'LANE_CLOSURE_HIGH_NO_MEDIAN':
+        case 'LANE_CLOSURE_LOW_MEDIAN':
+        case 'LANE_CLOSURE_HIGH_MEDIAN':
         case 'LANE_CLOSURE':
         case 'LANE_CLOSURE_NO_MEDIAN':
         case 'LANE_CLOSURE_RAISED_MEDIAN':
           devices = this.placeLaneClosureTGS(workZoneData, speedLimit, roadEdgeGeometry, sideStreets);
           break;
         
+        // INTERSECTION PATTERNS
+        case 'ROUNDABOUT_LOW':
+        case 'ROUNDABOUT_HIGH':
+          devices = this.placeRoundaboutTGS(workZoneData, speedLimit, roadEdgeGeometry, sideStreets);
+          break;
+        
+        case 'T_INTERSECTION_LOW':
+        case 'T_INTERSECTION_HIGH':
+          devices = this.placeTIntersectionTGS(workZoneData, speedLimit, roadEdgeGeometry);
+          break;
+        
+        // CONTRA FLOW PATTERNS
+        case 'CONTRA_FLOW_LOW':
+        case 'CONTRA_FLOW_HIGH':
+        case 'CONTRA_FLOW':
+          devices = this.placeContraFlowTGS(workZoneData, speedLimit, roadEdgeGeometry);
+          break;
+        
+        // ROAD CLOSURE PATTERNS
+        case 'ROAD_CLOSURE_DETOUR':
         case 'ROAD_CLOSURE':
           devices = this.placeRoadClosureTGS(workZoneData, speedLimit, roadEdgeGeometry, sideStreets);
           break;
         
-        case 'STOP_SLOW_LOW_SPEED':
-        case 'STOP_SLOW_HIGH_SPEED':
-          devices = this.placeStopSlowTGS(workZoneData, speedLimit, roadEdgeGeometry);
+        case 'ROAD_CLOSURE_COURT_BOWL':
+          devices = this.placeCourtBowlClosureTGS(workZoneData, speedLimit, roadEdgeGeometry);
           break;
         
+        // PEDESTRIAN/SHOULDER PATTERNS
         case 'SHOULDER_WORK':
           devices = this.placeShoulderWorkTGS(workZoneData, speedLimit, roadEdgeGeometry);
           break;
@@ -71,10 +106,6 @@ class TGSPlacementEngine {
         
         case 'PEDESTRIAN_DETOUR':
           devices = this.placePedestrianDetourTGS(workZoneData, speedLimit, roadEdgeGeometry);
-          break;
-        
-        case 'CONTRA_FLOW':
-          devices = this.placeContraFlowTGS(workZoneData, speedLimit, roadEdgeGeometry);
           break;
         
         default:
