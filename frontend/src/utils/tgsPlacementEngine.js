@@ -20,35 +20,83 @@ class TGSPlacementEngine {
   }
 
   /**
-   * Main entry point - selects and executes the appropriate TGS pattern
+   * Main entry point - supports MULTIPLE TGS patterns
+   * @param {Object} workZoneData - Work zone coordinates and details
+   * @param {String|Array} tgsTypes - Single TGS type or array of multiple types
+   * @param {Number} speedLimit - Speed limit in km/h
+   * @param {Object} roadEdgeGeometry - Road edge points for snapping
+   * @param {Array} sideStreets - Side street locations
+   * @returns {Array} Combined devices from all selected TGS patterns
    */
-  placeTGSDevices(workZoneData, tgsType, speedLimit, roadEdgeGeometry = null, sideStreets = []) {
+  placeTGSDevices(workZoneData, tgsTypes, speedLimit, roadEdgeGeometry = null, sideStreets = []) {
     console.log('🏗️ TGS Placement Engine Initializing...');
-    console.log(`  TGS Type: ${tgsType}`);
+    
+    // Handle single or multiple TGS types
+    const typesArray = Array.isArray(tgsTypes) ? tgsTypes : [tgsTypes];
+    console.log(`  TGS Types Selected: ${typesArray.join(', ')}`);
     console.log(`  Speed Limit: ${speedLimit} km/h`);
     console.log(`  Road Edge Data: ${roadEdgeGeometry ? 'Available' : 'Not Available'}`);
     
-    // Select the appropriate placement function
-    switch(tgsType) {
-      case 'LANE_CLOSURE':
-      case 'LANE_CLOSURE_NO_MEDIAN':
-      case 'LANE_CLOSURE_RAISED_MEDIAN':
-        return this.placeLaneClosureTGS(workZoneData, speedLimit, roadEdgeGeometry, sideStreets);
+    let allDevices = [];
+    
+    // Place devices for each selected TGS type
+    typesArray.forEach((tgsType, index) => {
+      console.log(`\n📋 Processing TGS Pattern ${index + 1}/${typesArray.length}: ${tgsType}`);
       
-      case 'ROAD_CLOSURE':
-        return this.placeRoadClosureTGS(workZoneData, speedLimit, roadEdgeGeometry, sideStreets);
+      let devices = [];
       
-      case 'STOP_SLOW_LOW_SPEED':
-      case 'STOP_SLOW_HIGH_SPEED':
-        return this.placeStopSlowTGS(workZoneData, speedLimit, roadEdgeGeometry);
+      switch(tgsType) {
+        case 'LANE_CLOSURE':
+        case 'LANE_CLOSURE_NO_MEDIAN':
+        case 'LANE_CLOSURE_RAISED_MEDIAN':
+          devices = this.placeLaneClosureTGS(workZoneData, speedLimit, roadEdgeGeometry, sideStreets);
+          break;
+        
+        case 'ROAD_CLOSURE':
+          devices = this.placeRoadClosureTGS(workZoneData, speedLimit, roadEdgeGeometry, sideStreets);
+          break;
+        
+        case 'STOP_SLOW_LOW_SPEED':
+        case 'STOP_SLOW_HIGH_SPEED':
+          devices = this.placeStopSlowTGS(workZoneData, speedLimit, roadEdgeGeometry);
+          break;
+        
+        case 'SHOULDER_WORK':
+          devices = this.placeShoulderWorkTGS(workZoneData, speedLimit, roadEdgeGeometry);
+          break;
+        
+        case 'FOOTPATH_CLOSURE':
+          devices = this.placeFootpathClosureTGS(workZoneData, speedLimit, roadEdgeGeometry);
+          break;
+        
+        case 'PEDESTRIAN_DETOUR':
+          devices = this.placePedestrianDetourTGS(workZoneData, speedLimit, roadEdgeGeometry);
+          break;
+        
+        case 'CONTRA_FLOW':
+          devices = this.placeContraFlowTGS(workZoneData, speedLimit, roadEdgeGeometry);
+          break;
+        
+        default:
+          console.warn(`⚠️ Unknown TGS type: ${tgsType}, skipping`);
+          devices = [];
+      }
       
-      case 'SHOULDER_WORK':
-        return this.placeShoulderWorkTGS(workZoneData, speedLimit, roadEdgeGeometry);
+      // Tag devices with their TGS pattern
+      devices = devices.map(device => ({
+        ...device,
+        properties: {
+          ...device.properties,
+          tgs_pattern: tgsType
+        }
+      }));
       
-      default:
-        console.warn(`⚠️ Unknown TGS type: ${tgsType}, defaulting to Lane Closure`);
-        return this.placeLaneClosureTGS(workZoneData, speedLimit, roadEdgeGeometry, sideStreets);
-    }
+      allDevices = [...allDevices, ...devices];
+      console.log(`  ✅ Added ${devices.length} devices from ${tgsType}`);
+    });
+    
+    console.log(`\n🎯 Total Devices from All Patterns: ${allDevices.length}`);
+    return allDevices;
   }
 
   /**
