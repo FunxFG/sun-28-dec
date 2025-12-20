@@ -66,14 +66,14 @@ export default function TGSTemplateSelector({ selectedTemplates, onChange }) {
           ? `${borderColor} ${bgColor}`
           : 'border-gray-200 hover:border-gray-400 hover:bg-gray-50'
       }`}
-      onClick={() => handleToggle(template.id)}
     >
       <div className="flex items-start gap-3">
         <Checkbox
           checked={selectedTemplates.includes(template.id)}
+          onCheckedChange={() => handleToggle(template.id)}
           className="mt-1"
         />
-        <div className="flex-1">
+        <div className="flex-1" onClick={() => handleToggle(template.id)}>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-2xl">{template.icon}</span>
             <Label className="font-semibold cursor-pointer text-sm">
