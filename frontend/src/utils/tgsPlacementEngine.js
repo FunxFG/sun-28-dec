@@ -622,6 +622,329 @@ class TGSPlacementEngine {
     return devices;
   }
 
+  /**
+   * Footpath Closure TGS
+   * For footpath/sidewalk closures with pedestrian management
+   */
+  placeFootpathClosureTGS(workZoneData, speedLimit, roadEdgeGeometry) {
+    console.log('🚧 === FOOTPATH CLOSURE TGS (AS 1742.3) ===');
+    
+    const devices = [];
+    const { start_lat, start_lng, end_lat, end_lng, road_bearing } = workZoneData;
+    
+    const bearing = road_bearing || this.calculateBearing(start_lat, start_lng, end_lat || start_lat, end_lng || start_lng);
+    const roadEdge = this.extractRoadEdgePoints(roadEdgeGeometry);
+    
+    // === FOOTPATH CLOSURE SIGNS ===
+    // Place at start of closure
+    const closureStartPos = this.snapToRoadEdge(start_lat, start_lng, roadEdge, 0.5);
+    
+    devices.push({
+      id: `footpath_closed_${Date.now()}`,
+      device_type: 'warning',
+      device_name: 'Footpath Closed',
+      device_code: 'T5-6',
+      position_lat: closureStartPos.lat,
+      position_lng: closureStartPos.lng,
+      properties: {
+        placement: 'footpath_closure_start',
+        auto_placed: true,
+        tgs_compliant: true
+      }
+    });
+    
+    // Advance warning
+    const warningPos = this.calculatePosition(start_lat, start_lng, bearing + 180, 20);
+    const warningSnapped = this.snapToRoadEdge(warningPos.lat, warningPos.lng, roadEdge, 1.0);
+    
+    devices.push({
+      id: `footpath_warning_${Date.now()}`,
+      device_type: 'warning',
+      device_name: 'Footpath Closed Ahead',
+      device_code: 'T5-6',
+      position_lat: warningSnapped.lat,
+      position_lng: warningSnapped.lng,
+      properties: {
+        distance_from_closure: 20,
+        placement: 'footpath_advance_warning',
+        auto_placed: true,
+        tgs_compliant: true
+      }
+    });
+    
+    // === PEDESTRIAN BARRIERS ===
+    const closureLength = this.calculateDistance(start_lat, start_lng, end_lat || start_lat, end_lng || start_lng) || 20;
+    const numBarriers = Math.max(3, Math.floor(closureLength / 3));
+    
+    for (let i = 0; i <= numBarriers; i++) {
+      const distanceAlong = (i / numBarriers) * closureLength;
+      const barrierPos = this.calculatePosition(start_lat, start_lng, bearing, distanceAlong);
+      // Offset to footpath side (right side, 2m from road edge)
+      const barrierOffsetPos = this.calculatePosition(barrierPos.lat, barrierPos.lng, bearing + 90, 2.0);
+      const snapped = this.snapToRoadEdge(barrierOffsetPos.lat, barrierOffsetPos.lng, roadEdge, 0.5);
+      
+      devices.push({
+        id: `footpath_barrier_${i}_${Date.now()}`,
+        device_type: 'barrier',
+        device_name: 'Pedestrian Barrier',
+        device_code: 'Barrier',
+        position_lat: snapped.lat,
+        position_lng: snapped.lng,
+        properties: {
+          distance_from_start: distanceAlong,
+          placement: 'footpath_barrier',
+          auto_placed: true,
+          tgs_compliant: true
+        }
+      });
+    }
+    
+    // === END OF CLOSURE SIGN ===
+    const endLat = end_lat || start_lat;
+    const endLng = end_lng || start_lng;
+    const endPos = this.snapToRoadEdge(endLat, endLng, roadEdge, 0.5);
+    
+    devices.push({
+      id: `footpath_end_${Date.now()}`,
+      device_type: 'warning',
+      device_name: 'End Footpath Closure',
+      device_code: 'T5-6',
+      position_lat: endPos.lat,
+      position_lng: endPos.lng,
+      properties: {
+        placement: 'footpath_closure_end',
+        auto_placed: true,
+        tgs_compliant: true
+      }
+    });
+    
+    console.log(`✅ Footpath Closure TGS Complete: ${devices.length} devices placed`);
+    return devices;
+  }
+
+  /**
+   * Pedestrian Detour TGS
+   * For directing pedestrians around work zones (DDA compliant)
+   */
+  placePedestrianDetourTGS(workZoneData, speedLimit, roadEdgeGeometry) {
+    console.log('🚧 === PEDESTRIAN DETOUR TGS (DDA Compliant) ===');
+    
+    const devices = [];
+    const { start_lat, start_lng, end_lat, end_lng, road_bearing } = workZoneData;
+    
+    const bearing = road_bearing || this.calculateBearing(start_lat, start_lng, end_lat || start_lat, end_lng || start_lng);
+    const roadEdge = this.extractRoadEdgePoints(roadEdgeGeometry);
+    
+    // === DETOUR START SIGNS ===
+    const detourStartPos = this.snapToRoadEdge(start_lat, start_lng, roadEdge, 1.5);
+    
+    devices.push({
+      id: `ped_detour_start_${Date.now()}`,
+      device_type: 'guide',
+      device_name: 'Pedestrian Detour',
+      device_code: 'G9-84',
+      position_lat: detourStartPos.lat,
+      position_lng: detourStartPos.lng,
+      properties: {
+        placement: 'pedestrian_detour_start',
+        auto_placed: true,
+        tgs_compliant: true,
+        dda_compliant: true
+      }
+    });
+    
+    // Advance warning
+    const warningPos = this.calculatePosition(start_lat, start_lng, bearing + 180, 15);
+    const warningSnapped = this.snapToRoadEdge(warningPos.lat, warningPos.lng, roadEdge, 1.5);
+    
+    devices.push({
+      id: `ped_detour_warning_${Date.now()}`,
+      device_type: 'warning',
+      device_name: 'Pedestrian Detour Ahead',
+      device_code: 'G9-84',
+      position_lat: warningSnapped.lat,
+      position_lng: warningSnapped.lng,
+      properties: {
+        distance_from_detour: 15,
+        placement: 'pedestrian_detour_advance',
+        auto_placed: true,
+        tgs_compliant: true,
+        dda_compliant: true
+      }
+    });
+    
+    // === DETOUR PATH MARKERS ===
+    // Create a simple detour path (offset from road)
+    const detourLength = this.calculateDistance(start_lat, start_lng, end_lat || start_lat, end_lng || start_lng) || 25;
+    const numMarkers = Math.max(3, Math.floor(detourLength / 10));
+    
+    for (let i = 0; i <= numMarkers; i++) {
+      const distanceAlong = (i / numMarkers) * detourLength;
+      const markerPos = this.calculatePosition(start_lat, start_lng, bearing, distanceAlong);
+      // Offset detour path 3m to the side
+      const detourOffsetPos = this.calculatePosition(markerPos.lat, markerPos.lng, bearing + 90, 3.0);
+      const snapped = this.snapToRoadEdge(detourOffsetPos.lat, detourOffsetPos.lng, roadEdge, 0.5);
+      
+      devices.push({
+        id: `ped_detour_marker_${i}_${Date.now()}`,
+        device_type: 'delineation',
+        device_name: 'Pedestrian Detour Marker',
+        device_code: 'Bollard',
+        position_lat: snapped.lat,
+        position_lng: snapped.lng,
+        properties: {
+          distance_along_detour: distanceAlong,
+          placement: 'pedestrian_detour_path',
+          auto_placed: true,
+          tgs_compliant: true,
+          dda_compliant: true
+        }
+      });
+    }
+    
+    // === END DETOUR SIGN ===
+    const endLat = end_lat || start_lat;
+    const endLng = end_lng || start_lng;
+    const endPos = this.calculatePosition(endLat, endLng, bearing, 5);
+    const endSnapped = this.snapToRoadEdge(endPos.lat, endPos.lng, roadEdge, 1.5);
+    
+    devices.push({
+      id: `ped_detour_end_${Date.now()}`,
+      device_type: 'guide',
+      device_name: 'End Pedestrian Detour',
+      device_code: 'G9-84',
+      position_lat: endSnapped.lat,
+      position_lng: endSnapped.lng,
+      properties: {
+        placement: 'pedestrian_detour_end',
+        auto_placed: true,
+        tgs_compliant: true,
+        dda_compliant: true
+      }
+    });
+    
+    console.log(`✅ Pedestrian Detour TGS Complete: ${devices.length} devices placed`);
+    return devices;
+  }
+
+  /**
+   * Contra Flow TGS
+   * For diverting traffic to opposing lane
+   */
+  placeContraFlowTGS(workZoneData, speedLimit, roadEdgeGeometry) {
+    console.log('🚧 === CONTRA FLOW TGS (AS 1742.3) ===');
+    
+    const devices = [];
+    const { start_lat, start_lng, end_lat, end_lng, road_bearing } = workZoneData;
+    
+    const bearing = road_bearing || this.calculateBearing(start_lat, start_lng, end_lat || start_lat, end_lng || start_lng);
+    const isLowSpeed = speedLimit <= 70;
+    const roadEdge = this.extractRoadEdgePoints(roadEdgeGeometry);
+    
+    // === ADVANCE WARNING ===
+    const warnings = isLowSpeed ? [
+      { code: 'T1-1', name: 'Road Work Ahead', distance: 195 },
+      { code: 'T5-32', name: 'Two Way Traffic Ahead', distance: 145 },
+      { code: 'T1-25', name: 'Lane Change', distance: 100 }
+    ] : [
+      { code: 'T1-1', name: 'Road Work Ahead', distance: 400 },
+      { code: 'T5-32', name: 'Two Way Traffic Ahead', distance: 320 },
+      { code: 'T1-25', name: 'Lane Change', distance: 160 }
+    ];
+    
+    warnings.forEach((sign, idx) => {
+      const signPos = this.calculatePosition(start_lat, start_lng, bearing + 180, sign.distance);
+      const snapped = this.snapToRoadEdge(signPos.lat, signPos.lng, roadEdge, 1.0);
+      
+      devices.push({
+        id: `contraflow_warning_${idx}_${Date.now()}`,
+        device_type: 'warning',
+        device_name: sign.name,
+        device_code: sign.code,
+        position_lat: snapped.lat,
+        position_lng: snapped.lng,
+        properties: {
+          distance_from_workzone: sign.distance,
+          placement: 'contraflow_advance',
+          auto_placed: true,
+          tgs_compliant: true
+        }
+      });
+    });
+    
+    // === SPEED REDUCTION ===
+    const reducedSpeed = isLowSpeed ? 40 : 60;
+    const speedDistance = isLowSpeed ? 60 : 80;
+    const speedPos = this.calculatePosition(start_lat, start_lng, bearing + 180, speedDistance);
+    const speedSnapped = this.snapToRoadEdge(speedPos.lat, speedPos.lng, roadEdge, 1.0);
+    
+    devices.push({
+      id: `contraflow_speed_${Date.now()}`,
+      device_type: 'regulatory',
+      device_name: `Speed Limit ${reducedSpeed}`,
+      device_code: 'R4-1',
+      position_lat: speedSnapped.lat,
+      position_lng: speedSnapped.lng,
+      properties: {
+        distance_from_workzone: speedDistance,
+        placement: 'speed_reduction',
+        speed_value: reducedSpeed,
+        auto_placed: true,
+        tgs_compliant: true
+      }
+    });
+    
+    // === DELINEATION FOR CONTRA FLOW SECTION ===
+    const contraflowLength = this.calculateDistance(start_lat, start_lng, end_lat || start_lat, end_lng || start_lng) || 50;
+    const numDelineators = Math.max(5, Math.floor(contraflowLength / 5));
+    
+    for (let i = 0; i <= numDelineators; i++) {
+      const distanceAlong = (i / numDelineators) * contraflowLength;
+      const delinPos = this.calculatePosition(start_lat, start_lng, bearing, distanceAlong);
+      // Center line delineation
+      const snapped = this.snapToRoadEdge(delinPos.lat, delinPos.lng, roadEdge, 0.3);
+      
+      devices.push({
+        id: `contraflow_delin_${i}_${Date.now()}`,
+        device_type: 'delineation',
+        device_name: 'Bollard',
+        device_code: 'Bollard',
+        position_lat: snapped.lat,
+        position_lng: snapped.lng,
+        properties: {
+          distance_from_start: distanceAlong,
+          placement: 'contraflow_centerline',
+          auto_placed: true,
+          tgs_compliant: true
+        }
+      });
+    }
+    
+    // === END CONTRA FLOW ===
+    const endLat = end_lat || start_lat;
+    const endLng = end_lng || start_lng;
+    const endPos = this.calculatePosition(endLat, endLng, bearing, 20);
+    const endSnapped = this.snapToRoadEdge(endPos.lat, endPos.lng, roadEdge, 1.0);
+    
+    devices.push({
+      id: `contraflow_end_${Date.now()}`,
+      device_type: 'warning',
+      device_name: 'End Two Way Traffic',
+      device_code: 'T5-32',
+      position_lat: endSnapped.lat,
+      position_lng: endSnapped.lng,
+      properties: {
+        distance_from_end: 20,
+        placement: 'contraflow_end',
+        auto_placed: true,
+        tgs_compliant: true
+      }
+    });
+    
+    console.log(`✅ Contra Flow TGS Complete: ${devices.length} devices placed`);
+    return devices;
+  }
+
   // ==================== HELPER FUNCTIONS ====================
 
   /**
