@@ -870,12 +870,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "TGS Device Placement Engine Testing (AS 1742.3:2019)"
     - "Device Placement Functionality Testing (SafeRoadWorks TMP)"
-  stuck_tasks:
-    - "TGS Device Placement Engine Testing (AS 1742.3:2019)"
-    - "Device Placement Functionality Testing (SafeRoadWorks TMP)"
-    - "Authentication UI (Sign In/Create Account)"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
   test_all: false
@@ -889,6 +884,7 @@ test_plan:
   professional_tmp_frontend_complete: true
   device_placement_testing_complete: true
   device_placement_api_flow_verified: true
+  tgs_device_placement_verified: true
 
 agent_communication:
   - agent: "main"
