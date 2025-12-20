@@ -201,8 +201,11 @@ export default function TGSTemplateSelector({ selectedTemplates, onChange }) {
   };
 
   const groupedTemplates = {
-    roadwork: tgsTemplates.filter(t => t.category === 'roadwork'),
-    traffic_control: tgsTemplates.filter(t => t.category === 'traffic_control'),
+    stop_slow: tgsTemplates.filter(t => t.category === 'stop_slow'),
+    lane_closure: tgsTemplates.filter(t => t.category === 'lane_closure'),
+    intersection: tgsTemplates.filter(t => t.category === 'intersection'),
+    contra_flow: tgsTemplates.filter(t => t.category === 'contra_flow'),
+    road_closure: tgsTemplates.filter(t => t.category === 'road_closure'),
     pedestrian: tgsTemplates.filter(t => t.category === 'pedestrian')
   };
 
