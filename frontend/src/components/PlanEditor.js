@@ -590,6 +590,7 @@ export default function PlanEditor({ user, onLogout }) {
   };
 
   const handleInputChange = (section, field, value) => {
+    console.log(`📝 Input changed: ${section}.${field} = "${value}"`);
     setFormData(prev => ({
       ...prev,
       [section]: {
