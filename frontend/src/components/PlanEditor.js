@@ -906,35 +906,40 @@ export default function PlanEditor({ user, onLogout }) {
       let autoDevices;
       
       try {
-        if (isLaneClosure) {
-          console.log('🚧 Using Lane Closure placement logic with REAL road edges');
-          console.log('  Traffic direction:', formData.road_occupancy?.affected_traffic_direction || formData.work_details?.affected_traffic_direction || 'West');
-          console.log('  Road edge geometry available:', !!fetchedComprehensiveData?.road_edge_geometry);
-          
-          const laneClosurePlacement = await import('../utils/laneClosurePlacement.js');
-          
-          // Use affected_traffic_direction from various sources
-          const trafficDirection = formData.road_occupancy?.affected_traffic_direction || 
-                                   formData.work_details?.affected_traffic_direction || 
-                                   'West'; // Default to West for Torrens Road
-          
-          autoDevices = laneClosurePlacement.default.placeLaneClosureDevices(
-            workZoneData,
-            roadGeometry.speed_limit || 60,
-            fetchedComprehensiveData?.side_streets || [],
-            trafficDirection,
-            fetchedComprehensiveData?.road_edge_geometry || null  // Pass REAL road edges
-          );
-          
-          console.log('🚧 Lane closure placement returned:', autoDevices?.length || 0, 'devices');
-        } else {
-          console.log('🚧 Using standard AGTTM placement logic');
-          autoDevices = await agttmRules.default.calculateAGTTMCompliantPlacement(
-            workZoneData,
-            roadGeometry,
-            GOOGLE_MAPS_API_KEY
-          );
+        // ==================== NEW TGS PLACEMENT ENGINE ====================
+        console.log('🚧 Using NEW TGS-Compliant Placement Engine (AS 1742.3:2019)');
+        console.log('  Road edge geometry available:', !!fetchedComprehensiveData?.road_edge_geometry);
+        console.log('  Side streets detected:', fetchedComprehensiveData?.side_streets?.length || 0);
+        
+        const tgsPlacementEngine = await import('../utils/tgsPlacementEngine.js');
+        
+        // Determine TGS type based on work details
+        let tgsType = 'LANE_CLOSURE'; // Default
+        
+        if (formData.road_occupancy?.complete_road_closure) {
+          tgsType = 'ROAD_CLOSURE';
+        } else if (formData.control_measures?.traffic_controllers) {
+          tgsType = roadGeometry.speed_limit > 70 ? 'STOP_SLOW_HIGH_SPEED' : 'STOP_SLOW_LOW_SPEED';
+        } else if (formData.road_occupancy?.left_shoulder || formData.road_occupancy?.right_shoulder) {
+          tgsType = 'SHOULDER_WORK';
+        } else if (formData.road_occupancy?.left_lane || formData.road_occupancy?.center_lane || formData.road_occupancy?.right_lane) {
+          tgsType = 'LANE_CLOSURE';
         }
+        
+        console.log(`  Selected TGS Type: ${tgsType}`);
+        console.log(`  Speed Limit: ${roadGeometry.speed_limit || 60} km/h`);
+        
+        // Call the new TGS placement engine
+        autoDevices = tgsPlacementEngine.default.placeTGSDevices(
+          workZoneData,
+          tgsType,
+          roadGeometry.speed_limit || 60,
+          fetchedComprehensiveData?.road_edge_geometry || null,
+          fetchedComprehensiveData?.side_streets || []
+        );
+        
+        console.log(`✅ TGS Placement Engine returned: ${autoDevices?.length || 0} devices`);
+        
       } catch (placementError) {
         console.error('❌ Device placement error:', placementError);
         console.error('   Error details:', placementError.message);
