@@ -186,15 +186,22 @@ export default function TGSTemplateSelector({ selectedTemplates, onChange }) {
                       ? 'border-blue-500 bg-blue-50'
                       : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
                   }`}
-                  onClick={() => handleToggle(template.id)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleToggle(template.id);
+                  }}
                 >
                   <div className="flex items-start gap-3">
                     <Checkbox
                       checked={selectedTemplates.includes(template.id)}
-                      onCheckedChange={() => handleToggle(template.id)}
+                      onCheckedChange={(checked) => {
+                        console.log('Checkbox changed:', template.id, checked);
+                        handleToggle(template.id);
+                      }}
+                      onClick={(e) => e.stopPropagation()}
                       className="mt-1"
                     />
-                    <div className="flex-1">
+                    <div className="flex-1" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-2xl">{template.icon}</span>
                         <Label className="font-semibold cursor-pointer">
