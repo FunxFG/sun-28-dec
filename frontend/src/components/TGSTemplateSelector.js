@@ -79,10 +79,14 @@ export default function TGSTemplateSelector({ selectedTemplates, onChange }) {
   ];
 
   const handleToggle = (templateId) => {
+    console.log('🔘 Template clicked:', templateId);
+    console.log('   Current selection:', selectedTemplates);
+    
     const newSelection = selectedTemplates.includes(templateId)
       ? selectedTemplates.filter(id => id !== templateId)
       : [...selectedTemplates, templateId];
     
+    console.log('   New selection:', newSelection);
     onChange(newSelection);
   };
 
