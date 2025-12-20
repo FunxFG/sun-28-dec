@@ -133,6 +133,9 @@ export default function PlanEditor({ user, onLogout }) {
   const [selectedTemplate, setSelectedTemplate] = useState('none');
   const [loadingTemplate, setLoadingTemplate] = useState(false);
   
+  // NEW: State for multi-TGS template selection
+  const [selectedTGSTemplates, setSelectedTGSTemplates] = useState(['LANE_CLOSURE']);
+  
   // State for comprehensive auto-population data
   const [comprehensiveData, setComprehensiveData] = useState({
     side_streets: [],
