@@ -73,7 +73,10 @@ export default function TGSTemplateSelector({ selectedTemplates, onChange }) {
           onCheckedChange={() => handleToggle(template.id)}
           className="mt-1"
         />
-        <div className="flex-1" onClick={() => handleToggle(template.id)}>
+        <div className="flex-1 cursor-pointer" onClick={(e) => {
+          e.stopPropagation();
+          handleToggle(template.id);
+        }}>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-2xl">{template.icon}</span>
             <Label className="font-semibold cursor-pointer text-sm">
