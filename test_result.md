@@ -1148,3 +1148,17 @@ Main agent should investigate the handleAutoPlaceDevices function execution flow
 2. Verify AGTTM placement algorithm execution
 3. Debug why device calculation logic is not reached
 4. Resolve Google Maps API loading conflicts
+  - task: "Multi-Select TGS Templates Feature"
+    implemented: true
+    working: false
+    file: "frontend/src/components/TGSTemplateSelector.js, frontend/src/components/PlanEditor.js"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented multi-select TGS templates feature allowing users to select multiple TGS patterns to be combined on the same map."
+      - working: false
+        agent: "testing"
+        comment: "CRITICAL ISSUE: Multi-select TGS templates feature partially working but selection state not updating correctly. UI VERIFICATION: All 3 categories visible (Roadwork, Traffic Control, Pedestrian), All 8 templates visible and clickable, Initial selection shows 1 Selected (Lane Closure by default). CRITICAL BUG: When clicking Footpath Closure and Pedestrian Detour cards, selection counter remains at 1 Selected instead of updating to 3 Selected. Info box not appearing for multi-pattern mode. Auto-Place button shows 1 Pattern instead of 3 Patterns. Button remains disabled even after addresses filled. ROOT CAUSE: Click events not properly propagating to state handler or React state not updating. RECOMMENDATION: Investigate why clicking template cards does not trigger onChange callback. Check for conflicting click handlers or checkbox state synchronization issues."
