@@ -4163,20 +4163,21 @@ export default function PlanEditor({ user, onLogout }) {
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle>Traffic Management Plan</CardTitle>
-                    <CardDescription>Click on the map to manually place devices, or use auto-placement</CardDescription>
+                    <CardDescription>Select TGS templates below, then use auto-placement to generate devices</CardDescription>
                   </div>
                   <div className="flex gap-2">
                     <Button
                       onClick={() => {
                         console.log('🔘 Auto-Place button clicked!');
                         console.log('   addresses:', formData.work_details.start_address, '->', formData.work_details.end_address);
+                        console.log('   selected TGS templates:', selectedTGSTemplates);
                         handleAutoPlaceDevices();
                       }}
                       className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white"
-                      disabled={!formData.work_details.start_address || !formData.work_details.end_address}
+                      disabled={!formData.work_details.start_address || !formData.work_details.end_address || selectedTGSTemplates.length === 0}
                     >
                       <Zap className="w-4 h-4 mr-2" />
-                      Auto-Place Devices
+                      Auto-Place Devices ({selectedTGSTemplates.length} Pattern{selectedTGSTemplates.length !== 1 ? 's' : ''})
                     </Button>
                     <Button
                       variant="outline"
@@ -4190,9 +4191,15 @@ export default function PlanEditor({ user, onLogout }) {
                 </div>
               </CardHeader>
               <CardContent>
+                {/* TGS Template Multi-Selector */}
+                <TGSTemplateSelector
+                  selectedTemplates={selectedTGSTemplates}
+                  onChange={setSelectedTGSTemplates}
+                />
+                
                 <div 
                   ref={mapRef}
-                  className="w-full h-96 bg-slate-100 rounded-lg border border-slate-200"
+                  className="w-full h-96 bg-slate-100 rounded-lg border border-slate-200 mt-4"
                 >
                   <div className="flex items-center justify-center h-full text-slate-500">
                     Loading Google Maps...
