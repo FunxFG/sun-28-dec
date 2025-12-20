@@ -870,9 +870,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Device Placement Functionality Testing (SafeRoadWorks TMP)"
+    - "Multi-Select TGS Templates Feature Testing"
   stuck_tasks:
     - "Authentication UI (Sign In/Create Account)"
+    - "Multi-Select TGS Templates - Selection Not Updating"
   test_all: false
   test_priority: "high_first"
   backend_testing_complete: true
@@ -885,6 +886,7 @@ test_plan:
   device_placement_testing_complete: true
   device_placement_api_flow_verified: true
   tgs_device_placement_verified: true
+  multi_select_tgs_testing_in_progress: true
 
 agent_communication:
   - agent: "main"
