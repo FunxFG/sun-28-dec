@@ -741,6 +741,206 @@ class TGSPlacementEngine {
       device_name: 'End Footpath Closure',
       device_code: 'T5-6',
       position_lat: endPos.lat,
+
+  /**
+   * Roundabout TGS with Side Road Signing
+   */
+  placeRoundaboutTGS(workZoneData, speedLimit, roadEdgeGeometry, sideStreets = []) {
+    console.log('🚧 === ROUNDABOUT TGS (AS 1742.3) ===');
+    
+    const devices = [];
+    const { start_lat, start_lng, road_bearing } = workZoneData;
+    
+    const bearing = road_bearing || 0;
+    const isLowSpeed = speedLimit <= 70;
+    const roadEdge = this.extractRoadEdgePoints(roadEdgeGeometry);
+    
+    // Advance warnings on all approaches (4 directions for roundabout)
+    const approaches = [0, 90, 180, 270]; // N, E, S, W
+    const warningDistance = isLowSpeed ? 70 : 160;
+    
+    approaches.forEach((approachBearing, idx) => {
+      const signPos = this.calculatePosition(start_lat, start_lng, approachBearing, warningDistance);
+      const snapped = this.snapToRoadEdge(signPos.lat, signPos.lng, roadEdge, 1.0);
+      
+      devices.push({
+        id: `roundabout_warning_${idx}_${Date.now()}`,
+        device_type: 'warning',
+        device_name: 'Road Work Ahead',
+        device_code: 'T1-1',
+        position_lat: snapped.lat,
+        position_lng: snapped.lng,
+        properties: {
+          approach: ['North', 'East', 'South', 'West'][idx],
+          distance_from_roundabout: warningDistance,
+          placement: 'roundabout_approach',
+          auto_placed: true,
+          tgs_compliant: true
+        }
+      });
+    });
+    
+    // Side road signs ("ON SIDE ROAD" requirement)
+    if (sideStreets && sideStreets.length > 0) {
+      sideStreets.forEach((street, idx) => {
+        if (street.lat && street.lng) {
+          const sideSignPos = this.calculatePosition(street.lat, street.lng, street.bearing || 0, -30);
+          const snapped = this.snapToRoadEdge(sideSignPos.lat, sideSignPos.lng, roadEdge, 1.0);
+          
+          devices.push({
+            id: `side_road_sign_${idx}_${Date.now()}`,
+            device_type: 'warning',
+            device_name: 'Road Work Ahead (On Side Road)',
+            device_code: 'T1-1',
+            position_lat: snapped.lat,
+            position_lng: snapped.lng,
+            properties: {
+              side_road: street.name,
+              placement: 'on_side_road',
+              auto_placed: true,
+              tgs_compliant: true
+            }
+          });
+        }
+      });
+    }
+    
+    console.log(`✅ Roundabout TGS Complete: ${devices.length} devices placed`);
+    return devices;
+  }
+
+  /**
+   * T-Intersection TGS
+   */
+  placeTIntersectionTGS(workZoneData, speedLimit, roadEdgeGeometry) {
+    console.log('🚧 === T-INTERSECTION TGS (AS 1742.3) ===');
+    
+    const devices = [];
+    const { start_lat, start_lng, road_bearing } = workZoneData;
+    
+    const bearing = road_bearing || 0;
+    const isLowSpeed = speedLimit <= 70;
+    const roadEdge = this.extractRoadEdgePoints(roadEdgeGeometry);
+    
+    // Warnings on main road approaches
+    const mainRoadWarnings = isLowSpeed ? [
+      { code: 'T1-1', name: 'Road Work Ahead', distance: 70 },
+      { code: 'T1-1', name: 'Road Work Ahead', distance: 45 }
+    ] : [
+      { code: 'T1-1', name: 'Road Work Ahead', distance: 160 },
+      { code: 'T1-1', name: 'Road Work Ahead', distance: 80 }
+    ];
+    
+    mainRoadWarnings.forEach((sign, idx) => {
+      const signPos = this.calculatePosition(start_lat, start_lng, bearing + 180, sign.distance);
+      const snapped = this.snapToRoadEdge(signPos.lat, signPos.lng, roadEdge, 1.0);
+      
+      devices.push({
+        id: `t_int_warning_${idx}_${Date.now()}`,
+        device_type: 'warning',
+        device_name: sign.name,
+        device_code: sign.code,
+        position_lat: snapped.lat,
+        position_lng: snapped.lng,
+        properties: {
+          distance_from_intersection: sign.distance,
+          placement: 't_intersection_main',
+          auto_placed: true,
+          tgs_compliant: true
+        }
+      });
+    });
+    
+    // Warning on perpendicular road
+    const perpPos = this.calculatePosition(start_lat, start_lng, bearing + 90, 50);
+    const perpSnapped = this.snapToRoadEdge(perpPos.lat, perpPos.lng, roadEdge, 1.0);
+    
+    devices.push({
+      id: `t_int_perp_${Date.now()}`,
+      device_type: 'warning',
+      device_name: 'Road Work Ahead',
+      device_code: 'T1-1',
+      position_lat: perpSnapped.lat,
+      position_lng: perpSnapped.lng,
+      properties: {
+        distance_from_intersection: 50,
+        placement: 't_intersection_perpendicular',
+        auto_placed: true,
+        tgs_compliant: true
+      }
+    });
+    
+    console.log(`✅ T-Intersection TGS Complete: ${devices.length} devices placed`);
+    return devices;
+  }
+
+  /**
+   * Court Bowl (Cul-de-sac) Closure TGS
+   */
+  placeCourtBowlClosureTGS(workZoneData, speedLimit, roadEdgeGeometry) {
+    console.log('🚧 === COURT BOWL CLOSURE TGS (AS 1742.3) ===');
+    
+    const devices = [];
+    const { start_lat, start_lng, road_bearing } = workZoneData;
+    
+    const bearing = road_bearing || 0;
+    const roadEdge = this.extractRoadEdgePoints(roadEdgeGeometry);
+    
+    // Road Closed sign at entrance
+    const closurePos = this.snapToRoadEdge(start_lat, start_lng, roadEdge, 0.5);
+    
+    devices.push({
+      id: `court_bowl_closed_${Date.now()}`,
+      device_type: 'regulatory',
+      device_name: 'Road Closed',
+      device_code: 'R2-1',
+      position_lat: closurePos.lat,
+      position_lng: closurePos.lng,
+      properties: {
+        placement: 'court_bowl_entrance',
+        auto_placed: true,
+        tgs_compliant: true
+      }
+    });
+    
+    // Local Traffic Only sign
+    const localTrafficPos = this.calculatePosition(start_lat, start_lng, bearing + 180, 20);
+    const localSnapped = this.snapToRoadEdge(localTrafficPos.lat, localTrafficPos.lng, roadEdge, 1.0);
+    
+    devices.push({
+      id: `local_traffic_${Date.now()}`,
+      device_type: 'regulatory',
+      device_name: 'Local Traffic Only',
+      device_code: 'R2-2',
+      position_lat: localSnapped.lat,
+      position_lng: localSnapped.lng,
+      properties: {
+        distance_from_closure: 20,
+        placement: 'local_traffic_warning',
+        auto_placed: true,
+        tgs_compliant: true
+      }
+    });
+    
+    // Barrier at closure point
+    devices.push({
+      id: `court_bowl_barrier_${Date.now()}`,
+      device_type: 'barrier',
+      device_name: 'Water Filled Barrier',
+      device_code: 'Barrier',
+      position_lat: closurePos.lat,
+      position_lng: closurePos.lng,
+      properties: {
+        placement: 'closure_barrier',
+        auto_placed: true,
+        tgs_compliant: true
+      }
+    });
+    
+    console.log(`✅ Court Bowl Closure TGS Complete: ${devices.length} devices placed`);
+    return devices;
+  }
+
       position_lng: endPos.lng,
       properties: {
         placement: 'footpath_closure_end',
