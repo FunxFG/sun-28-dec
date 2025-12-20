@@ -12,69 +12,170 @@ import { Info } from 'lucide-react';
 export default function TGSTemplateSelector({ selectedTemplates, onChange }) {
   
   const tgsTemplates = [
+    // STOP-SLOW PATTERNS (Work in Traffic Lane)
     {
-      id: 'LANE_CLOSURE',
-      name: 'Lane Closure',
-      description: 'Single lane closure on multi-lane road (M01.2A)',
-      icon: '🚧',
-      devices: '20-35',
-      category: 'roadwork'
-    },
-    {
-      id: 'ROAD_CLOSURE',
-      name: 'Road Closure',
-      description: 'Complete road closure with detour signage',
-      icon: '🚫',
-      devices: '15-25',
-      category: 'roadwork'
-    },
-    {
-      id: 'STOP_SLOW_LOW_SPEED',
-      name: 'Stop-Slow (Low Speed)',
-      description: 'Traffic controllers for 40-70 km/h zones',
+      id: 'STOP_SLOW_LOW_TRAFFIC_LANE',
+      name: 'Stop-Slow 40-70km (Traffic Lane)',
+      description: 'Generic 1: Work in traffic lane with TCs',
       icon: '👷',
       devices: '10-15',
-      category: 'traffic_control'
+      category: 'stop_slow',
+      speed: 'low'
     },
     {
-      id: 'STOP_SLOW_HIGH_SPEED',
-      name: 'Stop-Slow (High Speed)',
-      description: 'Traffic controllers for 80-110 km/h zones',
+      id: 'STOP_SLOW_HIGH_TRAFFIC_LANE',
+      name: 'Stop-Slow 80-110km (Traffic Lane)',
+      description: 'Generic 2: Work in traffic lane with TCs (high speed)',
       icon: '👷',
       devices: '12-20',
-      category: 'traffic_control'
+      category: 'stop_slow',
+      speed: 'high'
     },
     {
-      id: 'SHOULDER_WORK',
-      name: 'Shoulder Work',
-      description: 'Work on road shoulder or verge',
-      icon: '⚠️',
-      devices: '8-15',
-      category: 'roadwork'
+      id: 'STOP_SLOW_LOW_SHOULDER',
+      name: 'Stop-Slow 40-70km (Shoulder)',
+      description: 'Generic 3: Work in shoulder with TCs',
+      icon: '👷',
+      devices: '8-12',
+      category: 'stop_slow',
+      speed: 'low'
     },
+    {
+      id: 'STOP_SLOW_HIGH_SHOULDER',
+      name: 'Stop-Slow 80-110km (Shoulder)',
+      description: 'Generic 4: Work in shoulder with TCs (high speed)',
+      icon: '👷',
+      devices: '10-15',
+      category: 'stop_slow',
+      speed: 'high'
+    },
+    
+    // ROUNDABOUT PATTERNS
+    {
+      id: 'ROUNDABOUT_LOW',
+      name: 'Roundabout 40-70km',
+      description: 'Generic 5: Roundabout with TCs and side road signs',
+      icon: '🔄',
+      devices: '15-25',
+      category: 'intersection',
+      speed: 'low'
+    },
+    {
+      id: 'ROUNDABOUT_HIGH',
+      name: 'Roundabout 80-110km',
+      description: 'Generic 6: Roundabout TCs (high speed)',
+      icon: '🔄',
+      devices: '18-30',
+      category: 'intersection',
+      speed: 'high'
+    },
+    
+    // T-INTERSECTION PATTERNS
+    {
+      id: 'T_INTERSECTION_LOW',
+      name: 'T-Intersection 40-70km',
+      description: 'Generic 7: T-intersection with TCs',
+      icon: '⊥',
+      devices: '12-20',
+      category: 'intersection',
+      speed: 'low'
+    },
+    {
+      id: 'T_INTERSECTION_HIGH',
+      name: 'T-Intersection 80-110km',
+      description: 'Generic 8: T-intersection TCs (high speed)',
+      icon: '⊥',
+      devices: '15-25',
+      category: 'intersection',
+      speed: 'high'
+    },
+    
+    // LANE CLOSURE NO MEDIAN
+    {
+      id: 'LANE_CLOSURE_LOW_NO_MEDIAN',
+      name: 'Lane Closure 40-70km (No Median)',
+      description: 'Generic 9: Single lane closure, undivided road',
+      icon: '🚧',
+      devices: '20-30',
+      category: 'lane_closure',
+      speed: 'low'
+    },
+    {
+      id: 'LANE_CLOSURE_HIGH_NO_MEDIAN',
+      name: 'Lane Closure 80-110km (No Median)',
+      description: 'Generic 10: Lane closure (high speed, no median)',
+      icon: '🚧',
+      devices: '25-40',
+      category: 'lane_closure',
+      speed: 'high'
+    },
+    
+    // LANE CLOSURE WITH RAISED MEDIAN
+    {
+      id: 'LANE_CLOSURE_LOW_MEDIAN',
+      name: 'Lane Closure 40-70km (Raised Median)',
+      description: 'Generic 11: Lane closure on divided road',
+      icon: '🚧',
+      devices: '20-30',
+      category: 'lane_closure',
+      speed: 'low'
+    },
+    {
+      id: 'LANE_CLOSURE_HIGH_MEDIAN',
+      name: 'Lane Closure 80-110km (Raised Median)',
+      description: 'Generic 10 variant: Lane closure (high speed, median)',
+      icon: '🚧',
+      devices: '25-40',
+      category: 'lane_closure',
+      speed: 'high'
+    },
+    
+    // CONTRA FLOW PATTERNS
+    {
+      id: 'CONTRA_FLOW_LOW',
+      name: 'Contra Flow 40-70km',
+      description: 'Generic 12: Two-way traffic in single lane',
+      icon: '↔️',
+      devices: '15-25',
+      category: 'contra_flow',
+      speed: 'low'
+    },
+    {
+      id: 'CONTRA_FLOW_HIGH',
+      name: 'Contra Flow 80-110km',
+      description: 'Generic 13: Contra flow (high speed)',
+      icon: '↔️',
+      devices: '20-35',
+      category: 'contra_flow',
+      speed: 'high'
+    },
+    
+    // ROAD CLOSURE PATTERNS
+    {
+      id: 'ROAD_CLOSURE_DETOUR',
+      name: 'Road Closure with Detour',
+      description: 'Generic 14: Complete road closure, detour routing',
+      icon: '🚫',
+      devices: '15-25',
+      category: 'road_closure'
+    },
+    {
+      id: 'ROAD_CLOSURE_COURT_BOWL',
+      name: 'Road Closure - Court Bowl',
+      description: 'Generic 15: Cul-de-sac/court bowl closure',
+      icon: '🚫',
+      devices: '10-15',
+      category: 'road_closure'
+    },
+    
+    // PEDESTRIAN MANAGEMENT
     {
       id: 'FOOTPATH_CLOSURE',
-      name: 'Footpath Closure',
-      description: 'Sidewalk/footpath closure with barriers',
+      name: 'Footpath Works',
+      description: 'Generic 16: Footpath closure & pedestrian management',
       icon: '🚶',
       devices: '10-20',
       category: 'pedestrian'
-    },
-    {
-      id: 'PEDESTRIAN_DETOUR',
-      name: 'Pedestrian Detour',
-      description: 'DDA-compliant pedestrian diversion route',
-      icon: '🔄',
-      devices: '8-15',
-      category: 'pedestrian'
-    },
-    {
-      id: 'CONTRA_FLOW',
-      name: 'Contra Flow',
-      description: 'Two-way traffic in single lane',
-      icon: '↔️',
-      devices: '15-30',
-      category: 'traffic_control'
     }
   ];
 
