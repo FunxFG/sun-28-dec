@@ -910,32 +910,20 @@ export default function PlanEditor({ user, onLogout }) {
         
         const tgsPlacementEngine = await import('../utils/tgsPlacementEngine.js');
         
-        // Determine TGS type based on work details
-        let tgsType = 'LANE_CLOSURE'; // Default
-        
-        if (formData.road_occupancy?.complete_road_closure) {
-          tgsType = 'ROAD_CLOSURE';
-        } else if (formData.control_measures?.traffic_controllers) {
-          tgsType = roadGeometry.speed_limit > 70 ? 'STOP_SLOW_HIGH_SPEED' : 'STOP_SLOW_LOW_SPEED';
-        } else if (formData.road_occupancy?.left_shoulder || formData.road_occupancy?.right_shoulder) {
-          tgsType = 'SHOULDER_WORK';
-        } else if (formData.road_occupancy?.left_lane || formData.road_occupancy?.center_lane || formData.road_occupancy?.right_lane) {
-          tgsType = 'LANE_CLOSURE';
-        }
-        
-        console.log(`  Selected TGS Type: ${tgsType}`);
+        // Use selected TGS templates (supports multiple)
+        console.log(`  Selected TGS Templates: ${selectedTGSTemplates.join(', ')}`);
         console.log(`  Speed Limit: ${roadGeometry.speed_limit || 60} km/h`);
         
-        // Call the new TGS placement engine
+        // Call the TGS placement engine with multiple templates
         autoDevices = tgsPlacementEngine.default.placeTGSDevices(
           workZoneData,
-          tgsType,
+          selectedTGSTemplates, // Pass array of selected templates
           roadGeometry.speed_limit || 60,
           fetchedComprehensiveData?.road_edge_geometry || null,
           fetchedComprehensiveData?.side_streets || []
         );
         
-        console.log(`✅ TGS Placement Engine returned: ${autoDevices?.length || 0} devices`);
+        console.log(`✅ TGS Placement Engine returned: ${autoDevices?.length || 0} devices from ${selectedTGSTemplates.length} pattern(s)`);
         
       } catch (placementError) {
         console.error('❌ Device placement error:', placementError);
