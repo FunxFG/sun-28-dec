@@ -12,11 +12,11 @@ import { Info } from 'lucide-react';
 export default function TGSTemplateSelector({ selectedTemplates, onChange }) {
   
   const tgsTemplates = [
-    // STOP-SLOW PATTERNS (4 patterns)
-    { id: 'STOP_SLOW_LOW_TRAFFIC_LANE', name: 'Stop-Slow 40-70km (Traffic Lane)', description: 'Generic 1: Work in lane with TCs', icon: '👷', devices: '10-15', category: 'stop_slow' },
-    { id: 'STOP_SLOW_HIGH_TRAFFIC_LANE', name: 'Stop-Slow 80-110km (Traffic Lane)', description: 'Generic 2: High speed TCs', icon: '👷', devices: '12-20', category: 'stop_slow' },
-    { id: 'STOP_SLOW_LOW_SHOULDER', name: 'Stop-Slow 40-70km (Shoulder)', description: 'Generic 3: Shoulder work TCs', icon: '👷', devices: '8-12', category: 'stop_slow' },
-    { id: 'STOP_SLOW_HIGH_SHOULDER', name: 'Stop-Slow 80-110km (Shoulder)', description: 'Generic 4: High speed shoulder', icon: '👷', devices: '10-15', category: 'stop_slow' },
+    // SHUTTLE FLOW PATTERNS (4 patterns)
+    { id: 'STOP_SLOW_LOW_TRAFFIC_LANE', name: 'Shuttle Flow 40-70km (Traffic Lane)', description: 'Generic 1: Work in lane with TCs', icon: '👷', devices: '10-15', category: 'shuttle_flow' },
+    { id: 'STOP_SLOW_HIGH_TRAFFIC_LANE', name: 'Shuttle Flow 80-110km (Traffic Lane)', description: 'Generic 2: High speed TCs', icon: '👷', devices: '12-20', category: 'shuttle_flow' },
+    { id: 'STOP_SLOW_LOW_SHOULDER', name: 'Shuttle Flow 40-70km (Shoulder)', description: 'Generic 3: Shoulder work TCs', icon: '👷', devices: '8-12', category: 'shuttle_flow' },
+    { id: 'STOP_SLOW_HIGH_SHOULDER', name: 'Shuttle Flow 80-110km (Shoulder)', description: 'Generic 4: High speed shoulder', icon: '👷', devices: '10-15', category: 'shuttle_flow' },
     
     // LANE CLOSURE PATTERNS (4 patterns)
     { id: 'LANE_CLOSURE_LOW_NO_MEDIAN', name: 'Lane Closure 40-70km (No Median)', description: 'Generic 9: Undivided road', icon: '🚧', devices: '20-30', category: 'lane_closure' },
