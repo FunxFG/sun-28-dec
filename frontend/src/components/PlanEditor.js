@@ -1232,6 +1232,87 @@ export default function PlanEditor({ user, onLogout }) {
 
   // NEW: Fetch Professional TMP data from new modules
   const fetchProfessionalTMPData = async (roadData, trafficData) => {
+
+
+  const handleGenerateTMPFromPatterns = async () => {
+    console.log('📄 === GENERATING TMP FROM TGS PATTERNS ===');
+    console.log('  Selected patterns:', selectedTGSTemplates);
+    console.log('  Devices placed:', formData.devices.length);
+    
+    if (selectedTGSTemplates.length === 0) {
+      toast.error('Please select at least one TGS pattern');
+      return;
+    }
+    
+    if (formData.devices.length === 0) {
+      toast.error('Please place devices first using "Auto-Place Devices"');
+      return;
+    }
+    
+    try {
+      toast.info(`Generating comprehensive TMP for ${selectedTGSTemplates.length} pattern(s)...`);
+      
+      // Call backend to generate TMP content from selected TGS patterns
+      const response = await axios.post(`${API}/tgs/generate-tmp`, {
+        tgs_patterns: selectedTGSTemplates,
+        location: formData.work_details.start_address || 'Work Site',
+        work_details: formData.work_details,
+        company_details: formData.company_details
+      });
+      
+      const tmpContent = response.data.tmp_content;
+      const isMultiPattern = response.data.is_combined;
+      
+      console.log('✅ TMP Content received:', tmpContent);
+      console.log('  Is combined:', isMultiPattern);
+      console.log('  Pattern count:', response.data.pattern_count);
+      
+      // Auto-populate TMP form with generated content
+      setFormData(prev => ({
+        ...prev,
+        // Update work details with pattern-specific information
+        work_details: {
+          ...prev.work_details,
+          work_type: tmpContent.work_description?.work_type || prev.work_details.work_type,
+          description: tmpContent.pattern_info?.description || prev.work_details.description
+        },
+        // Update control measures based on TMP requirements
+        control_measures: {
+          ...prev.control_measures,
+          traffic_controllers: tmpContent.traffic_control_requirements?.requires_traffic_controllers || false,
+          arrow_boards: tmpContent.traffic_control_requirements?.uses_arrow_board || false,
+          truck_attenuator: tmpContent.traffic_control_requirements?.uses_tma || false,
+          speed_reduction: tmpContent.traffic_control_requirements?.speed_reduction_to || 40
+        },
+        // Store TMP content for PDF generation
+        tgs_tmp_content: tmpContent,
+        is_multi_pattern_tmp: isMultiPattern
+      }));
+      
+      // Show success message with details
+      if (isMultiPattern) {
+        toast.success(
+          `Multi-Pattern TMP Generated! Combined ${response.data.pattern_count} patterns with ${tmpContent.risk_assessment?.total_identified_risks || 0} risks and ${tmpContent.traffic_control_requirements?.total_tcs_required || 0} TCs. Scroll down to review and customize.`,
+          { duration: 6000 }
+        );
+      } else {
+        toast.success(
+          `TMP Generated for ${tmpContent.pattern_info?.generic_code}! Review the auto-populated fields below.`,
+          { duration: 4000 }
+        );
+      }
+      
+      // Scroll to show the populated form sections
+      setTimeout(() => {
+        window.scrollTo({ top: 600, behavior: 'smooth' });
+      }, 500);
+      
+    } catch (error) {
+      console.error('❌ Error generating TMP:', error);
+      toast.error('Failed to generate TMP: ' + (error.response?.data?.detail || error.message));
+    }
+  };
+
     try {
       // Fetch Dilapidation Report
       try {
