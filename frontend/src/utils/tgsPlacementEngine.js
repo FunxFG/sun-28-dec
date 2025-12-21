@@ -1173,7 +1173,13 @@ class TGSPlacementEngine {
         distance_from_end: 20,
         placement: 'contraflow_end',
         auto_placed: true,
-
+        tgs_compliant: true
+      }
+    });
+    
+    console.log(`✅ Contra Flow TGS Complete: ${devices.length} devices placed`);
+    return devices;
+  }
 
   /**
    * Lateral Shift TGS
