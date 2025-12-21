@@ -547,6 +547,93 @@ class TGSTMPTemplates:
     
     def get_template(self, tgs_pattern_id: str) -> Dict[str, Any]:
         """Get TMP template for a specific TGS pattern"""
+
+            
+            # ==================== LATERAL SHIFT ====================
+            
+            "LATERAL_SHIFT_LOW": {
+                "name": "Lateral Shift 40-70km",
+                "generic_code": "Lateral Shift (Low Speed)",
+                "work_type": "Lateral Traffic Shift",
+                "description": "Traffic shifted sideways using Lateral Shift Markers (LSM) to create work space without closing lanes.",
+                "requires_tc": False,
+                "uses_arrow_board": False,
+                "speed_reduction": 40,
+                "key_risks": [
+                    "Vehicle encroachment into work area during shift",
+                    "Driver confusion with shifted lane alignment",
+                    "Insufficient lateral clearance to workers",
+                    "LSM marker strike by vehicles",
+                    "Inadequate shift taper causing sudden movement"
+                ],
+                "control_measures": [
+                    "Advance warning signs at 160m, 80m",
+                    "Lateral Shift Markers (LSM) at 15m spacing",
+                    "Gradual shift taper over 30m",
+                    "Speed reduction to 40 km/h",
+                    "Minimum 1.5m lateral shift distance",
+                    "Maintain minimum 3m lane width during shift",
+                    "Enhanced delineation throughout shift section",
+                    "Worker positioning outside shifted traffic path",
+                    "End Road Work sign after shift returns to normal"
+                ],
+                "special_requirements": [
+                    "LSM spacing based on worker-to-traffic proximity per AS 1742.3 Table",
+                    "Minimum shift distance: 0.5m at 40km/h, 1.0m at 60km/h",
+                    "Gradual shift and return tapers mandatory",
+                    "Maintain sight lines through shift"
+                ],
+                "minimum_lane_width": 3.0,
+                "safety_buffer": 20,
+                "lateral_shift_distance": 1.5,
+                "lsm_spacing": 15,
+                "shift_taper_length": 30,
+                "work_zone_length_range": [30, 150]
+            },
+            
+            "LATERAL_SHIFT_HIGH": {
+                "name": "Lateral Shift 80-110km",
+                "generic_code": "Lateral Shift (High Speed)",
+                "work_type": "Lateral Traffic Shift (High Speed)",
+                "description": "High-speed lateral shift using LSM - requires extended tapers and increased shift distance.",
+                "requires_tc": False,
+                "uses_arrow_board": True,
+                "speed_reduction": 60,
+                "key_risks": [
+                    "High-speed vehicle loss of control in shift",
+                    "Inadequate shift taper length for speed",
+                    "Worker exposure at high-speed proximity",
+                    "LSM strike at high speed causing injury",
+                    "Extended shift section causing driver fatigue/inattention"
+                ],
+                "control_measures": [
+                    "Extended advance warnings at 320m, 160m",
+                    "Arrow board showing shift direction at 80m",
+                    "Lateral Shift Markers (LSM) at 25m spacing minimum",
+                    "Extended shift taper over 60m minimum",
+                    "Speed reduction to 60 km/h",
+                    "Minimum 2.0m lateral shift for high-speed separation",
+                    "Enhanced LSM reflectivity for visibility",
+                    "Maintain minimum 3m lane width",
+                    "Longer shift sections require additional warnings",
+                    "End shift with gradual return taper"
+                ],
+                "special_requirements": [
+                    "LSM spacing: 25m minimum for high-speed",
+                    "Shift distance: 1.0m minimum at speeds over 60km/h",
+                    "Extended taper lengths: 60m+ for speeds over 80km/h",
+                    "Arrow board recommended for high-speed shifts",
+                    "Consider safety barriers for shifts > 2m",
+                    "Limit shift section length on high-speed roads"
+                ],
+                "minimum_lane_width": 3.0,
+                "safety_buffer": 30,
+                "lateral_shift_distance": 2.0,
+                "lsm_spacing": 25,
+                "shift_taper_length": 60,
+                "work_zone_length_range": [50, 200]
+            },
+
         return self.templates.get(tgs_pattern_id, {})
     
     def combine_templates(self, tgs_pattern_ids: List[str]) -> Dict[str, Any]:
