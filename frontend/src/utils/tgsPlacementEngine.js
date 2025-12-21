@@ -108,6 +108,12 @@ class TGSPlacementEngine {
           devices = this.placePedestrianDetourTGS(workZoneData, speedLimit, roadEdgeGeometry);
           break;
         
+        // LATERAL SHIFT PATTERNS
+        case 'LATERAL_SHIFT_LOW':
+        case 'LATERAL_SHIFT_HIGH':
+          devices = this.placeLateralShiftTGS(workZoneData, speedLimit, roadEdgeGeometry);
+          break;
+        
         default:
           console.warn(`⚠️ Unknown TGS type: ${tgsType}, skipping`);
           devices = [];
