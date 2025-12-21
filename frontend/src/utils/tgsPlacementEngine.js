@@ -741,6 +741,17 @@ class TGSPlacementEngine {
       device_name: 'End Footpath Closure',
       device_code: 'T5-6',
       position_lat: endPos.lat,
+      position_lng: endPos.lng,
+      properties: {
+        placement: 'footpath_closure_end',
+        auto_placed: true,
+        tgs_compliant: true
+      }
+    });
+    
+    console.log(`✅ Footpath Closure TGS Complete: ${devices.length} devices placed`);
+    return devices;
+  }
 
   /**
    * Roundabout TGS with Side Road Signing
