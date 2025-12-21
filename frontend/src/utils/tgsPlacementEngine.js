@@ -952,18 +952,6 @@ class TGSPlacementEngine {
     return devices;
   }
 
-      position_lng: endPos.lng,
-      properties: {
-        placement: 'footpath_closure_end',
-        auto_placed: true,
-        tgs_compliant: true
-      }
-    });
-    
-    console.log(`✅ Footpath Closure TGS Complete: ${devices.length} devices placed`);
-    return devices;
-  }
-
   /**
    * Pedestrian Detour TGS
    * For directing pedestrians around work zones (DDA compliant)
