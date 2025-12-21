@@ -171,6 +171,20 @@ export default function TGSTemplateSelector({ selectedTemplates, onChange }) {
             </div>
           </div>
 
+          {/* Lateral Shift Templates */}
+          <div>
+            <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
+              <span className="text-indigo-700">↗️ Lateral Shift</span>
+              <div className="flex-1 h-px bg-indigo-200"></div>
+              <Badge variant="outline" className="text-xs">{groupedTemplates.lateral_shift.length} patterns</Badge>
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {groupedTemplates.lateral_shift.map(template => 
+                renderTemplateCard(template, 'border-indigo-500', 'bg-indigo-50')
+              )}
+            </div>
+          </div>
+
           {/* Road Closure Templates */}
           <div>
             <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
