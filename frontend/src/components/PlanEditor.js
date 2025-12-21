@@ -1230,6 +1230,13 @@ export default function PlanEditor({ user, onLogout }) {
     return response.json();
   };
 
+  // Fetch Professional TMP data (stub - not currently used)
+  const fetchProfessionalTMPData = async (roadData, trafficData) => {
+    // This function is called but can be empty for now
+    console.log('fetchProfessionalTMPData called');
+    return {};
+  };
+
   const handleGenerateTMPFromPatterns = async () => {
     console.log('📄 === GENERATING TMP FROM TGS PATTERNS ===');
     console.log('  Selected patterns:', selectedTGSTemplates);
