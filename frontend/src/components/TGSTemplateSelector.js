@@ -39,7 +39,11 @@ export default function TGSTemplateSelector({ selectedTemplates, onChange }) {
     { id: 'ROAD_CLOSURE_COURT_BOWL', name: 'Court Bowl Closure', description: 'Generic 15: Cul-de-sac closure', icon: '🚫', devices: '10-15', category: 'road_closure' },
     
     // PEDESTRIAN PATTERNS (1 pattern)
-    { id: 'FOOTPATH_CLOSURE', name: 'Footpath Works', description: 'Generic 16: Pedestrian management', icon: '🚶', devices: '10-20', category: 'pedestrian' }
+    { id: 'FOOTPATH_CLOSURE', name: 'Footpath Works', description: 'Generic 16: Pedestrian management', icon: '🚶', devices: '10-20', category: 'pedestrian' },
+    
+    // LATERAL SHIFT PATTERNS (2 patterns)
+    { id: 'LATERAL_SHIFT_LOW', name: 'Lateral Shift 40-70km', description: 'Traffic shifted sideways with LSM', icon: '↗️', devices: '15-25', category: 'lateral_shift' },
+    { id: 'LATERAL_SHIFT_HIGH', name: 'Lateral Shift 80-110km', description: 'High speed lateral shift', icon: '↗️', devices: '20-35', category: 'lateral_shift' }
   ];
 
   const handleToggle = (templateId) => {
