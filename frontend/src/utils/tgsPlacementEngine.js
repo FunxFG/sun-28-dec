@@ -1333,14 +1333,6 @@ class TGSPlacementEngine {
     return devices;
   }
 
-        tgs_compliant: true
-      }
-    });
-    
-    console.log(`✅ Contra Flow TGS Complete: ${devices.length} devices placed`);
-    return devices;
-  }
-
   // ==================== HELPER FUNCTIONS ====================
 
   /**
