@@ -1173,6 +1173,166 @@ class TGSPlacementEngine {
         distance_from_end: 20,
         placement: 'contraflow_end',
         auto_placed: true,
+
+
+  /**
+   * Lateral Shift TGS
+   * For shifting traffic sideways to create work space (not lane closure)
+   */
+  placeLateralShiftTGS(workZoneData, speedLimit, roadEdgeGeometry) {
+    console.log('🚧 === LATERAL SHIFT TGS (AS 1742.3) ===');
+    
+    const devices = [];
+    const { start_lat, start_lng, end_lat, end_lng, road_bearing } = workZoneData;
+    
+    const bearing = road_bearing || this.calculateBearing(start_lat, start_lng, end_lat || start_lat, end_lng || start_lng);
+    const isLowSpeed = speedLimit <= 70;
+    const roadEdge = this.extractRoadEdgePoints(roadEdgeGeometry);
+    
+    // Lateral shift distance based on worker proximity
+    // From AS 1742.3 Table: 0-1.2m proximity = 0.5m shift at 40km/h
+    const lateralShiftDistance = 1.5; // meters to shift traffic
+    
+    // === ADVANCE WARNING ===
+    const warnings = isLowSpeed ? [
+      { code: 'T1-1', name: 'Road Work Ahead', distance: 160 },
+      { code: 'T1-1', name: 'Road Work Ahead', distance: 80 }
+    ] : [
+      { code: 'T1-1', name: 'Road Work Ahead', distance: 320 },
+      { code: 'T1-1', name: 'Road Work Ahead', distance: 160 }
+    ];
+    
+    warnings.forEach((sign, idx) => {
+      const signPos = this.calculatePosition(start_lat, start_lng, bearing + 180, sign.distance);
+      const snapped = this.snapToRoadEdge(signPos.lat, signPos.lng, roadEdge, 1.0);
+      
+      devices.push({
+        id: `lateral_shift_warning_${idx}_${Date.now()}`,
+        device_type: 'warning',
+        device_name: sign.name,
+        device_code: sign.code,
+        position_lat: snapped.lat,
+        position_lng: snapped.lng,
+        properties: {
+          distance_from_shift: sign.distance,
+          placement: 'advance_warning',
+          auto_placed: true,
+          tgs_compliant: true
+        }
+      });
+    });
+    
+    // === LATERAL SHIFT MARKERS (LSM) ===
+    console.log('📍 Placing Lateral Shift Markers...');
+    
+    // Determine LSM spacing based on speed and worker proximity
+    // Per AS 1742.3: Closer proximity = tighter spacing
+    const lsmSpacing = isLowSpeed ? 15 : 25; // meters between LSMs
+    
+    const shiftLength = this.calculateDistance(start_lat, start_lng, end_lat || start_lat, end_lng || start_lng) || 50;
+    const numLSMs = Math.max(5, Math.floor(shiftLength / lsmSpacing));
+    
+    console.log(`  Shift length: ${shiftLength.toFixed(0)}m, LSM spacing: ${lsmSpacing}m, Count: ${numLSMs}`);
+    
+    // Create gradual shift taper
+    const taperLength = isLowSpeed ? 30 : 60; // Length over which shift occurs
+    
+    for (let i = 0; i <= numLSMs; i++) {
+      const distanceAlong = (i / numLSMs) * shiftLength;
+      
+      // Calculate lateral offset (gradual shift)
+      let lateralOffset;
+      if (distanceAlong < taperLength) {
+        // Gradual shift over taper length
+        lateralOffset = (distanceAlong / taperLength) * lateralShiftDistance;
+      } else if (distanceAlong > shiftLength - taperLength) {
+        // Gradual return to normal
+        const returnProgress = (shiftLength - distanceAlong) / taperLength;
+        lateralOffset = returnProgress * lateralShiftDistance;
+      } else {
+        // Constant shift in middle section
+        lateralOffset = lateralShiftDistance;
+      }
+      
+      // Position along road
+      const basePos = this.calculatePosition(start_lat, start_lng, bearing, distanceAlong);
+      
+      // Apply lateral offset (shift to left)
+      const shiftedPos = this.calculatePosition(
+        basePos.lat, basePos.lng,
+        bearing - 90, // 90° left
+        lateralOffset
+      );
+      
+      const snapped = this.snapToRoadEdge(shiftedPos.lat, shiftedPos.lng, roadEdge, 0.3);
+      
+      devices.push({
+        id: `lsm_${i}_${Date.now()}`,
+        device_type: 'delineation',
+        device_name: 'Lateral Shift Marker',
+        device_code: 'LSM',
+        position_lat: snapped.lat,
+        position_lng: snapped.lng,
+        properties: {
+          distance_from_start: distanceAlong,
+          lateral_offset: lateralOffset.toFixed(2),
+          placement: 'lateral_shift_marker',
+          auto_placed: true,
+          tgs_compliant: true
+        }
+      });
+    }
+    
+    console.log(`  Placed ${numLSMs + 1} LSMs over ${shiftLength.toFixed(0)}m`);
+    
+    // === SPEED REDUCTION ===
+    const reducedSpeed = isLowSpeed ? 40 : 60;
+    const speedDistance = isLowSpeed ? 60 : 80;
+    const speedPos = this.calculatePosition(start_lat, start_lng, bearing + 180, speedDistance);
+    const speedSnapped = this.snapToRoadEdge(speedPos.lat, speedPos.lng, roadEdge, 1.0);
+    
+    devices.push({
+      id: `lateral_shift_speed_${Date.now()}`,
+      device_type: 'regulatory',
+      device_name: `Speed Limit ${reducedSpeed}`,
+      device_code: 'R4-1',
+      position_lat: speedSnapped.lat,
+      position_lng: speedSnapped.lng,
+      properties: {
+        distance_from_shift: speedDistance,
+        speed_value: reducedSpeed,
+        placement: 'speed_reduction',
+        auto_placed: true,
+        tgs_compliant: true
+      }
+    });
+    
+    // === END SHIFT SIGN ===
+    const endLat = end_lat || start_lat;
+    const endLng = end_lng || start_lng;
+    const endDistance = isLowSpeed ? 30 : 50;
+    const endPos = this.calculatePosition(endLat, endLng, bearing, endDistance);
+    const endSnapped = this.snapToRoadEdge(endPos.lat, endPos.lng, roadEdge, 1.0);
+    
+    devices.push({
+      id: `end_shift_${Date.now()}`,
+      device_type: 'warning',
+      device_name: 'End Road Work',
+      device_code: 'T1-11',
+      position_lat: endSnapped.lat,
+      position_lng: endSnapped.lng,
+      properties: {
+        distance_from_shift_end: endDistance,
+        placement: 'end_lateral_shift',
+        auto_placed: true,
+        tgs_compliant: true
+      }
+    });
+    
+    console.log(`✅ Lateral Shift TGS Complete: ${devices.length} devices placed`);
+    return devices;
+  }
+
         tgs_compliant: true
       }
     });
