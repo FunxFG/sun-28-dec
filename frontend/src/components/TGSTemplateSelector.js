@@ -115,15 +115,15 @@ export default function TGSTemplateSelector({ selectedTemplates, onChange }) {
       <CardContent>
         <div className="space-y-6">
           
-          {/* Stop-Slow Templates */}
+          {/* Shuttle Flow Templates */}
           <div>
             <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
-              <span className="text-blue-700">👷 Stop-Slow Operations (Generic 1-4)</span>
+              <span className="text-blue-700">👷 Shuttle Flow Operations (Generic 1-4)</span>
               <div className="flex-1 h-px bg-blue-200"></div>
-              <Badge variant="outline" className="text-xs">{groupedTemplates.stop_slow.length} patterns</Badge>
+              <Badge variant="outline" className="text-xs">{groupedTemplates.shuttle_flow.length} patterns</Badge>
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-              {groupedTemplates.stop_slow.map(template => 
+              {groupedTemplates.shuttle_flow.map(template => 
                 renderTemplateCard(template, 'border-blue-500', 'bg-blue-50')
               )}
             </div>
