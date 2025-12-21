@@ -1230,10 +1230,6 @@ export default function PlanEditor({ user, onLogout }) {
     return response.json();
   };
 
-  // NEW: Fetch Professional TMP data from new modules
-  const fetchProfessionalTMPData = async (roadData, trafficData) => {
-
-
   const handleGenerateTMPFromPatterns = async () => {
     console.log('📄 === GENERATING TMP FROM TGS PATTERNS ===');
     console.log('  Selected patterns:', selectedTGSTemplates);
