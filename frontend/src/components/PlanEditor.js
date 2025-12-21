@@ -4187,6 +4187,14 @@ export default function PlanEditor({ user, onLogout }) {
                       Auto-Place Devices ({selectedTGSTemplates.length} Pattern{selectedTGSTemplates.length !== 1 ? 's' : ''})
                     </Button>
                     <Button
+                      onClick={handleGenerateTMPFromPatterns}
+                      className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white"
+                      disabled={formData.devices.length === 0 || selectedTGSTemplates.length === 0}
+                    >
+                      <FileText className="w-4 h-4 mr-2" />
+                      Generate TMP ({selectedTGSTemplates.length} Pattern{selectedTGSTemplates.length !== 1 ? 's' : ''})
+                    </Button>
+                    <Button
                       variant="outline"
                       onClick={() => setFormData(prev => ({ ...prev, devices: [] }))}
                       disabled={formData.devices.length === 0}
