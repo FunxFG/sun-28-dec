@@ -54,7 +54,7 @@ export default function TGSTemplateSelector({ selectedTemplates, onChange }) {
   };
 
   const groupedTemplates = {
-    stop_slow: tgsTemplates.filter(t => t.category === 'stop_slow'),
+    shuttle_flow: tgsTemplates.filter(t => t.category === 'shuttle_flow'),
     lane_closure: tgsTemplates.filter(t => t.category === 'lane_closure'),
     intersection: tgsTemplates.filter(t => t.category === 'intersection'),
     contra_flow: tgsTemplates.filter(t => t.category === 'contra_flow'),
