@@ -103,7 +103,7 @@ export default function TGSTemplateSelector({ selectedTemplates, onChange }) {
     <Card className="mt-4">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <span>TGS Template Selection (16 Patterns Available)</span>
+          <span>TGS Template Selection (19 Patterns Available)</span>
           <Badge variant="outline" className="ml-auto text-lg px-3 py-1">
             {selectedTemplates.length} Selected
           </Badge>
