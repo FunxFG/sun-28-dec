@@ -3002,6 +3002,62 @@ async def get_comprehensive_auto_populate(
 @api_router.get("/proxy/geocode")
 async def proxy_geocode(address: str):
     """
+
+
+@api_router.post("/tgs/generate-tmp")
+async def generate_tmp_from_tgs_patterns(request: Dict[str, Any]):
+    """
+    Generate complete TMP content for selected TGS patterns
+    
+    Supports single or multiple patterns - intelligently combines them
+    into a comprehensive TMP document
+    """
+    try:
+        from tgs_tmp_templates import (
+            generate_tmp_for_tgs_pattern,
+            generate_combined_tmp_for_multiple_patterns
+        )
+        
+        tgs_patterns = request.get('tgs_patterns', [])
+        location = request.get('location', 'Work Site')
+        work_details = request.get('work_details', {})
+        company_details = request.get('company_details', {})
+        
+        if not tgs_patterns:
+            raise HTTPException(status_code=400, detail="No TGS patterns provided")
+        
+        # Single pattern - generate individual TMP
+        if len(tgs_patterns) == 1:
+            tmp_content = generate_tmp_for_tgs_pattern(
+                tgs_patterns[0],
+                location,
+                work_details,
+                company_details
+            )
+            return {
+                "tmp_content": tmp_content,
+                "pattern_count": 1,
+                "is_combined": False
+            }
+        
+        # Multiple patterns - generate combined TMP
+        else:
+            tmp_content = generate_combined_tmp_for_multiple_patterns(
+                tgs_patterns,
+                location,
+                work_details,
+                company_details
+            )
+            return {
+                "tmp_content": tmp_content,
+                "pattern_count": len(tgs_patterns),
+                "is_combined": True
+            }
+            
+    except Exception as e:
+        logger.error(f"Error generating TGS-based TMP: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
     Proxy endpoint for Google Geocoding API to fix CORS issues
     """
     try:
