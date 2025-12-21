@@ -58,6 +58,7 @@ export default function TGSTemplateSelector({ selectedTemplates, onChange }) {
     lane_closure: tgsTemplates.filter(t => t.category === 'lane_closure'),
     intersection: tgsTemplates.filter(t => t.category === 'intersection'),
     contra_flow: tgsTemplates.filter(t => t.category === 'contra_flow'),
+    lateral_shift: tgsTemplates.filter(t => t.category === 'lateral_shift'),
     road_closure: tgsTemplates.filter(t => t.category === 'road_closure'),
     pedestrian: tgsTemplates.filter(t => t.category === 'pedestrian')
   };
