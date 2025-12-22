@@ -117,12 +117,46 @@ export default function FileDownloadManager({ autoRefresh = false }) {
 
   const copyDownloadUrl = (filename) => {
     const url = `${API}/api/files/download/${encodeURIComponent(filename)}`;
-    navigator.clipboard.writeText(url).then(() => {
+    
+    // Try clipboard API with fallback
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(() => {
+          setDownloadStatus(prev => ({ ...prev, [filename]: 'copied' }));
+          setTimeout(() => {
+            setDownloadStatus(prev => ({ ...prev, [filename]: null }));
+          }, 2000);
+        }).catch(err => {
+          console.warn('Clipboard write failed, using fallback:', err);
+          fallbackCopyText(url, filename);
+        });
+      } else {
+        fallbackCopyText(url, filename);
+      }
+    } catch (err) {
+      console.warn('Clipboard API not available:', err);
+      fallbackCopyText(url, filename);
+    }
+  };
+  
+  const fallbackCopyText = (text, filename) => {
+    // Fallback: Create temporary textarea
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
       setDownloadStatus(prev => ({ ...prev, [filename]: 'copied' }));
       setTimeout(() => {
         setDownloadStatus(prev => ({ ...prev, [filename]: null }));
       }, 2000);
-    });
+    } catch (err) {
+      console.error('Fallback copy also failed:', err);
+    }
+    document.body.removeChild(textarea);
   };
 
   // Filter files
