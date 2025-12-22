@@ -68,6 +68,8 @@ class VisualTGSGenerator:
                 placed_devices, center_lat, center_lng, zoom, width, height
             )
             
+            logger.info(f"📊 TGS Generation: Received {len(placed_devices)} devices, calculated {len(sign_positions)} positions")
+            
             # Step 3: Overlay sign images on satellite map
             composite_image = await self._overlay_signs_on_map(
                 satellite_image, sign_positions, placed_devices
@@ -222,20 +224,24 @@ class VisualTGSGenerator:
         composite = base_image.copy()
         draw = ImageDraw.Draw(composite, 'RGBA')
         
+        markers_drawn = 0
+        markers_skipped = 0
+        
         for i, position in enumerate(sign_positions):
             device = devices[i] if i < len(devices) else {}
             
-            # Get sign image (for now, use colored markers)
-            sign_marker = self._create_sign_marker(device, 60, 60)
+            # Get sign image with increased size for visibility
+            sign_marker = self._create_sign_marker(device, 80, 80)
             
             # Calculate position (offset to center the marker)
-            x = position['pixel_x'] - 30  # Half of marker width
-            y = position['pixel_y'] - 60  # Full height to position at point
+            x = position['pixel_x'] - 40  # Half of marker width (80/2)
+            y = position['pixel_y'] - 80  # Full height to position at point
             
-            # Ensure marker is within bounds
-            if 0 <= x < composite.width - 60 and 0 <= y < composite.height - 60:
+            # Allow markers partially off-screen for better coverage
+            if -40 <= x < composite.width and -40 <= y < composite.height:
                 # Paste sign marker
                 composite.paste(sign_marker, (x, y), sign_marker)
+                markers_drawn += 1
                 
                 # Draw connection line to exact position on road
                 draw.line(
