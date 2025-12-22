@@ -547,11 +547,7 @@ class TGSTMPTemplates:
     
     def get_template(self, tgs_pattern_id: str) -> Dict[str, Any]:
         """Get TMP template for a specific TGS pattern"""
-
-            
-            # ==================== LATERAL SHIFT ====================
-            
-            "LATERAL_SHIFT_LOW": {
+        return self.templates.get(tgs_pattern_id, {})
                 "name": "Lateral Shift 40-70km",
                 "generic_code": "Lateral Shift (Low Speed)",
                 "work_type": "Lateral Traffic Shift",
