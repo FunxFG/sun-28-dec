@@ -1,0 +1,61 @@
+================================================================================
+SIGNAGE SCHEDULE - Torrens Road Ridleyton Footpath Upgrade
+Generated: 22 December 2025 at 05:36 PM
+================================================================================
+
+Total Signs: 44
+
+#    Sign Code       Sign Name                                Distance (m) Side    
+--------------------------------------------------------------------------------
+1    N/A             Road Work Ahead / 40                     0.0          Both    
+2    N/A             Road Work Ahead / 40                     0.0          Both    
+3    N/A             Lane Merge Right (T1-15)                 0.0          Both    
+4    N/A             Lane Merge Right (T1-15)                 0.0          Both    
+5    N/A             Traffic Cone 700mm                       0.0          Both    
+6    N/A             Traffic Cone 700mm                       0.0          Both    
+7    N/A             Traffic Cone 700mm                       0.0          Both    
+8    N/A             Traffic Cone 700mm                       0.0          Both    
+9    N/A             Traffic Cone 700mm                       0.0          Both    
+10   N/A             Traffic Cone 700mm                       0.0          Both    
+11   N/A             Traffic Cone 700mm                       0.0          Both    
+12   N/A             Traffic Cone 700mm                       0.0          Both    
+13   N/A             Traffic Cone 700mm                       0.0          Both    
+14   N/A             Traffic Cone 700mm                       0.0          Both    
+15   N/A             Traffic Cone 700mm                       0.0          Both    
+16   N/A             Traffic Cone 700mm                       0.0          Both    
+17   N/A             Traffic Cone 700mm                       0.0          Both    
+18   N/A             Traffic Cone 700mm                       0.0          Both    
+19   N/A             Traffic Cone 700mm                       0.0          Both    
+20   N/A             Traffic Cone 700mm                       0.0          Both    
+21   N/A             Traffic Cone 700mm                       0.0          Both    
+22   N/A             Traffic Cone 700mm                       0.0          Both    
+23   N/A             Traffic Cone 700mm                       0.0          Both    
+24   N/A             Traffic Cone 700mm                       0.0          Both    
+25   N/A             Traffic Cone 700mm                       0.0          Both    
+26   N/A             Traffic Cone 700mm                       0.0          Both    
+27   N/A             Traffic Cone 700mm                       0.0          Both    
+28   N/A             End Roadworks                            0.0          Both    
+29   N/A             End Roadworks                            0.0          Both    
+30   N/A             Road Work Ahead                          0.0          Both    
+31   N/A             End Roadworks (back of RWA)              0.0          Both    
+32   N/A             Left Lane Closed                         0.0          Both    
+33   N/A             Road Work Ahead                          0.0          Both    
+34   N/A             End Roadworks (back of RWA)              0.0          Both    
+35   N/A             Left Lane Closed                         0.0          Both    
+36   N/A             Road Work Ahead                          0.0          Both    
+37   N/A             End Roadworks (back of RWA)              0.0          Both    
+38   N/A             Left Lane Closed                         0.0          Both    
+39   N/A             Road Work Ahead                          0.0          Both    
+40   N/A             End Roadworks (back of RWA)              0.0          Both    
+41   N/A             Left Lane Closed                         0.0          Both    
+42   N/A             Road Work Ahead                          0.0          Both    
+43   N/A             End Roadworks (back of RWA)              0.0          Both    
+44   N/A             Left Lane Closed                         0.0          Both    
+
+================================================================================
+NOTES:
+- All distances measured from work zone start point
+- Signs must be installed according to AS 1742.3 specifications
+- Bilateral signage required where indicated
+- All signs must be maintained in clean, reflective condition
+================================================================================
