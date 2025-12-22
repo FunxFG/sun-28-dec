@@ -161,6 +161,9 @@ class WorkDetails(BaseModel):
     work_hours_end: Optional[str] = ""
     night_work: Optional[bool] = False
     weekend_work: Optional[bool] = False
+    
+    class Config:
+        extra = "allow"  # Allow any additional work detail fields
 
 class RoadOccupancy(BaseModel):
     """Comprehensive road occupancy options - can vary by time/stage"""
