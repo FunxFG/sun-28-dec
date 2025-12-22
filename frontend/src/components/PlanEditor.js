@@ -1236,12 +1236,12 @@ export default function PlanEditor({ user, onLogout }) {
   };
 
   const handleGenerateTMPFromPatterns = async () => {
-    console.log('📄 === GENERATING TMP FROM TGS PATTERNS ===');
+    console.log('📄 === GENERATING COMPLETE TMP PDF FROM TGS PATTERNS ===');
     console.log('  Selected patterns:', selectedTGSTemplates);
     console.log('  Devices placed:', formData.devices.length);
     
     if (selectedTGSTemplates.length === 0) {
-      toast.error('Please select at least one TGS pattern');
+      toast.error('Please select at least one TGS pattern first');
       return;
     }
     
@@ -1250,67 +1250,79 @@ export default function PlanEditor({ user, onLogout }) {
       return;
     }
     
+    if (!formData.work_details.start_address || !formData.work_details.end_address) {
+      toast.error('Please fill in start and end addresses');
+      return;
+    }
+    
     try {
-      toast.info(`Generating comprehensive TMP for ${selectedTGSTemplates.length} pattern(s)...`);
+      toast.info(`Generating complete TMP PDF for ${selectedTGSTemplates.length} pattern(s)... This includes TGS drawing with all ${formData.devices.length} devices.`);
       
-      // Call backend to generate TMP content from selected TGS patterns
-      const response = await axios.post(`${API}/tgs/generate-tmp`, {
-        tgs_patterns: selectedTGSTemplates,
-        location: formData.work_details.start_address || 'Work Site',
-        work_details: formData.work_details,
-        company_details: formData.company_details
+      // First, generate the visual TGS with all placed devices
+      console.log('Step 1: Generating TGS visual with placed devices...');
+      
+      const tgsResponse = await axios.post(`${API}/tgs/generate-visual`, {
+        center_lat: formData.map_center_lat || formData.devices[0]?.position_lat,
+        center_lng: formData.map_center_lng || formData.devices[0]?.position_lng,
+        placed_devices: formData.devices,
+        plan_name: formData.plan_name || 'Traffic Management Plan',
+        work_address: formData.work_details.start_address,
+        include_streetview: true,
+        zoom_level: 17
       });
       
-      const tmpContent = response.data.tmp_content;
-      const isMultiPattern = response.data.is_combined;
+      console.log('✅ TGS visual generated:', tgsResponse.data.output_file);
       
-      console.log('✅ TMP Content received:', tmpContent);
-      console.log('  Is combined:', isMultiPattern);
-      console.log('  Pattern count:', response.data.pattern_count);
+      // Now generate complete TMP PDF with the TGS and pattern-specific content
+      console.log('Step 2: Generating complete TMP PDF with TGS...');
       
-      // Auto-populate TMP form with generated content
-      setFormData(prev => ({
-        ...prev,
-        // Update work details with pattern-specific information
+      const tmpResponse = await axios.post(`${API}/tgs/generate-complete-tmp-pdf`, {
+        // TGS Pattern Info
+        tgs_patterns: selectedTGSTemplates,
+        tgs_visual_file: tgsResponse.data.output_file,
+        placed_devices: formData.devices,
+        
+        // Work Details
         work_details: {
-          ...prev.work_details,
-          work_type: tmpContent.work_description?.work_type || prev.work_details.work_type,
-          description: tmpContent.pattern_info?.description || prev.work_details.description
+          ...formData.work_details,
+          plan_name: formData.plan_name || 'Untitled Plan'
         },
-        // Update control measures based on TMP requirements
-        control_measures: {
-          ...prev.control_measures,
-          traffic_controllers: tmpContent.traffic_control_requirements?.requires_traffic_controllers || false,
-          arrow_boards: tmpContent.traffic_control_requirements?.uses_arrow_board || false,
-          truck_attenuator: tmpContent.traffic_control_requirements?.uses_tma || false,
-          speed_reduction: tmpContent.traffic_control_requirements?.speed_reduction_to || 40
-        },
-        // Store TMP content for PDF generation
-        tgs_tmp_content: tmpContent,
-        is_multi_pattern_tmp: isMultiPattern
-      }));
+        
+        // Company Details
+        company_details: formData.company_details,
+        
+        // Location
+        location: formData.work_details.start_address,
+        
+        // Road Data (if available from auto-populate)
+        road_data: formData.road_data,
+        
+        // Comprehensive data (for additional context)
+        comprehensive_data: comprehensiveData
+      });
       
-      // Show success message with details
-      if (isMultiPattern) {
-        toast.success(
-          `Multi-Pattern TMP Generated! Combined ${response.data.pattern_count} patterns with ${tmpContent.risk_assessment?.total_identified_risks || 0} risks and ${tmpContent.traffic_control_requirements?.total_tcs_required || 0} TCs. Scroll down to review and customize.`,
-          { duration: 6000 }
-        );
-      } else {
-        toast.success(
-          `TMP Generated for ${tmpContent.pattern_info?.generic_code}! Review the auto-populated fields below.`,
-          { duration: 4000 }
-        );
-      }
+      console.log('✅ Complete TMP PDF generated:', tmpResponse.data.pdf_file);
       
-      // Scroll to show the populated form sections
+      // Show download UI
+      const downloadUrl = `${API}/files/download/${tmpResponse.data.pdf_file}`;
+      
+      toast.success(
+        `✅ Complete TMP Generated! ${tmpResponse.data.pattern_count} pattern(s), ${formData.devices.length} devices. PDF ready for download.`,
+        { duration: 8000 }
+      );
+      
+      // Open download in new tab
+      window.open(downloadUrl, '_blank');
+      
+      // Also show in download manager
       setTimeout(() => {
-        window.scrollTo({ top: 600, behavior: 'smooth' });
-      }, 500);
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        toast.info('📥 Your TMP PDF is also available in the Downloads section below', { duration: 5000 });
+      }, 2000);
       
     } catch (error) {
-      console.error('❌ Error generating TMP:', error);
-      toast.error('Failed to generate TMP: ' + (error.response?.data?.detail || error.message));
+      console.error('❌ Error generating complete TMP:', error);
+      toast.error('Failed to generate TMP PDF: ' + (error.response?.data?.detail || error.message));
     }
   };
 
