@@ -3002,7 +3002,21 @@ async def get_comprehensive_auto_populate(
 @api_router.get("/proxy/geocode")
 async def proxy_geocode(address: str):
     """
-
+    Proxy endpoint for Google Geocoding API to fix CORS issues
+    """
+    try:
+        google_api_key = os.environ.get('GOOGLE_PLACES_API_KEY')
+        if not google_api_key:
+            raise HTTPException(status_code=500, detail="Google API key not configured")
+        
+        url = f"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={google_api_key}"
+        
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+            return response.json()
+    except Exception as e:
+        logger.error(f"Error in geocode proxy: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @api_router.post("/tgs/generate-tmp")
 async def generate_tmp_from_tgs_patterns(request: Dict[str, Any]):
