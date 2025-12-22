@@ -8,7 +8,7 @@ import os
 import logging
 from pathlib import Path
 from pydantic import BaseModel, Field, EmailStr
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Union
 import uuid
 from datetime import datetime, timezone
 import jwt
@@ -315,8 +315,8 @@ class ProjectOverview(BaseModel):
         extra = "allow"
 
 class TrafficAssessment(BaseModel):
-    aadt: Optional[str | int] = ""  # Accept both string and int for backward compatibility
-    peak_hour_volume: Optional[str | int] = ""
+    aadt: Optional[Union[str, int]] = ""  # Accept both string and int
+    peak_hour_volume: Optional[Union[str, int]] = ""
     percentile_85_speed: Optional[str] = ""
     crash_history: Optional[str] = ""
     heavy_vehicle_percentage: Optional[str] = ""
