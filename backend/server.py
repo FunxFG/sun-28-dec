@@ -302,6 +302,44 @@ class ControlMeasures(BaseModel):
         extra = "allow"  # Allow any additional control measures
 
 
+
+# Additional section models
+class ProjectOverview(BaseModel):
+    location_description: Optional[str] = ""
+    project_purpose: Optional[str] = ""
+    site_constraints: Optional[str] = ""
+    special_requirements: Optional[str] = ""
+    coordinated_by: Optional[str] = ""
+    
+    class Config:
+        extra = "allow"
+
+class TrafficAssessment(BaseModel):
+    aadt: Optional[str] = ""
+    peak_hour_volume: Optional[str] = ""
+    percentile_85_speed: Optional[str] = ""
+    crash_history: Optional[str] = ""
+    heavy_vehicle_percentage: Optional[str] = ""
+    assessment_method: Optional[str] = ""
+    data_source: Optional[str] = ""
+    
+    class Config:
+        extra = "allow"
+
+class SiteAssessment(BaseModel):
+    road_geometry: Optional[str] = ""
+    sight_distances: Optional[str] = ""
+    parking_restrictions: Optional[str] = ""
+    pedestrian_facilities: Optional[str] = ""
+    cyclist_facilities: Optional[str] = ""
+    public_transport: Optional[str] = ""
+    utility_services: Optional[str] = ""
+    environmental_factors: Optional[str] = ""
+    
+    class Config:
+        extra = "allow"
+
+
 class RoadData(BaseModel):
     traffic_volume: Optional[int] = None
     road_classification: Optional[str] = None
