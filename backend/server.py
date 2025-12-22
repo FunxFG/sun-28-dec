@@ -127,36 +127,36 @@ class ResetPasswordRequest(BaseModel):
 
 
 class CompanyDetails(BaseModel):
-    name: str
-    address: str
-    abn: str
-    phone: str
-    liaison_name: str
-    liaison_phone: str
-    liaison_email: str
+    name: Optional[str] = ""
+    address: Optional[str] = ""
+    abn: Optional[str] = ""
+    phone: Optional[str] = ""
+    liaison_name: Optional[str] = ""
+    liaison_phone: Optional[str] = ""
+    liaison_email: Optional[str] = ""
     
     class Config:
         extra = "allow"  # Allow any additional company fields
 
 class TrafficManagementCompany(BaseModel):
-    name: str
-    address: str
-    phone: str
-    liaison_name: str
-    liaison_phone: str
-    liaison_email: str
+    name: Optional[str] = ""
+    address: Optional[str] = ""
+    phone: Optional[str] = ""
+    liaison_name: Optional[str] = ""
+    liaison_phone: Optional[str] = ""
+    liaison_email: Optional[str] = ""
     
     class Config:
         extra = "allow"  # Allow any additional fields
 
 class WorkDetails(BaseModel):
-    work_type: str  # emergency, maintenance, construction
-    work_style: str  # static, mobile
-    description: str
-    start_date: str
-    end_date: str
-    start_address: str
-    end_address: str
+    work_type: Optional[str] = ""  # emergency, maintenance, construction
+    work_style: Optional[str] = ""  # static, mobile
+    description: Optional[str] = ""
+    start_date: Optional[str] = ""
+    end_date: Optional[str] = ""
+    start_address: Optional[str] = ""
+    end_address: Optional[str] = ""
     work_hours_start: Optional[str] = ""
     work_hours_end: Optional[str] = ""
     night_work: Optional[bool] = False
