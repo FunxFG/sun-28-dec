@@ -315,8 +315,8 @@ class ProjectOverview(BaseModel):
         extra = "allow"
 
 class TrafficAssessment(BaseModel):
-    aadt: Optional[str] = ""
-    peak_hour_volume: Optional[str] = ""
+    aadt: Optional[str | int] = ""  # Accept both string and int for backward compatibility
+    peak_hour_volume: Optional[str | int] = ""
     percentile_85_speed: Optional[str] = ""
     crash_history: Optional[str] = ""
     heavy_vehicle_percentage: Optional[str] = ""
