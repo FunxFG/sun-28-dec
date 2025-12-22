@@ -151,6 +151,10 @@ class WorkDetails(BaseModel):
     end_date: str
     start_address: str
     end_address: str
+    work_hours_start: Optional[str] = ""
+    work_hours_end: Optional[str] = ""
+    night_work: Optional[bool] = False
+    weekend_work: Optional[bool] = False
 
 class RoadOccupancy(BaseModel):
     """Comprehensive road occupancy options - can vary by time/stage"""
