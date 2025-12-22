@@ -297,6 +297,9 @@ class ControlMeasures(BaseModel):
     
     # Additional Notes
     control_measures_notes: Optional[str] = None
+    
+    class Config:
+        extra = "allow"  # Allow any additional control measures
 
 
 class RoadData(BaseModel):
