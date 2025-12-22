@@ -168,6 +168,16 @@ class RoadOccupancy(BaseModel):
     left_lane: bool = False
     center_lane: bool = False
     right_lane: bool = False
+    
+    # Other
+    median_strip: bool = False
+    complete_road_closure: bool = False
+    
+    # Traffic Direction
+    affected_traffic_direction: Optional[str] = "northbound"
+    
+    class Config:
+        extra = "allow"  # Allow any additional fields
     turning_lane: bool = False
     
     # Other Occupancy
