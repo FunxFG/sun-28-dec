@@ -379,37 +379,68 @@ class TGSPlacementEngine {
     });
     console.log(`    T1-11 @ +${endSignDistance}m after workzone: (${endSnapped.lat.toFixed(6)}, ${endSnapped.lng.toFixed(6)})`);
     
-    // === 8. SIDE STREET SIGNS ===
+    // === 8. SIDE STREET SIGNS (DOUBLE GATING) ===
     if (sideStreets && sideStreets.length > 0) {
-      console.log('\n📍 Placing Side Street Signs (Double Gating)...');
+      console.log('\n📍 Placing Side Street Signs (Double Gating - AS 1742.3)...');
       sideStreets.forEach((street, idx) => {
         if (street.lat && street.lng) {
-          // Place "Road Work Ahead" on side street approach (50m back)
-          const sideSignPos = this.calculatePosition(
+          // APPROACH SIDE: Place "Road Work Ahead" BEFORE intersection (50m back)
+          const approachSignPos = this.calculatePosition(
             street.lat, street.lng,
             street.bearing || 0,
             -50 // 50m back from intersection
           );
-          const sideSnapped = this.snapToRoadEdge(sideSignPos.lat, sideSignPos.lng, roadEdge, 1.0);
+          const approachSnapped = this.snapToRoadEdge(approachSignPos.lat, approachSignPos.lng, roadEdge, 1.0);
           
           devices.push({
-            id: `side_street_${idx}_${Date.now()}`,
+            id: `side_street_approach_${idx}_${Date.now()}`,
             device_type: 'warning',
             device_name: 'Road Work Ahead',
             device_code: 'T1-1',
-            position_lat: sideSnapped.lat,
-            position_lng: sideSnapped.lng,
+            position_lat: approachSnapped.lat,
+            position_lng: approachSnapped.lng,
             properties: {
               side_street: street.name || `Side Street ${idx + 1}`,
               distance_from_intersection: 50,
-              placement: 'side_street_warning',
+              placement: 'side_street_approach',
+              side: 'approach',
               auto_placed: true,
-              tgs_compliant: true
+              tgs_compliant: true,
+              double_gating: true
             }
           });
-          console.log(`    Side street "${street.name}" - T1-1 @ 50m approach`);
+          
+          // EXIT SIDE: Place "End Road Work" AFTER intersection (30m past)
+          // This is for traffic that has passed through the work zone and is exiting onto the side street
+          const exitSignPos = this.calculatePosition(
+            street.lat, street.lng,
+            street.bearing ? (street.bearing + 180) % 360 : 180, // Opposite direction
+            -30 // 30m on the far side
+          );
+          const exitSnapped = this.snapToRoadEdge(exitSignPos.lat, exitSignPos.lng, roadEdge, 1.0);
+          
+          devices.push({
+            id: `side_street_exit_${idx}_${Date.now()}`,
+            device_type: 'warning',
+            device_name: 'End Road Work',
+            device_code: 'T1-11',
+            position_lat: exitSnapped.lat,
+            position_lng: exitSnapped.lng,
+            properties: {
+              side_street: street.name || `Side Street ${idx + 1}`,
+              distance_from_intersection: 30,
+              placement: 'side_street_exit',
+              side: 'exit',
+              auto_placed: true,
+              tgs_compliant: true,
+              double_gating: true
+            }
+          });
+          
+          console.log(`    Side street "${street.name}": T1-1 (approach) + T1-11 (exit) - Double gating complete`);
         }
       });
+      console.log(`  ✅ Double gating: ${sideStreets.length * 2} signs placed on ${sideStreets.length} side streets`);
     }
     
     console.log(`\n✅ Lane Closure TGS Complete: ${devices.length} devices placed`);
