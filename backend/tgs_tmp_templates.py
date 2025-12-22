@@ -629,7 +629,10 @@ class TGSTMPTemplates:
                 "shift_taper_length": 60,
                 "work_zone_length_range": [50, 200]
             },
-
+        }
+    
+    def get_template(self, tgs_pattern_id: str) -> Dict[str, Any]:
+        """Get TMP template for a specific TGS pattern"""
         return self.templates.get(tgs_pattern_id, {})
     
     def combine_templates(self, tgs_pattern_ids: List[str]) -> Dict[str, Any]:
