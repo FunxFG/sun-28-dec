@@ -524,6 +524,61 @@ class TGSPlacementEngine {
       }
     });
     
+    // === SIDE STREET DOUBLE GATING ===
+    if (sideStreets && sideStreets.length > 0) {
+      console.log('\n📍 Side Street Double Gating...');
+      sideStreets.forEach((street, idx) => {
+        if (street.lat && street.lng) {
+          // APPROACH: Road Closed Ahead sign
+          const approachPos = this.calculatePosition(street.lat, street.lng, street.bearing || 0, -40);
+          const approachSnapped = this.snapToRoadEdge(approachPos.lat, approachPos.lng, roadEdge, 1.0);
+          
+          devices.push({
+            id: `side_road_closure_approach_${idx}_${Date.now()}`,
+            device_type: 'warning',
+            device_name: 'Road Closed Ahead',
+            device_code: 'T5-28',
+            position_lat: approachSnapped.lat,
+            position_lng: approachSnapped.lng,
+            properties: {
+              side_road: street.name,
+              placement: 'side_road_closure_approach',
+              side: 'approach',
+              auto_placed: true,
+              tgs_compliant: true,
+              double_gating: true
+            }
+          });
+          
+          // EXIT: End Road Closure sign (for traffic exiting work zone onto side street)
+          const exitPos = this.calculatePosition(
+            street.lat, street.lng,
+            street.bearing ? (street.bearing + 180) % 360 : 180,
+            -30
+          );
+          const exitSnapped = this.snapToRoadEdge(exitPos.lat, exitPos.lng, roadEdge, 1.0);
+          
+          devices.push({
+            id: `side_road_closure_exit_${idx}_${Date.now()}`,
+            device_type: 'warning',
+            device_name: 'End Road Work',
+            device_code: 'T1-11',
+            position_lat: exitSnapped.lat,
+            position_lng: exitSnapped.lng,
+            properties: {
+              side_road: street.name,
+              placement: 'side_road_closure_exit',
+              side: 'exit',
+              auto_placed: true,
+              tgs_compliant: true,
+              double_gating: true
+            }
+          });
+        }
+      });
+      console.log(`  ✅ Side street double gating: ${sideStreets.length * 2} signs`);
+    }
+    
     console.log(`✅ Road Closure TGS Complete: ${devices.length} devices placed`);
     return devices;
   }
