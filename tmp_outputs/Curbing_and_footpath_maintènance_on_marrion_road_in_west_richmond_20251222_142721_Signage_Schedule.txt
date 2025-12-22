@@ -1,0 +1,102 @@
+================================================================================
+SIGNAGE SCHEDULE - Curbing and footpath maintènance on marrion road in west richmond
+Generated: 22 December 2025 at 02:27 PM
+================================================================================
+
+Total Signs: 85
+
+#    Sign Code       Sign Name                                Distance (m) Side    
+--------------------------------------------------------------------------------
+1    N/A             Road Work Ahead                          0.0          Both    
+2    N/A             Road Work Ahead                          0.0          Both    
+3    N/A             Lane Status / Merge Left                 0.0          Both    
+4    N/A             Speed Limit 40                           0.0          Both    
+5    N/A             Arrow Board Left                         0.0          Both    
+6    N/A             Traffic Cone 700mm                       0.0          Both    
+7    N/A             Traffic Cone 700mm                       0.0          Both    
+8    N/A             Traffic Cone 700mm                       0.0          Both    
+9    N/A             Traffic Cone 700mm                       0.0          Both    
+10   N/A             Traffic Cone 700mm                       0.0          Both    
+11   N/A             Traffic Cone 700mm                       0.0          Both    
+12   N/A             Traffic Cone 700mm                       0.0          Both    
+13   N/A             Bollard                                  0.0          Both    
+14   N/A             Traffic Cone 700mm                       0.0          Both    
+15   N/A             Traffic Cone 700mm                       0.0          Both    
+16   N/A             Traffic Cone 700mm                       0.0          Both    
+17   N/A             Traffic Cone 700mm                       0.0          Both    
+18   N/A             Traffic Cone 700mm                       0.0          Both    
+19   N/A             Traffic Cone 700mm                       0.0          Both    
+20   N/A             Traffic Cone 700mm                       0.0          Both    
+21   N/A             Traffic Cone 700mm                       0.0          Both    
+22   N/A             Traffic Cone 700mm                       0.0          Both    
+23   N/A             Traffic Cone 700mm                       0.0          Both    
+24   N/A             Traffic Cone 700mm                       0.0          Both    
+25   N/A             Traffic Cone 700mm                       0.0          Both    
+26   N/A             Traffic Cone 700mm                       0.0          Both    
+27   N/A             Traffic Cone 700mm                       0.0          Both    
+28   N/A             Traffic Cone 700mm                       0.0          Both    
+29   N/A             Traffic Cone 700mm                       0.0          Both    
+30   N/A             Traffic Cone 700mm                       0.0          Both    
+31   N/A             Traffic Cone 700mm                       0.0          Both    
+32   N/A             Traffic Cone 700mm                       0.0          Both    
+33   N/A             Traffic Cone 700mm                       0.0          Both    
+34   N/A             Traffic Cone 700mm                       0.0          Both    
+35   N/A             Traffic Cone 700mm                       0.0          Both    
+36   N/A             Traffic Cone 700mm                       0.0          Both    
+37   N/A             Traffic Cone 700mm                       0.0          Both    
+38   N/A             Traffic Cone 700mm                       0.0          Both    
+39   N/A             Traffic Cone 700mm                       0.0          Both    
+40   N/A             Traffic Cone 700mm                       0.0          Both    
+41   N/A             Traffic Cone 700mm                       0.0          Both    
+42   N/A             Traffic Cone 700mm                       0.0          Both    
+43   N/A             Traffic Cone 700mm                       0.0          Both    
+44   N/A             Traffic Cone 700mm                       0.0          Both    
+45   N/A             Traffic Cone 700mm                       0.0          Both    
+46   N/A             Traffic Cone 700mm                       0.0          Both    
+47   N/A             Traffic Cone 700mm                       0.0          Both    
+48   N/A             Traffic Cone 700mm                       0.0          Both    
+49   N/A             Traffic Cone 700mm                       0.0          Both    
+50   N/A             Traffic Cone 700mm                       0.0          Both    
+51   N/A             Traffic Cone 700mm                       0.0          Both    
+52   N/A             Traffic Cone 700mm                       0.0          Both    
+53   N/A             Traffic Cone 700mm                       0.0          Both    
+54   N/A             Traffic Cone 700mm                       0.0          Both    
+55   N/A             Traffic Cone 700mm                       0.0          Both    
+56   N/A             Traffic Cone 700mm                       0.0          Both    
+57   N/A             Traffic Cone 700mm                       0.0          Both    
+58   N/A             Traffic Cone 700mm                       0.0          Both    
+59   N/A             Traffic Cone 700mm                       0.0          Both    
+60   N/A             Traffic Cone 700mm                       0.0          Both    
+61   N/A             Traffic Cone 700mm                       0.0          Both    
+62   N/A             Traffic Cone 700mm                       0.0          Both    
+63   N/A             Traffic Cone 700mm                       0.0          Both    
+64   N/A             Traffic Cone 700mm                       0.0          Both    
+65   N/A             Traffic Cone 700mm                       0.0          Both    
+66   N/A             Traffic Cone 700mm                       0.0          Both    
+67   N/A             Traffic Cone 700mm                       0.0          Both    
+68   N/A             Traffic Cone 700mm                       0.0          Both    
+69   N/A             Traffic Cone 700mm                       0.0          Both    
+70   N/A             Traffic Cone 700mm                       0.0          Both    
+71   N/A             Traffic Cone 700mm                       0.0          Both    
+72   N/A             Traffic Cone 700mm                       0.0          Both    
+73   N/A             Traffic Cone 700mm                       0.0          Both    
+74   N/A             Bollard                                  0.0          Both    
+75   N/A             End Road Work                            0.0          Both    
+76   N/A             Road Work Ahead                          0.0          Both    
+77   N/A             Road Work Ahead                          0.0          Both    
+78   N/A             Road Work Ahead                          0.0          Both    
+79   N/A             Road Work Ahead                          0.0          Both    
+80   N/A             Road Work Ahead                          0.0          Both    
+81   N/A             Road Work Ahead                          0.0          Both    
+82   N/A             Road Work Ahead                          0.0          Both    
+83   N/A             Road Work Ahead                          0.0          Both    
+84   N/A             Road Work Ahead                          0.0          Both    
+85   N/A             Road Work Ahead                          0.0          Both    
+
+================================================================================
+NOTES:
+- All distances measured from work zone start point
+- Signs must be installed according to AS 1742.3 specifications
+- Bilateral signage required where indicated
+- All signs must be maintained in clean, reflective condition
+================================================================================
