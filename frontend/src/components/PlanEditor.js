@@ -1808,34 +1808,65 @@ export default function PlanEditor({ user, onLogout }) {
     try {
       const token = localStorage.getItem('token');
       
-      console.log('💾 === SAVING PLAN ===');
-      console.log('  work_hours_start:', formData.work_details?.work_hours_start);
-      console.log('  work_hours_end:', formData.work_details?.work_hours_end);
-      console.log('  Full work_details:', JSON.stringify(formData.work_details, null, 2));
+      console.log('💾 === SAVING COMPLETE PLAN DATA ===');
+      console.log('  Plan name:', formData.plan_name);
+      console.log('  Work hours:', formData.work_details?.work_hours_start, '-', formData.work_details?.work_hours_end);
+      console.log('  Selected TGS patterns:', selectedTGSTemplates);
+      console.log('  Devices count:', formData.devices?.length || 0);
+      console.log('  Road occupancy:', formData.road_occupancy);
+      console.log('  Control measures:', formData.control_measures);
       
-      // Include comprehensive data (hidden from form but needed for PDF generation)
-      const planDataWithComprehensive = {
+      // Build complete plan data - SAVE EVERYTHING
+      const completePlanData = {
         ...formData,
-        comprehensive_data: comprehensiveData  // Add all 26 auto-populated datasets
+        // Ensure these are explicitly included
+        selected_tgs_patterns: selectedTGSTemplates,
+        comprehensive_data: comprehensiveData,
+        saved_at: new Date().toISOString(),
+        // Ensure all sections are saved
+        plan_name: formData.plan_name || 'Untitled Plan',
+        company_details: formData.company_details || {},
+        traffic_company: formData.traffic_company || {},
+        project_overview: formData.project_overview || {},
+        work_details: formData.work_details || {},
+        traffic_assessment: formData.traffic_assessment || {},
+        site_assessment: formData.site_assessment || {},
+        road_occupancy: formData.road_occupancy || {},
+        control_measures: formData.control_measures || {},
+        devices: formData.devices || [],
+        personnel_requirements: formData.personnel_requirements || {},
+        emergency_procedures: formData.emergency_procedures || {},
+        approvals: formData.approvals || {},
+        map_center_lat: formData.map_center_lat,
+        map_center_lng: formData.map_center_lng,
+        map_zoom: formData.map_zoom || 15,
+        road_data: formData.road_data || {},
+        tgs_data: formData.tgs_data || {},
+        tgs_tmp_content: formData.tgs_tmp_content || null
       };
       
+      console.log('📦 Total data size:', JSON.stringify(completePlanData).length, 'characters');
+      
       if (planId) {
-        const response = await axios.put(`${API}/plans/${planId}`, planDataWithComprehensive, {
+        const response = await axios.put(`${API}/plans/${planId}`, completePlanData, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        console.log('✅ Plan updated, response:', response.data);
-        toast.success('Plan updated successfully - work hours saved');
+        console.log('✅ Plan updated successfully');
+        console.log('  Response:', response.data);
+        toast.success(`✅ Plan saved! All ${formData.devices?.length || 0} devices, ${selectedTGSTemplates.length} TGS patterns, and all form data saved.`, { duration: 5000 });
       } else {
-        const response = await axios.post(`${API}/plans`, planDataWithComprehensive, {
+        const response = await axios.post(`${API}/plans`, completePlanData, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        console.log('✅ Plan created, response:', response.data);
+        console.log('✅ Plan created successfully');
+        console.log('  New plan ID:', response.data.id);
         navigate(`/plan/${response.data.id}`);
-        toast.success('Plan created successfully');
+        toast.success('✅ Plan created and all data saved!', { duration: 5000 });
       }
     } catch (error) {
       console.error('❌ Save error:', error);
-      toast.error('Failed to save plan: ' + error.message);
+      console.error('  Error details:', error.response?.data || error.message);
+      toast.error('Failed to save plan: ' + (error.response?.data?.detail || error.message));
     } finally {
       setSaving(false);
     }
