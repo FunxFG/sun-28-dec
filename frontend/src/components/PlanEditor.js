@@ -436,6 +436,13 @@ export default function PlanEditor({ user, onLogout }) {
       const response = await axios.get(`${API}/plans/${planId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      
+      console.log('📂 === LOADING SAVED PLAN ===');
+      console.log('  Plan ID:', planId);
+      console.log('  Plan name:', response.data.plan_name);
+      console.log('  Devices:', response.data.devices?.length || 0);
+      console.log('  Saved TGS patterns:', response.data.selected_tgs_patterns);
+      
       // Merge loaded plan with default formData structure to handle old plans with missing fields
       setFormData(prev => ({
         ...prev,
@@ -444,11 +451,30 @@ export default function PlanEditor({ user, onLogout }) {
         work_details: { ...prev.work_details, ...(response.data.work_details || {}) },
         personnel: { ...prev.personnel, ...(response.data.personnel || {}) },
         permits_insurance: { ...prev.permits_insurance, ...(response.data.permits_insurance || {}) },
-        emergency_contacts: { ...prev.emergency_contacts, ...(response.data.emergency_contacts || {}) }
+        emergency_contacts: { ...prev.emergency_contacts, ...(response.data.emergency_contacts || {}) },
+        road_occupancy: { ...prev.road_occupancy, ...(response.data.road_occupancy || {}) },
+        control_measures: { ...prev.control_measures, ...(response.data.control_measures || {}) }
       }));
       
+      // Restore selected TGS patterns
+      if (response.data.selected_tgs_patterns && Array.isArray(response.data.selected_tgs_patterns)) {
+        setSelectedTGSTemplates(response.data.selected_tgs_patterns);
+        console.log('✅ Restored', response.data.selected_tgs_patterns.length, 'TGS pattern selections');
+      }
+      
+      // Restore comprehensive data if saved
+      if (response.data.comprehensive_data) {
+        setComprehensiveData(response.data.comprehensive_data);
+        console.log('✅ Restored comprehensive data');
+      }
+      
       console.log('✅ Plan loaded with work hours:', response.data.work_details?.work_hours_start, '-', response.data.work_details?.work_hours_end);
+      console.log('✅ All form data restored');
+      
+      toast.success(`Plan loaded: ${response.data.devices?.length || 0} devices, ${response.data.selected_tgs_patterns?.length || 0} TGS patterns`, { duration: 4000 });
+      
     } catch (error) {
+      console.error('❌ Load error:', error);
       toast.error('Failed to load plan');
       navigate('/dashboard');
     } finally {
