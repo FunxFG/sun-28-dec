@@ -130,8 +130,6 @@ export default function PlanEditor({ user, onLogout }) {
   const [autoPopulationComplete, setAutoPopulationComplete] = useState(false);
   const [showAutoPopulatedData, setShowAutoPopulatedData] = useState(false);
   const [autoPopulationWarnings, setAutoPopulationWarnings] = useState([]);
-  const [selectedTemplate, setSelectedTemplate] = useState('none');
-  const [loadingTemplate, setLoadingTemplate] = useState(false);
   
   // NEW: State for multi-TGS template selection
   const [selectedTGSTemplates, setSelectedTGSTemplates] = useState([]);
