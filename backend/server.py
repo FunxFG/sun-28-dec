@@ -3072,6 +3072,295 @@ async def generate_tmp_from_tgs_patterns(request: Dict[str, Any]):
         logger.error(f"Error generating TGS-based TMP: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
+@api_router.post("/tgs/generate-complete-tmp-pdf")
+async def generate_complete_tmp_pdf_from_tgs(request: Dict[str, Any]):
+    """
+    Generate a complete TMP PDF document from TGS patterns
+    
+    This endpoint:
+    1. Takes selected TGS patterns
+    2. Generates full TMP content using templates
+    3. Includes the TGS visual drawing
+    4. Creates a professional PDF ready for download
+    
+    Request body:
+    {
+        "tgs_patterns": ["LANE_CLOSURE_LOW_NO_MEDIAN", ...],
+        "tgs_visual_file": "path/to/tgs_visual.png",
+        "placed_devices": [...],
+        "work_details": {...},
+        "company_details": {...},
+        "location": "123 Main St",
+        "road_data": {...},
+        "comprehensive_data": {...}
+    }
+    """
+    try:
+        from tgs_tmp_templates import (
+            generate_tmp_for_tgs_pattern,
+            generate_combined_tmp_for_multiple_patterns
+        )
+        from tmp_generator import tmp_generator
+        
+        # Extract request data
+        tgs_patterns = request.get('tgs_patterns', [])
+        tgs_visual_file = request.get('tgs_visual_file')
+        placed_devices = request.get('placed_devices', [])
+        work_details = request.get('work_details', {})
+        company_details = request.get('company_details', {})
+        location = request.get('location', 'Work Site')
+        road_data = request.get('road_data', {})
+        comprehensive_data = request.get('comprehensive_data', {})
+        
+        if not tgs_patterns:
+            raise HTTPException(status_code=400, detail="No TGS patterns provided")
+        
+        logger.info(f"Generating complete TMP PDF for {len(tgs_patterns)} pattern(s)")
+        
+        # Step 1: Generate TMP content from patterns
+        if len(tgs_patterns) == 1:
+            tmp_content = generate_tmp_for_tgs_pattern(
+                tgs_patterns[0],
+                location,
+                work_details,
+                company_details
+            )
+            is_combined = False
+        else:
+            tmp_content = generate_combined_tmp_for_multiple_patterns(
+                tgs_patterns,
+                location,
+                work_details,
+                company_details
+            )
+            is_combined = True
+        
+        # Step 2: Build comprehensive TMP structure
+        plan_data = {
+            'plan_name': work_details.get('plan_name', 'Traffic Management Plan'),
+            'work_details': work_details,
+            'company_details': company_details,
+            'road_data': road_data,
+            'devices': placed_devices,
+            'tgs_patterns': tgs_patterns,
+            'tmp_content': tmp_content
+        }
+        
+        # Step 3: Generate PDF
+        buffer = io.BytesIO()
+        doc = SimpleDocTemplate(
+            buffer,
+            pagesize=A4,
+            topMargin=0.75 * inch,
+            bottomMargin=0.75 * inch,
+            leftMargin=1 * inch,
+            rightMargin=1 * inch,
+        )
+        
+        story = []
+        styles = getSampleStyleSheet()
+        
+        # Custom styles
+        title_style = ParagraphStyle(
+            'TMPTitle',
+            parent=styles['Title'],
+            fontSize=18,
+            fontName='Helvetica-Bold',
+            spaceAfter=30,
+            alignment=1,
+        )
+        heading_style = ParagraphStyle(
+            'TMPHeading',
+            parent=styles['Heading1'],
+            fontSize=14,
+            fontName='Helvetica-Bold',
+            spaceAfter=12,
+            spaceBefore=20,
+            textColor=colors.HexColor('#1e40af')
+        )
+        subheading_style = ParagraphStyle(
+            'TMPSubHeading',
+            parent=styles['Heading2'],
+            fontSize=12,
+            fontName='Helvetica-Bold',
+            spaceAfter=8,
+            spaceBefore=12,
+        )
+        
+        # === COVER PAGE ===
+        story.append(Spacer(1, 1.5 * inch))
+        story.append(Paragraph("TRAFFIC MANAGEMENT PLAN", title_style))
+        story.append(Spacer(1, 0.3 * inch))
+        
+        pattern_info = tmp_content.get('pattern_info', {})
+        if is_combined:
+            story.append(Paragraph(f"Multi-Pattern TMP: {pattern_info.get('patterns_count', 0)} Patterns", styles['Heading2']))
+        else:
+            story.append(Paragraph(f"{pattern_info.get('name', 'TMP')}", styles['Heading2']))
+            story.append(Paragraph(f"Generic Code: {pattern_info.get('generic_code', 'N/A')}", styles['Normal']))
+        
+        story.append(Spacer(1, 0.5 * inch))
+        story.append(Paragraph(f"<b>Location:</b> {location}", styles['Normal']))
+        story.append(Paragraph(f"<b>Company:</b> {company_details.get('name', 'N/A')}", styles['Normal']))
+        story.append(Paragraph(f"<b>Date:</b> {datetime.now().strftime('%d/%m/%Y')}", styles['Normal']))
+        story.append(Spacer(1, 0.3 * inch))
+        story.append(Paragraph(f"<b>TMP Reference:</b> TMP-{datetime.now().strftime('%Y%m%d-%H%M')}", styles['Normal']))
+        
+        story.append(PageBreak())
+        
+        # === SECTION 1: WORK DESCRIPTION ===
+        story.append(Paragraph("1. WORK DESCRIPTION", heading_style))
+        work_desc = tmp_content.get('work_description', {})
+        story.append(Paragraph(f"<b>Work Type:</b> {work_desc.get('work_type', 'N/A')}", styles['Normal']))
+        story.append(Paragraph(f"<b>Description:</b> {pattern_info.get('description', 'N/A')}", styles['Normal']))
+        story.append(Spacer(1, 12))
+        
+        # === SECTION 2: TRAFFIC CONTROL REQUIREMENTS ===
+        story.append(Paragraph("2. TRAFFIC CONTROL REQUIREMENTS", heading_style))
+        tc_req = tmp_content.get('traffic_control_requirements', {})
+        
+        tc_data = [
+            ['Requirement', 'Details'],
+            ['Traffic Controllers Required', 'Yes' if tc_req.get('requires_traffic_controllers') else 'No'],
+            ['Number of TCs', str(tc_req.get('number_of_tcs', 0)) if tc_req.get('requires_traffic_controllers') else 'N/A'],
+            ['Arrow Board Required', 'Yes' if tc_req.get('uses_arrow_board') else 'No'],
+            ['TMA Required', 'Yes' if tc_req.get('uses_tma') else 'No'],
+            ['Speed Reduction', f"{tc_req.get('speed_reduction_to', 'N/A')} km/h"],
+            ['Minimum Lane Width', f"{tc_req.get('minimum_lane_width_m', 'N/A')} m"],
+            ['Safety Buffer', f"{tc_req.get('safety_buffer_m', 'N/A')} m"],
+        ]
+        
+        tc_table = Table(tc_data, colWidths=[3*inch, 3*inch])
+        tc_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#1e40af')),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 11),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ('FONTNAME', (0, 1), (0, -1), 'Helvetica-Bold'),
+        ]))
+        story.append(tc_table)
+        story.append(Spacer(1, 20))
+        
+        # === SECTION 3: RISK ASSESSMENT ===
+        story.append(Paragraph("3. RISK ASSESSMENT", heading_style))
+        risk_assessment = tmp_content.get('risk_assessment', {})
+        
+        story.append(Paragraph("3.1 Key Risks Identified", subheading_style))
+        key_risks = risk_assessment.get('key_risks', [])
+        for i, risk in enumerate(key_risks, 1):
+            story.append(Paragraph(f"{i}. {risk}", styles['Normal']))
+        story.append(Spacer(1, 12))
+        
+        story.append(Paragraph("3.2 Control Measures", subheading_style))
+        controls = risk_assessment.get('control_measures', [])
+        for i, control in enumerate(controls, 1):
+            story.append(Paragraph(f"{i}. {control}", styles['Normal']))
+        story.append(Spacer(1, 12))
+        
+        story.append(Paragraph(f"<b>Residual Risk Rating:</b> {risk_assessment.get('residual_risk_rating', 'N/A')}", styles['Normal']))
+        story.append(Spacer(1, 20))
+        
+        # === SECTION 4: SPECIAL REQUIREMENTS ===
+        special_reqs = tmp_content.get('special_requirements', [])
+        if special_reqs:
+            story.append(Paragraph("4. SPECIAL REQUIREMENTS", heading_style))
+            for i, req in enumerate(special_reqs, 1):
+                story.append(Paragraph(f"{i}. {req}", styles['Normal']))
+            story.append(Spacer(1, 20))
+        
+        # === SECTION 5: DEVICE SCHEDULE ===
+        story.append(Paragraph("5. DEVICE SCHEDULE", heading_style))
+        story.append(Paragraph(f"<b>Total Devices Placed:</b> {len(placed_devices)}", styles['Normal']))
+        story.append(Spacer(1, 12))
+        
+        if placed_devices:
+            device_data = [['#', 'Device Name', 'Type', 'Latitude', 'Longitude']]
+            for i, device in enumerate(placed_devices[:20], 1):  # Limit to first 20
+                device_data.append([
+                    str(i),
+                    device.get('device_name', 'N/A')[:30],
+                    device.get('device_type', 'N/A'),
+                    f"{device.get('position_lat', 0):.6f}",
+                    f"{device.get('position_lng', 0):.6f}"
+                ])
+            
+            device_table = Table(device_data, colWidths=[0.5*inch, 2*inch, 1*inch, 1.25*inch, 1.25*inch])
+            device_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#1e40af')),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, -1), 9),
+                ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.lightgrey]),
+            ]))
+            story.append(device_table)
+            
+            if len(placed_devices) > 20:
+                story.append(Spacer(1, 8))
+                story.append(Paragraph(f"<i>Note: Showing first 20 of {len(placed_devices)} devices</i>", styles['Normal']))
+        
+        story.append(PageBreak())
+        
+        # === SECTION 6: TGS VISUAL ===
+        story.append(Paragraph("6. TRAFFIC GUIDANCE SCHEME (TGS)", heading_style))
+        story.append(Spacer(1, 12))
+        
+        if tgs_visual_file:
+            try:
+                tgs_path = Path("/app/tmp_outputs") / tgs_visual_file
+                if tgs_path.exists():
+                    img = Image(str(tgs_path))
+                    img.drawWidth = 6.5 * inch
+                    img.drawHeight = 6.5 * inch * 0.75  # Maintain aspect ratio
+                    story.append(img)
+                else:
+                    story.append(Paragraph(f"[TGS visual not found: {tgs_visual_file}]", styles['Normal']))
+            except Exception as e:
+                logger.error(f"Error embedding TGS visual: {e}")
+                story.append(Paragraph(f"[Error loading TGS visual]", styles['Normal']))
+        else:
+            story.append(Paragraph("[No TGS visual provided]", styles['Normal']))
+        
+        # Build PDF
+        doc.build(story)
+        buffer.seek(0)
+        
+        # Save to file
+        output_dir = Path("/app/tmp_outputs")
+        output_dir.mkdir(exist_ok=True)
+        
+        plan_name = work_details.get('plan_name', 'tmp').replace(' ', '_').replace('/', '_')
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"{plan_name}_{timestamp}_COMPLETE_TMP.pdf"
+        file_path = output_dir / filename
+        
+        with open(file_path, 'wb') as f:
+            f.write(buffer.getvalue())
+        
+        logger.info(f"Complete TMP PDF saved: {file_path}")
+        
+        return {
+            "status": "success",
+            "pdf_file": filename,
+            "pattern_count": len(tgs_patterns),
+            "is_combined": is_combined,
+            "device_count": len(placed_devices),
+            "download_url": f"/api/files/download/{filename}"
+        }
+        
+    except Exception as e:
+        logger.error(f"Error generating complete TMP PDF: {str(e)}")
+        import traceback
+        logger.error(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @api_router.get("/proxy/places/nearby")
 async def proxy_places_nearby(lat: float, lng: float, radius: int = 10000, place_type: str = "police"):
     """
