@@ -361,11 +361,15 @@ class TrafficManagementPlan(BaseModel):
     plan_name: str
     company_details: Optional[CompanyDetails] = None
     traffic_company: Optional[TrafficManagementCompany] = None
+    project_overview: Optional[ProjectOverview] = None
     work_details: Optional[WorkDetails] = None
+    traffic_assessment: Optional[TrafficAssessment] = None
+    site_assessment: Optional[SiteAssessment] = None
     road_occupancy: Optional[RoadOccupancy] = None
     control_measures: Optional[ControlMeasures] = None
     road_data: Optional[RoadData] = None
     devices: List[TrafficDevice] = []
+    selected_tgs_patterns: Optional[List[str]] = []
     map_center_lat: Optional[float] = None
     map_center_lng: Optional[float] = None
     map_zoom: int = 15
@@ -379,11 +383,15 @@ class TrafficManagementPlanCreate(BaseModel):
     plan_name: str
     company_details: Optional[CompanyDetails] = None
     traffic_company: Optional[TrafficManagementCompany] = None
+    project_overview: Optional[ProjectOverview] = None
     work_details: Optional[WorkDetails] = None
+    traffic_assessment: Optional[TrafficAssessment] = None
+    site_assessment: Optional[SiteAssessment] = None
     road_occupancy: Optional[RoadOccupancy] = None
     control_measures: Optional[ControlMeasures] = None
     road_data: Optional[RoadData] = None
     devices: List[TrafficDevice] = []
+    selected_tgs_patterns: Optional[List[str]] = []
     map_center_lat: Optional[float] = None
     map_center_lng: Optional[float] = None
     map_zoom: int = 15
