@@ -134,6 +134,9 @@ class CompanyDetails(BaseModel):
     liaison_name: str
     liaison_phone: str
     liaison_email: str
+    
+    class Config:
+        extra = "allow"  # Allow any additional company fields
 
 class TrafficManagementCompany(BaseModel):
     name: str
@@ -142,6 +145,9 @@ class TrafficManagementCompany(BaseModel):
     liaison_name: str
     liaison_phone: str
     liaison_email: str
+    
+    class Config:
+        extra = "allow"  # Allow any additional fields
 
 class WorkDetails(BaseModel):
     work_type: str  # emergency, maintenance, construction
