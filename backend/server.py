@@ -3076,6 +3076,77 @@ async def generate_tmp_from_tgs_patterns(request: Dict[str, Any]):
 @api_router.post("/tgs/generate-complete-tmp-pdf")
 async def generate_complete_tmp_pdf_from_tgs(request: Dict[str, Any]):
     """
+    Generate complete TMP PDF from TGS patterns (not just form auto-fill)
+    
+    Returns a full, downloadable TMP PDF including:
+    - All TMP sections
+    - Pattern-specific risks and controls
+    - TGS visual with placed devices
+    - Device schedule
+    - Professional formatting
+    """
+    try:
+        from tgs_tmp_templates import generate_combined_tmp_for_multiple_patterns
+        from tmp_generator import tmp_generator
+        
+        tgs_patterns = request.get('tgs_patterns', [])
+        placed_devices = request.get('placed_devices', [])
+        work_details = request.get('work_details', {})
+        company_details = request.get('company_details', {})
+        location = request.get('location', 'Work Site')
+        
+        # Generate TMP content from patterns
+        if len(tgs_patterns) == 1:
+            from tgs_tmp_templates import generate_tmp_for_tgs_pattern
+            tmp_content = generate_tmp_for_tgs_pattern(
+                tgs_patterns[0], location, work_details, company_details
+            )
+        else:
+            tmp_content = generate_combined_tmp_for_multiple_patterns(
+                tgs_patterns, location, work_details, company_details
+            )
+        
+        # Build complete plan data for PDF generation
+        plan_data = {
+            'plan_name': work_details.get('plan_name', 'Traffic Management Plan'),
+            'work_details': work_details,
+            'company_details': company_details,
+            'devices': placed_devices,
+            'road_data': request.get('road_data', {}),
+            'tgs_tmp_content': tmp_content,
+            'comprehensive_data': request.get('comprehensive_data', {})
+        }
+        
+        # Generate PDF
+        pdf_content = tmp_generator.generate_tmp_pdf(plan_data)
+        
+        # Save to file
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"{work_details.get('plan_name', 'TMP').replace(' ', '_')}_{timestamp}.pdf"
+        output_path = f"/app/tmp_outputs/{filename}"
+        
+        with open(output_path, 'wb') as f:
+            f.write(pdf_content)
+        
+        logger.info(f"Complete TMP PDF generated: {filename}")
+        
+        return {
+            "success": True,
+            "pdf_file": filename,
+            "pattern_count": len(tgs_patterns),
+            "device_count": len(placed_devices),
+            "download_url": f"/api/files/download/{filename}"
+        }
+        
+    except Exception as e:
+        logger.error(f"Error generating complete TMP PDF: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
+@api_router.post("/tgs/generate-complete-tmp-pdf")
+async def generate_complete_tmp_pdf_from_tgs(request: Dict[str, Any]):
+    """
     Generate a complete TMP PDF document from TGS patterns
     
     This endpoint:
