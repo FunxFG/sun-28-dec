@@ -543,11 +543,10 @@ class TGSTMPTemplates:
                 ],
                 "work_zone_length_range": [5, 50]
             },
-        }
-    
-    def get_template(self, tgs_pattern_id: str) -> Dict[str, Any]:
-        """Get TMP template for a specific TGS pattern"""
-        return self.templates.get(tgs_pattern_id, {})
+            
+            # ==================== LATERAL SHIFT ====================
+            
+            "LATERAL_SHIFT_LOW": {
                 "name": "Lateral Shift 40-70km",
                 "generic_code": "Lateral Shift (Low Speed)",
                 "work_type": "Lateral Traffic Shift",
