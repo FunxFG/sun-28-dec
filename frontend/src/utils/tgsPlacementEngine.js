@@ -828,29 +828,59 @@ class TGSPlacementEngine {
       });
     });
     
-    // Side road signs ("ON SIDE ROAD" requirement)
+    // Side road signs ("ON SIDE ROAD" requirement with DOUBLE GATING)
     if (sideStreets && sideStreets.length > 0) {
+      console.log('\n📍 Side Road Signs (Double Gating)...');
       sideStreets.forEach((street, idx) => {
         if (street.lat && street.lng) {
-          const sideSignPos = this.calculatePosition(street.lat, street.lng, street.bearing || 0, -30);
-          const snapped = this.snapToRoadEdge(sideSignPos.lat, sideSignPos.lng, roadEdge, 1.0);
+          // APPROACH: Road Work Ahead (before intersection)
+          const approachPos = this.calculatePosition(street.lat, street.lng, street.bearing || 0, -30);
+          const approachSnapped = this.snapToRoadEdge(approachPos.lat, approachPos.lng, roadEdge, 1.0);
           
           devices.push({
-            id: `side_road_sign_${idx}_${Date.now()}`,
+            id: `roundabout_side_approach_${idx}_${Date.now()}`,
             device_type: 'warning',
             device_name: 'Road Work Ahead (On Side Road)',
             device_code: 'T1-1',
-            position_lat: snapped.lat,
-            position_lng: snapped.lng,
+            position_lat: approachSnapped.lat,
+            position_lng: approachSnapped.lng,
             properties: {
               side_road: street.name,
-              placement: 'on_side_road',
+              placement: 'on_side_road_approach',
+              side: 'approach',
               auto_placed: true,
-              tgs_compliant: true
+              tgs_compliant: true,
+              double_gating: true
+            }
+          });
+          
+          // EXIT: End Road Work (after intersection, opposite side)
+          const exitPos = this.calculatePosition(
+            street.lat, street.lng,
+            street.bearing ? (street.bearing + 180) % 360 : 180,
+            -30
+          );
+          const exitSnapped = this.snapToRoadEdge(exitPos.lat, exitPos.lng, roadEdge, 1.0);
+          
+          devices.push({
+            id: `roundabout_side_exit_${idx}_${Date.now()}`,
+            device_type: 'warning',
+            device_name: 'End Road Work',
+            device_code: 'T1-11',
+            position_lat: exitSnapped.lat,
+            position_lng: exitSnapped.lng,
+            properties: {
+              side_road: street.name,
+              placement: 'on_side_road_exit',
+              side: 'exit',
+              auto_placed: true,
+              tgs_compliant: true,
+              double_gating: true
             }
           });
         }
       });
+      console.log(`  ✅ Double gating: ${sideStreets.length * 2} signs on ${sideStreets.length} side roads`);
     }
     
     console.log(`✅ Roundabout TGS Complete: ${devices.length} devices placed`);
