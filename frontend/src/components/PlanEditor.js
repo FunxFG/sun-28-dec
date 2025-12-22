@@ -2310,58 +2310,6 @@ export default function PlanEditor({ user, onLogout }) {
               </CardContent>
             </Card>
 
-            {/* TMP Template Selector */}
-            <Card className="border-orange-200 bg-orange-50">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <FileText className="w-5 h-5 text-orange-600" />
-                  TMP Template Generator (Optional)
-                </CardTitle>
-                <CardDescription>
-                  Use pre-built templates for common scenarios or continue with custom plan
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label>Select Template Type</Label>
-                  <Select
-                    value={selectedTemplate}
-                    onValueChange={setSelectedTemplate}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Choose a template or leave blank for custom" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">None - Custom Plan</SelectItem>
-                      <SelectItem value="footpath_closure">Footpath Closure & Pedestrian Detour</SelectItem>
-                      <SelectItem value="emergency">Emergency Works</SelectItem>
-                      <SelectItem value="lane_closure">Lane Closure (Standard)</SelectItem>
-                      <SelectItem value="road_closure">Full Road Closure</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {selectedTemplate && selectedTemplate !== 'none' && (
-                  <div className="p-4 bg-white rounded-lg border border-orange-200">
-                    <h4 className="font-semibold text-sm mb-2">Template: {selectedTemplate.replace('_', ' ').toUpperCase()}</h4>
-                    <p className="text-sm text-gray-600 mb-3">
-                      {selectedTemplate === 'footpath_closure' && 'Generates DDA-compliant footpath closure plan with pedestrian detour signage and barricading.'}
-                      {selectedTemplate === 'emergency' && 'Generates emergency works TMP with expedited approval pathway and minimal traffic control.'}
-                      {selectedTemplate === 'lane_closure' && 'Generates standard lane closure TMP with compliant advance warning signs and delineation.'}
-                      {selectedTemplate === 'road_closure' && 'Generates full road closure TMP with detour routes and comprehensive signage plan.'}
-                    </p>
-                    <Button
-                      onClick={handleApplyTemplate}
-                      disabled={loadingTemplate}
-                      className="w-full bg-orange-600 hover:bg-orange-700"
-                    >
-                      {loadingTemplate ? 'Applying Template...' : 'Apply This Template'}
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
             {/* Section 4: Traffic Assessment - HIDDEN (Auto-populated) */}
             {/* Only show if auto-population failed or user explicitly wants to see it */}
             {(!autoPopulationComplete || showAutoPopulatedData) && (
