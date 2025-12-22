@@ -304,8 +304,23 @@ export default function FileDownloadManager({ autoRefresh = false }) {
                         size="sm" 
                         variant="outline"
                         onClick={() => {
-                          navigator.clipboard.writeText(getDownloadUrl(file.name));
-                          setDownloadStatus(prev => ({ ...prev, [file.name]: 'copied' }));
+                          try {
+                            if (navigator.clipboard && navigator.clipboard.writeText) {
+                              navigator.clipboard.writeText(getDownloadUrl(file.name))
+                                .then(() => {
+                                  setDownloadStatus(prev => ({ ...prev, [file.name]: 'copied' }));
+                                })
+                                .catch(() => {
+                                  // Fallback copy
+                                  fallbackCopyText(getDownloadUrl(file.name), file.name);
+                                });
+                            } else {
+                              fallbackCopyText(getDownloadUrl(file.name), file.name);
+                            }
+                          } catch (err) {
+                            console.warn('Clipboard not available:', err);
+                            fallbackCopyText(getDownloadUrl(file.name), file.name);
+                          }
                         }}
                       >
                         Copy
