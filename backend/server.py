@@ -2107,6 +2107,17 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
     
     logger.info(f"TMP PDF saved to: {file_path}")
     
+    # Return the complete TMP PDF as streaming response
+    buffer.seek(0)
+    return StreamingResponse(
+        io.BytesIO(buffer.getvalue()),
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f"attachment; filename={filename}",
+            "Content-Length": str(len(buffer.getvalue()))
+        }
+    )
+    
     # Also return as streaming response for immediate download
     buffer.seek(0)
     return StreamingResponse(
