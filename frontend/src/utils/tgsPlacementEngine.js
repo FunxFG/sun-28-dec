@@ -1546,6 +1546,70 @@ class TGSPlacementEngine {
     return devices;
   }
 
+  /**
+   * Place devices along the ACTUAL ROAD PATH using centerline
+   * Ensures devices follow road curves instead of straight bearing
+   */
+  placeDeviceAlongRoad(start_lat, start_lng, distanceMeters, roadCenterline, roadEdge, bearing, lateralOffset = 1.0) {
+    if (roadCenterline && roadCenterline.length >= 2) {
+      let accumulatedDistance = 0;
+      let targetPoint = { lat: start_lat, lng: start_lng };
+      let localBearing = bearing;
+      
+      for (let i = 0; i < roadCenterline.length - 1; i++) {
+        const segmentDist = this.calculateDistance(
+          roadCenterline[i].lat, roadCenterline[i].lng,
+          roadCenterline[i + 1].lat, roadCenterline[i + 1].lng
+        );
+        
+        if (accumulatedDistance + segmentDist >= distanceMeters) {
+          const remainingDist = distanceMeters - accumulatedDistance;
+          const ratio = remainingDist / segmentDist;
+          
+          targetPoint = {
+            lat: roadCenterline[i].lat + (roadCenterline[i + 1].lat - roadCenterline[i].lat) * ratio,
+            lng: roadCenterline[i].lng + (roadCenterline[i + 1].lng - roadCenterline[i].lng) * ratio
+          };
+          
+          localBearing = this.calculateBearing(
+            roadCenterline[i].lat, roadCenterline[i].lng,
+            roadCenterline[i + 1].lat, roadCenterline[i + 1].lng
+          );
+          break;
+        }
+        accumulatedDistance += segmentDist;
+      }
+      
+      const offsetPos = this.calculatePosition(targetPoint.lat, targetPoint.lng, localBearing - 90, lateralOffset);
+      return this.snapToRoadEdge(offsetPos.lat, offsetPos.lng, roadEdge, 15.0);
+    }
+    
+    const basePos = this.calculatePosition(start_lat, start_lng, bearing, distanceMeters);
+    const offsetPos = this.calculatePosition(basePos.lat, basePos.lng, bearing - 90, lateralOffset);
+    return this.snapToRoadEdge(offsetPos.lat, offsetPos.lng, roadEdge, 15.0);
+  }
+
+  /**
+   * Extract road centerline from geometry data
+   */
+  extractRoadCenterline(roadEdgeGeometry) {
+    if (!roadEdgeGeometry || !roadEdgeGeometry.start) return [];
+    
+    const centerline = roadEdgeGeometry.start.centerline || [];
+    const normalized = centerline.map(point => {
+      if (Array.isArray(point)) {
+        return { lat: point[0], lng: point[1] };
+      }
+      return point;
+    }).filter(p => p.lat && p.lng);
+    
+    if (normalized.length > 0) {
+      console.log(`  🛣️ Using road centerline with ${normalized.length} points (follows actual road path)`);
+    }
+    
+    return normalized;
+  }
+
   // ==================== HELPER FUNCTIONS ====================
 
   /**
