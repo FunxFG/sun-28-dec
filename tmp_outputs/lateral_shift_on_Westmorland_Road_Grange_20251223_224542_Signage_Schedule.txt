@@ -1,0 +1,29 @@
+================================================================================
+SIGNAGE SCHEDULE - lateral shift on Westmorland Road Grange
+Generated: 23 December 2025 at 10:45 PM
+================================================================================
+
+Total Signs: 12
+
+#    Sign Code       Sign Name                                Distance (m) Side    
+--------------------------------------------------------------------------------
+1    N/A             Road Work Ahead                          0.0          Both    
+2    N/A             Road Work Ahead                          0.0          Both    
+3    N/A             Lateral Shift Marker                     0.0          Both    
+4    N/A             Lateral Shift Marker                     0.0          Both    
+5    N/A             Lateral Shift Marker                     0.0          Both    
+6    N/A             Lateral Shift Marker                     0.0          Both    
+7    N/A             Lateral Shift Marker                     0.0          Both    
+8    N/A             Lateral Shift Marker                     0.0          Both    
+9    N/A             Speed Limit 40                           0.0          Both    
+10   N/A             End Road Work                            0.0          Both    
+11   N/A             Traffic Cone 700mm                       0.0          Both    
+12   N/A             Traffic Cone 700mm                       0.0          Both    
+
+================================================================================
+NOTES:
+- All distances measured from work zone start point
+- Signs must be installed according to AS 1742.3 specifications
+- Bilateral signage required where indicated
+- All signs must be maintained in clean, reflective condition
+================================================================================

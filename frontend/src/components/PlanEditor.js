@@ -248,6 +248,12 @@ export default function PlanEditor({ user, onLogout }) {
       detour: false,
       pedestrian_control: false,
       
+      // Speed reductions
+      temporary_speed_limit_25: false,
+      temporary_speed_limit_40: false,
+      temporary_speed_limit_60: false,
+      temporary_speed_limit_80: false,
+      
       // Traffic control types (match Traffio app)
       continuous_stop_slow: false,
       mobile_works: false,
