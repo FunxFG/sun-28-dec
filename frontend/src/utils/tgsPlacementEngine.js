@@ -161,9 +161,10 @@ class TGSPlacementEngine {
     const speedCategory = isLowSpeed ? 'low' : 'high';
     console.log(`  Speed category: ${speedCategory} (${speedLimit} km/h)`);
     
-    // Get road edge for snapping
+    // Get road edge AND centerline for proper placement
     const roadEdge = this.extractRoadEdgePoints(roadEdgeGeometry);
-    console.log(`  Road edge points: ${roadEdge.length}`);
+    const roadCenterline = this.extractRoadCenterline(roadEdgeGeometry);
+    console.log(`  Road edge points: ${roadEdge.length}, Centerline points: ${roadCenterline.length}`);
     
     // === 1. ADVANCE WARNING SIGNS ===
     console.log('\n📍 Placing Advance Warning Signs...');
@@ -204,8 +205,14 @@ class TGSPlacementEngine {
     // === 2. LANE STATUS / MERGE SIGNS ===
     console.log('\n📍 Placing Lane Status Signs...');
     const mergeDistance = isLowSpeed ? 60 : 80;
-    const mergePos = this.calculatePosition(start_lat, start_lng, bearing + 180, mergeDistance);
-    const mergeSnapped = this.snapToRoadEdge(mergePos.lat, mergePos.lng, roadEdge, 1.0);
+    const mergeSnapped = this.placeDeviceAlongRoad(
+      start_lat, start_lng,
+      mergeDistance,
+      roadCenterline,
+      roadEdge,
+      bearing + 180,
+      1.0
+    );
     
     devices.push({
       id: `merge_sign_${Date.now()}`,
@@ -227,8 +234,14 @@ class TGSPlacementEngine {
     console.log('\n📍 Placing Speed Reduction Sign...');
     const reducedSpeed = isLowSpeed ? 40 : 60;
     const speedSignDistance = isLowSpeed ? 45 : 60;
-    const speedPos = this.calculatePosition(start_lat, start_lng, bearing + 180, speedSignDistance);
-    const speedSnapped = this.snapToRoadEdge(speedPos.lat, speedPos.lng, roadEdge, 1.0);
+    const speedSnapped = this.placeDeviceAlongRoad(
+      start_lat, start_lng,
+      speedSignDistance,
+      roadCenterline,
+      roadEdge,
+      bearing + 180,
+      1.0
+    );
     
     devices.push({
       id: `speed_limit_${Date.now()}`,
@@ -250,8 +263,14 @@ class TGSPlacementEngine {
     // === 4. ARROW BOARD ===
     console.log('\n📍 Placing Arrow Board...');
     const arrowDistance = isLowSpeed ? 30 : 45;
-    const arrowPos = this.calculatePosition(start_lat, start_lng, bearing + 180, arrowDistance);
-    const arrowSnapped = this.snapToRoadEdge(arrowPos.lat, arrowPos.lng, roadEdge, 1.0);
+    const arrowSnapped = this.placeDeviceAlongRoad(
+      start_lat, start_lng,
+      arrowDistance,
+      roadCenterline,
+      roadEdge,
+      bearing + 180,
+      1.0
+    );
     
     devices.push({
       id: `arrow_board_${Date.now()}`,
@@ -599,6 +618,7 @@ class TGSPlacementEngine {
     const bearing = road_bearing || this.calculateBearing(start_lat, start_lng, end_lat || start_lat, end_lng || start_lng);
     const isLowSpeed = speedLimit <= 70;
     const roadEdge = this.extractRoadEdgePoints(roadEdgeGeometry);
+    const roadCenterline = this.extractRoadCenterline(roadEdgeGeometry);
     
     // === ADVANCE WARNING ===
     const advanceSequence = isLowSpeed ? [
@@ -614,8 +634,14 @@ class TGSPlacementEngine {
     ];
     
     advanceSequence.forEach((sign, idx) => {
-      const signPos = this.calculatePosition(start_lat, start_lng, bearing + 180, sign.distance);
-      const snapped = this.snapToRoadEdge(signPos.lat, signPos.lng, roadEdge, 1.0);
+      const finalPos = this.placeDeviceAlongRoad(
+        start_lat, start_lng,
+        sign.distance,
+        roadCenterline,
+        roadEdge,
+        bearing + 180,
+        1.0
+      );
       
       devices.push({
         id: `stop_slow_advance_${idx}_${Date.now()}`,
@@ -636,8 +662,14 @@ class TGSPlacementEngine {
     // === SPEED REDUCTION ===
     const reducedSpeed = isLowSpeed ? 40 : 60;
     const speedDistance = isLowSpeed ? 45 : 60;
-    const speedPos = this.calculatePosition(start_lat, start_lng, bearing + 180, speedDistance);
-    const speedSnapped = this.snapToRoadEdge(speedPos.lat, speedPos.lng, roadEdge, 1.0);
+    const speedSnapped = this.placeDeviceAlongRoad(
+      start_lat, start_lng,
+      speedDistance,
+      roadCenterline,
+      roadEdge,
+      bearing + 180,
+      1.0
+    );
     
     devices.push({
       id: `stop_slow_speed_${Date.now()}`,
@@ -657,8 +689,14 @@ class TGSPlacementEngine {
     
     // === TRAFFIC CONTROLLER POSITION ===
     const tcDistance = isLowSpeed ? 15 : 20;
-    const tcPos = this.calculatePosition(start_lat, start_lng, bearing + 180, tcDistance);
-    const tcSnapped = this.snapToRoadEdge(tcPos.lat, tcPos.lng, roadEdge, 2.0);
+    const tcSnapped = this.placeDeviceAlongRoad(
+      start_lat, start_lng,
+      tcDistance,
+      roadCenterline,
+      roadEdge,
+      bearing + 180,
+      2.0
+    );
     
     devices.push({
       id: `tc_position_${Date.now()}`,
@@ -1341,93 +1379,6 @@ class TGSPlacementEngine {
         position_lng: snapped.lng,
         properties: {
           distance_from_workzone: sign.distance,
-          placement: 'advance_warning',
-          auto_placed: true,
-          tgs_compliant: true
-        }
-      });
-    });
-
-  /**
-   * Place devices along the ACTUAL ROAD PATH using centerline
-   * This ensures devices follow road curves instead of straight bearing
-   */
-  placeDeviceAlongRoad(start_lat, start_lng, distanceMeters, roadCenterline, roadEdge, bearing, lateralOffset = 1.0) {
-    // If we have road centerline, use it to follow actual road path
-    if (roadCenterline && roadCenterline.length >= 2) {
-      // Find the point on centerline that's approximately 'distanceMeters' away
-      let accumulatedDistance = 0;
-      let targetPoint = { lat: start_lat, lng: start_lng };
-      let localBearing = bearing;
-      
-      for (let i = 0; i < roadCenterline.length - 1; i++) {
-        const segmentDist = this.calculateDistance(
-          roadCenterline[i].lat, roadCenterline[i].lng,
-          roadCenterline[i + 1].lat, roadCenterline[i + 1].lng
-        );
-        
-        if (accumulatedDistance + segmentDist >= distanceMeters) {
-          // Target is within this segment
-          const remainingDist = distanceMeters - accumulatedDistance;
-          const ratio = remainingDist / segmentDist;
-          
-          targetPoint = {
-            lat: roadCenterline[i].lat + (roadCenterline[i + 1].lat - roadCenterline[i].lat) * ratio,
-            lng: roadCenterline[i].lng + (roadCenterline[i + 1].lng - roadCenterline[i].lng) * ratio
-          };
-          
-          // Calculate local bearing for this segment
-          localBearing = this.calculateBearing(
-            roadCenterline[i].lat, roadCenterline[i].lng,
-            roadCenterline[i + 1].lat, roadCenterline[i + 1].lng
-          );
-          break;
-        }
-        accumulatedDistance += segmentDist;
-      }
-      
-      // Now offset perpendicular to local road direction
-      const offsetPos = this.calculatePosition(targetPoint.lat, targetPoint.lng, localBearing - 90, lateralOffset);
-      return this.snapToRoadEdge(offsetPos.lat, offsetPos.lng, roadEdge, 15.0);
-    }
-    
-    // Fallback: use straight-line bearing calculation
-    const basePos = this.calculatePosition(start_lat, start_lng, bearing, distanceMeters);
-    const offsetPos = this.calculatePosition(basePos.lat, basePos.lng, bearing - 90, lateralOffset);
-    return this.snapToRoadEdge(offsetPos.lat, offsetPos.lng, roadEdge, 15.0);
-  }
-
-  /**
-   * Extract road centerline from geometry data
-   */
-  extractRoadCenterline(roadEdgeGeometry) {
-    if (!roadEdgeGeometry || !roadEdgeGeometry.start) return [];
-    
-    const centerline = roadEdgeGeometry.start.centerline || [];
-    
-    // Normalize format
-    const normalized = centerline.map(point => {
-      if (Array.isArray(point)) {
-        return { lat: point[0], lng: point[1] };
-      }
-      return point;
-    }).filter(p => p.lat && p.lng);
-    
-    if (normalized.length > 0) {
-      console.log(`  🛣️ Using road centerline with ${normalized.length} points (follows actual road path)`);
-    }
-    
-    return normalized;
-  }
-
-        id: `lateral_shift_warning_${idx}_${Date.now()}`,
-        device_type: 'warning',
-        device_name: sign.name,
-        device_code: sign.code,
-        position_lat: snapped.lat,
-        position_lng: snapped.lng,
-        properties: {
-          distance_from_shift: sign.distance,
           placement: 'advance_warning',
           auto_placed: true,
           tgs_compliant: true
