@@ -380,50 +380,6 @@ class VisualTGSGenerator:
             draw.text((text_x, text_y), device_code, fill=(255,255,255,255), font=font)
         
         return marker
-        """
-        # Create transparent image
-        marker = Image.new('RGBA', (width, height), (0, 0, 0, 0))
-        draw = ImageDraw.Draw(marker)
-        
-        # Determine color based on sign type
-        sign_code = device.get('code', '')
-        if 'T1' in sign_code or 'warning' in device.get('name', '').lower():
-            color = (255, 200, 0, 220)  # Yellow for warning
-        elif 'R' in sign_code or 'regulatory' in device.get('name', '').lower():
-            color = (255, 50, 50, 220)  # Red for regulatory
-        elif 'G' in sign_code or 'guide' in device.get('name', '').lower():
-            color = (50, 150, 255, 220)  # Blue for guidance
-        else:
-            color = (255, 150, 50, 220)  # Orange for other
-        
-        # Draw sign shape (diamond for warning, circle for regulatory, rectangle for guide)
-        if 'T1' in sign_code or 'warning' in device.get('name', '').lower():
-            # Draw diamond shape
-            points = [(width//2, 5), (width-5, height//2), (width//2, height-5), (5, height//2)]
-            draw.polygon(points, fill=color, outline=(0, 0, 0, 255))
-        elif 'R' in sign_code or 'stop' in device.get('name', '').lower():
-            # Draw circle
-            draw.ellipse([5, 5, width-5, height-5], fill=color, outline=(0, 0, 0, 255))
-        else:
-            # Draw rectangle
-            draw.rectangle([5, 5, width-5, height-5], fill=color, outline=(0, 0, 0, 255))
-        
-        # Add code label
-        try:
-            font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 10)
-        except:
-            font = ImageFont.load_default()
-        
-        code_text = device.get('code', '?')[:4]
-        bbox = draw.textbbox((0, 0), code_text, font=font)
-        text_width = bbox[2] - bbox[0]
-        text_height = bbox[3] - bbox[1]
-        text_x = (width - text_width) // 2
-        text_y = (height - text_height) // 2
-        
-        draw.text((text_x, text_y), code_text, fill=(255, 255, 255, 255), font=font)
-        
-        return marker
     
     def _extract_road_name(self, devices: List[Dict]) -> str:
         """Extract road name from device properties"""
