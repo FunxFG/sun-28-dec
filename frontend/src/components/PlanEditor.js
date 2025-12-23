@@ -1930,8 +1930,21 @@ export default function PlanEditor({ user, onLogout }) {
         // Clean up after delay
         setTimeout(() => window.URL.revokeObjectURL(blobUrl), 5000);
         
-        toast.success('✅ PDF generated! Check your Downloads folder or the new tab.');
-        toast.info('💡 Tip: Scroll down to "Download Your Files" section for all generated files');
+        // Show prominent download success with direct link
+        const downloadUrl = `${API}/files/download/${formData.plan_name.replace(/\s+/g, '_')}_${Date.now()}_TMP.pdf`;
+        toast.success(
+          <div>
+            <strong>✅ PDF Generated!</strong>
+            <br/>
+            <a href={blobUrl} target="_blank" className="underline text-blue-600">
+              Click here if download didn't start
+            </a>
+            <br/>
+            <small>Or scroll to Download Files section below</small>
+          </div>,
+          { duration: 10000 }
+        );
+        
         return;
       } catch (error) {
         console.error('Backend PDF generation failed:', error);
