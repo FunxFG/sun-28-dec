@@ -1477,7 +1477,8 @@ class TGSPlacementEngine {
   }
 
   /**
-   * Extract road edge points from geometry data
+   * Extract and ENHANCE road edge points from geometry data
+   * Interpolates between points to create dense edge array for better snapping
    */
   extractRoadEdgePoints(roadEdgeGeometry) {
     if (!roadEdgeGeometry) return [];
@@ -1493,12 +1494,34 @@ class TGSPlacementEngine {
     }
     
     // Normalize to {lat, lng} format
-    return points.map(point => {
+    let normalizedPoints = points.map(point => {
       if (Array.isArray(point)) {
         return { lat: point[0], lng: point[1] };
       }
       return point;
     }).filter(p => p.lat && p.lng);
+    
+    // CRITICAL: If we only have 2 points, interpolate many points between them
+    // This creates a dense array of edge points for better snapping
+    if (normalizedPoints.length === 2) {
+      const interpolated = [];
+      const start = normalizedPoints[0];
+      const end = normalizedPoints[1];
+      
+      // Create 50 interpolated points between start and end
+      for (let i = 0; i <= 50; i++) {
+        const ratio = i / 50;
+        interpolated.push({
+          lat: start.lat + (end.lat - start.lat) * ratio,
+          lng: start.lng + (end.lng - start.lng) * ratio
+        });
+      }
+      
+      console.log(`  🔧 Interpolated ${normalizedPoints.length} edge points → ${interpolated.length} points for better snapping`);
+      return interpolated;
+    }
+    
+    return normalizedPoints;
   }
 
   /**
