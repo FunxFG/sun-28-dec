@@ -1921,13 +1921,19 @@ async def generate_plan_pdf(plan_id: str, current_user: Dict = Depends(get_curre
                 f" ({inh_rating})" if inh_rating else ''
             ]))
 
-            # Controls hierarchy
-            controls_obj = r.get('controls') or {}
-            ctrl_elim = controls_obj.get('elimination') or r.get('control_elimination')
-            ctrl_sub = controls_obj.get('substitution') or r.get('control_substitution')
-            ctrl_eng = controls_obj.get('engineering') or r.get('control_engineering')
-            ctrl_admin = controls_obj.get('administrative') or r.get('control_administrative')
-            ctrl_ppe = controls_obj.get('ppe') or r.get('control_ppe')
+            # Controls hierarchy - handle both dict and list formats
+            controls_obj = r.get('controls')
+            if isinstance(controls_obj, list):
+                # If controls is a list, try to extract from other fields
+                controls_obj = {}
+            elif not isinstance(controls_obj, dict):
+                controls_obj = {}
+            
+            ctrl_elim = controls_obj.get('elimination') or r.get('control_elimination') or ''
+            ctrl_sub = controls_obj.get('substitution') or r.get('control_substitution') or ''
+            ctrl_eng = controls_obj.get('engineering') or r.get('control_engineering') or ''
+            ctrl_admin = controls_obj.get('administrative') or r.get('control_administrative') or ''
+            ctrl_ppe = controls_obj.get('ppe') or r.get('control_ppe') or ''
 
             controls_text_parts = []
             if ctrl_elim:
