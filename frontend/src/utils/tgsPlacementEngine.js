@@ -177,7 +177,11 @@ class TGSPlacementEngine {
     
     advanceWarningSequence.forEach((sign, idx) => {
       const signPos = this.calculatePosition(start_lat, start_lng, bearing + 180, sign.distance);
-      const finalPos = this.snapToRoadEdge(signPos.lat, signPos.lng, roadEdge, 1.0); // 1m from edge
+      
+      // For signs, we want them on the roadside (1m from edge)
+      // First offset perpendicular to road, THEN snap to edge
+      const offsetPos = this.calculatePosition(signPos.lat, signPos.lng, bearing - 90, 1.0);
+      const finalPos = this.snapToRoadEdge(offsetPos.lat, offsetPos.lng, roadEdge, 15.0); // Wider snap range for signs
       
       devices.push({
         id: `advance_warning_${idx}_${Date.now()}`,
