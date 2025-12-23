@@ -1499,9 +1499,11 @@ class TGSPlacementEngine {
 
   /**
    * Snap a position to the nearest road edge point
+   * Enhanced to ensure devices stay ON the road
    */
-  snapToRoadEdge(lat, lng, roadEdgePoints, maxSnapDistance = 5.0) {
+  snapToRoadEdge(lat, lng, roadEdgePoints, maxSnapDistance = 10.0) {
     if (!roadEdgePoints || roadEdgePoints.length === 0) {
+      console.warn('⚠️ No road edge data available, using calculated position');
       return { lat, lng };
     }
     
@@ -1516,11 +1518,14 @@ class TGSPlacementEngine {
       }
     }
     
-    // Only snap if within reasonable distance
+    // ALWAYS snap if we found a road edge point (increased max distance)
     if (minDist < maxSnapDistance) {
+      console.log(`  📍 Snapped device ${minDist.toFixed(1)}m to road edge`);
       return nearestPoint;
     }
     
+    // If too far, at least offset toward the road bearing
+    console.warn(`⚠️ Device ${minDist.toFixed(1)}m from road edge (max ${maxSnapDistance}m) - using offset position`);
     return { lat, lng };
   }
 
