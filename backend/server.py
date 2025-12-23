@@ -232,6 +232,7 @@ class ControlMeasures(BaseModel):
     
     # Speed Management
     speed_reduction: bool = False
+    temporary_speed_limit_25: bool = False
     temporary_speed_limit_40: bool = False
     temporary_speed_limit_60: bool = False
     temporary_speed_limit_80: bool = False
