@@ -287,8 +287,99 @@ class VisualTGSGenerator:
     
     def _create_sign_marker(self, device: Dict, width: int, height: int) -> Image.Image:
         """
-        Create a visual marker for a traffic sign
-        For now creates a colored icon, later can be replaced with actual sign images
+        Create a highly visible marker for a traffic control device
+        Uses bright colors and clear shapes for professional TGS quality
+        """
+        marker = Image.new('RGBA', (width, height), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(marker)
+        
+        device_type = device.get('device_type', 'warning')
+        device_code = device.get('device_code', '')
+        device_name = device.get('device_name', 'Device')
+        
+        # Determine shape and color based on device type
+        if device_type == 'warning':
+            # Yellow diamond for warning signs (AS 1742.3 standard)
+            color = (255, 215, 0, 255)  # Bright yellow
+            outline = (0, 0, 0, 255)    # Black outline
+            # Draw diamond shape
+            points = [
+                (width//2, 5),           # Top
+                (width-5, height//2),    # Right
+                (width//2, height-5),    # Bottom
+                (5, height//2)           # Left
+            ]
+            draw.polygon(points, fill=color, outline=outline, width=4)
+            
+        elif device_type == 'regulatory':
+            # Red circle for regulatory signs
+            color = (220, 20, 60, 255)  # Crimson red
+            outline = (255, 255, 255, 255)  # White outline
+            draw.ellipse([5, 5, width-5, height-5], fill=color, outline=outline, width=4)
+            
+        elif device_type == 'guide':
+            # Blue rectangle for guide signs
+            color = (30, 144, 255, 255)  # Dodger blue
+            outline = (255, 255, 255, 255)
+            draw.rectangle([5, 5, width-5, height-5], fill=color, outline=outline, width=4)
+            
+        elif device_type == 'delineation' or 'cone' in device_name.lower() or 'LSM' in device_code:
+            # Orange cone/LSM marker
+            color = (255, 140, 0, 255)  # Dark orange
+            outline = (0, 0, 0, 255)
+            # Draw cone/triangle shape
+            points = [
+                (width//2, 5),           # Top
+                (width-5, height-5),     # Bottom right
+                (5, height-5)            # Bottom left
+            ]
+            draw.polygon(points, fill=color, outline=outline, width=3)
+            
+        elif device_type == 'barrier':
+            # Gray/white barrier
+            color = (169, 169, 169, 255)  # Dark gray
+            outline = (0, 0, 0, 255)
+            draw.rectangle([5, 5, width-5, height-5], fill=color, outline=outline, width=4)
+            
+        elif device_type == 'arrow_board':
+            # Bright yellow rectangle for arrow board
+            color = (255, 255, 0, 255)  # Bright yellow
+            outline = (0, 0, 0, 255)
+            draw.rectangle([5, 5, width-5, height-5], fill=color, outline=outline, width=4)
+            # Draw arrow
+            draw.polygon([
+                (15, height//2),
+                (width-25, height//2 - 10),
+                (width-25, height//2 + 10)
+            ], fill=(0, 0, 0, 255))
+            
+        else:
+            # Default: Blue circle
+            color = (65, 105, 225, 255)  # Royal blue
+            outline = (255, 255, 255, 255)
+            draw.ellipse([5, 5, width-5, height-5], fill=color, outline=outline, width=3)
+        
+        # Add device code text (if space allows)
+        try:
+            font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 14)
+        except:
+            font = ImageFont.load_default()
+        
+        # Draw code text in white with black outline for visibility
+        if device_code and len(device_code) <= 6:
+            text_bbox = draw.textbbox((0, 0), device_code, font=font)
+            text_width = text_bbox[2] - text_bbox[0]
+            text_height = text_bbox[3] - text_bbox[1]
+            text_x = (width - text_width) // 2
+            text_y = (height - text_height) // 2
+            
+            # Black outline
+            for offset in [(-1,-1), (-1,1), (1,-1), (1,1)]:
+                draw.text((text_x + offset[0], text_y + offset[1]), device_code, fill=(0,0,0,255), font=font)
+            # White text
+            draw.text((text_x, text_y), device_code, fill=(255,255,255,255), font=font)
+        
+        return marker
         """
         # Create transparent image
         marker = Image.new('RGBA', (width, height), (0, 0, 0, 0))
