@@ -1333,6 +1333,20 @@ class TGSPlacementEngine {
       const snapped = this.snapToRoadEdge(signPos.lat, signPos.lng, roadEdge, 1.0);
       
       devices.push({
+        id: `shoulder_warning_${idx}_${Date.now()}`,
+        device_type: 'warning',
+        device_name: sign.name,
+        device_code: sign.code,
+        position_lat: snapped.lat,
+        position_lng: snapped.lng,
+        properties: {
+          distance_from_workzone: sign.distance,
+          placement: 'advance_warning',
+          auto_placed: true,
+          tgs_compliant: true
+        }
+      });
+    });
 
   /**
    * Place devices along the ACTUAL ROAD PATH using centerline
