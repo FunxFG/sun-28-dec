@@ -3195,8 +3195,9 @@ async def generate_complete_tmp_pdf_from_tgs(request: Dict[str, Any]):
             'comprehensive_data': request.get('comprehensive_data', {})
         }
         
-        # Generate PDF
-        pdf_content = tmp_generator.generate_tmp_pdf(plan_data)
+        # Generate PDF using correct method name
+        from tmp_generator import tmp_generator
+        pdf_content = tmp_generator.generate_professional_tmp(plan_data, 'works')
         
         # Save to file
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
