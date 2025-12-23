@@ -276,6 +276,12 @@ class VisualTGSGenerator:
                     fill=(0, 0, 0, 255),
                     font=label_font
                 )
+            else:
+                markers_skipped += 1
+                device_code = device.get('device_code', device.get('device_name', 'Unknown'))
+                logger.warning(f"⚠️ Marker {device_code} at pixel ({x},{y}) outside bounds (image: {composite.width}x{composite.height})")
+        
+        logger.info(f"✅ TGS Overlay Complete: Drew {markers_drawn} markers, skipped {markers_skipped} out of {len(sign_positions)} total")
         
         return composite
     
