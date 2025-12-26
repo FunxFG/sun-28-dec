@@ -1,0 +1,52 @@
+================================================================================
+SIGNAGE SCHEDULE - Torrens Road Ridleyton Footpath Upgrade
+Generated: 26 December 2025 at 08:12 PM
+================================================================================
+
+Total Signs: 35
+
+#    Sign Code       Sign Name                                Distance (m) Side    
+--------------------------------------------------------------------------------
+1    T1-1            Road Work Ahead                          0.0          Both    
+2    T1-1            Road Work Ahead                          0.0          Both    
+3    T1-25           Lane Status / Merge Left                 0.0          Both    
+4    R4-1            Speed Limit 40                           0.0          Both    
+5    Arrow           Arrow Board Left                         0.0          Both    
+6    TC1             Traffic Cone 700mm                       0.0          Both    
+7    TC1             Traffic Cone 700mm                       0.0          Both    
+8    TC1             Traffic Cone 700mm                       0.0          Both    
+9    TC1             Traffic Cone 700mm                       0.0          Both    
+10   TC1             Traffic Cone 700mm                       0.0          Both    
+11   TC1             Traffic Cone 700mm                       0.0          Both    
+12   TC1             Traffic Cone 700mm                       0.0          Both    
+13   Bollard         Bollard                                  0.0          Both    
+14   TC1             Traffic Cone 700mm                       0.0          Both    
+15   TC1             Traffic Cone 700mm                       0.0          Both    
+16   TC1             Traffic Cone 700mm                       0.0          Both    
+17   TC1             Traffic Cone 700mm                       0.0          Both    
+18   TC1             Traffic Cone 700mm                       0.0          Both    
+19   TC1             Traffic Cone 700mm                       0.0          Both    
+20   TC1             Traffic Cone 700mm                       0.0          Both    
+21   TC1             Traffic Cone 700mm                       0.0          Both    
+22   TC1             Traffic Cone 700mm                       0.0          Both    
+23   TC1             Traffic Cone 700mm                       0.0          Both    
+24   Bollard         Bollard                                  0.0          Both    
+25   T1-11           End Road Work                            0.0          Both    
+26   T1-1            Road Work Ahead                          0.0          Both    
+27   T1-11           End Road Work                            0.0          Both    
+28   T1-1            Road Work Ahead                          0.0          Both    
+29   T1-11           End Road Work                            0.0          Both    
+30   T1-1            Road Work Ahead                          0.0          Both    
+31   T1-11           End Road Work                            0.0          Both    
+32   T1-1            Road Work Ahead                          0.0          Both    
+33   T1-11           End Road Work                            0.0          Both    
+34   T1-1            Road Work Ahead                          0.0          Both    
+35   T1-11           End Road Work                            0.0          Both    
+
+================================================================================
+NOTES:
+- All distances measured from work zone start point
+- Signs must be installed according to AS 1742.3 specifications
+- Bilateral signage required where indicated
+- All signs must be maintained in clean, reflective condition
+================================================================================
