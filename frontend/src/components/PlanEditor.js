@@ -1909,52 +1909,45 @@ export default function PlanEditor({ user, onLogout }) {
     if (planId) {
       try {
         const token = localStorage.getItem('token');
-        toast.info('Generating PDF... Please wait');
+        toast.info('Generating complete TMP PDF... Please wait (this may take 10-20 seconds)');
+        
+        console.log('📄 Requesting PDF generation for plan:', planId);
         
         const response = await axios.get(`${API}/plans/${planId}/pdf`, {
           headers: { Authorization: `Bearer ${token}` },
-          responseType: 'blob'
+          responseType: 'blob',
+          timeout: 60000  // 60 second timeout for large PDFs
         });
         
-        // Create blob and open in new window to bypass sandbox restrictions
+        console.log('✅ PDF received, size:', response.data.size, 'bytes');
+        
+        // Create blob URL
         const blob = new Blob([response.data], { type: 'application/pdf' });
         const blobUrl = window.URL.createObjectURL(blob);
         
-        // Open in new window - this bypasses iframe sandbox
-        const newWindow = window.open(blobUrl, '_blank');
-        if (!newWindow) {
-          // If popup blocked, try anchor approach
-          const link = document.createElement('a');
-          link.href = blobUrl;
-          link.target = '_blank';
-          link.setAttribute('download', `${formData.plan_name.replace(/\s+/g, '_')}_traffic_plan.pdf`);
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        }
+        console.log('✅ Blob URL created:', blobUrl);
+        
+        // Create download link (most reliable method)
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = `${formData.plan_name.replace(/\s+/g, '_')}_TMP.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        console.log('✅ Download triggered');
         
         // Clean up after delay
-        setTimeout(() => window.URL.revokeObjectURL(blobUrl), 5000);
+        setTimeout(() => window.URL.revokeObjectURL(blobUrl), 10000);
         
-        // Show prominent download success with direct link
-        const downloadUrl = `${API}/files/download/${formData.plan_name.replace(/\s+/g, '_')}_${Date.now()}_TMP.pdf`;
-        toast.success(
-          <div>
-            <strong>✅ PDF Generated!</strong>
-            <br/>
-            <a href={blobUrl} target="_blank" className="underline text-blue-600">
-              Click here if download didn't start
-            </a>
-            <br/>
-            <small>Or scroll to Download Files section below</small>
-          </div>,
-          { duration: 10000 }
-        );
+        toast.success('✅ TMP PDF Downloaded! Check your Downloads folder.', { duration: 5000 });
+        toast.info('💡 Also available in "Download Files" section below', { duration: 5000 });
         
         return;
       } catch (error) {
-        console.error('Backend PDF generation failed:', error);
-        toast.error('PDF generation failed. Try scrolling down to the download section.');
+        console.error('❌ PDF generation failed:', error);
+        console.error('  Error details:', error.response?.data);
+        toast.error(`PDF generation failed: ${error.response?.status || error.message}. Check Downloads section below.`);
       }
     } else {
       toast.error('Please save the plan first before downloading PDF');

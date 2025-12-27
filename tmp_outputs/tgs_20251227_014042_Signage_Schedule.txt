@@ -1,0 +1,45 @@
+================================================================================
+SIGNAGE SCHEDULE - tgs
+Generated: 27 December 2025 at 01:40 AM
+================================================================================
+
+Total Signs: 28
+
+#    Sign Code       Sign Name                                Distance (m) Side    
+--------------------------------------------------------------------------------
+1    N/A             Unknown Sign                             0.0          left    
+2    N/A             Unknown Sign                             0.0          left    
+3    N/A             Unknown Sign                             0.0          left    
+4    N/A             Unknown Sign                             0.0          left    
+5    N/A             Unknown Sign                             0.0          left    
+6    N/A             Unknown Sign                             0.0          left    
+7    N/A             Unknown Sign                             0.0          left    
+8    N/A             Unknown Sign                             0.0          left    
+9    N/A             Unknown Sign                             0.0          left    
+10   N/A             Unknown Sign                             0.0          left    
+11   N/A             Unknown Sign                             0.0          left    
+12   N/A             Unknown Sign                             0.0          left    
+13   N/A             Unknown Sign                             0.0          left    
+14   N/A             Unknown Sign                             0.0          left    
+15   N/A             Unknown Sign                             0.0          left    
+16   N/A             Unknown Sign                             0.0          left    
+17   N/A             Unknown Sign                             0.0          left    
+18   N/A             Unknown Sign                             0.0          left    
+19   N/A             Unknown Sign                             0.0          left    
+20   N/A             Unknown Sign                             0.0          left    
+21   N/A             Unknown Sign                             0.0          left    
+22   N/A             Unknown Sign                             0.0          left    
+23   N/A             Unknown Sign                             0.0          left    
+24   N/A             Unknown Sign                             0.0          left    
+25   N/A             Unknown Sign                             0.0          left    
+26   N/A             Unknown Sign                             0.0          left    
+27   N/A             Unknown Sign                             0.0          left    
+28   N/A             Unknown Sign                             0.0          left    
+
+================================================================================
+NOTES:
+- All distances measured from work zone start point
+- Signs must be installed according to AS 1742.3 specifications
+- Bilateral signage required where indicated
+- All signs must be maintained in clean, reflective condition
+================================================================================
